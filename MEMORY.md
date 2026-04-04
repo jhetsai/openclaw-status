@@ -148,6 +148,16 @@
 - 1181571031：蔡哲維（**管理者**）
 - 8791841706：宜芬
 
+## 多使用者隱私規則
+- **蔡哲維（管理者）**：可查看所有人的資料，可要求彙整
+- **阿林、宜芬**：只能查看/彙整自己的資料
+
+## 檔案傳送規則（網路資料）
+- **LINE / Telegram**：
+  - 單頁內容 → HTML 轉 PNG
+  - 多頁內容 → HTML 轉 PDF
+- **網路直接提供**：直接文字回覆即可
+
 ## LINE Bot 設定（2026/04/01 新增）
 - ngrok URL：https://unauthorized-rolanda-nonrelational.ngrok-free.dev
 - 注意：ngrok 重開機後網址會變，需更新 LINE Webhook
@@ -184,12 +194,6 @@
 - 外部動作（發郵件、公開貼文）需先確認
 - 破壞性操作先問，優先用 trash 而非 rm
 
-## 多使用者隱私規則
-- **蔡哲維（管理者）**：可查看所有人的資料，可要求彙整
-- **宜芬**：只能查看自己的資料，只能要求自己的彙整
-- **阿林**：只能查看自己的資料，只能要求自己的彙整
-- 非管理者要求彙整時，只能看到自己的資料
-
 ---
 _最後更新：2026-04-01 21:17_
 
@@ -219,3 +223,95 @@ AGENTS.md, MEMORY.md, SOUL.md, USER.md, HEARTBEAT.md, IDENTITY.md, TOOLS.md
 ### 清理規則
 - 每週日 20:00 自動清理 7 天前的一般報告檔案
 - 移動到 archive/YYYY-MM-DD/ 並壓縮成 zip
+
+---
+
+_最後更新：2026-04-04 15:51_
+
+## 2026-04-04 更新內容
+
+### 風速監控警示
+- 新增 Wind Alert Cron（b52e40af-39c4-4707-afc7-86719a49a963）
+- 執行時間：每天 08:00、12:00、18:00
+- 警示標準：風速 > 30 km/h
+- 發送 Telegram 警示到 chat_id 1181571031
+
+### 台電系統 Selector 順序調整（2026-04-04）
+- 順序：模式（S3）→ 電號（S1）→ 期別（S2）
+- 期別選擇只在「指定期別各電號」（p-mode）時顯示
+
+### 庫存系統更新
+- GitHub：https://github.com/jhetsai/inventory
+- GitHub Pages：https://jhetsai.github.io/inventory/
+- Git Hook 自動同步：每次 workspace commit 自動推送到 GitHub
+- LINE 照片上傳 → AI Vision 分析 → 自動更新 GitHub
+
+### 台電電費系統
+- GitHub：https://github.com/jhetsai/openclaw
+- GitHub Pages：https://jhetsai.github.io/openclaw/electricity_final.html
+- 資料來源：台電 Excel 檔案（每期更新）
+
+### 生圖功能
+- 預設使用 Leonardo.ai
+- API Token 已設定
+- 每天免費 150 張
+
+### 檔案傳送限制
+- **LINE**：只能發送圖片（PNG/JPG），PDF 只能給下載連結
+- **Telegram**：可直接發送 PDF、圖片、文件
+- 所有檔案都要先做成 HTML，再轉 PNG 或 PDF
+
+### ELTA 體育節目查詢
+- 資料來源：「就是節目表」網站（xn--i0yt6h0rn.tw）
+- 可查詢頻道：愛爾達體育 1-4 台、博斯運動/網球/高球/魅力
+- 使用者問了才查，沒有自動排程
+
+### 多使用者設定（確認）
+- **LINE**：
+  - U86a8b693bf9f672e249622715fdef44d：蔡哲維（管理者）
+  - U099adbdf8616a184e9e3ac8a3cf8ea15：阿林
+  - Uf682bf6de184eb6b3311f01299395628：宜芬
+- **Telegram**：
+  - 1181571031：蔡哲維（管理者）
+  - 8791841706：宜芬
+- 阿林沒有 Telegram，只有 LINE
+
+### 減肥計畫手冊（WEIGHT_LOSS_PLAN）
+- 位置：/home/jhe/.openclaw/workspace/posters/WEIGHT_LOSS_PLAN.pdf
+- 對象：宜芬
+- 發送方式：Telegram（LINE 無法直接發送 PDF）
+
+---
+
+_最後更新：2026-04-04 21:24_
+
+## LINE Bot 庫存處理流程（重要！）
+
+### 新流程（確認模式）
+
+**收到照片時：**
+1. AI 分析照片（視覺辨識品號、品名、數量）
+2. **不要直接更新**！先顯示結果表格
+3. 邀請用戶確認：「請回覆『盤點資料正確』確認更新」
+
+**結果表格格式：**
+```
+📷 AI 辨識結果：
+
+| 品號 | 品名 | 實際 | 網購 |
+|------|------|------|------|
+| 050323670002 | Apple iPhone 15 黑 128GB | 1 | 0 |
+...
+
+請回覆「盤點資料正確」確認更新
+```
+
+**收到用戶回覆時：**
+- 「盤點資料正確」→ 合併到 inventory.json → 刪除暫存 → 回報完成
+- 「修改 [品號] 數量改成 [新數量]」→ 更新暫存 → 重新顯示表格 → 等確認
+- 「取消」→ 刪除暫存 → 回報取消
+
+**暫存檔案：** `~/.openclaw/workspace/temp_pending_inventory.json`
+
+### 舊流程（直接更新）- 已停用
+收到照片就直接更新，沒有確認步驟。**不要使用！**

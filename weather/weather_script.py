@@ -1,17 +1,36 @@
 import json
+import requests
+from datetime import datetime
+import os
 
-data = {
-  "latitude": 23.75, "longitude": 120.375,
-  "hourly": {
-    "time": ["2026-04-03T00:00","2026-04-03T01:00","2026-04-03T02:00","2026-04-03T03:00","2026-04-03T04:00","2026-04-03T05:00","2026-04-03T06:00","2026-04-03T07:00","2026-04-03T08:00","2026-04-03T09:00","2026-04-03T10:00","2026-04-03T11:00","2026-04-03T12:00","2026-04-03T13:00","2026-04-03T14:00","2026-04-03T15:00","2026-04-03T16:00","2026-04-03T17:00","2026-04-03T18:00","2026-04-03T19:00","2026-04-03T20:00","2026-04-03T21:00","2026-04-03T22:00","2026-04-03T23:00","2026-04-04T00:00","2026-04-04T01:00","2026-04-04T02:00","2026-04-04T03:00","2026-04-04T04:00","2026-04-04T05:00","2026-04-04T06:00","2026-04-04T07:00","2026-04-04T08:00","2026-04-04T09:00","2026-04-04T10:00","2026-04-04T11:00","2026-04-04T12:00","2026-04-04T13:00","2026-04-04T14:00","2026-04-04T15:00","2026-04-04T16:00","2026-04-04T17:00","2026-04-04T18:00","2026-04-04T19:00","2026-04-04T20:00","2026-04-04T21:00","2026-04-04T22:00","2026-04-04T23:00"],
-    "temperature_2m": [22.9,22.8,22.5,22.6,22.5,22.3,21.9,22.1,23.0,24.6,26.3,27.9,29.2,29.7,28.6,28.3,28.2,27.8,27.1,26.4,26.0,26.0,25.6,25.4,25.5,25.2,25.0,24.9,24.7,24.2,23.9,24.2,24.8,25.2,25.1,24.8,24.6,24.5,24.2,24.2,24.1,24.1,23.9,23.6,23.5,23.5,23.5,23.4],
-    "apparent_temperature": [26.8,26.3,25.9,25.8,25.7,25.4,25.1,25.5,26.4,27.1,28.3,29.6,30.7,31.4,30.0,29.2,28.3,27.8,27.5,26.4,26.6,26.6,27.1,27.4,27.7,27.8,27.5,27.6,27.6,27.1,26.9,27.0,27.8,27.4,27.0,26.9,26.9,26.8,26.3,26.6,26.8,26.8,26.5,26.0,25.9,26.1,26.3,26.4],
-    "relative_humidity_2m": [85,85,88,87,87,90,92,91,87,78,72,63,57,57,64,67,70,70,73,74,77,76,79,83,84,86,86,86,87,89,90,88,85,83,83,84,85,85,86,87,87,86,88,90,90,90,90,91],
-    "precipitation_probability": [10,8,13,15,23,20,10,5,0,0,0,0,0,0,3,5,5,3,3,5,15,8,15,23,33,48,33,43,60,43,48,58,85,83,83,88,95,95,98,93,93,90,90,83,80,80,82,85],
-    "weather_code": [2,3,3,3,3,3,3,3,2,2,2,2,2,2,3,1,1,3,3,2,3,3,80,3,3,3,3,3,2,95,80,3,3,95,95,95,95,80,95,95,95,80,80,3,3,3,95,95],
-    "wind_speed_10m": [0.5,3.1,4.2,5.2,5.8,6.7,6.5,5.2,5.2,10.8,17.7,22.0,25.5,26.0,29.3,30.1,33.9,32.9,30.4,31.2,28.4,27.0,22.1,20.8,20.6,18.1,18.4,16.9,15.9,14.7,14.0,14.9,13.9,18.5,20.3,18.9,18.0,17.7,18.7,16.8,13.8,13.4,14.9,16.6,16.5,15.5,13.8,12.2]
-  }
-}
+# === 風速警示設定 ===
+WIND_ALERT_THRESHOLD = 30  # km/h，超過此值發出警示
+TELEGRAM_BOT_TOKEN = "8793435853:AAH-NCvhnOE99ENoi4sobWSNW6zEmEurrbU"
+TELEGRAM_CHAT_ID = "1181571031"
+
+def send_telegram_alert(message):
+    """發送 Telegram 警示通知"""
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    data = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "HTML"}
+    try:
+        requests.post(url, data=data, timeout=10)
+        return True
+    except Exception as e:
+        print(f"Telegram 發送失敗: {e}")
+        return False
+
+# === 抓取天氣資料 ===
+LAT = 23.75
+LON = 120.375
+API_URL = f"https://api.open-meteo.com/v1/forecast?latitude={LAT}&longitude={LON}&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m&timezone=Asia/Taipei&forecast_days=2"
+
+try:
+    resp = requests.get(API_URL, timeout=15)
+    data = resp.json()
+    hourly = data["hourly"]
+except Exception as e:
+    print(f"API 請求失敗: {e}")
+    exit(1)
 
 # Weather code descriptions
 code_map = {
@@ -27,11 +46,20 @@ code_map = {
 def get_desc(code):
     return code_map.get(code, f"#{code}")
 
-# Current hour is 8:35 AM, so next 24h = index 9 to 32 (09:00 today to 08:00 tomorrow)
-hourly = data["hourly"]
-start_idx = 9  # 2026-04-03T09:00
-end_idx = 33   # 2026-04-04T08:00 (exclusive, so 33 means up to index 32)
+# 找到當前時間的 index
+now = datetime.now()
+current_hour = now.hour
+time_list = hourly["time"]
+start_idx = None
+for i, t in enumerate(time_list):
+    if t.startswith(now.strftime("%Y-%m-%d")) and int(t[11:13]) == current_hour:
+        start_idx = i
+        break
+if start_idx is None:
+    start_idx = 0
 
+# 未來 24 小時
+end_idx = start_idx + 24
 times = hourly["time"][start_idx:end_idx]
 temps = hourly["temperature_2m"][start_idx:end_idx]
 feels = hourly["apparent_temperature"][start_idx:end_idx]
@@ -40,17 +68,37 @@ rains = hourly["precipitation_probability"][start_idx:end_idx]
 codes = hourly["weather_code"][start_idx:end_idx]
 winds = hourly["wind_speed_10m"][start_idx:end_idx]
 
-# Current conditions (hour 8: 08:00)
-cur_temp = hourly["temperature_2m"][7]
-cur_feel = hourly["apparent_temperature"][7]
-cur_humid = hourly["relative_humidity_2m"][7]
-cur_rain = hourly["precipitation_probability"][7]
-cur_code = hourly["weather_code"][7]
-cur_wind = hourly["wind_speed_10m"][7]
-cur_desc = get_desc(cur_code)
+# === 風速警示檢查 ===
+wind_alerts = []
+for i, w in enumerate(winds):
+    if w > WIND_ALERT_THRESHOLD:
+        hour = times[i][11:16]
+        wind_alerts.append(f"  ⚠️ {hour} — {w} km/h")
 
-# Date
-date_str = "2026/04/03"
+# 發送風速警示（如果有）
+if wind_alerts:
+    alert_msg = f"""🚨 <b>風速過強警示</b>
+
+📍 地點：雲林縣水林鄉
+🌬️ 警示標準：> {WIND_ALERT_THRESHOLD} km/h
+
+{chr(10).join(wind_alerts)}
+
+⚠️ 請注意：
+• 太陽能面板可能受強風影響
+• 建議檢查支架穩固性
+• 午後時段風力最強，請留意"""
+    send_telegram_alert(alert_msg)
+    print(f"風速警示已發送！共 {len(wind_alerts)} 次")
+else:
+    print("風速正常，無需警示")
+
+# 當前風速（用於報告）
+cur_wind = winds[0] if winds else 0
+cur_wind_alert = " ⚠️" if cur_wind > WIND_ALERT_THRESHOLD else ""
+
+# 日期
+date_str = now.strftime("%Y/%m/%d")
 
 html = f"""<!DOCTYPE html>
 <html lang="zh-TW">
@@ -68,6 +116,7 @@ h1 {{ color: #1a3a5c; text-align: center; margin-bottom: 4px; }}
 .info-item {{ background: rgba(255,255,255,0.2); border-radius: 10px; padding: 10px; text-align: center; }}
 .info-label {{ font-size: 12px; opacity: 0.85; }}
 .info-val {{ font-size: 18px; font-weight: bold; }}
+.wind-alert {{ background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 12px; margin-bottom: 16px; text-align: center; color: #856404; font-weight: bold; }}
 table {{ width: 100%; border-collapse: collapse; margin-bottom: 24px; }}
 th {{ background: #1a3a5c; color: white; padding: 10px; text-align: center; }}
 td {{ padding: 8px; text-align: center; border-bottom: 1px solid #eee; }}
@@ -77,6 +126,7 @@ tr:hover {{ background: #e8f0fa; }}
 .rain-high {{ color: #e74c3c; font-weight: bold; }}
 .rain-mid {{ color: #f39c12; }}
 .rain-low {{ color: #27ae60; }}
+.wind-high {{ color: #e74c3c; font-weight: bold; }}
 .tips {{ background: #f8f9fa; border-radius: 12px; padding: 16px; line-height: 1.8; }}
 .tips li {{ margin: 6px 0; }}
 .footer {{ text-align: center; color: #999; font-size: 12px; margin-top: 20px; }}
@@ -88,20 +138,26 @@ tr:hover {{ background: #e8f0fa; }}
 <div class="location">📍 雲林縣水林鄉</div>
 
 <div class="current-box">
-  <div class="big-temp">{cur_temp}°C</div>
+  <div class="big-temp">{temps[0]}°C</div>
   <div>
-    <div class="big-desc">{cur_desc}</div>
-    <div style="font-size:14px;opacity:0.85;margin-top:4px;">體感溫度 {cur_feel}°C</div>
+    <div class="big-desc">{get_desc(codes[0])}</div>
+    <div style="font-size:14px;opacity:0.85;margin-top:4px;">體感溫度 {feels[0]}°C</div>
   </div>
 </div>
 
 <div class="info-grid">
-  <div class="info-item"><div class="info-label">🌡️ 體感溫度</div><div class="info-val">{cur_feel}°C</div></div>
-  <div class="info-item"><div class="info-label">💧 濕度</div><div class="info-val">{cur_humid}%</div></div>
-  <div class="info-item"><div class="info-label">🌧️ 降雨機率</div><div class="info-val">{cur_rain}%</div></div>
+  <div class="info-item"><div class="info-label">🌡️ 體感溫度</div><div class="info-val">{feels[0]}°C</div></div>
+  <div class="info-item"><div class="info-label">💧 濕度</div><div class="info-val">{humids[0]}%</div></div>
+  <div class="info-item"><div class="info-label">🌧️ 降雨機率</div><div class="info-val">{rains[0]}%</div></div>
   <div class="info-item"><div class="info-label">🌬️ 風速</div><div class="info-val">{cur_wind} km/h</div></div>
 </div>
+"""
 
+# 如果有風速警示，加入警示框
+if wind_alerts:
+    html += f'<div class="wind-alert">🚨 風速過強警示：未來24小時內有 {len(wind_alerts)} 次風速超過 {WIND_ALERT_THRESHOLD} km/h</div>'
+
+html += f"""
 <div class="section-title">⏰ 未來24小時每小時預報</div>
 <table>
 <tr><th>時間</th><th>天氣</th><th>溫度</th><th>體感</th><th>濕度</th><th>降雨機率</th><th>風速</th></tr>
@@ -111,7 +167,8 @@ for i in range(len(times)):
     t = times[i]
     hour = t[11:16]
     rain_class = "rain-high" if rains[i] >= 60 else ("rain-mid" if rains[i] >= 30 else "rain-low")
-    html += f"<tr><td>{hour}</td><td>{get_desc(codes[i])}</td><td>{temps[i]}°C</td><td>{feels[i]}°C</td><td>{humids[i]}%</td><td class='{rain_class}'>{rains[i]}%</td><td>{winds[i]} km/h</td></tr>"
+    wind_class = "wind-high" if winds[i] > WIND_ALERT_THRESHOLD else ""
+    html += f"<tr><td>{hour}</td><td>{get_desc(codes[i])}</td><td>{temps[i]}°C</td><td>{feels[i]}°C</td><td>{humids[i]}%</td><td class='{rain_class}'>{rains[i]}%</td><td class='{wind_class}'>{winds[i]} km/h</td></tr>"
 
 html += """
 </table>
@@ -120,21 +177,20 @@ html += """
 <div class="tips">
 <ul>
 <li>🩴 上午炎熱潮濕，建議穿著輕薄透氣衣物，攜帶防曬用品</li>
-<li>🌧️ 下午時段（14:00起）降雨機率逐漸升高，建議出門攜帶雨具</li>
-<li>🌧️ 明日（4/4）全天降雨機率高，建議預留備用衣物</li>
+<li>🌧️ 下午時段降雨機率較高，建議出門攜帶雨具</li>
 <li>💧 高濕度環境（85%以上），注意防潮防霉</li>
-<li>🌬️ 午後風力明顯增強（25-34 km/h），戶外活動注意安全</li>
-<li>⛈️ 明日午後可能出現雷陣雨，請留意天氣變化</li>
-<li>🏠 建議室內開啟除濕機維持舒適度</li>
+<li>🌬️ 午後風力增強，戶外活動注意安全</li>
 </ul>
 </div>
 
-<div class="footer">資料來源：Open-Meteo API｜生成時間：2026-04-03 08:35</div>
+<div class="footer">資料來源：Open-Meteo API｜生成時間：""" + now.strftime("%Y-%m-%d %H:%M") + """</div>
 </div>
 </body>
 </html>
 """
 
-with open(f"/home/jhe/.openclaw/workspace/weather_2026-04-03.html", "w") as f:
+output_path = f"/home/jhe/.openclaw/workspace/weather/weather_{now.strftime('%Y-%m-%d')}.html"
+with open(output_path, "w") as f:
     f.write(html)
-print("HTML generated successfully")
+print(f"HTML generated: {output_path}")
+print(f"Wind alert count: {len(wind_alerts)}")
