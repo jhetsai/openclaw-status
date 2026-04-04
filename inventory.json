@@ -1,4 +1,233 @@
 {
-  "last_updated": "2026-04-04 18:37",
-  "categories": []
+  "last_updated": "2026-04-04 18:38",
+  "categories": [{
+    "name": "商品",
+    "items": [
+      {
+        "code": "050323670002",
+        "name": "Apple iPhone 15 黑 128GB",
+        "quantity": 1,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "050326306102",
+        "name": "OPPO Reno15 F 12G/256G 極光藍",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "050326578002",
+        "name": "SAMSUNG Galaxy A37 SM-A376B 8G/256G 潮流灰",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "090285879102",
+        "name": "APPLE Lightning 對 USB 連接線 (1公尺) (MUQW3FE/A)",
+        "quantity": 1,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "090693090133",
+        "name": "MEGA KING 三星 A37 立架側掀皮套 黑色",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "090985729133",
+        "name": "MEGA KING 45W GaN氮化鎵PD雙孔旅充頭(2C) 白",
+        "quantity": 8,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "091083113133",
+        "name": "MEGA KING 三星 A37/A56/A36 滿版玻璃保護貼",
+        "quantity": 3,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "091083573133",
+        "name": "MEGA KING iPhone 17&17 Pro 6.3 滿版玻璃保護貼",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "20260328000037",
+        "name": "神腦網購商品 (資費件)",
+        "quantity": 0,
+        "onlineQuantity": 1,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "420208203002",
+        "name": "SAMSUNG Galaxy Tab A11+ Wi-Fi 6G/128G (X230) 曜進",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "420208208002",
+        "name": "SAMSUNG Galaxy Tab A11+ Wi-Fi 6G/128G (X230) 新創",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "520201803502",
+        "name": "sakuyo 金盞花萃取(含葉黃素)軟膠囊 30顆/瓶",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "520203093502",
+        "name": "葡萄王 田七瑪卡王精華飲 (60ml/瓶)x8",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "529900013602",
+        "name": "sakuyo 比菲德氏菌+半乳寡醣 三日份 (3條)",
+        "quantity": 11,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "712259085133",
+        "name": "MEGA KING 炫彩水晶藍牙喇叭 軍綠色",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "712500470133",
+        "name": "MEGA KING Watch S3 智慧手錶 黑色",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "712500474133",
+        "name": "MEGA KING Watch S3 智慧手錶 粉橘",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "999979478102",
+        "name": "SAMSUNG 20W 快充行動電源(ITPW30BK) 深灰",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "B21000000247",
+        "name": "5G-NFC三合一卡 (具悠遊卡功能)",
+        "quantity": 15,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "B21000000248",
+        "name": "特約5G-三合一卡",
+        "quantity": 14,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "C12500899102",
+        "name": "Apple Watch S11 GPS 46mm 太空灰色鋁金屬-黑色運動型",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "C50323676002",
+        "name": "Apple iPhone 15 藍 128GB-TWN",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "C50325967002",
+        "name": "Apple iPhone 17 薰衣草紫 256GB-TWN",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "C50325969002",
+        "name": "Apple iPhone 17 白 256GB-TWN",
+        "quantity": 1,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      },
+      {
+        "code": "C50325983002",
+        "name": "Apple iPhone 17 Pro 銀 256GB-TWN",
+        "quantity": 0,
+        "onlineQuantity": 0,
+        "verified": false,
+        "note": "",
+        "lastUploaded": "2026-04-04 18:38"
+      }
+    ]
+  }]
 }
