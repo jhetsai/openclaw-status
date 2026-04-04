@@ -1,0 +1,3 @@
+inventory.json
+*.html
+!index.html
