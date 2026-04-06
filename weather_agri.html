@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌾 農業天氣 - 雲林水林</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 50%, #6b8e23 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a3009 0%, #2d5016 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .header .subtitle { opacity: 0.9; font-size: 1.1em; }
+        .header .update { font-size: 0.9em; opacity: 0.7; margin-top: 10px; }
+        
+        /* Alert Box */
+        .alert {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .alert .icon { font-size: 2em; }
+        .alert .text { flex: 1; }
+        .alert .title { font-weight: bold; color: #856404; }
+        .alert .desc { color: #664d03; font-size: 0.95em; }
+        
+        /* Today Card */
+        .today-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .today-card h2 {
+            color: #2d5016;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4a7c23;
+        }
+        .today-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        .today-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .today-item .icon { font-size: 2em; margin-bottom: 5px; }
+        .today-item .label { font-size: 0.85em; color: #666; }
+        .today-item .value { font-size: 1.4em; font-weight: bold; color: #2d5016; }
+        
+        /* Week Forecast */
+        .week-title {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+        }
+        .week-grid {
+            display: grid;
+            gap: 12px;
+        }
+        .day-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .day-card:hover { transform: translateX(5px); }
+        .day-card.weekend { border-left: 5px solid #ff6b6b; }
+        .day-card.weekday { border-left: 5px solid #4a7c23; }
+        
+        .day-date {
+            min-width: 90px;
+            text-align: center;
+        }
+        .day-date .date { font-weight: bold; font-size: 1.1em; color: #333; }
+        .day-date .day { font-size: 0.9em; color: #888; }
+        
+        .day-weather { font-size: 2.5em; min-width: 70px; text-align: center; }
+        
+        .day-info { flex: 1; }
+        .day-info .desc { color: #444; font-size: 1em; margin-bottom: 5px; }
+        .day-info .detail { font-size: 0.85em; color: #777; }
+        
+        .day-temps {
+            text-align: center;
+            min-width: 80px;
+        }
+        .day-temps .high { font-size: 1.4em; font-weight: bold; color: #d32f2f; }
+        .day-temps .low { font-size: 1.1em; color: #1976d2; }
+        
+        .day-rain {
+            text-align: center;
+            min-width: 70px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 8px;
+        }
+        .day-rain .prob { font-size: 1.2em; font-weight: bold; color: #1976d2; }
+        .day-rain .label { font-size: 0.75em; color: #666; }
+        
+        /* Agricultural Tips */
+        .tips-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .tips-card h3 {
+            color: #2d5016;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .tip-item:last-child { border-bottom: none; }
+        .tip-icon { font-size: 1.5em; }
+        .tip-text { flex: 1; }
+        .tip-text .title { font-weight: bold; color: #333; margin-bottom: 3px; }
+        .tip-text .desc { font-size: 0.9em; color: #666; }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85em;
+        }
+        
+        @media (max-width: 600px) {
+            .day-card { flex-wrap: wrap; }
+            .day-rain { min-width: 100%; margin-top: 10px; }
+            .today-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌾 農業天氣服務</h1>
+            <div class="subtitle">📍 雲林縣水林鄉｜一週天氣預報</div>
+            <div class="update">🔄 資料更新：<span id="update-time">載入中...</span></div>
+        </div>
+        
+        <!-- Alert -->
+        <div class="alert" id="alert-box">
+            <div class="icon">⚠️</div>
+            <div class="text">
+                <div class="title">農務提醒</div>
+                <div class="desc" id="alert-text">載入中...</div>
+            </div>
+        </div>
+        
+        <!-- Today -->
+        <div class="today-card">
+            <h2>📅 今日概況</h2>
+            <div class="today-grid" id="today-grid">
+                <div class="today-item">
+                    <div class="icon">🌡️</div>
+                    <div class="label">溫度</div>
+                    <div class="value" id="today-temp">--°C</div>
+                </div>
+                <div class="today-item">
+                    <div class="icon">🌧️</div>
+                    <div class="label">降雨機率</div>
+                    <div class="value" id="today-rain">--%</div>
+                </div>
+                <div class="today-item">
+                    <div class="icon">💧</div>
+                    <div class="label">濕度</div>
+                    <div class="value" id="today-humid">--%</div>
+                </div>
+                <div class="today-item">
+                    <div class="icon">🌬️</div>
+                    <div class="label">風速</div>
+                    <div class="value" id="today-wind">-- m/s</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week Forecast -->
+        <div class="week-title">📅 未來一週天氣預報</div>
+        <div class="week-grid" id="week-grid">
+            <!-- Dynamic content -->
+        </div>
+        
+        <!-- Agricultural Tips -->
+        <div class="tips-card">
+            <h3>🌱 農務建議</h3>
+            <div id="tips-container">
+                <!-- Dynamic tips -->
+            </div>
+        </div>
+        
+        <div class="footer">
+            資料來源：中央氣象局開放資料平台<br>
+            僅供參考，實際狀況以當地觀測為準
+        </div>
+    </div>
+    
+    <script>
+    // Weather icon mapping
+    const WX_ICONS = {
+        '1': '☀️', '2': '🌤️', '3': '⛅', '4': '☁️', '5': '🌥️',
+        '6': '🌦️', '7': '🌧️', '8': '🌧️', '9': '🌧️', '10': '⛈️',
+        '11': '⛈️', '12': '🌨️', '13': '🌨️', '14': '🌨️', '15': '❄️',
+        '16': '🌫️', '17': '🌫️', '18': '🌧️', '19': '🌧️', '20': '🌧️',
+        '21': '🌧️', '22': '🌧️', '23': '🌨️', '24': '🌨️', '25': '🌨️',
+        '26': '❄️', '27': '❄️', '28': '🌫️', '29': '🌧️', '30': '🌧️',
+        '31': '🌧️', '32': '⛈️'
+    };
+    
+    const DAY_NAMES = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+    const MONTH_NAMES = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    
+    async function loadWeather() {
+        try {
+            const API_KEY = 'CWA_API_KEY_REDACTED';
+            
+            // Fetch weather forecast
+            const forecastRes = await fetch(
+                `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=${API_KEY}`
+            );
+            const forecastData = await forecastRes.json();
+            
+            // Fetch current observation
+            const obsRes = await fetch(
+                `https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=${API_KEY}&limit=50`
+            );
+            const obsData = await obsRes.json();
+            
+            // Process current weather (find nearest station)
+            let currentTemp = '--', currentHumid = '--', currentWind = '--';
+            const stations = obsData.records.Station || [];
+            const yunlinStations = stations.filter(s => 
+                s.StationName.includes('水林') || 
+                s.StationName.includes('虎尾') ||
+                s.StationName.includes('斗六')
+            );
+            
+            if (yunlinStations.length > 0) {
+                const s = yunlinStations[0];
+                currentTemp = s.WeatherElement.AirTemperature || '--';
+                currentHumid = s.WeatherElement.RelativeHumidity || '--';
+                currentWind = s.WeatherElement.WindSpeed || '--';
+            }
+            
+            // Process forecast
+            const locations = forecastData.records.location;
+            const yunlin = locations.find(l => l.locationName.includes('雲林'));
+            
+            if (!yunlin) {
+                document.getElementById('update-time').textContent = '找不到雲林資料';
+                return;
+            }
+            
+            // Get weather elements
+            const elements = {};
+            yunlin.weatherElement.forEach(el => {
+                elements[el.elementName] = el.time;
+            });
+            
+            // Update time
+            const now = new Date();
+            document.getElementById('update-time').textContent = 
+                `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+            
+            // Today
+            const todayWx = elements.Wx[0];
+            const todayPop = elements.PoP[0];
+            const todayMinT = elements.MinT[0];
+            const todayMaxT = elements.MaxT[0];
+            
+            document.getElementById('today-temp').textContent = `${todayMinT.parameterName}~${todayMaxT.parameterName}°C`;
+            document.getElementById('today-rain').textContent = `${todayPop.parameterName}%`;
+            document.getElementById('today-humid').textContent = `${currentHumid}%`;
+            document.getElementById('today-wind').textContent = `${currentWind} m/s`;
+            
+            // Generate week forecast
+            const weekGrid = document.getElementById('week-grid');
+            let weekHtml = '';
+            let hasHighRain = false;
+            
+            for (let i = 0; i < 7; i++) {
+                const wx = elements.Wx[i] || elements.Wx[0];
+                const pop = elements.PoP[i] || elements.PoP[0];
+                const minT = elements.MinT[i] || elements.MinT[0];
+                const maxT = elements.MaxT[i] || elements.MaxT[0];
+                
+                const wxValue = wx.parameterValue || '5';
+                const icon = WX_ICONS[wxValue] || '🌤️';
+                const popValue = parseInt(pop.parameterName) || 0;
+                
+                // Calculate date
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                
+                if (popValue > 50) hasHighRain = true;
+                
+                weekHtml += `
+                <div class="day-card ${isWeekend ? 'weekend' : 'weekday'}">
+                    <div class="day-date">
+                        <div class="date">${MONTH_NAMES[date.getMonth()]}${date.getDate()}日</div>
+                        <div class="day">${DAY_NAMES[date.getDay()]}</div>
+                    </div>
+                    <div class="day-weather">${icon}</div>
+                    <div class="day-info">
+                        <div class="desc">${wx.parameterName}</div>
+                        <div class="detail">${popValue > 0 ? '降雨機率 ' + popValue + '%' : '悶熱 ' + (minT.parameterName) + '~' + (maxT.parameterName) + '°C'}</div>
+                    </div>
+                    <div class="day-temps">
+                        <div class="high">${maxT.parameterName}°</div>
+                        <div class="low">${minT.parameterName}°</div>
+                    </div>
+                    <div class="day-rain">
+                        <div class="prob">${pop.parameterName}%</div>
+                        <div class="label">降雨機率</div>
+                    </div>
+                </div>`;
+            }
+            weekGrid.innerHTML = weekHtml;
+            
+            // Alert
+            const avgPop = parseInt(elements.PoP.reduce((sum, p) => sum + parseInt(p.parameterName), 0) / 7);
+            let alertHtml = '';
+            if (avgPop > 60) {
+                alertHtml = `本週降雨機率高（平均${avgPop}%），建議安排室內農務或提前做好排水措施`;
+            } else if (avgPop > 30) {
+                alertHtml = `本週偶有陣雨（平均${avgPop}%），建議隨時攜帶雨具，並注意田間排水`;
+            } else {
+                alertHtml = `本週天氣穩定，適合田間作業，但請注意防曬與補水`;
+            }
+            document.getElementById('alert-text').textContent = alertHtml;
+            
+            // Agricultural tips
+            const tipsContainer = document.getElementById('tips-container');
+            const avgTemp = elements.MinT.reduce((sum, p) => sum + parseFloat(p.parameterName), 0) / 7;
+            const maxTemp = Math.max(...elements.MaxT.map(p => parseFloat(p.parameterName)));
+            
+            let tipsHtml = '';
+            
+            // Temperature tip
+            if (avgTemp >= 25) {
+                tipsHtml += `
+                <div class="tip-item">
+                    <div class="tip-icon">🌡️</div>
+                    <div class="tip-text">
+                        <div class="title">溫度偏高（平均${avgTemp.toFixed(1)}°C）</div>
+                        <div class="desc">建議清晨或傍晚時段進行農務，避免中午高溫時段戶外作業</div>
+                    </div>
+                </div>`;
+            } else if (avgTemp < 15) {
+                tipsHtml += `
+                <div class="tip-item">
+                    <div class="tip-icon">🌡️</div>
+                    <div class="tip-text">
+                        <div class="title">溫度偏低（平均${avgTemp.toFixed(1)}°C）</div>
+                        <div class="desc">注意作物保暖，部分熱帶作物可能需要保溫設施</div>
+                    </div>
+                </div>`;
+            }
+            
+            // Rain tip
+            if (avgPop > 50) {
+                tipsHtml += `
+                <div class="tip-item">
+                    <div class="tip-icon">🌧️</div>
+                    <div class="tip-text">
+                        <div class="title">本週降雨頻繁</div>
+                        <div class="desc">田間排水系統檢查、病害預防（濕度高易有病蟲害）、農藥噴灑避開雨天</div>
+                    </div>
+                </div>`;
+            } else if (avgPop > 20) {
+                tipsHtml += `
+                <div class="tip-item">
+                    <div class="tip-icon">💧</div>
+                    <div class="tip-text">
+                        <div class="title">適時灌溉</div>
+                        <div class="desc">本週有雨但不多，視田間土壤含水量決定是否灌溉</div>
+                    </div>
+                </div>`;
+            } else {
+                tipsHtml += `
+                <div class="tip-item">
+                    <div class="tip-icon">💧</div>
+                    <div class="tip-text">
+                        <div class="title">注意灌溉</div>
+                        <div class="desc">本週降雨機會少，請加強田間灌溉</div>
+                    </div>
+                </div>`;
+            }
+            
+            // General tips
+            tipsHtml += `
+            <div class="tip-item">
+                <div class="tip-icon">🌱</div>
+                <div class="tip-text">
+                    <div class="title">病蟲害防治</div>
+                    <div class="desc">潮濕天氣重點防治：疫病、黴菌、蟲害；乾燥天氣重點：紅蜘蛛等害蟲</div>
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">🛡️</div>
+                <div class="tip-text">
+                    <div class="title">葉面施肥</div>
+                    <div class="desc">選擇清晨或傍晚噴施，避免雨後立即作業，待葉面乾燥後再進行</div>
+                </div>
+            </div>`;
+            
+            tipsContainer.innerHTML = tipsHtml;
+            
+        } catch (error) {
+            console.error('Weather load error:', error);
+            document.getElementById('update-time').textContent = '載入失敗';
+        }
+    }
+    
+    // Load on page
+    loadWeather();
+    </script>
+</body>
+</html>
