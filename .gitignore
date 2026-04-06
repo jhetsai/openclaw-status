@@ -1,3 +1,2 @@
 inventory.json
-*.html
-!index.html
+!weather_agri.html
