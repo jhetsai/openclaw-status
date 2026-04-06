@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 24.2.7.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 21cm 29.7cm; margin: 2cm }
+		p { line-height: 115%; margin-bottom: 0.25cm; background: transparent }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Noto Sans Mono CJK TC", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+	</style>
+</head>
+<body lang="zh-TW" link="#000080" vlink="#800000" dir="ltr"><pre class="cjk"><font face="Liberation Mono, monospace"><span lang="en-US"># </span></font>門市智能管理系統 <font face="Liberation Mono, monospace"><span lang="en-US">- </span></font>完整技術手冊
+
+<font face="Liberation Mono, monospace"><span lang="en-US">_</span></font>文件版本：<font face="Liberation Mono, monospace"><span lang="en-US">v1.0_</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">_</span></font>日期：<font face="Liberation Mono, monospace"><span lang="en-US">2026-04-04_</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">_</span></font>維護：蝦助 🦐<font face="Liberation Mono, monospace"><span lang="en-US">_</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## </span></font>目錄
+
+<font face="Liberation Mono, monospace"><span lang="en-US">1. [</span></font>系統概述<font face="Liberation Mono, monospace"><span lang="en-US">](#1-</span></font>系統概述<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">2. [</span></font>庫存盤點系統<font face="Liberation Mono, monospace"><span lang="en-US">](#2-</span></font>庫存盤點系統<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">3. [</span></font>台電電費分析系統<font face="Liberation Mono, monospace"><span lang="en-US">](#3-</span></font>台電電費分析系統<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">4. [</span></font>系統架構<font face="Liberation Mono, monospace"><span lang="en-US">](#4-</span></font>系統架構<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">5. [</span></font>技術規格<font face="Liberation Mono, monospace"><span lang="en-US">](#5-</span></font>技術規格<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">6. [</span></font>部署與維護<font face="Liberation Mono, monospace"><span lang="en-US">](#6-</span></font>部署與維護<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">7. [</span></font>操作指南<font face="Liberation Mono, monospace"><span lang="en-US">](#7-</span></font>操作指南<font face="Liberation Mono, monospace"><span lang="en-US">)</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 1. </span></font>系統概述
+
+本系統包含兩個子系統，用於神腦國際門市管理：
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>子系統 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>功能 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>托管平台 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|--------|------|---------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>庫存盤點系統 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>商品庫存追蹤、條碼掃描、<font face="Liberation Mono, monospace"><span lang="en-US">LINE</span></font>照片上傳 <font face="Liberation Mono, monospace"><span lang="en-US">| GitHub Pages |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>台電電費分析系統 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>用電資料視覺化、多維度分析 <font face="Liberation Mono, monospace"><span lang="en-US">| GitHub Pages |</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 2. </span></font>庫存盤點系統
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 2.1 </span></font>功能說明
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>主要功能
+<font face="Liberation Mono, monospace"><span lang="en-US">- 📸 **LINE </span></font>照片上傳<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：在 <font face="Liberation Mono, monospace"><span lang="en-US">LINE </span></font>傳商品照片，<font face="Liberation Mono, monospace"><span lang="en-US">AI </span></font>自動辨識品號、品名、數量
+<font face="Liberation Mono, monospace"><span lang="en-US">- 🌐 **</span></font>網頁即時查看<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：透過 <font face="Liberation Mono, monospace"><span lang="en-US">GitHub Pages </span></font>網頁隨時查看最新庫存
+<font face="Liberation Mono, monospace"><span lang="en-US">- 📷 **</span></font>條碼掃描查詢<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：用手機相機掃描條碼，快速查詢商品資料
+<font face="Liberation Mono, monospace"><span lang="en-US">- ✅ **</span></font>勾選確認<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：可標記已盤點的商品
+<font face="Liberation Mono, monospace"><span lang="en-US">- 📝 **</span></font>備註記錄<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：可為每項商品新增備註
+<font face="Liberation Mono, monospace"><span lang="en-US">- 🔄 **</span></font>累積型資料<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：每次上傳新增或更新，不會覆蓋舊資料
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>資料格式
+
+<font face="Liberation Mono, monospace"><span lang="en-US">```json</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">{</span></font>
+  <font face="Liberation Mono, monospace"><span lang="en-US">&quot;last_updated&quot;: &quot;2026-04-04 13:18&quot;,</span></font>
+  <font face="Liberation Mono, monospace"><span lang="en-US">&quot;categories&quot;: [{</span></font>
+    <font face="Liberation Mono, monospace"><span lang="en-US">&quot;name&quot;: &quot;</span></font>商品<font face="Liberation Mono, monospace"><span lang="en-US">&quot;,</span></font>
+    <font face="Liberation Mono, monospace"><span lang="en-US">&quot;items&quot;: [{</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;code&quot;: &quot;091083113133&quot;,</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;name&quot;: &quot;MEGA KING </span></font>三星 <font face="Liberation Mono, monospace"><span lang="en-US">A37/A56/A36 </span></font>滿版玻璃保護貼<font face="Liberation Mono, monospace"><span lang="en-US">&quot;,</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;quantity&quot;: 3,</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;onlineQuantity&quot;: 0,</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;verified&quot;: true,</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;note&quot;: &quot;&quot;,</span></font>
+      <font face="Liberation Mono, monospace"><span lang="en-US">&quot;lastUploaded&quot;: &quot;2026-04-04 11:28&quot;</span></font>
+    <font face="Liberation Mono, monospace"><span lang="en-US">}]</span></font>
+  <font face="Liberation Mono, monospace"><span lang="en-US">}]</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">}</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 2.2 </span></font>連結資訊
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>項目 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>連結 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>庫存網頁 <font face="Liberation Mono, monospace"><span lang="en-US">| https://jhetsai.github.io/inventory/ |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| GitHub </span></font>倉庫 <font face="Liberation Mono, monospace"><span lang="en-US">| https://github.com/jhetsai/inventory |</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 2.3 LINE Bot </span></font>運作流程
+
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">[LINE </span></font>照片<font face="Liberation Mono, monospace"><span lang="en-US">] → [LINE Bot </span></font>接收<font face="Liberation Mono, monospace"><span lang="en-US">] → [AI Vision </span></font>分析<font face="Liberation Mono, monospace"><span lang="en-US">] → [</span></font>更新 <font face="Liberation Mono, monospace"><span lang="en-US">inventory.json]</span></font>
+                                                            ↓
+                                                   <font face="Liberation Mono, monospace"><span lang="en-US">[Git Hook </span></font>自動推送<font face="Liberation Mono, monospace"><span lang="en-US">]</span></font>
+                                                            ↓
+                                                   <font face="Liberation Mono, monospace"><span lang="en-US">[GitHub Pages </span></font>更新<font face="Liberation Mono, monospace"><span lang="en-US">]</span></font>
+                                                            ↓
+                                                   <font face="Liberation Mono, monospace"><span lang="en-US">[</span></font>網頁顯示<font face="Liberation Mono, monospace"><span lang="en-US">]</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 2.4 </span></font>網頁功能模組
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>模組 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>說明 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>統計卡片 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>顯示品項數、實際總數、網購總數、有庫存、零庫存 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>搜尋功能 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>輸入品號或品名，即時過濾顯示結果 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>條碼掃描 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>開啟相機掃描，快速查詢商品完整資料 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>確認模式 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>勾選已盤點商品，可輸入備註 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>最近上傳 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>只顯示最近一次上傳的品項 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 2.5 </span></font>欄位規格
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>欄位 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>寬度 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>說明 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>品號 <font face="Liberation Mono, monospace"><span lang="en-US">| 95px | </span></font>條碼數字，不自動換行 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>品名 <font face="Liberation Mono, monospace"><span lang="en-US">| 100px | </span></font>商品名稱，自動換行 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>實際 <font face="Liberation Mono, monospace"><span lang="en-US">| 35px | </span></font>實體店面庫存 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>網購 <font face="Liberation Mono, monospace"><span lang="en-US">| 35px | </span></font>線上通路庫存 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| ✓ | 30px | </span></font>確認狀態勾選 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>備註 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>自動 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>自由填寫 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 3. </span></font>台電電費分析系統
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 3.1 </span></font>功能說明
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>主要功能
+<font face="Liberation Mono, monospace"><span lang="en-US">- 📊 **</span></font>用電量圖表<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：柱狀圖顯示各期用電
+<font face="Liberation Mono, monospace"><span lang="en-US">- 💰 **</span></font>電費分析<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：圖表顯示各期電費
+<font face="Liberation Mono, monospace"><span lang="en-US">- 🔍 **</span></font>多維度篩選<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：按電號、年度、期別篩選
+<font face="Liberation Mono, monospace"><span lang="en-US">- 📋 **</span></font>詳細資料表<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：顯示每期明細
+<font face="Liberation Mono, monospace"><span lang="en-US">- 📱 **</span></font>響應式設計<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>：支援電腦、平板、手機
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 3.2 </span></font>連結資訊
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>項目 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>連結 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>分析網頁 <font face="Liberation Mono, monospace"><span lang="en-US">| https://jhetsai.github.io/openclaw/electricity_final.html |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| GitHub </span></font>倉庫 <font face="Liberation Mono, monospace"><span lang="en-US">| https://github.com/jhetsai/openclaw |</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 3.3 </span></font>資料格式
+
+<font face="Liberation Mono, monospace"><span lang="en-US">```json</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">{</span></font>
+  <font face="Liberation Mono, monospace"><span lang="en-US">&quot;19-51-2353-20-8&quot;: {</span></font>
+    <font face="Liberation Mono, monospace"><span lang="en-US">&quot;t&quot;: &quot;</span></font>住宅<font face="Liberation Mono, monospace"><span lang="en-US">&quot;,</span></font>
+    <font face="Liberation Mono, monospace"><span lang="en-US">&quot;a&quot;: &quot;</span></font>水林鄉西井段<font face="Liberation Mono, monospace"><span lang="en-US">2568</span></font>地號<font face="Liberation Mono, monospace"><span lang="en-US">&quot;,</span></font>
+    <font face="Liberation Mono, monospace"><span lang="en-US">&quot;f&quot;: &quot;XG31&quot;</span></font>
+  <font face="Liberation Mono, monospace"><span lang="en-US">}</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">}</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+
+用電記錄：
+<font face="Liberation Mono, monospace"><span lang="en-US">```json</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">{a: &quot;19-51-2353-20-8&quot;, p: &quot;11311&quot;, y: 2024, k: 225, c: 368}</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>欄位 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>說明 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| a | </span></font>電號 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| p | </span></font>期別代碼（<font face="Liberation Mono, monospace"><span lang="en-US">11311 = 113</span></font>年<font face="Liberation Mono, monospace"><span lang="en-US">11</span></font>月） <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| y | </span></font>西元年份 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| k | </span></font>用電度數 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| c | </span></font>電費金額 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 3.4 </span></font>視圖模式
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>模式 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>說明 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>依年度 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>合併同一年度的所有期別 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>依期別<font face="Liberation Mono, monospace"><span lang="en-US">(</span></font>每<font face="Liberation Mono, monospace"><span lang="en-US">2</span></font>月<font face="Liberation Mono, monospace"><span lang="en-US">) | </span></font>顯示每期用電<font face="Liberation Mono, monospace"><span lang="en-US">/</span></font>電費柱狀圖 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>指定期別各電號 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>顯示該期各電號的用電比較表 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 4. </span></font>系統架構
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 4.1 </span></font>整體架構
+
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+┌─────────────────────────────────────────────────────────────┐
+│                        使用者端                            │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────┐    ┌─────────┐    ┌─────────────────────┐  │
+│  │  <font face="Liberation Mono, monospace"><span lang="en-US">LINE   │    │  </span></font>網頁   │    │     <font face="Liberation Mono, monospace"><span lang="en-US">Telegram        │  │</span></font>
+│  │   <font face="Liberation Mono, monospace"><span lang="en-US">App   │    │ </span></font>瀏覽器  │    │       <font face="Liberation Mono, monospace"><span lang="en-US">Bot          │  │</span></font>
+│  └────┬────┘    └────┬────┘    └──────────┬──────────┘  │
+└───────┼─────────────┼───────────────────┼───────────────┘
+        │             │                   │
+        ▼             ▼                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      雲端服務                               │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │
+│  │   <font face="Liberation Mono, monospace"><span lang="en-US">GitHub    │    │ GitHub Pages│    │  OpenClaw   │  │</span></font>
+│  │  <font face="Liberation Mono, monospace"><span lang="en-US">Repository │    │   </span></font>靜態托管  │    │  <font face="Liberation Mono, monospace"><span lang="en-US">Gateway    │  │</span></font>
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘  │
+└─────────┴─────────────────┴─────────────────┴───────────┘
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 4.2 </span></font>庫存系統資料流程
+
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">[LINE </span></font>照片<font face="Liberation Mono, monospace"><span lang="en-US">] → [LINE Bot] → [AI Vision] → [inventory.json]</span></font>
+                                            ↓
+                                   <font face="Liberation Mono, monospace"><span lang="en-US">[Git Hook </span></font>自動推送<font face="Liberation Mono, monospace"><span lang="en-US">]</span></font>
+                                            ↓
+                                  <font face="Liberation Mono, monospace"><span lang="en-US">[GitHub Pages </span></font>更新<font face="Liberation Mono, monospace"><span lang="en-US">]</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">```</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 5. </span></font>技術規格
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 5.1 </span></font>庫存系統技術棧
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>層面 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>技術 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>前端 <font face="Liberation Mono, monospace"><span lang="en-US">| HTML5 + CSS3 + JavaScript (ES6+) |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>條碼掃描 <font face="Liberation Mono, monospace"><span lang="en-US">| html5-qrcode |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>響應式 <font face="Liberation Mono, monospace"><span lang="en-US">| CSS Media Queries |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>托管 <font face="Liberation Mono, monospace"><span lang="en-US">| GitHub Pages |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>版本控制 <font face="Liberation Mono, monospace"><span lang="en-US">| Git |</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 5.2 </span></font>台電系統技術棧
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>層面 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>技術 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>前端 <font face="Liberation Mono, monospace"><span lang="en-US">| HTML5 + CSS3 + JavaScript |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>圖表 <font face="Liberation Mono, monospace"><span lang="en-US">| SVG (</span></font>原生<font face="Liberation Mono, monospace"><span lang="en-US">) |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>資料格式 <font face="Liberation Mono, monospace"><span lang="en-US">| JSON |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>托管 <font face="Liberation Mono, monospace"><span lang="en-US">| GitHub Pages |</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 5.3 </span></font>第三方服務
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>服務 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>用途 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| LINE Messaging API | </span></font>接收照片、傳送訊息 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| GitHub | </span></font>資料托管、版本控制 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| GitHub Pages | </span></font>靜態網頁托管 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| OpenClaw | AI </span></font>對話引擎 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 6. </span></font>部署與維護
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 6.1 LINE Bot Webhook </span></font>更新
+
+當 <font face="Liberation Mono, monospace"><span lang="en-US">ngrok </span></font>重啟後，<font face="Liberation Mono, monospace"><span lang="en-US">URL </span></font>會改變：
+
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>前往 <font face="Liberation Mono, monospace"><span lang="en-US">LINE Developers Console</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>進入你的 <font face="Liberation Mono, monospace"><span lang="en-US">Channel</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">3. Messaging API settings</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">4. </span></font>更新 <font face="Liberation Mono, monospace"><span lang="en-US">Webhook URL</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">5. </span></font>點擊 <font face="Liberation Mono, monospace"><span lang="en-US">Verify</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 6.2 </span></font>常見問題
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>問題 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>解決方式 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|---------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>網頁 <font face="Liberation Mono, monospace"><span lang="en-US">404 | </span></font>等待 <font face="Liberation Mono, monospace"><span lang="en-US">GitHub Pages </span></font>部署（<font face="Liberation Mono, monospace"><span lang="en-US">15-30</span></font>秒） <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| LINE Bot </span></font>無回應 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>檢查 <font face="Liberation Mono, monospace"><span lang="en-US">ngrok </span></font>是否運行 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>條碼掃描失敗 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>確保光線充足，相機權限開啟 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## 7. </span></font>操作指南
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 7.1 </span></font>庫存系統 <font face="Liberation Mono, monospace"><span lang="en-US">- LINE </span></font>操作
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>上傳庫存照片
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>打開 <font face="Liberation Mono, monospace"><span lang="en-US">LINE</span></font>，進入 <font face="Liberation Mono, monospace"><span lang="en-US">Bot </span></font>對話
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>拍攝商品照片（盡量清晰）
+<font face="Liberation Mono, monospace"><span lang="en-US">3. </span></font>傳照片並說「<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>我要盤點<font face="Liberation Mono, monospace"><span lang="en-US">**</span></font>」
+<font face="Liberation Mono, monospace"><span lang="en-US">4. Bot </span></font>回覆「已更新庫存，共 <font face="Liberation Mono, monospace"><span lang="en-US">X </span></font>項商品」
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 7.2 </span></font>庫存系統 <font face="Liberation Mono, monospace"><span lang="en-US">- </span></font>網頁操作
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>搜尋商品
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>在搜尋框輸入品號或品名
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>系統即時過濾顯示結果
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>條碼掃描查詢
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>點擊「📷 查詢」
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>允許相機權限
+<font face="Liberation Mono, monospace"><span lang="en-US">3. </span></font>對準條碼掃描
+<font face="Liberation Mono, monospace"><span lang="en-US">4. </span></font>顯示商品完整資料
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>確認盤點
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>點擊「✏️ 確認」
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>勾選已盤點的商品
+<font face="Liberation Mono, monospace"><span lang="en-US">3. </span></font>可輸入備註
+<font face="Liberation Mono, monospace"><span lang="en-US">4. </span></font>點擊「✓ 完成」
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### 7.3 </span></font>台電系統 <font face="Liberation Mono, monospace"><span lang="en-US">- </span></font>操作
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>查看用電概況
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>開啟網頁
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>預設顯示全部電號的總計
+
+<font face="Liberation Mono, monospace"><span lang="en-US">#### </span></font>篩選特定電號
+<font face="Liberation Mono, monospace"><span lang="en-US">1. </span></font>在第一個下拉選單選擇電號
+<font face="Liberation Mono, monospace"><span lang="en-US">2. </span></font>圖表和資料自動更新
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">## </span></font>附錄
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### A. </span></font>相關連結
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>系統 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>連結 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>庫存網頁 <font face="Liberation Mono, monospace"><span lang="en-US">| https://jhetsai.github.io/inventory/ |</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>台電網頁 <font face="Liberation Mono, monospace"><span lang="en-US">| https://jhetsai.github.io/openclaw/electricity_final.html |</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">### B. </span></font>更新日誌
+
+<font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>日期 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>版本 <font face="Liberation Mono, monospace"><span lang="en-US">| </span></font>異動 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">|------|------|------|</span></font>
+<font face="Liberation Mono, monospace"><span lang="en-US">| 2026-04-04 | v1.0 | </span></font>初版建立 <font face="Liberation Mono, monospace"><span lang="en-US">|</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">---</span></font>
+
+<font face="Liberation Mono, monospace"><span lang="en-US">_</span></font>文件結束<font face="Liberation Mono, monospace"><span lang="en-US">_</span></font></pre>
+</body>
+</html>

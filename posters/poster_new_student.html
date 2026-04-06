@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>115年度新生報到</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #45B7D1 75%, #96CEB4 100%);
+        }
+        
+        /* Decorative elements */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .circle1 {
+            width: 200px;
+            height: 200px;
+            background: #FFE66D;
+            top: -50px;
+            left: -50px;
+        }
+        
+        .circle2 {
+            width: 150px;
+            height: 150px;
+            background: #FF6B6B;
+            bottom: -30px;
+            right: 100px;
+        }
+        
+        .circle3 {
+            width: 100px;
+            height: 100px;
+            background: #4ECDC4;
+            top: 50px;
+            right: -30px;
+        }
+        
+        .circle4 {
+            width: 80px;
+            height: 80px;
+            background: #45B7D1;
+            bottom: 100px;
+            left: 50px;
+        }
+        
+        /* Stars */
+        .star {
+            position: absolute;
+            font-size: 30px;
+            animation: twinkle 2s infinite;
+        }
+        
+        .star1 { top: 80px; left: 100px; animation-delay: 0s; }
+        .star2 { top: 150px; right: 150px; animation-delay: 0.5s; font-size: 25px; }
+        .star3 { bottom: 120px; left: 200px; animation-delay: 1s; font-size: 20px; }
+        .star4 { top: 100px; left: 400px; animation-delay: 1.5s; }
+        .star5 { bottom: 80px; right: 200px; animation-delay: 0.3s; font-size: 22px; }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        
+        /* Cloud decorations */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.4;
+        }
+        
+        .cloud1 {
+            width: 120px;
+            height: 40px;
+            top: 30px;
+            left: 300px;
+        }
+        
+        .cloud2 {
+            width: 80px;
+            height: 30px;
+            bottom: 150px;
+            right: 80px;
+        }
+        
+        /* Main content container */
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+        }
+        
+        /* Top banner */
+        .banner {
+            background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4, #45B7D1, #96CEB4);
+            background-size: 400% 400%;
+            animation: gradientMove 5s ease infinite;
+            padding: 12px 50px;
+            border-radius: 50px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .banner-text {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 3px;
+        }
+        
+        /* School name */
+        .school-name {
+            color: #2C3E50;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 white;
+            letter-spacing: 2px;
+        }
+        
+        /* Main title */
+        .main-title {
+            background: linear-gradient(180deg, #FF6B6B 0%, #FF8E53 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 100px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            margin-bottom: 15px;
+            text-shadow: none;
+            filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.1));
+        }
+        
+        .year-title {
+            background: linear-gradient(180deg, #4ECDC4 0%, #44A08D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Subtitle */
+        .subtitle {
+            font-size: 52px;
+            font-weight: 700;
+            color: #2C3E50;
+            letter-spacing: 15px;
+            margin-bottom: 35px;
+        }
+        
+        /* Info cards */
+        .info-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 180px;
+            transition: transform 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-label {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #FF6B6B;
+        }
+        
+        .info-value.date {
+            color: #4ECDC4;
+        }
+        
+        .info-value.location {
+            color: #45B7D1;
+            font-size: 24px;
+        }
+        
+        /* Bottom wave */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+        }
+        
+        /* Balloons */
+        .balloon {
+            position: absolute;
+            font-size: 40px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .balloon1 { left: 50px; top: 150px; animation-delay: 0s; }
+        .balloon2 { right: 60px; top: 200px; animation-delay: 1s; }
+        .balloon3 { left: 150px; bottom: 150px; animation-delay: 0.5s; font-size: 30px; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* Icons */
+        .icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative circles -->
+    <div class="deco-circle circle1"></div>
+    <div class="deco-circle circle2"></div>
+    <div class="deco-circle circle3"></div>
+    <div class="deco-circle circle4"></div>
+    
+    <!-- Stars -->
+    <span class="star star1">⭐</span>
+    <span class="star star2">✨</span>
+    <span class="star star3">⭐</span>
+    <span class="star star4">✨</span>
+    <span class="star star5">⭐</span>
+    
+    <!-- Clouds -->
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    
+    <!-- Balloons -->
+    <span class="balloon balloon1">🎈</span>
+    <span class="balloon balloon2">🎈</span>
+    <span class="balloon balloon3">🎈</span>
+    
+    <!-- Main content -->
+    <div class="content">
+        <div class="banner">
+            <span class="banner-text">📢 重要公告 📢</span>
+        </div>
+        
+        <div class="school-name">臺中市立光復國民中小學</div>
+        
+        <h1 class="main-title year-title">115</h1>
+        <h1 class="main-title">年度新生報到</h1>
+        
+        <div class="subtitle">～ 歡迎加入大家庭 ～</div>
+        
+        <div class="info-container">
+            <div class="info-card">
+                <div class="info-label">📅 報到日期</div>
+                <div class="info-value date">4/19</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">📍 報到地點</div>
+                <div class="info-value location">臨時編班教室</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom wave SVG -->
+    <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none">
+        <path fill="#FFFFFF" d="M0,30 C200,60 400,0 600,30 C800,60 1000,0 1200,30 L1200,60 L0,60 Z"/>
+    </svg>
+</body>
+</html>

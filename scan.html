@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>庫存照片上傳 - 掃描</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 500px; margin: 0 auto; text-align: center; }
+        h1 { color: #1a1a2e; margin-bottom: 30px; font-size: 1.6em; }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .upload-area {
+            border: 3px dashed #1976d2;
+            border-radius: 12px;
+            padding: 60px 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        .upload-area:hover { background: #e3f2fd; }
+        .upload-area p { color: #666; margin-bottom: 16px; }
+        .btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        .btn:hover { background: #1565c0; }
+        input[type="file"] { display: none; }
+        
+        .status {
+            margin: 20px 0;
+            padding: 16px;
+            border-radius: 8px;
+            display: none;
+            font-size: 1.1em;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.uploading { background: #fff3cd; color: #856404; }
+        
+        .info {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .info strong { color: #1976d2; }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 掃描庫存照片</h1>
+        
+        <div class="card">
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <p>點擊選擇照片或直接拍攝</p>
+                <button class="btn">📷 選擇/拍攝照片</button>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" capture="environment">
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="info">
+            <strong>📌 使用說明：</strong><br><br>
+            1. 請確保「庫存上傳服務」已啟動<br>
+            2. 在同一 WiFi 網路下使用<br>
+            3. 上傳成功後，等待系統自動處理<br>
+            4. 去主頁面刷新查看更新結果
+        </div>
+        
+        <a href="index.html" class="back-btn">← 返回庫存主頁</a>
+    </div>
+    
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const status = document.getElementById('status');
+        
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            status.className = 'status uploading';
+            status.style.display = 'block';
+            status.textContent = '🔄 上傳中，請稍候...';
+            
+            const formData = new FormData();
+            formData.append('photo', file);
+            
+            try {
+                // Try local network first, then ngrok fallback
+                let endpoints = [
+                    'http://192.168.18.130:8787/',
+                    'http://localhost:8787/'
+                ];
+                
+                let uploaded = false;
+                for (const endpoint of endpoints) {
+                    try {
+                        const resp = await fetch(endpoint, { 
+                            method: 'POST', 
+                            body: formData,
+                            signal: AbortSignal.timeout(5000)
+                        });
+                        if (resp.ok) {
+                            const result = await resp.json();
+                            if (result.success) {
+                                uploaded = true;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.log('Failed:', endpoint, e.message);
+                    }
+                }
+                
+                if (uploaded) {
+                    status.className = 'status success';
+                    status.textContent = '✅ 上傳成功！系統正在處理...';
+                    fileInput.value = '';
+                } else {
+                    throw new Error('無法連接到上傳服務');
+                }
+            } catch (err) {
+                status.className = 'status error';
+                status.textContent = '❌ 上傳失敗：' + err.message + '\n\n請確認「庫存上傳服務」已啟動';
+            }
+        });
+    </script>
+</body>
+</html>

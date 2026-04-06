@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>天氣預報 - 雲林水林</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        .page {
+            background: #fff;
+            color: #333;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .location {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .current {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .current-temp {
+            font-size: 64px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .current-desc {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        .current-details {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .detail-item {
+            text-align: center;
+        }
+        .detail-label {
+            opacity: 0.8;
+        }
+        .detail-value {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .forecast-title {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-top: 25px;
+        }
+        .day-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .day-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        .day-date {
+            color: #888;
+            font-size: 14px;
+        }
+        .day-temp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .day-desc {
+            color: #666;
+            margin: 5px 0;
+        }
+        .day-details {
+            display: flex;
+            gap: 20px;
+            color: #888;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        .hourly-title {
+            color: #333;
+            border-bottom: 2px solid #764ba2;
+            padding-bottom: 10px;
+            margin: 20px 0 15px;
+        }
+        .hourly-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .hour-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .hour-time {
+            color: #888;
+            font-size: 12px;
+        }
+        .hour-temp {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin: 5px 0;
+        }
+        .hour-desc {
+            font-size: 11px;
+            color: #666;
+        }
+        .rain-chance {
+            color: #e94560;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .summary-box {
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+        .summary-box h3 {
+            margin: 0 0 10px;
+            color: #856404;
+        }
+        .summary-box p {
+            margin: 5px 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <!-- 第一頁：今日天氣與概覽 -->
+    <div class="page">
+        <h1>🌤️ 天氣預報</h1>
+        <p class="location">📍 雲林縣水林鄉</p>
+
+        <div class="current">
+            <div class="current-desc">今晚 局部陣雨</div>
+            <div class="current-temp">20°C</div>
+            <div>體感溫度 20°C · 濕度 100%</div>
+            <div class="current-details">
+                <div class="detail-item">
+                    <div class="detail-label">💨 風速</div>
+                    <div class="detail-value">13 km/h</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">💧 降雨</div>
+                    <div class="detail-value">0.0 mm</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">👁️ 能見度</div>
+                    <div class="detail-value">10 km</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="forecast-title">📅 三日天氣概覽</h2>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div>
+                    <span class="day-name">週六 4/4</span>
+                    <span class="day-date">今天</span>
+                </div>
+                <div class="day-temp">22-29°C</div>
+            </div>
+            <div class="day-desc">🌧️ 局部陣雨，午後雨勢增大</div>
+            <div class="day-details">
+                <span>💧 降雨機率 100%</span>
+                <span>🌡️ 高溫 29°C</span>
+                <span>☀️ 日照 10.5 小時</span>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div>
+                    <span class="day-name">週日 4/5</span>
+                    <span class="day-date">明天</span>
+                </div>
+                <div class="day-temp">21-28°C</div>
+            </div>
+            <div class="day-desc">🌧️ 局部陣雨，多雲時晴</div>
+            <div class="day-details">
+                <span>💧 降雨機率 72-100%</span>
+                <span>🌡️ 高溫 28°C</span>
+                <span>☀️ 日照 10.8 小時</span>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <div>
+                    <span class="day-name">週一 4/6</span>
+                    <span class="day-date">後天</span>
+                </div>
+                <div class="day-temp">22-31°C</div>
+            </div>
+            <div class="day-desc">🌤️ 多雲時晴，午後有局部陣雨</div>
+            <div class="day-details">
+                <span>💧 降雨機率 69-100%</span>
+                <span>🌡️ 高溫 31°C</span>
+                <span>☀️ 日照 10.8 小時</span>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <h3>📋 三日天氣總結</h3>
+            <p>🌡️ 溫度範圍：21°C ~ 31°C</p>
+            <p>💧 降雨機率：明日短暫改善，整體仍是潮濕天氣</p>
+            <p>☀️ 建議：外出攜帶雨具，清晨與夜間偏涼</p>
+        </div>
+
+        <p class="footer">資料更新：2026年4月4日 23:30 · 來源：wttr.in</p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 第二頁：逐時預報 -->
+    <div class="page">
+        <h1>⏰ 逐時天氣預報</h1>
+        <p class="location">📍 雲林縣水林鄉 · 4月4日(週六)</p>
+
+        <h2 class="hourly-title">🕐 今日逐時預報</h2>
+
+        <div class="hourly-grid">
+            <div class="hour-card">
+                <div class="hour-time">00:00</div>
+                <div class="hour-temp">26°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">03:00</div>
+                <div class="hour-temp">24°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">06:00</div>
+                <div class="hour-temp">23°C</div>
+                <div class="hour-desc">局部多雲</div>
+                <div>☀️ 77% 晴</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">09:00</div>
+                <div class="hour-temp">28°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">12:00</div>
+                <div class="hour-temp">29°C</div>
+                <div class="hour-desc">局部雨勢</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">15:00</div>
+                <div class="hour-temp">28°C</div>
+                <div class="hour-desc">局部雨勢</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">18:00</div>
+                <div class="hour-temp">22°C</div>
+                <div class="hour-desc">中度陣雨</div>
+                <div class="rain-chance">💧 +2.7mm</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">21:00</div>
+                <div class="hour-temp">22°C</div>
+                <div class="hour-desc">中度降雨</div>
+                <div class="rain-chance">💧 +2.9mm</div>
+            </div>
+        </div>
+
+        <h2 class="hourly-title">🕐 明日逐時預報（4/5 週日）</h2>
+
+        <div class="hourly-grid">
+            <div class="hour-card">
+                <div class="hour-time">00:00</div>
+                <div class="hour-temp">21°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">03:00</div>
+                <div class="hour-temp">21°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 72%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">06:00</div>
+                <div class="hour-temp">21°C</div>
+                <div class="hour-desc">局部多雲</div>
+                <div>☀️ 78% 晴</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">09:00</div>
+                <div class="hour-temp">25°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 76%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">12:00</div>
+                <div class="hour-temp">28°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 100%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">15:00</div>
+                <div class="hour-temp">28°C</div>
+                <div class="hour-desc">局部陣雨</div>
+                <div class="rain-chance">💧 76%</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">18:00</div>
+                <div class="hour-temp">26°C</div>
+                <div class="hour-desc">局部雨勢</div>
+                <div class="rain-chance">💧 +0.9mm</div>
+            </div>
+            <div class="hour-card">
+                <div class="hour-time">21:00</div>
+                <div class="hour-temp">25°C</div>
+                <div class="hour-desc">局部多雲</div>
+                <div>☀️ 76% 晴</div>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <h3>🌧️ 降雨預測</h3>
+            <p>今日：午後雨勢明顯，18:00-21:00 有中度陣雨</p>
+            <p>明日：清晨仍有雨勢，午前逐漸減緩，下午有機會見陽光</p>
+            <p>⚠️ 外出記得攜帶雨具！</p>
+        </div>
+
+        <p class="footer">資料更新：2026年4月4日 23:30 · 來源：wttr.in</p>
+    </div>
+</body>
+</html>

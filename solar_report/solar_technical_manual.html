@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>太陽能發電系統技術文件 | Solar Power System Technical Manual</title>
+<style>
+@page {
+    size: A4;
+    margin: 2cm 1.5cm;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Noto Sans TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+    font-size: 11pt;
+    line-height: 1.8;
+    color: #333;
+}
+.page { page-break-after: always; }
+.page:last-child { page-break-after: avoid; }
+h1 { font-size: 26pt; color: #1565C0; margin-bottom: 20pt; border-bottom: 3px solid #1565C0; padding-bottom: 10pt; }
+h2 { font-size: 18pt; color: #1976D2; margin: 18pt 0 10pt; border-left: 5px solid #1976D2; padding-left: 10pt; }
+h3 { font-size: 14pt; color: #2196F3; margin: 12pt 0 8pt; }
+p { margin-bottom: 8pt; text-align: justify; }
+table { width: 100%; border-collapse: collapse; margin: 12pt 0; font-size: 10pt; }
+th { background: #1565C0; color: white; padding: 8pt; text-align: center; }
+td { padding: 6pt 8pt; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f5f5f5; }
+.warning { background: #fff3cd; border-left: 5px solid #ffc107; padding: 10pt; margin: 10pt 0; }
+.danger { background: #f8d7da; border-left: 5px solid #dc3545; padding: 10pt; margin: 10pt 0; }
+.success { background: #d4edda; border-left: 5px solid #28a745; padding: 10pt; margin: 10pt 0; }
+.info { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 10pt; margin: 10pt 0; }
+img { max-width: 100%; height: auto; margin: 10pt 0; }
+.two-col { display: flex; gap: 20pt; }
+.two-col > div { flex: 1; }
+.formula { 
+    background: #f5f5f5; 
+    border: 1px solid #ddd; 
+    padding: 12pt; 
+    margin: 10pt 0; 
+    font-family: "Courier New", monospace;
+    font-size: 11pt;
+    text-align: center;
+}
+.cover {
+    text-align: center;
+    padding-top: 150pt;
+}
+.cover h1 { font-size: 32pt; border: none; color: #1565C0; }
+.cover .subtitle { font-size: 16pt; color: #666; margin-top: 20pt; }
+.cover .date { font-size: 12pt; color: #999; margin-top: 30pt; }
+.cover .author { font-size: 11pt; color: #888; margin-top: 100pt; }
+.toc { margin: 30pt 0; }
+.toc-item { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 6pt 0; 
+    border-bottom: 1px dotted #ddd;
+}
+.chapter-img { 
+    text-align: center; 
+    margin: 15pt 0;
+}
+.chapter-img img { 
+    max-width: 85%;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.chapter-img figcaption {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 5pt;
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: 封面 -->
+<div class="page cover">
+    <h1>☀️ 太陽能發電系統<br>技術文件</h1>
+    <div class="subtitle">Solar Power System Technical Documentation</div>
+    <div class="date">2026年4月<br>適用於：水林鄉家庭用戶系統</div>
+    <div class="author">
+        <p>系統配置：200W 單晶矽面板 × 1</p>
+        <p>儲能：湯淺 NP40-12B × 3並聯 (12V 120Ah)</p>
+        <p>控制器：MPPT (效率 95%)</p>
+    </div>
+</div>
+
+<!-- PAGE 2: 目錄 -->
+<div class="page">
+    <h1>目錄 Contents</h1>
+    <div class="toc">
+        <div class="toc-item"><span>第一章 系統概述</span><span>3</span></div>
+        <div class="toc-item"><span>第二章 系統架構</span><span>4</span></div>
+        <div class="toc-item"><span>第三章 發電原理</span><span>6</span></div>
+        <div class="toc-item"><span>第四章 蓄電池系統</span><span>8</span></div>
+        <div class="toc-item"><span>第五章 效率損耗分析</span><span>10</span></div>
+        <div class="toc-item"><span>第六章 環境因素影響</span><span>12</span></div>
+        <div class="toc-item"><span>第七章 發電量計算</span><span>14</span></div>
+        <div class="toc-item"><span>第八章 電費節省分析</span><span>16</span></div>
+        <div class="toc-item"><span>第九章 日常維護</span><span>18</span></div>
+        <div class="toc-item"><span>第十章 故障排除</span><span>20</span></div>
+        <div class="toc-item"><span>附錄 系統規格表</span><span>22</span></div>
+    </div>
+</div>
+
+<!-- PAGE 3: 第一章 -->
+<div class="page">
+    <h1>第一章 系統概述</h1>
+    
+    <h2>1.1 文件目的</h2>
+    <p>本文件旨在提供太陽能發電系統的完整技術說明，幫助用戶了解系統運作原理、日常維護方法，以及如何優化發電效率。內容針對水林鄉（雲林縣）特定環境條件進行計算與建議。</p>
+    
+    <h2>1.2 系統組成</h2>
+    <p>一套完整的家用太陽能發電系統主要由以下元件組成：</p>
+    <table>
+        <tr><th>元件</th><th>功能</th><th>用戶系統規格</th></tr>
+        <tr><td>太陽能板</td><td>將陽光轉換為直流電</td><td>200W 單晶矽 × 1</td></tr>
+        <tr><td>MPPT控制器</td><td>追蹤最大功率點、調節充電</td><td>效率 95%</td></tr>
+        <tr><td>蓄電池組</td><td>儲存發電能量</td><td>湯淺 NP40-12B × 3並聯</td></tr>
+        <tr><td>逆變器</td><td>將直流電轉為交流電</td><td>依需求配置</td></tr>
+    </table>
+
+    <h2>1.3 用戶系統參數</h2>
+    <div class="info">
+        <strong>地理位置：</strong>雲林縣水林鄉<br>
+        <strong>月均日照時數：</strong>4.15 小時/天<br>
+        <strong>系統電壓：</strong>12V<br>
+        <strong>日耗電量：</strong>40W × 12小時 = 480Wh/天
+    </div>
+</div>
+
+<!-- PAGE 4: 第二章 -->
+<div class="page">
+    <h1>第二章 系統架構</h1>
+    
+    <h2>2.1 系統架構圖</h2>
+    <div class="chapter-img">
+        <img src="01_system_architecture.png" alt="系統架構圖">
+        <figcaption>圖2-1：太陽能發電系統基本架構示意</figcaption>
+    </div>
+    
+    <h2>2.2 電力流動</h2>
+    <p>系統的電力流動可分為以下路徑：</p>
+    <div class="formula">
+        太陽能板 → MPPT控制器 → 蓄電池 → 逆變器 → 用電設備
+    </div>
+    <p>在白天發電時，如果發電量大於用電量，多餘的電力會先存入蓄電池。等蓄電池充滿後，如果仍在發電，則多餘電力會通過逆變器供電給電網（如果系統有並聯電網）。</p>
+
+    <h2>2.3 主要元件說明</h2>
+    <table>
+        <tr><th>元件</th><th>型號</th><th>電壓</th><th>容量</th></tr>
+        <tr><td>太陽能板</td><td>單晶矽 200W</td><td>-</td><td>200W</td></tr>
+        <tr><td>蓄電池</td><td>湯淺 NP40-12B</td><td>12V</td><td>40Ah × 3</td></tr>
+        <tr><td>MPPT</td><td>-</td><td>12V</td><td>效率 95%</td></tr>
+    </table>
+</div>
+
+<!-- PAGE 5: 繼續第二章 -->
+<div class="page">
+    <h2>2.4 蓄電池並聯配置</h2>
+    <div class="chapter-img">
+        <img src="09_battery_parallel.png" alt="電池並聯">
+        <figcaption>圖2-2：湯淺 NP40-12B 三顆並聯示意</figcaption>
+    </div>
+    
+    <h3>並聯配置的優點：</h3>
+    <ul>
+        <li>電壓保持不變（12V），與系統相容</li>
+        <li>容量相加：40Ah × 3 = 120Ah</li>
+        <li>理論能量：12V × 120Ah = 1,440Wh</li>
+        <li>放電時間更長，供電穩定性提高</li>
+        <li>內阻降低，充電效率提升</li>
+    </ul>
+    
+    <div class="warning">
+        <strong>重要提醒：</strong>蓄電池並聯時，各電池的電壓和內阻應盡量接近，以避免充電不均勻的情況。建議使用相同型號、相同批次的新電池。
+    </div>
+</div>
+
+<!-- PAGE 6: 第三章 -->
+<div class="page">
+    <h1>第三章 發電原理</h1>
+    
+    <h2>3.1 太陽能發電基礎</h2>
+    <p>太陽能板利用光生伏打效應（Photovoltaic Effect）將陽光轉換為直流電。當光子撞擊半導體材料（如矽）時，會釋放電子產生電流。</p>
+    
+    <h2>3.2 發電量計算公式</h2>
+    <div class="formula">
+        發電量 = 面板瓦數 × 日照時數 × 天氣因素 × MPPT效率
+    </div>
+    <p>各參數說明：</p>
+    <table>
+        <tr><th>參數</th><th>說明</th><th>典型值</th></tr>
+        <tr><td>面板瓦數</td><td>太陽能板額定功率</td><td>200W</td></tr>
+        <tr><td>日照時數</td><td>當地平均峰值日照</td><td>4.15 小時（水林）</td></tr>
+        <tr><td>天氣因素</td><td>依天氣狀況調整</td><td>0.25~0.85</td></tr>
+        <tr><td>MPPT效率</td><td>控制器轉換效率</td><td>95%</td></tr>
+    </table>
+
+    <h2>3.3 台灣各地日照時數</h2>
+    <div class="chapter-img">
+        <img src="02_insulation_chart.png" alt="日照時數">
+        <figcaption>圖3-1：台灣各縣市月均日照時數比較</figcaption>
+    </div>
+</div>
+
+<!-- PAGE 7: 繼續第三章 -->
+<div class="page">
+    <h2>3.4 天氣因素對照表</h2>
+    <table>
+        <tr><th>天氣型態</th><th>天氣因素</th><th>說明</th></tr>
+        <tr><td>晴</td><td>0.85</td><td>陽光充足，無雲遮蔽</td></tr>
+        <tr><td>少雲</td><td>0.70</td><td>偶有雲層遮蔽</td></tr>
+        <tr><td>多雲</td><td>0.45</td><td>雲層較多</td></tr>
+        <tr><td>陰</td><td>0.25</td><td>陰天，陽光微弱</td></tr>
+        <tr><td>小雨</td><td>0.15</td><td>持續降雨</td></tr>
+        <tr><td>陣雨</td><td>0.20</td><td>時而降水的變化天氣</td></tr>
+        <tr><td>雷雨</td><td>0.05</td><td>暴風雨天氣</td></tr>
+        <tr><td>雪</td><td>0.03</td><td>降雪天氣</td></tr>
+    </table>
+    
+    <div class="info">
+        <strong>水林鄉適用：</strong>根據歷史氣象資料，水林鄉年均日照約 4.15 小時/天，屬於台灣中上等級。日照最充足為 5-8 月（約 4.5-5 小時），最少為冬季 12-2 月（約 3.5 小時）。
+    </div>
+
+    <h2>3.5 四季發電特性</h2>
+    <div class="chapter-img">
+        <img src="03_seasonal_generation.png" alt="四季發電">
+        <figcaption>圖3-2：四季發電曲線模擬</figcaption>
+    </div>
+</div>
+
+<!-- PAGE 8: 第四章 -->
+<div class="page">
+    <h1>第四章 蓄電池系統</h1>
+    
+    <h2>4.1 湯淺 NP40-12B 規格</h2>
+    <table>
+        <tr><th>項目</th><th>規格</th></tr>
+        <tr><td>型號</td><td>NP40-12B</td></tr>
+        <tr><td>電壓</td><td>12V</td></tr>
+        <tr><td>容量</td><td>40Ah (20小時率)</td></tr>
+        <tr><td>尺寸</td><td>197 × 165 × 175 mm</td></tr>
+        <tr><td>重量</td><td>14.5 kg</td></tr>
+        <tr><td>類型</td><td>鉛酸蓄電池（閥控式）</td></tr>
+    </table>
+
+    <h2>4.2 放電深度與壽命</h2>
+    <p>鉛酸蓄電池的循環壽命與放電深度（Depth of Discharge, DoD）密切相關。放電深度越大，循環壽命越短。</p>
+    <div class="chapter-img">
+        <img src="04_battery_dod_life.png" alt="放電深度與壽命">
+        <figcaption>圖4-1：放電深度 vs 循環壽命關係曲線</figcaption>
+    </div>
+    
+    <div class="warning">
+        <strong>用戶系統建議：</strong>將放電深度控制在 50% 以內，可獲得約 800 次循環壽命。以每日充放電一次計算，約可使用 2-3 年。
+    </div>
+</div>
+
+<!-- PAGE 9: 繼續第四章 -->
+<div class="page">
+    <h2>4.3 電壓狀態判斷</h2>
+    <p>了解蓄電池的電壓狀態，可以判斷當前的充電狀態和健康程度：</p>
+    <div class="chapter-img">
+        <img src="05_voltage_chart.png" alt="電壓狀態">
+        <figcaption>圖4-2：鉛酸蓄電池電壓狀態表</figcaption>
+    </div>
+    
+    <table>
+        <tr><th>電壓範圍</th><th>狀態</th><th>建議行動</th></tr>
+        <tr><td>> 14.8V</td><td style="background:#f8d7da">過度充電</td><td>檢查控制器設定</td></tr>
+        <tr><td>14.4 - 14.8V</td><td style="background:#d4edda">滿電</td><td>正常</td></tr>
+        <tr><td>12.7 - 14.4V</td><td style="background:#d4edda">正常使用</td><td>正常</td></tr>
+        <tr><td>12.0 - 12.7V</td><td style="background:#fff3cd">低電量</td><td>應盡快充電</td></tr>
+        <tr><td>< 12.0V</td><td style="background:#f8d7da">危險</td><td>立即充電</td></tr>
+        <tr><td>< 11.5V</td><td style="background:#f8d7da">深度放電</td><td>可能造成永久損傷</td></tr>
+    </table>
+    
+    <div class="danger">
+        <strong>危險警示：</strong>嚴禁將鉛酸蓄電池放電至 11.5V 以下，否則可能造成極板硫化，永久降低容量。
+    </div>
+</div>
+
+<!-- PAGE 10: 第五章 -->
+<div class="page">
+    <h1>第五章 效率損耗分析</h1>
+    
+    <h2>5.1 發電效率流程</h2>
+    <p>從太陽能板發電到實際可用的交流電，能量會經過多個階段，每個階段都會有一定的損耗：</p>
+    <div class="chapter-img">
+        <img src="07_efficiency_flow.png" alt="效率流程">
+        <figcaption>圖5-1：發電效率損耗示意圖</figcaption>
+    </div>
+    
+    <h2>5.2 各階段損耗說明</h2>
+    <table>
+        <tr><th>階段</th><th>損耗率</th><th>說明</th></tr>
+        <tr><td>線材損耗</td><td>~2%</td><td>電纜電阻造成的功率損失</td></tr>
+        <tr><td>MPPT轉換</td><td>~5%</td><td>控制器電子元件損耗</td></tr>
+        <tr><td>充電損耗</td><td>~10%</td><td>電池化學反應效率</td></tr>
+        <tr><td>逆變損耗</td><td>~5%</td><td>直流轉交流的損耗</td></tr>
+    </table>
+    
+    <h2>5.3 總效率計算</h2>
+    <div class="formula">
+        總效率 = (1 - 2%) × (1 - 5%) × (1 - 10%) × (1 - 5%)<br>
+             = 0.98 × 0.95 × 0.90 × 0.95<br>
+             ≈ 79.6%
+    </div>
+</div>
+
+<!-- PAGE 11: 繼續第五章 -->
+<div class="page">
+    <h2>5.4 提升效率的方法</h2>
+    <ul>
+        <li><strong>選擇適當的電纜線徑：</strong>電纜太細會增加電阻，建議使用 4mm² 以上的電纜連接太陽能板到控制器。</li>
+        <li><strong>保持面板清潔：</strong>灰塵和污垢會降低發電效率達 10-20%，定期清洗面板。</li>
+        <li><strong>避免高溫：</strong>太陽能板溫度過高會降低效率，安裝時保持通風。</li>
+        <li><strong>定期檢查連接：</strong>確保所有接頭緊固，氧化或鬆動會造成額外損耗。</li>
+    </ul>
+
+    <h2>5.5 陰天發電估算</h2>
+    <p>在水林鄉，天氣因素對發電量的影響非常顯著。以下是不同天氣條件下的日發電量估算：</p>
+    <table>
+        <tr><th>天氣</th><th>天氣因素</th><th>日發電量</th><th>說明</th></tr>
+        <tr><td>晴天</td><td>0.85</td><td>~665 Wh</td><td>發電量大於用電</td></tr>
+        <tr><td>少雲</td><td>0.70</td><td>~548 Wh</td><td>可覆蓋大部分用電</td></tr>
+        <tr><td>多雲</td><td>0.45</td><td>~352 Wh</td><td>需要電瓶補充</td></tr>
+        <tr><td>陰天</td><td>0.25</td><td>~196 Wh</td><td>嚴重不足</td></tr>
+        <tr><td>陣雨</td><td>0.20</td><td>~157 Wh</td><td>僅能充當少量備援</td></tr>
+    </table>
+</div>
+
+<!-- PAGE 12: 第六章 -->
+<div class="page">
+    <h1>第六章 環境因素影響</h1>
+    
+    <h2>6.1 風速的影響</h2>
+    <p>風速對太陽能發電系統有雙重影響：適度的風可以冷卻面板提高效率，但過高的風速可能造成機械損傷。</p>
+    <div class="chapter-img">
+        <img src="08_wind_effect.png" alt="風速影響">
+        <figcaption>圖6-1：風速對發電效率的影響</figcaption>
+    </div>
+    
+    <h2>6.2 風速建議值</h2>
+    <table>
+        <tr><th>風速範圍</th><th>影響</th><th>建議</th></tr>
+        <tr><td>0 - 25 km/h</td><td>散熱效益，提高效率</td><td>正常發電</td></tr>
+        <tr><td>25 - 30 km/h</td><td>輕微機械損耗</td><td>注意面板固定</td></tr>
+        <tr><td>30 - 40 km/h</td><td>明顯機械損耗</td><td>加強固定，考虑停發</td></tr>
+        <tr><td>> 40 km/h</td><td>可能造成損傷</td><td>緊急停機保護</td></tr>
+    </table>
+
+    <div class="warning">
+        <strong>風速警示：</strong>當風速超過 30 km/h 時，應注意太陽能板的固定情況，避免被強風吹落或損壞。
+    </div>
+</div>
+
+<!-- PAGE 13: 繼續第六章 -->
+<div class="page">
+    <h2>6.3 溫度對發電的影響</h2>
+    <p>太陽能板的發電效率會隨溫度升高而下降。標準測試條件（STC）為 25°C，每上升 1°C，發電效率約下降 0.4-0.5%。</p>
+    
+    <h2>6.4 安裝建議</h2>
+    <ul>
+        <li><strong>朝向：</strong>朝南（北半球）可獲得最大日照量</li>
+        <li><strong>傾斜角：</strong>約等於當地緯度（水林鄉約 23.5°）</li>
+        <li><strong>通風：</strong>面板與屋頂保持 10-15cm 距離，有助散熱</li>
+        <li><strong>遮蔭：</strong>確保周圍無建築物或樹木遮擋</li>
+    </ul>
+
+    <h2>6.5 雨季考量（5-6月）</h2>
+    <p>水林鄉 5-6 月為梅雨季節，連續降雨可能導致發電量大幅下降。此時應：</p>
+    <ul>
+        <li>確保蓄電池維持在 50% 以上的電量</li>
+        <li>準備替代供電方案</li>
+        <li>雨後檢查面板，清除積水與污泥</li>
+    </ul>
+
+    <div class="info">
+        <strong>颱風季節（7-9月）：</strong>應特別注意面板的安裝固定，確保支架穩固。必要時可在颱風來臨前將面板暫時拆除。
+    </div>
+</div>
+
+<!-- PAGE 14: 第七章 -->
+<div class="page">
+    <h1>第七章 發電量計算</h1>
+    
+    <h2>7.1 基本計算公式</h2>
+    <div class="formula">
+        日發電量 = 面板功率 × 日照時數 × 天氣因素 × MPPT效率 × 電纜效率
+    </div>
+    
+    <h2>7.2 用戶系統計算範例</h2>
+    <p><strong>條件：</strong></p>
+    <ul>
+        <li>面板功率：200W</li>
+        <li>日照時數：4.15 小時（水林平均值）</li>
+        <li>天氣因素：0.45（多雲）</li>
+        <li>MPPT效率：95%</li>
+        <li>電纜效率：98%</li>
+    </ul>
+    
+    <p><strong>計算：</strong></p>
+    <div class="formula">
+        日發電量 = 200W × 4.15h × 0.45 × 0.95 × 0.98<br>
+             = 200 × 4.15 × 0.45 × 0.95 × 0.98<br>
+             = 348.5 Wh
+    </div>
+
+    <h2>7.3 蓄電池容量計算</h2>
+    <p>蓄電池容量的選擇應考慮：</p>
+    <ul>
+        <li>日耗電量：480Wh（40W × 12h）</li>
+        <li>陰天備援：建議可支撐 2-3 天</li>
+        <li>放電深度限制：50%</li>
+    </ul>
+    
+    <div class="formula">
+        所需容量 = 日耗電量 × 備援天數 ÷ 放電深度<br>
+             = 480Wh × 3 ÷ 50%<br>
+             = 2,880 Wh ÷ 50%<br>
+             = 2,880 Wh
+    </div>
+    
+    <p>用戶系統：12V × 120Ah = 1,440Wh（可用 720Wh），略低於理想值，建議可考慮增加面板或降低用電。</p>
+</div>
+
+<!-- PAGE 15: 第八章 -->
+<div class="page">
+    <h1>第八章 電費節省分析</h1>
+    
+    <h2>8.1 年度發電與節省估算</h2>
+    <div class="chapter-img">
+        <img src="06_annual_analysis.png" alt="年度分析">
+        <figcaption>圖8-1：月均發電量與電費節省估算</figcaption>
+    </div>
+    
+    <h2>8.2 電費計算參數</h2>
+    <table>
+        <tr><th>項目</th><th>數值</th></tr>
+        <tr><td>電費費率</td><td>$2.0 / 度（住宅用電）</td></tr>
+        <tr><td>日耗電量</td><td>480 Wh = 0.48 度</td></tr>
+        <tr><td>日電費</td><td>$0.96 / 天</td></tr>
+        <tr><td>月電費（用市電）</td><td>約 $29 / 月</td></tr>
+    </table>
+
+    <h2>8.3 年節省估算</h2>
+    <div class="formula">
+        年發電量 ≈ 127,000 Wh = 127 度<br>
+        年電費節省 ≈ 127 度 × $2/度 ≈ $254/年
+    </div>
+    
+    <div class="info">
+        <strong>注意：</strong>上述為理想狀況估算。實際發電量會因為天氣、設備效率損耗、線路損耗等因素而有所差異。
+    </div>
+</div>
+
+<!-- PAGE 16: 繼續第八章 -->
+<div class="page">
+    <h2>8.4 投資回收分析</h2>
+    <table>
+        <tr><th>項目</th><th>費用</th><th>說明</th></tr>
+        <tr><td>200W 面板</td><td>$3,000-4,000</td><td>單晶矽優質面板</td></tr>
+        <tr><td>MPPT 控制器</td><td>$1,500-3,000</td><td>30A MPPT</td></tr>
+        <tr><td>湯淺 NP40-12B × 3</td><td>$9,000-12,000</td><td>含安裝</td></tr>
+        <tr><td>線材與配件</td><td>$1,000-2,000</td><td></td></tr>
+        <tr><td>安裝工資</td><td>$2,000-5,000</td><td></td></tr>
+        <tr><td><strong>總投資</strong></td><td><strong>$16,500-26,000</strong></td><td></td></tr>
+    </table>
+    
+    <div class="formula">
+        投資回收期 = 總投資 ÷ 年節省 ≈ $21,000 ÷ $254 ≈ 83 年
+    </div>
+    
+    <div class="warning">
+        <strong>重要提醒：</strong>以目前的設備成本和電費費率計算，純粹從經濟角度來看，太陽能發電的投資回收期非常長。但如果加入：
+        <ul>
+            <li>政府補助（依各地規定）</li>
+            <li>未來電費調漲預期</li>
+            <li>離網使用的便利性價值</li>
+            <li>環保減碳的社會價值</li>
+        </ul>
+        實際效益會更為可觀。
+    </div>
+</div>
+
+<!-- PAGE 17: 第九章 -->
+<div class="page">
+    <h1>第九章 日常維護</h1>
+    
+    <h2>9.1 定期檢查項目</h2>
+    <table>
+        <tr><th>頻率</th><th>項目</th><th>方法</th></tr>
+        <tr><td>每日</td><td>發電量觀察</td><td>記錄逆變器顯示的發電量</td></tr>
+        <tr><td>每週</td><td>面板清潔</td><td>用清水沖洗，軟布擦拭</td></tr>
+        <tr><td>每月</td><td>電壓檢測</td><td>使用電表測量電瓶電壓</td></tr>
+        <tr><td>每季</td><td>連接檢查</td><td>確認所有接頭緊固、無氧化</td></tr>
+        <tr><td>每年</td><td>全面檢修</td><td>請專業人員檢查系統</td></tr>
+    </table>
+
+    <h2>9.2 面板清潔指南</h2>
+    <ul>
+        <li><strong>頻率：</strong>至少每月一次，或根據污染程度增加</li>
+        <li><strong>時間：</strong>清晨或傍晚，避免中午高溫時清潔（可能造成面板龜裂）</li>
+        <li><strong>工具：</strong>清水、軟布或海綿、中性清潔劑</li>
+        <li><strong>方法：</strong>先用清水沖洗，再以軟布輕擦，最後清水沖淨</li>
+    </ul>
+
+    <h2>9.3 蓄電池維護</h2>
+    <ul>
+        <li>保持蓄電池表面清潔乾燥</li>
+        <li>定期檢查端子是否腐蝕，如有需要用熱水清洗</li>
+        <li>確保通風良好，避免陽光直射</li>
+        <li>每半年進行一次均衡充電（如果控制器支援）</li>
+    </ul>
+</div>
+
+<!-- PAGE 18: 第十章 -->
+<div class="page">
+    <h1>第十章 故障排除</h1>
+    
+    <h2>10.1 常見問題與解決方案</h2>
+    <table>
+        <tr><th>問題</th><th>可能原因</th><th>解決方案</th></tr>
+        <tr><td>發電量過低</td><td>面板髒污、遮蔭、MPPT故障</td><td>清潔面板、移除遮擋物、檢查MPPT</td></tr>
+        <tr><td>蓄電池無法充滿</td><td>太陽能板功率不足、控制器設定錯誤</td><td>檢查發電量、調整控制器設定</td></tr>
+        <tr><td>蓄電池很快就沒電</td><td>老化、用電量增加、充電不足</td><td>檢查用電、評估更換電池</td></tr>
+        <tr><td>逆變器跳脫</td><td>過載、短路、内部故障</td><td>減少用電、檢查線路、聯繫廠商</td></tr>
+        <tr><td>系統完全無反應</td><td>保險絲熔斷、斷路、蓄電池耗盡</td><td>檢查保險絲、檢查電瓶電壓</td></tr>
+    </table>
+
+    <h2>10.2 緊急情況處理</h2>
+    <div class="danger">
+        <strong>系統異常時：</strong>
+        <ul>
+            <li>立即斷開太陽能板與控制器的連接</li>
+            <li>斷開蓄電池與控制器的連接</li>
+            <li>聯繫專業人員進行檢修</li>
+            <li>切勿自行拆解或維修高壓元件</li>
+        </ul>
+    </div>
+
+    <h2>10.3 何時需要專業協助</h2>
+    <ul>
+        <li>系統出現異常聲音或氣味</li>
+        <li>蓄電池外觀膨脹或漏液</li>
+        <li>MPPT 控制器顯示錯誤代碼</li>
+        <li>無法確認原因的發電量下降</li>
+        <li>需要更換主要元件</li>
+    </ul>
+</div>
+
+<!-- PAGE 19: 附錄 -->
+<div class="page">
+    <h1>附錄 系統規格表</h1>
+    
+    <h2>A.1 太陽能板規格</h2>
+    <table>
+        <tr><th>項目</th><th>規格</th></tr>
+        <tr><td>額定功率</td><td>200W</td></tr>
+        <tr><td>額定電壓</td><td>20V</td></tr>
+        <tr><td>額定電流</td><td>10A</td></tr>
+        <tr><td>開路電壓</td><td>24V</td></tr>
+        <tr><td>短路電流</td><td>10.5A</td></tr>
+        <tr><td>尺寸</td><td>約 1640 × 992 × 40 mm</td></tr>
+        <tr><td>重量</td><td>約 18 kg</td></tr>
+    </table>
+
+    <h2>A.2 蓄電池規格（湯淺 NP40-12B）</h2>
+    <table>
+        <tr><th>項目</th><th>規格</th></tr>
+        <tr><td>電壓</td><td>12V</td></tr>
+        <tr><td>容量（20HR）</td><td>40Ah</td></tr>
+        <tr><td>尺寸</td><td>197 × 165 × 175 mm</td></tr>
+        <tr><td>重量</td><td>14.5 kg</td></tr>
+        <tr><td>最大放電電流</td><td>400A（5秒）</td></tr>
+        <tr><td>工作溫度</td><td>-15°C 至 50°C</td></tr>
+        <tr><td>使用壽命</td><td>3-5 年（依使用條件）</td></tr>
+    </table>
+
+    <h2>A.3 MPPT 控制器規格</h2>
+    <table>
+        <tr><th>項目</th><th>規格</th></tr>
+        <tr><td>類型</td><td>MPPT（最大功率點追蹤）</td></tr>
+        <tr><td>最大輸入電壓</td><td>100V</td></tr>
+        <tr><td>最大輸入電流</td><td>30A</td></tr>
+        <tr><td>系統電壓</td><td>12V / 24V 自動識別</td></tr>
+        <tr><td>轉換效率</td><td>≥ 95%</td></tr>
+        <tr><td>工作溫度</td><td>-25°C 至 55°C</td></tr>
+    </table>
+</div>
+
+<!-- PAGE 20: 最後一頁 -->
+<div class="page">
+    <h1>參考資料與版本資訊</h1>
+    
+    <h2>B.1 參考資料</h2>
+    <ul>
+        <li>PV Power Estimation Methods, National Renewable Energy Laboratory (NREL)</li>
+        <li>Battery Technology Handbook, Raymond A. Hoyer</li>
+        <li>台灣電力公司電費計價表</li>
+        <li>湯淺NP系列蓄電池技術手冊</li>
+    </ul>
+
+    <h2>B.2 版本資訊</h2>
+    <table>
+        <tr><th>版本</th><th>日期</th><th>說明</th></tr>
+        <tr><td>1.0</td><td>2026-04-02</td><td>初版發行</td></tr>
+    </table>
+
+    <h2>B.3 免責聲明</h2>
+    <p>本文件僅供參考之用。實際系統效能會因環境條件、安裝品質、設備狀態等因素而有所差異。作者不對使用本文件內容所造成之任何損失或損害承擔責任。如需專業建議，請諮詢合格的太陽能系統安裝商或電氣工程師。</p>
+
+    <div class="info" style="margin-top: 30pt; text-align: center;">
+        <strong>文件編製：AI 助理（蝦助）</strong><br>
+        <strong>日期：2026年4月2日</strong><br>
+        <br>
+        <em>本文件內容基於公開技術資料與最佳實踐經驗整理而成</em>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body { font-family: Arial, "Microsoft JhengHei", "PingHei", sans-serif; margin: 0; padding: 25px; font-size: 14px; color: #222; background: white; }
+h1 { color: #1a1a2e; margin: 0 0 5px 0; font-size: 26px; font-weight: 900; }
+.subtitle { color: #666; margin: 0 0 20px 0; font-size: 13px; }
+h2 { color: #FF8F00; border-bottom: 3px solid #FF8F00; padding-bottom: 5px; margin-top: 25px; font-size: 18px; }
+h3 { color: #333; margin-top: 15px; font-size: 15px; }
+.box { background: #f5f5f5; padding: 12px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #FF9800; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+th { background: #FF8F00; color: white; padding: 10px 8px; border: 1px solid #ddd; text-align: left; }
+td { padding: 8px; border: 1px solid #ddd; }
+.cmd { background: #f0f0f0; padding: 3px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+.warning { background: #fff3e0; padding: 10px; border-radius: 6px; margin: 10px 0; border: 1px solid #FF9800; color: #E65100; font-size: 13px; }
+.footer { color: #888; font-size: 11px; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+<h1>📘 OpenClaw 系統操作手冊</h1>
+<p class="subtitle">建立日期：2026/04/01 | 最後更新：2026/04/02 19:00</p>
+
+<h2>1. 備份方式</h2>
+
+<h3>✅ 推薦方式：使用備份腳本</h3>
+<div class="box">
+<p>一鍵備份：</p>
+<p class="cmd">~/openclaw/scripts/backup_openclaw.sh</p>
+</div>
+
+<h3>手動備份</h3>
+<table>
+<tr><th>指令</th><th>說明</th></tr>
+<tr><td class="cmd">cp -r ~/.openclaw/openclaw.json ~/backup_openclaw_$(date +%Y%m%d).json</td><td>複製設定檔</td></tr>
+<tr><td class="cmd">cp -r ~/.openclaw/agents ~/backup_agents_$(date +%Y%m%d)</td><td>複製代理設定</td></tr>
+</table>
+
+<h3>備份位置</h3>
+<div class="box">~/openclaw_backups/</div>
+
+<h2>2. 還原教學</h2>
+
+<h3>✅ 推薦方式：使用還原腳本</h3>
+<div class="box">
+<p class="cmd">~/openclaw/scripts/restore_openclaw.sh</p>
+</div>
+
+<h3>手動還原</h3>
+<table>
+<tr><th>步驟</th><th>指令</th></tr>
+<tr><td>1. 停止服務</td><td class="cmd">openclaw gateway stop</td></tr>
+<tr><td>2. 複製備份</td><td class="cmd">cp ~/backup_openclaw.json ~/.openclaw/openclaw.json</td></tr>
+<tr><td>3. 重啟服務</td><td class="cmd">openclaw gateway start</td></tr>
+</table>
+
+<h2>3. 系統維護常用指令</h2>
+<table>
+<tr><th>指令</th><th>用途</th></tr>
+<tr><td class="cmd">openclaw gateway status</td><td>查看服務狀態</td></tr>
+<tr><td class="cmd">openclaw gateway restart</td><td>重啟 Gateway</td></tr>
+<tr><td class="cmd">openclaw plugins list</td><td>查看已安裝插件</td></tr>
+<tr><td class="cmd">openclaw pairing list line</td><td>查看 LINE 配對請求</td></tr>
+<tr><td class="cmd">tail -f /tmp/openclaw/openclaw-*.log</td><td>查看即時日誌</td></tr>
+</table>
+
+<h2>4. ngrok 管理</h2>
+<table>
+<tr><th>指令</th><th>用途</th></tr>
+<tr><td class="cmd">ngrok http 18789</td><td>啟動 ngrok</td></tr>
+<tr><td class="cmd">curl -s localhost:4040/api/tunnels</td><td>查看 ngrok URL</td></tr>
+</table>
+
+<div class="warning">
+⚠️ <strong>重要：</strong>ngrok 免費版每次重開機後 URL 會改變，需要更新 LINE Webhook URL
+</div>
+
+<h2>5. LINE Bot 資訊</h2>
+<table>
+<tr><th>項目</th><th>內容</th></tr>
+<tr><td>Webhook URL</td><td><a href="https://unauthorized-rolanda-nonrelational.ngrok-free.dev">https://unauthorized-rolanda-nonrelational.ngrok-free.dev/line/webhook</a></td></tr>
+</table>
+
+<h2>6. 緊急應變</h2>
+
+<h3>狀況：LINE Bot 無回應</h3>
+<table>
+<tr><th>步驟</th><th>動作</th></tr>
+<tr><td>1</td><td class="cmd">openclaw gateway status</td></tr>
+<tr><td>2</td><td class="cmd">curl localhost:4040/api/tunnels</td></tr>
+<tr><td>3</td><td>檢查 LINE Webhook URL 是否正確</td></tr>
+</table>
+
+<h3>狀況：ngrok 未運行</h3>
+<div class="box">
+<p class="cmd">ngrok http 18789</p>
+<p>取得新 URL 並更新 LINE Developers Console</p>
+</div>
+
+<h2>7. 配對管理指令</h2>
+<table>
+<tr><th>指令</th><th>用途</th></tr>
+<tr><td class="cmd">openclaw pairing list line</td><td>查看配對請求</td></tr>
+<tr><td class="cmd">openclaw pairing approve line [配對碼]</td><td>核准配對</td></tr>
+<tr><td class="cmd">openclaw pairing deny line [配對碼]</td><td>拒絕配對</td></tr>
+</table>
+
+<p class="footer">由 蝦助 自動產生 | 2026/04/02</p>
+</body>
+</html>

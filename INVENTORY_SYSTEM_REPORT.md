@@ -68,7 +68,7 @@ _作者：蝦助 🦐_
 | Repository | https://github.com/jhetsai/inventory |
 | 預設分支 | main |
 | 主要檔案 | `index.html` (網頁介面)、`inventory.json` (資料庫) |
-| GitHub Token | `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` |
+| GitHub Token | `GITHUB_TOKEN_REDACTED` |
 
 **倉庫結構：**
 ```
@@ -314,7 +314,7 @@ C50325967002  ← 字母開頭
 # netrc 設定（GitHub 認證）
 machine github.com
 login jhetsai
-password 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
+password GITHUB_TOKEN_REDACTED
 ```
 
 ### 6.3 LINE Webhook

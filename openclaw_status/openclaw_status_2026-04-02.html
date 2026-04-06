@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>OpenClaw 安裝與功能報告</title>
+<style>
+body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; font-size: 11pt; line-height: 1.7; padding: 20pt; }
+h1 { color: #1565C0; font-size: 22pt; border-bottom: 4px solid #1565C0; padding-bottom: 10pt; }
+h2 { color: #1976D2; font-size: 16pt; margin-top: 25pt; border-left: 6px solid #1976D2; padding-left: 10pt; }
+h3 { color: #2196F3; font-size: 13pt; margin-top: 15pt; }
+code { background: #f5f5f5; padding: 2pt 6pt; border-radius: 3pt; font-family: "Courier New", monospace; font-size: 10pt; }
+pre { background: #263238; color: #ECEFF1; padding: 15pt; border-radius: 5pt; font-size: 9pt; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin: 12pt 0; font-size: 10pt; }
+th { background: #1565C0; color: white; padding: 8pt; text-align: left; }
+td { padding: 6pt 8pt; border: 1px solid #ddd; }
+tr:nth-child(even) { background: #f5f5f5; }
+.ok { color: #4CAF50; font-weight: bold; }
+.error { color: #F44336; font-weight: bold; }
+.warning { color: #FF9800; font-weight: bold; }
+.info { background: #E3F2FD; padding: 10pt; margin: 10pt 0; border-left: 4px solid #2196F3; }
+.success { background: #E8F5E9; padding: 10pt; margin: 10pt 0; border-left: 4px solid #4CAF50; }
+.toc { background: #FFF8E1; padding: 15pt; margin: 15pt 0; border-radius: 5pt; }
+.toc-item { padding: 4pt 0; border-bottom: 1px dotted #ccc; }
+.cmd { font-family: monospace; background: #ECEFF1; padding: 2pt 5pt; border-radius: 3pt; }
+</style>
+</head>
+<body>
+
+<h1>🖥️ OpenClaw 安裝與功能報告</h1>
+<div class="info">
+<strong>報告日期：</strong>2026-04-02<br>
+<strong>主機：</strong>jhe-VMware-Virtual-Platform<br>
+<strong>系統：</strong>Linux 6.17.0-19-generic (x64)<br>
+<strong>Node 版本：</strong>v22.22.0
+</div>
+
+<div class="toc">
+<strong>目錄</strong>
+<div class="toc-item">1. OpenClaw 基本介紹</div>
+<div class="toc-item">2. 已安裝的功能模組</div>
+<div class="toc-item">3. 外掛設定</div>
+<div class="toc-item">4. 頻道設定</div>
+<div class="toc-item">5. 常用指令</div>
+<div class="toc-item">6. 備份與還原</div>
+<div class="toc-item">7. 安裝新功能的方式</div>
+<div class="toc-item">8. 疑難排解</div>
+</div>
+
+<h2>1. OpenClaw 基本介紹</h2>
+<p>OpenClaw 是一個 AI 助理框架，支援多種訊息平台（ Telegram、 LINE 等），並可透過外掛擴充功能。</p>
+
+<table>
+<tr><th>項目</th><th>內容</th></tr>
+<tr><td>版本</td><td>最新穩定版（透過 npm 安裝）</td></tr>
+<tr><td>安裝方式</td><td>npm install -g openclaw</td></tr>
+<tr><td>設定檔位置</td><td>~/.openclaw/openclaw.json</td></tr>
+<tr><td>工作目錄</td><td>/home/jhe/.openclaw/workspace</td></tr>
+<tr><td>日志位置</td><td>~/.openclaw/logs/</td></tr>
+</table>
+
+<h2>2. 已安裝的功能模組</h2>
+
+<h3>2.1 核心功能</h3>
+<table>
+<tr><th>功能</th><th>狀態</th><th>說明</th></tr>
+<tr><td>Telegram Bot</td><td class="ok">✅ 已啟用</td><td>主要通知頻道</td></tr>
+<tr><td>LINE Bot</td><td class="ok">✅ 已啟用</td><td>備用訊息頻道</td></tr>
+<tr><td>Brave Search</td><td class="ok">✅ 已啟用</td><td>網路搜尋 API</td></tr>
+<tr><td>DuckDuckGo</td><td class="ok">✅ 已啟用</td><td>備用搜尋引擎</td></tr>
+<tr><td>Leonardo.ai</td><td class="ok">✅ 已啟用</td><td>AI 圖片生成</td></tr>
+</table>
+
+<h3>2.2 排程任務（已啟用 8 項）</h3>
+<ul>
+<li>每週天氣預報（週日 10:00）</li>
+<li>每日晨間新聞簡報（每天 08:00）</li>
+<li>每日天氣預報（每天 08:30）</li>
+<li>每日美股損益報告（平日 08:30）</li>
+<li>每日台股損益報告（平日 13:30）</li>
+<li>每日系統備份報告（每天 19:00）</li>
+<li>定時記憶存檔（每3小時）</li>
+<li>多使用者記憶存檔（每3小時）</li>
+</ul>
+<p>詳情請輸入 <code>openclaw cron list</code> 查看完整排程內容。</p>
+
+<h2>3. 外掛設定</h2>
+
+<h3>3.1 Brave Search（網路搜尋）</h3>
+<div class="info">
+<strong>月用量上限：</strong>1,000 次<br>
+<strong>目前用量：</strong>35 次（2026年4月）<br>
+<strong>用量追蹤：</strong>~/.openclaw/brave_search_usage.json
+</div>
+
+<h3>3.2 LINE Bot</h3>
+<div class="info">
+<strong>ngrok URL：</strong>https://unauthorized-rolanda-nonrelational.ngrok-free.dev<br>
+<strong>注意：</strong>ngrok 重開機後 URL 會變動，需更新 LINE Webhook
+</div>
+
+<h3>3.3 AI 模型</h3>
+<table>
+<tr><th>模型</th><th>供應商</th><th>用途</th></tr>
+<tr><td>MiniMax-M2.7</td><td>MiniMax</td><td>主要對話模型</td></tr>
+<tr><td>Leonardo.ai</td><td>Leonardo</td><td>圖片生成</td></tr>
+</table>
+
+<h2>4. 頻道設定</h2>
+
+<h3>4.1 Telegram</h3>
+<table>
+<tr><th>項目</th><th>內容</th></tr>
+<tr><td>Bot Token</td><td>已設定（隱藏）</td></tr>
+<tr><td>使用者 ID</td><td>1181571031（CHEWEI TSAI）</td></tr>
+<tr><td>新使用者</td><td>8791841706</td></tr>
+</table>
+
+<h3>4.2 LINE</h3>
+<table>
+<tr><th>項目</th><th>內容</th></tr>
+<tr><td>Webhook URL</td><td>已設定（https://...ngrok-free.dev/webhook/line）</td></tr>
+<tr><td>新使用者</td><td>Uf682bf6de184eb6b3311f01299395628</td></tr>
+</table>
+
+<h2>5. 常用指令</h2>
+
+<h3>5.1 OpenClaw 基本指令</h3>
+<pre>
+# 查看狀態
+openclaw status
+
+# 查看幫助
+openclaw help
+
+# 啟動 Gateway
+openclaw gateway start
+
+# 停止 Gateway
+openclaw gateway stop
+
+# 重啟 Gateway
+openclaw gateway restart
+
+# 設定 Telegram Bot Token
+openclaw config set channels.telegram.botToken "YOUR_TOKEN"
+
+# 設定 Brave Search API Key
+openclaw config set plugins.entries.brave.config.webSearch.apiKey "YOUR_KEY"
+</pre>
+
+<h3>5.2 Cron 排程指令</h3>
+<pre>
+# 查看排程
+openclaw cron list
+
+# 新增排程
+openclaw cron add "30 8 * * *" --message "你的任務"
+
+# 刪除排程
+openclaw cron delete JOB_ID
+
+# 手動執行排程
+openclaw cron run JOB_ID
+</pre>
+
+<h3>5.3 查詢與修改設定</h3>
+<pre>
+# 查看設定檔位置
+openclaw config file
+
+# 設定值
+openclaw config set KEY VALUE
+
+# 取得值
+openclaw config get KEY
+
+# 刪除值
+openclaw config unset KEY
+</pre>
+
+<h2>6. 備份與還原</h2>
+
+<h3>6.1 自動備份</h3>
+<p>每日 19:00 系統會自動產生備份，位於：</p>
+<code>~/.openclaw/backups/YYYY-MM-DD/</code>
+
+<h3>6.2 手動備份指令</h3>
+<pre>
+# 備份設定檔
+cp ~/.openclaw/openclaw.json ~/.openclaw/backups/openclaw.json.$(date +%Y%m%d)
+
+# 備份排程
+cp ~/.openclaw/cron/jobs.json ~/.openclaw/backups/jobs.json.$(date +%Y%m%d)
+
+# 備份記憶檔案
+cp -r ~/.openclaw/workspace/memory/ ~/.openclaw/backups/memory.$(date +%Y%m%d)
+</pre>
+
+<h3>6.3 還原指令</h3>
+<pre>
+# 還原設定檔
+cp ~/.openclaw/backups/openclaw.json.YYYYMMDD ~/.openclaw/openclaw.json
+
+# 還原排程
+cp ~/.openclaw/backups/jobs.json.YYYYMMDD ~/.openclaw/cron/jobs.json
+
+# 重啟 Gateway 生效
+openclaw gateway restart
+</pre>
+
+<h2>7. 安裝新功能的方式</h2>
+
+<h3>7.1 安裝外掛</h3>
+<pre>
+# 透過 npm 安裝（以 LINE 為例）
+npm install -g @openclaw/line
+
+# 或在 openclaw.json 中設定
+{
+  "plugins": {
+    "entries": {
+      "line": {
+        "enabled": true,
+        "config": {}
+      }
+    }
+  }
+}
+</pre>
+
+<h3>7.2 安裝 Skills（技能）</h3>
+<pre>
+# Skills 放在 ~/.openclaw/skills/ 目錄下
+# 每個 skill 是一個資料夾，包含 SKILL.md 說明檔
+
+# 建議的 Skills：
+# - weather：天氣查詢
+# - node-connect：節點連線診斷
+# - healthcheck：系統健康檢查
+</pre>
+
+<h3>7.3 新增排程任務</h3>
+<pre>
+# 透過指令建立
+openclaw cron add "0 9 * * *" --message "每日任務描述" --delivery telegram --to 1181571031
+
+# 或手動編輯 jobs.json
+{
+  "id": "unique-job-id",
+  "name": "任務名稱",
+  "enabled": true,
+  "schedule": {
+    "kind": "cron",
+    "expr": "0 9 * * *",
+    "tz": "Asia/Taipei"
+  },
+  "payload": {
+    "kind": "agentTurn",
+    "message": "任務內容",
+    "timeoutSeconds": 180
+  },
+  "delivery": {
+    "mode": "announce",
+    "channel": "telegram",
+    "to": "1181571031"
+  }
+}
+</pre>
+
+<h2>8. 疑難排解</h2>
+
+<h3>8.1 常見問題</h3>
+<table>
+<tr><th>問題</th><th>解決方式</th></tr>
+<tr><td>Gateway 無法啟動</td><td>檢查設定檔語法：openclaw config file</td></tr>
+<tr><td>Telegram 無法收發</td><td>確認 Bot Token 正確、網路連線正常</td></tr>
+<tr><td>LINE Webhook 失敗</td><td>確認 ngrok URL 已更新、WEBHOOK 設定正確</td></tr>
+<tr><td>排程 Timeout</td><td>增加 timeoutSeconds 數值（目前已設為 300 秒）</td></tr>
+<tr><td>Brave Search 失敗</td><td>確認 API Key 有效，檢查用量是否達上限</td></tr>
+</table>
+
+<h3>8.2 日誌查看</h3>
+<pre>
+# 查看 Gateway 日誌
+tail -f ~/.openclaw/logs/gateway.log
+
+# 查看設定變更記錄
+cat ~/.openclaw/logs/config-audit.jsonl | tail -20
+</pre>
+
+<h2>9. 系統規格</h2>
+
+<table>
+<tr><th>項目</th><th>內容</th></tr>
+<tr><td>主機類型</td><td>VMware 虛擬機</td></tr>
+<tr><td>作業系統</td><td>Ubuntu/Linux 6.17.0</td></tr>
+<tr><td>CPU</td><td>詳見 /proc/cpuinfo</td></tr>
+<tr><td>記憶體</td><td>詳見 /proc/meminfo</td></tr>
+<tr><td>磁碟空間</td><td>df -h 查看</td></tr>
+<tr><td>太陽能面板</td><td>200W × 1</td></tr>
+<tr><td>蓄電池</td><td>湯淺 NP40-12B × 3（12V 120Ah）</td></tr>
+<tr><td>MPPT 效率</td><td>95%</td></tr>
+</table>
+
+<div class="success">
+<strong>報告產生時間：</strong>2026-04-02 21:16<br>
+<strong>OpenClaw 版本：</strong>最新穩定版<br>
+<strong>下次系統備份：</strong>每日 19:00 自動執行
+</div>
+
+</body>
+</html>

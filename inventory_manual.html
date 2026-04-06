@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>庫存管理系統 - 操作手冊</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif; background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%); min-height: 100vh; padding: 20px; }
+.container { max-width: 900px; margin: 0 auto; }
+.header { background: white; border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+.header h1 { color: #1a5276; font-size: 2.5em; margin-bottom: 10px; }
+.header .subtitle { color: #666; font-size: 1.2em; }
+.header .version { background: #e74c3c; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; margin-top: 15px; }
+.card { background: white; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+.card h2 { color: #1a5276; font-size: 1.5em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #3498db; display: flex; align-items: center; gap: 10px; }
+.card h3 { color: #2c3e50; font-size: 1.2em; margin: 20px 0 10px 0; }
+.card p, .card li { color: #555; line-height: 1.8; font-size: 1em; }
+.card ul { padding-left: 25px; }
+.card li { margin-bottom: 10px; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
+.feature-item { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+.feature-item .icon { font-size: 2.5em; margin-bottom: 10px; }
+.feature-item .title { font-weight: bold; font-size: 1.1em; }
+.feature-item .desc { font-size: 0.9em; opacity: 0.9; margin-top: 5px; }
+.flow-chart { background: #f8f9fa; border-radius: 12px; padding: 25px; margin: 20px 0; }
+.flow-step { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.flow-num { background: #3498db; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+.flow-text { color: #333; font-size: 1em; }
+.flow-arrow { text-align: center; color: #3498db; font-size: 1.5em; margin: 5px 0; }
+.link-box { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; margin: 15px 0; }
+.link-box a { color: white; font-size: 1.3em; font-weight: bold; text-decoration: none; }
+.info-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+.info-table th { background: #34495e; color: white; padding: 12px 15px; text-align: left; }
+.info-table td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
+.info-table tr:hover { background: #f8f9fa; }
+.info-table .highlight { background: #fff3cd; font-weight: bold; }
+.faq-item { background: #f8f9fa; border-radius: 10px; padding: 15px 20px; margin-bottom: 12px; border-left: 4px solid #3498db; }
+.faq-q { color: #1a5276; font-weight: bold; margin-bottom: 5px; }
+.faq-a { color: #666; font-size: 0.95em; }
+.footer { text-align: center; padding: 30px; color: rgba(255,255,255,0.8); font-size: 0.9em; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } .header h1 { font-size: 1.8em; } }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📦 庫存管理系統</h1>
+<p class="subtitle">神腦國際門市庫存追蹤解決方案</p>
+<span class="version">v1.0 | 2026-04-04</span>
+</div>
+
+<div class="card">
+<h2>✨ 功能特色</h2>
+<div class="feature-grid">
+<div class="feature-item">
+<div class="icon">📸</div>
+<div class="title">LINE 照片上傳</div>
+<div class="desc">AI 自動辨識商品</div>
+</div>
+<div class="feature-item">
+<div class="icon">🌐</div>
+<div class="title">網頁即時查看</div>
+<div class="desc">隨時掌握庫存狀態</div>
+</div>
+<div class="feature-item">
+<div class="icon">📷</div>
+<div class="title">條碼掃描</div>
+<div class="desc">快速查詢商品資料</div>
+</div>
+<div class="feature-item">
+<div class="icon">✅</div>
+<div class="title">勾選確認</div>
+<div class="desc">標記已盤點商品</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔄 操作流程</h2>
+<div class="flow-chart">
+<div class="flow-step">
+<div class="flow-num">1</div>
+<div class="flow-text">打開 LINE，進入「庫存管理 Bot」</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step">
+<div class="flow-num">2</div>
+<div class="flow-text">拍攝商品照片（盡量清晰）</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step">
+<div class="flow-num">3</div>
+<div class="flow-text">傳照片給 Bot，並說「<strong>我要盤點</strong>」</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step">
+<div class="flow-num">4</div>
+<div class="flow-text">Bot 自動分析照片，更新資料庫</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step">
+<div class="flow-num">5</div>
+<div class="flow-text">在網頁查看最新庫存</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🌐 網頁功能</h2>
+<div class="two-col">
+<div>
+<h3>🔍 搜尋功能</h3>
+<p>輸入品號或品名，即時過濾顯示結果</p>
+<h3>📷 掃描查詢</h3>
+<p>開啟相機掃描條碼，快速查詢商品</p>
+</div>
+<div>
+<h3>✏️ 確認模式</h3>
+<p>勾選已盤點商品，可輸入備註</p>
+<h3>📊 統計看板</h3>
+<p>一目了然：品項數、總庫存、有貨/缺貨</p>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔗 連結資訊</h2>
+<div class="link-box">
+<div style="font-size:0.9em;margin-bottom:10px;">庫存網頁</div>
+<a href="https://jhetsai.github.io/inventory/">jhetsai.github.io/inventory</a>
+</div>
+<table class="info-table">
+<tr><th>項目</th><th>說明</th></tr>
+<tr><td>品號</td><td>商品的唯一識別碼（條碼），不自動換行</td></tr>
+<tr><td>品名</td><td>商品名稱，自動換行</td></tr>
+<tr><td>實際</td><td>實體店面庫存數量</td></tr>
+<tr><td>網購</td><td>網路通路庫存數量</td></tr>
+<tr><td>✓</td><td>是否已確認盤點</td></tr>
+<tr><td>備註</td><td>額外備註資訊</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>❓ 常見問題</h2>
+<div class="faq-item">
+<div class="faq-q">Q：網頁顯示 404？</div>
+<div class="faq-a">可能是 GitHub Pages 部署延遲，等待 15-30 秒後再試</div>
+</div>
+<div class="faq-item">
+<div class="faq-q">Q：LINE Bot 無回應？</div>
+<div class="faq-a">檢查網路連線，或過幾分鐘後再試</div>
+</div>
+<div class="faq-item">
+<div class="faq-q">Q：掃描失敗？</div>
+<div class="faq-a">確保光線充足、對準條碼、保持手機穩定</div>
+</div>
+</div>
+
+<div class="footer">
+<p>📦 庫存管理系統 v1.0</p>
+<p>維護：蝦助 🦐 | 有問題找蔡哲維</p>
+</div>
+</div>
+</body>
+</html>
