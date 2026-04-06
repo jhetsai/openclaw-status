@@ -1,98 +1,48 @@
-# LINE Bot 庫存照片處理流程（確認模式 v2）
+# LINE Bot 處理流程
 
-## 核心概念
-收到照片 → 暫存辨識結果 → 用戶回「盤點資料正確」→ 正式更新
+## 當用戶說「想要下載檔案」或「想要OOO檔案」時：
 
-## 處理步驟
+### 步驟1：確認檔案
+根據用戶說的檔案名稱，找到對應檔案：
 
-### 第一步：收到照片
-1. 分析照片（AI 視覺辨識）
-2. 將辨識結果存入暫存檔：`~/.openclaw/workspace/temp_pending_inventory.json`
+| 用戶說的 | 實際檔案位置 |
+|----------|--------------|
+| 減肥計畫 | /home/jhe/.openclaw/workspace/posters/WEIGHT_LOSS_PLAN.pdf |
+| 新生報到海報 | /home/jhe/.openclaw/workspace/posters/poster_new_student.png |
 
-格式：
-```json
-{
-  "user_id": "LINE user ID",
-  "timestamp": "ISO時間",
-  "items": [
-    {"code": "品號", "name": "品名", "quantity": 數量, "onlineQuantity": 網購}
-  ]
-}
-```
-
-3. 回覆用戶（格式化表格）：
-```
-📷 AI 辨識結果：
-
-| 品號 | 品名 | 實際 | 網購 |
-|------|------|------|------|
-| 050323670002 | Apple iPhone 15 黑 128GB | 1 | 0 |
-...
-
-請回覆「盤點資料正確」確認更新，或說「修改 [品號] 數量改成 [新數量]」
-```
-
-### 第二步：等待用戶回覆
-
-**如果用戶回「盤點資料正確」或「確認」：**
-1. 檢查 `temp_pending_inventory.json` 是否存在且用戶匹配
-2. 讀取暫存資料
-3. 合併到 `inventory.json`（累積模式）
-4. 更新 `last_updated`
-5. 刪除暫存檔
-6. 回覆：「✅ 已更新！25項商品，請到 https://jhetsai.github.io/inventory/ 查看」
-
-**如果用戶回「修改 [品號] 數量改成 [新數量]」：**
-1. 找出該品項
-2. 更新數量
-3. 重新顯示結果表格
-4. 繼續等待「盤點資料正確」
-
-**如果用戶回「取消」：**
-1. 刪除暫存檔
-2. 回覆：「❌ 已取消，資料不會更新」
-
----
-
-## 共享檔案下載流程
-
-### 收到用戶要檔案時：
-1. 確認是哪個檔案
-2. 上傳到 GitHub：`~/.openclaw/shared-files/`
-3. 產生下載連結
-
-### 下載頁面格式：
-```
-https://jhetsai.github.io/shared-files/download.html?file=[資料夾]/[檔案名稱]&code=[隨機驗證碼]
-```
-
-### 驗證碼：
-- 每次分享產生新的 4-6 位驗證碼
-- 告知用戶驗證碼讓他們下載
-
-### 直接傳送：
-- Telegram（宜芬 ID: 8791841706）：可以直接主動傳訊息
-- LINE（阿林 ID: U099adbdf...）：需要等用戶先傳訊息才能回覆
-
----
-
-## 資料合併邏輯
-
-累積模式：
-- 如果品號已存在 → 更新數量
-- 如果品號不存在 → 新增品項
-
----
-
-## 同步到 GitHub
+### 步驟2：上傳到 Cloudflare R2
+使用 upload_r2.py 腳本：
 ```bash
-cd /tmp && git clone https://github.com/jhetsai/inventory.git
-cp ~/.openclaw/workspace/senao_inventory.json inventory/inventory.json
-cd inventory && git add -A && git commit -m "Update $(date +%Y-%m-%d_%H:%M)" && git push
+python3 /home/jhe/.openclaw/workspace/scripts/upload_r2.py <檔案路徑>
+```
+
+### 步驟3：取得下載連結
+R2 公開網址格式：
+```
+https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/檔案名稱
+```
+
+### 步驟4：回覆用戶
+直接傳送下載連結給用戶，例如：
+```
+這是下載連結：
+https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/減肥計畫.pdf
+
+點下去就可以下載了！🦐
 ```
 
 ---
 
-## 注意
-- timeout：暫存結果保留 30 分鐘，逾時自動刪除
-- 只更新 `senao_inventory.json`（同時備份到 GitHub inventory repo）
+## 常用檔案對照表
+
+| 用戶說的關鍵字 | 檔案 | R2 連結 |
+|---------------|------|---------|
+| 減肥計畫 | WEIGHT_LOSS_PLAN.pdf | https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/WEIGHT_LOSS_PLAN.pdf |
+| 新生報到 | poster_new_student.png | https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/poster_new_student.png |
+
+---
+
+## 重要提醒
+- R2 上傳後**馬上就能下載**（即時）
+- 連結是公開的，任何有連結的人都可以下載
+- 如果是阿林或宜芬需要的檔案，直接用 R2 連結回覆
