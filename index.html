@@ -19,8 +19,7 @@
         .status-item .value.warning { color: #f57c00; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e8f5e9; color: #2e7d32; }
         .time { color: #888; font-size: 12px; }
-         .solar-note { font-size: 11px; color: #888; margin-top: 10px; font-style: italic; }
-    .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
+        .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
         .refresh-btn { background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; }
         .refresh-btn:hover { background: #1565c0; }
         .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -39,12 +38,23 @@
         .task-item .badge { font-size: 10px; }
         .task-item .badge.direct { background: #e3f2fd; color: #1976d2; }
         .task-item .badge.confirm { background: #fff3e0; color: #f57c00; }
+        .solar-card { background: linear-gradient(135deg, #fff8e1, #ffecb3); border-radius: 10px; padding: 15px; margin-bottom: 12px; }
+        .solar-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .solar-row:last-child { border-bottom: none; }
+        .solar-row .icon { font-size: 20px; }
+        .solar-row .label { flex: 1; color: #666; font-size: 13px; }
+        .solar-row .value { font-weight: 600; color: #333; font-size: 14px; }
+        .solar-row .value.good { color: #2e7d32; }
+        .solar-row .value.med { color: #f57c00; }
+        .solar-row .value.low { color: #c62828; }
+        .solar-note { font-size: 11px; color: #888; margin-top: 10px; font-style: italic; }
+        .weather-est { display: inline-block; background: #1976d2; color: white; padding: 3px 10px; border-radius: 6px; font-size: 12px; margin-left: 8px; }
     </style>
 </head>
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：2026-04-07 12:53:50 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">更新時間：2026-04-07 13:22:35 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
 <div class="card">
     <h3>🖥️ 主機資訊</h3>
@@ -77,6 +87,18 @@
 </div>
 
 <div class="card">
+    <h3>☀️ 太陽能發電估計 <span class="weather-est" id="wx-est">天氣載入中...</span></h3>
+    <div class="solar-card">
+        <div class="solar-row"><span class="icon">🔋</span><span class="label">蓄電池狀態</span><span class="value">需手動檢查</span></div>
+        <div class="solar-row"><span class="icon">🌡️</span><span class="label">面板參考溫度</span><span class="value" id="solar-temp">--°C</span></div>
+        <div class="solar-row"><span class="icon">☀️</span><span class="label">天氣型態</span><span class="value" id="solar-wx">--</span></div>
+        <div class="solar-row"><span class="icon">⚡</span><span class="label">預估發電量/天</span><span class="value" id="solar-est">-- 度</span></div>
+        <div class="solar-row"><span class="icon">📊</span><span class="label">發電效率</span><span class="value" id="solar-eff">--</span></div>
+    </div>
+    <div class="solar-note">※ 系統規格：200W 面板 × 1 / MPPT 控制器 / 湯淺 NP40-12B × 3 並聯 (1,440Wh)</div>
+</div>
+
+<div class="card">
     <h3>🚀 OpenClaw 服務</h3>
     <div class="status-grid">
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
@@ -84,6 +106,15 @@
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
     </div>
+</div>
+
+<div class="card">
+    <h3>📱 通訊服務</h3>
+    <table>
+        <tr><th>服務</th><th>狀態</th><th>說明</th></tr>
+        <tr><td>Telegram Bot</td><td><span class="badge">運行中</span></td><td>Bot ID: 8793435853</td></tr>
+        <tr><td>LINE Bot</td><td><span class="badge">運行中</span></td><td>Webhook: ngrok</td></tr>
+    </table>
 </div>
 
 <div class="card">
@@ -103,20 +134,7 @@
     </div>
 </div>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 12:53:50</div>
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 13:22:35</div>
 </div>
 </body>
 </html>
-
-<div class="card">
-    <h3>☀️ 太陽能發電系統</h3>
-    <div class="status-grid">
-        <div class="status-item"><div class="label">面板功率</div><div class="value">200W</div></div>
-        <div class="status-item"><div class="label">蓄電池</div><div class="value">湯淺 NP40-12B × 3</div></div>
-        <div class="status-item"><div class="label">總容量</div><div class="value">1,440 Wh</div></div>
-        <div class="status-item"><div class="label">控制器</div><div class="value">MPPT (95-98%)</div></div>
-        <div class="status-item"><div class="label">目前發電</div><div class="value" id="solar-power">讀取中...</div></div>
-        <div class="status-item"><div class="label">發電狀態</div><div class="value" id="solar-status">--</div></div>
-    </div>
-    <div class="solar-note">※ 蓄電池電壓低於 12.0V 應停止放電，低於 11.5V 有危險</div>
-</div>
