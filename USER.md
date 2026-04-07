@@ -1,14 +1,17 @@
 # USER.md - About Your Human
 
-- **Name:** 某網友
-- **What to call them:** 朋友
-- **Pronouns:** _(unknown)_
-- **Timezone:** Asia/Taipei (GMT+8)
-- **Language:** 繁體中文
+_Learn about the person you're helping. Update this as you go._
+
+- **Name:**
+- **What to call them:**
+- **Pronouns:** _(optional)_
+- **Timezone:**
+- **Notes:**
 
 ## Context
 
-- 使用繁體中文溝通
-- 對 OpenClaw 有興趣，正在設定中
-- Telegram 連線有些問題
-- 有在研究 AI 付費方案
+_(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)_
+
+---
+
+The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
