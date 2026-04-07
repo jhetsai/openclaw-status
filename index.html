@@ -138,3 +138,54 @@
 </div>
 </body>
 </html>
+<script>
+async function loadSolarEst() {
+    try {
+        // 從 wttr.in 取得天氣
+        const resp = await fetch('https://wttr.in/Shuilin,Taiwan?format=j1');
+        const data = await resp.json();
+        const current = data.current_condition[0];
+        const temp = current.temp_C;
+        const weather = current.weatherDesc[0].value;
+        const cloudcover = parseInt(current.cloudcover) || 0;
+        const humidity = current.humidity;
+        
+        // 天氣圖示
+        let wxIcon = '☀️';
+        let wxText = weather;
+        if(weather.toLowerCase().includes('rain') || weather.toLowerCase().includes('雨')) { wxIcon = '🌧️'; wxText = '雨天'; }
+        else if(weather.toLowerCase().includes('cloud') || weather.toLowerCase().includes('雲')) { wxIcon = '☁️'; wxText = '多雲'; }
+        else if(weather.toLowerCase().includes('overcast') || weather.toLowerCase().includes('陰')) { wxIcon = '🌥️'; wxText = '陰天'; }
+        else if(weather.toLowerCase().includes('mist') || weather.toLowerCase().includes('fog')) { wxIcon = '🌫️'; wxText = '霧/濛'; }
+        
+        // 發電估算（200W 面板）
+        // 標準測試條件：1000W/m² 輻射，25°C
+        // 陰天 ≈ 20-30% 效率，多雲 ≈ 40-50%，晴天 ≈ 70-85%
+        let efficiency, estKwh;
+        if(weather.toLowerCase().includes('rain') || weather.toLowerCase().includes('雨')) {
+            efficiency = '5-15%'; estKwh = '0.0-0.2';
+        } else if(weather.toLowerCase().includes('overcast') || weather.toLowerCase().includes('陰')) {
+            efficiency = '20-30%'; estKwh = '0.3-0.5';
+        } else if(weather.toLowerCase().includes('cloud') || weather.toLowerCase().includes('雲')) {
+            efficiency = '40-55%'; estKwh = '0.5-0.8';
+        } else {
+            efficiency = '65-85%'; estKwh = '0.8-1.2';
+        }
+        
+        // 溫度影響（超過25°C效率下降）
+        if(temp > 35) { efficiency = '偏熱效率下降'; }
+        
+        document.getElementById('solar-temp').textContent = temp + '°C';
+        document.getElementById('solar-wx').textContent = wxIcon + ' ' + wxText;
+        document.getElementById('solar-est').textContent = estKwh + ' 度';
+        document.getElementById('solar-eff').textContent = efficiency;
+        document.getElementById('wx-est').textContent = wxIcon + ' ' + temp + '°C';
+        
+    } catch(e) {
+        document.getElementById('wx-est').textContent = '無法取得';
+        document.getElementById('solar-temp').textContent = '--';
+        document.getElementById('solar-wx').textContent = '天氣資料取得失敗';
+    }
+}
+loadSolarEst();
+</script>
