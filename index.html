@@ -19,7 +19,8 @@
         .status-item .value.warning { color: #f57c00; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e8f5e9; color: #2e7d32; }
         .time { color: #888; font-size: 12px; }
-        .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
+         .solar-note { font-size: 11px; color: #888; margin-top: 10px; font-style: italic; }
+    .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
         .refresh-btn { background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; }
         .refresh-btn:hover { background: #1565c0; }
         .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -106,3 +107,16 @@
 </div>
 </body>
 </html>
+
+<div class="card">
+    <h3>☀️ 太陽能發電系統</h3>
+    <div class="status-grid">
+        <div class="status-item"><div class="label">面板功率</div><div class="value">200W</div></div>
+        <div class="status-item"><div class="label">蓄電池</div><div class="value">湯淺 NP40-12B × 3</div></div>
+        <div class="status-item"><div class="label">總容量</div><div class="value">1,440 Wh</div></div>
+        <div class="status-item"><div class="label">控制器</div><div class="value">MPPT (95-98%)</div></div>
+        <div class="status-item"><div class="label">目前發電</div><div class="value" id="solar-power">讀取中...</div></div>
+        <div class="status-item"><div class="label">發電狀態</div><div class="value" id="solar-status">--</div></div>
+    </div>
+    <div class="solar-note">※ 蓄電池電壓低於 12.0V 應停止放電，低於 11.5V 有危險</div>
+</div>
