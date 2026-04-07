@@ -17,6 +17,7 @@
         .status-item .value { font-size: 16px; font-weight: 600; }
         .status-item .value.running { color: #2e7d32; }
         .status-item .value.warning { color: #f57c00; }
+        .status-item .sub { font-size: 11px; color: #888; margin-top: 2px; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e8f5e9; color: #2e7d32; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th, td { border: 1px solid #e0e0e0; padding: 10px 12px; text-align: left; }
@@ -57,14 +58,12 @@
 
 <div class="card">
     <h3>🔗 線上服務連結</h3>
-    <table>
-        <tr><th>服務</th><th>連結</th><th>說明</th></tr>
-        <tr><td>📦 庫存系統</td><td><a href="https://jhetsai.github.io/inventory/" target="_blank">jhetsai.github.io/inventory/</a></td><td>LINE 照片上傳庫存盤點</td></tr>
-        <tr><td>📊 系統狀態</td><td><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">jhetsai.github.io/openclaw-status/</a></td><td>每小時自動更新</td></tr>
-        <tr><td>🌾 農田天氣</td><td><a href="https://jhetsai.github.io/agri-weather/" target="_blank">jhetsai.github.io/agri-weather/</a></td><td>農田氣象資訊</td></tr>
-        <tr><td>📉 台電電費</td><td><a href="https://jhetsai.github.io/electricity/" target="_blank">jhetsai.github.io/electricity/</a></td><td>用電分析與帳單</td></tr>
-        <tr><td>📁 開放倉庫</td><td><a href="https://github.com/jhetsai/openclaw" target="_blank">github.com/jhetsai/openclaw</a></td><td>台電系統開源</td></tr>
-    </table>
+    <div class="status-grid">
+        <div class="status-item"><div class="label">📦 庫存系統</div><div class="value"><a href="https://jhetsai.github.io/inventory/" target="_blank">jhetsai.github.io/inventory/</a></div><div class="sub">LINE 照片上傳庫存盤點</div></div>
+        <div class="status-item"><div class="label">📊 系統狀態</div><div class="value"><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">jhetsai.github.io/openclaw-status/</a></div><div class="sub">每小時自動更新</div></div>
+        <div class="status-item"><div class="label">🌾 農田天氣</div><div class="value"><a href="https://jhetsai.github.io/agri-weather/" target="_blank">jhetsai.github.io/agri-weather/</a></div><div class="sub">農田氣象資訊</div></div>
+        <div class="status-item"><div class="label">📉 台電電費</div><div class="value"><a href="https://jhetsai.github.io/electricity/" target="_blank">jhetsai.github.io/electricity/</a></div><div class="sub">用電分析與帳單</div></div>
+    </div>
 </div>
 
 <div class="card">
