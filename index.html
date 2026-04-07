@@ -28,19 +28,19 @@
         .refresh-btn:hover { background: #1565c0; }
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
-        .link-item { display: flex; align-items: center; gap: 8px; background: #f8f9fa; border-radius: 8px; padding: 10px 12px; }
-        .link-item .icon { font-size: 18px; }
-        .link-item .info { flex: 1; }
-        .link-item .name { font-weight: 600; font-size: 13px; color: #333; }
-        .link-item .desc { font-size: 11px; color: #888; }
-        .link-item a { font-size: 12px; color: #1976d2; }
+        .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .service-card { background: #f8f9fa; border-radius: 10px; padding: 15px; text-align: center; }
+        .service-card .icon { font-size: 28px; margin-bottom: 8px; }
+        .service-card .name { font-weight: 600; font-size: 14px; color: #333; margin-bottom: 4px; }
+        .service-card .desc { font-size: 12px; color: #888; margin-bottom: 8px; }
+        .service-card a { display: inline-block; background: #1976d2; color: white; padding: 5px 12px; border-radius: 6px; font-size: 12px; }
+        .service-card a:hover { background: #1565c0; text-decoration: none; }
     </style>
 </head>
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：2026-04-07 12:46:52 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">更新時間：2026-04-07 12:49:34 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
 <div class="card">
     <h3>🖥️ 主機資訊</h3>
@@ -64,11 +64,11 @@
 
 <div class="card">
     <h3>🔗 線上服務</h3>
-    <div class="links-grid">
-        <div class="link-item"><span class="icon">📦</span><div class="info"><div class="name">庫存系統</div><a href="https://jhetsai.github.io/inventory/" target="_blank">庫存盤點</a></div></div>
-        <div class="link-item"><span class="icon">📊</span><div class="info"><div class="name">系統狀態</div><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">每小時更新</a></div></div>
-        <div class="link-item"><span class="icon">🌾</span><div class="info"><div class="name">農田天氣</div><a href="https://jhetsai.github.io/agri-weather/" target="_blank">氣象資訊</a></div></div>
-        <div class="link-item"><span class="icon">📁</span><div class="info"><div class="name">電費統計</div><a href="https://jhetsai.github.io/electricity/" target="_blank">台電電費</a></div></div>
+    <div class="service-grid">
+        <div class="service-card"><div class="icon">📦</div><div class="name">庫存系統</div><div class="desc">LINE 照片上傳庫存盤點</div><a href="https://jhetsai.github.io/inventory/" target="_blank">開啟</a></div>
+        <div class="service-card"><div class="icon">📊</div><div class="name">系統狀態</div><div class="desc">每小時自動更新</div><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">開啟</a></div>
+        <div class="service-card"><div class="icon">🌾</div><div class="name">農田天氣</div><div class="desc">農田氣象資訊</div><a href="https://jhetsai.github.io/agri-weather/" target="_blank">開啟</a></div>
+        <div class="service-card"><div class="icon">📁</div><div class="name">電費統計</div><div class="desc">台電電費查詢</div><a href="https://jhetsai.github.io/electricity/" target="_blank">開啟</a></div>
     </div>
 </div>
 
@@ -105,7 +105,7 @@
     </table>
 </div>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 12:46:52</div>
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 12:49:34</div>
 </div>
 </body>
 </html>
