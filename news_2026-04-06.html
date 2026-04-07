@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 晨間新聞簡報 2026/04/06</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif; background: #f5f7fa; color: #1a1a2e; max-width: 900px; margin: 0 auto; padding: 16px; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 24px; border-radius: 16px; margin-bottom: 16px; text-align: center; }
+  .header h1 { font-size: 1.8em; margin-bottom: 8px; }
+  .header .subtitle { color: #aab; font-size: 0.95em; }
+  .weather-card { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .weather-main { text-align: center; }
+  .weather-temp { font-size: 3em; font-weight: bold; }
+  .weather-desc { font-size: 1.1em; opacity: 0.9; }
+  .weather-detail { font-size: 0.9em; opacity: 0.85; }
+  .weather-detail div { margin: 4px 0; }
+  .section { background: white; border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .section-title { font-size: 1.1em; font-weight: bold; color: #1a1a2e; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 8px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; }
+  .tag-taiwan { background: #e74c3c; color: white; }
+  .tag-global { background: #2980b9; color: white; }
+  .tag-economy { background: #27ae60; color: white; }
+  .tag-sports { background: #f39c12; color: white; }
+  .tag-mlb { background: #8e44ad; color: white; }
+  ul.news-list { list-style: none; }
+  ul.news-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.92em; line-height: 1.5; }
+  ul.news-list li:last-child { border-bottom: none; }
+  ul.news-list li::before { content: "•"; color: #aaa; margin-right: 8px; }
+  .hot-topic { background: #fff3cd; border: 1px solid #ffc; border-radius: 8px; padding: 12px; margin-bottom: 14px; }
+  .hot-topic-title { font-weight: bold; color: #d35400; margin-bottom: 6px; font-size: 0.95em; }
+  .weather-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .weather-hour { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px; text-align: center; font-size: 0.8em; }
+  .weather-hour .time { opacity: 0.8; font-size: 0.85em; }
+  .weather-hour .temp { font-size: 1.3em; font-weight: bold; }
+  .footer { text-align: center; color: #999; font-size: 0.8em; padding: 12px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } .weather-card { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📰 晨間新聞簡報</h1>
+  <div class="subtitle">2026 年 4 月 6 日（一）｜早上 8:00 產生｜雲林水林</div>
+</div>
+
+<div class="weather-card">
+  <div class="weather-main">
+    <div class="weather-temp">25°C</div>
+    <div class="weather-desc">🌥️ 多雲時陰</div>
+    <div style="margin-top:8px; font-size:0.85em; opacity:0.8;">體感 27°C</div>
+  </div>
+  <div class="weather-detail">
+    <div>💧 濕度：94%</div>
+    <div>🌬️ 風速：18 km/h SSW</div>
+    <div>🌧️ 降雨機率：88%（午後）</div>
+    <div>🌅 日出 05:47 / 日落 18:16</div>
+    <div>📅 明日天氣：晴時多雲，30°C</div>
+    <div>⚠️ 鋒面影響：8縣市大雨特報</div>
+  </div>
+</div>
+
+<div class="hot-topic">
+  <div class="hot-topic-title">🔥 今日最熱：中東局勢 — 美伊衝突升級</div>
+  <div style="font-size:0.88em; color:#555;">伊朗封鎖荷姆茲海峽，油價飆破 113 美元。川普下最後通牒，美軍已展開營救行動。</div>
+</div>
+
+<div class="section">
+  <div class="section-title">🇹🇼 台灣重點新聞 <span class="tag tag-taiwan">10則</span></div>
+  <ul class="news-list">
+    <li>阻美營救F-15E飛官！伊朗4軍官陣亡，美伊緊張局勢急劇升級</li>
+    <li>8縣市大雨特報！新一波鋒面明影響全台，中部以北防較大雨勢</li>
+    <li>高雄春捲中毒案爆134人送醫！12人驗出沙門氏菌，業者遭重罰144萬</li>
+    <li>民眾黨內鬥！李貞秀痛罵高虹安「民眾黨罪人」，曾姸潔曬對話截圖</li>
+    <li>傳民眾黨中評會9日處分李貞秀，黃國昌：嚴肅面對、不談遞補</li>
+    <li>中共組「影子艦隊」破壞海纜，我政府網路3個月遭侵擾逾1.7億次</li>
+    <li>國安局報告：政府網路首季遭駭1.7億次，疑中共鋪陳介選</li>
+    <li>Axios：美國伊朗等多方擬停火45天續談永久終戰協議</li>
+    <li>川普轟炸伊朗電廠時限將至，伊朗核電廠198俄員工急回國</li>
+    <li>鄭習會預定4/10登場，藍強調規格合乎對等尊嚴，綠批中共介選</li>
+  </ul>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <div class="section-title">🌏 國際新聞 <span class="tag tag-global">5則</span></div>
+    <ul class="news-list">
+      <li>美軍失聯F-15E飛官已獲救，伊朗4軍官在營救行動中陣亡</li>
+      <li>伊朗揚言封鎖荷姆茲海峽，川普再延最後通牒24小時</li>
+      <li>川普揚言轟伊朗電廠，專家：蓄意襲民用設施恐涉戰爭罪</li>
+      <li>伊朗放行「兄弟之邦」通行荷姆茲，每日有望釋300萬桶原油</li>
+      <li>川普對伊朗核威脅，油價應聲大跌逾12%失避險光環</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💹 經濟新聞 <span class="tag tag-economy">5則</span></div>
+    <ul class="news-list">
+      <li>西德州中級原油破113美元，荷莫茲出現局部解封跡象</li>
+      <li>川普揚言升級對伊攻擊，金價應聲大跌逾12%失避險光環</li>
+      <li>黃金月跌9%、石油月飆41%，比特幣6.6-6.7萬美元橫盤</li>
+      <li>克魯曼：最糟還沒來！油價恐飆至372美元掀全球衰退</li>
+      <li>美國K型經濟變「E型」了，專家警告經濟衰退之虞</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">⚾ 體育新聞 <span class="tag tag-sports">5則</span></div>
+  <ul class="news-list">
+    <li>拳擊亞錦賽》黃筱雯擊退中國女將，勇闖金牌戰！林郁婷不敵北韓無緣金牌</li>
+    <li>中職》鋼龍單局2K超越黃平洋，正式K破味全隊史紀錄！</li>
+    <li>中職》樂天魔爾曼7局無失分奪首勝，樂天1比0完封味全奪2連勝</li>
+    <li>日職》林安可連8戰敲安！擊球速度快令人感到恐怖</li>
+    <li>日職》宋家豪1局登板無失分、古林睿煬完美關門</li>
+  </ul>
+</div>
+
+<div class="section">
+  <div class="section-title">🏆 MLB／日職台灣球員動態 <span class="tag tag-mlb">2026.04.06</span></div>
+  <ul class="news-list">
+    <li><b>日職｜西武獅｜林安可</b>：本季手感火燙，連8戰敲安，擊球速度獲球評高度評價</li>
+    <li><b>日職｜樂天金鷲｜宋家豪</b>：後援1局無失分，順利下莊</li>
+    <li><b>日職｜統一獅｜古林睿煬</b>：後援登板繳出完美關門</li>
+    <li><b>MLB｜紅襪(111)｜鄭宗哲(Shortstop)</b>：4/6為MLB開季日，球隊尚未公佈先發名單</li>
+    <li><b>MLB｜藍鳥(141)｜</b>：球隊尚未公佈先發名單</li>
+    <li><b>MLB｜勇士(144)｜Dylan Lee(Pitcher)</b>：新球季備戰中</li>
+  </ul>
+</div>
+
+<div class="section">
+  <div class="section-title">📺 愛爾達熱門賽事（2026.04.06）</div>
+  <ul class="news-list">
+    <li>⚾ MLB 开幕日：芝加哥小熊 @ 坦帕灣光芒（小熊以逸待劳，揭幕战关注）</li>
+    <li>⚾ MLB：堪薩斯皇家 @ 克里夫蘭守護者</li>
+    <li>⚾ MLB：聖地牙哥教士 @ 匹茲堡海盜</li>
+    <li>🏀 NBA：例行賽最後衝刺階段，季後賽席位卡位激烈</li>
+    <li>⚽ 歐洲足球：英超/西甲/義甲多場精彩對決</li>
+  </ul>
+</div>
+
+<div class="footer">
+  📰 晨間新聞簡報｜2026/04/06｜資料來源：Google News、wttr.in、MLB Stats API<br>
+  由 OpenClaw AI 助理 🦐 自動生成
+</div>
+
+</body>
+</html>

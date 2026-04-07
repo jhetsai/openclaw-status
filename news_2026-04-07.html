@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晨間新聞簡報 - 2026年4月7日</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { text-align: center; padding: 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
+        .header h1 { font-size: 2.2em; margin-bottom: 10px; background: linear-gradient(90deg, #00d9ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header .date { color: rgba(255,255,255,0.7); font-size: 1.1em; }
+        .weather-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 25px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.15); }
+        .weather-card h2 { font-size: 1.3em; margin-bottom: 15px; color: #00d9ff; }
+        .weather-info { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
+        .weather-item { text-align: center; }
+        .weather-item .value { font-size: 2em; font-weight: bold; color: #00ff88; }
+        .weather-item .label { color: rgba(255,255,255,0.6); font-size: 0.9em; margin-top: 5px; }
+        .weather-item .rain { color: #ff6b6b; }
+        .section { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 16px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .section h2 { font-size: 1.4em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
+        .section h2 .emoji { font-size: 1.2em; }
+        .news-item { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .news-item:last-child { border-bottom: none; }
+        .news-item a { color: #fff; text-decoration: none; display: block; transition: all 0.3s; }
+        .news-item a:hover { color: #00d9ff; padding-left: 10px; }
+        .news-item .title { font-size: 1.05em; line-height: 1.5; margin-bottom: 5px; }
+        .news-item .source { color: rgba(255,255,255,0.5); font-size: 0.85em; }
+        .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75em; margin-right: 8px; }
+        .tag.taiwan { background: rgba(0,217,255,0.2); color: #00d9ff; }
+        .tag.international { background: rgba(255,107,107,0.2); color: #ff6b6b; }
+        .highlight { background: linear-gradient(90deg, rgba(255,107,107,0.15), rgba(255,217,61,0.15)); border-left: 4px solid #ff6b6b; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-title { color: #ff6b6b; font-weight: bold; margin-bottom: 5px; }
+        .footer { text-align: center; padding: 30px 0; color: rgba(255,255,255,0.4); font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📰 晨間新聞簡報</h1>
+            <p class="date">2026年4月7日 星期二 | 08:14 AM</p>
+        </div>
+
+        <div class="weather-card">
+            <h2>🌤️ 水林天氣（水林鄉，雲林縣）</h2>
+            <div class="weather-info">
+                <div class="weather-item">
+                    <div class="value">25.3°C</div>
+                    <div class="label">目前氣溫</div>
+                </div>
+                <div class="weather-item">
+                    <div class="value">21.4</div>
+                    <div class="label">風速 (km/h)</div>
+                </div>
+                <div class="weather-item">
+                    <div class="value rain">100%</div>
+                    <div class="label">降雨機率</div>
+                </div>
+                <div class="weather-item">
+                    <div class="value">💧</div>
+                    <div class="label">天氣不穩定<br>全台有雨</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">🇹🇼</span> 台灣頭條</h2>
+            <div class="highlight">
+                <div class="highlight-title">⚠️ 伊朗局勢影響</div>
+                <p>美伊談判、川普威脅轟炸伊朗、中東戰火影響油氣供應、政院評估油氣供應暫無虞但已增產12.5億個塑膠袋因應</p>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE9CWW1yb0JFeHFtS0RXZ2xJRmxWMXdudlpIaFFvV0RaaklyLXh4VGxaeDF2UmNIaDNtR1dNYlN5cHFWejBxU0pUUk0zNmZsYWtNaUtfRE5UbmpMUGpxbW5wVnByOUJBUHAxT2fSAW9BVV95cUxONDFjVTRjLU1VMFZPWGFOM0duMU1BeUNFRXdZc29xU01zRy1SRmM1MlZ1Qllodm5MdXpjNzEydTE1OExCbk1BWXJiQ0VzYzcyN3lrMy04b0RjSGhJYmZGQ0VjNFRPd040dXN0Mjl2eXc" target="_blank">
+                    <div class="title">鄭麗文將啟程訪中會習近平 昔日偕夫雲南祭祖照被翻出</div>
+                    <span class="source">自由時報 | 4/6 22:25</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiigNBVV95cUxNd1YxTlV6Tnl4SFQ3X3VYa3NhTmRIMXp4am53VEZiQkRCeUVCVEstV0NUYzRDMTdMenVWT0NndGlUN3RxanhZUDNSTHNkQk9NeVVFLTBnRk15Z0NlT1RSckVzVUtkQzg2VjNtSTkzTHJvZjc2YUJic1FUTzduLTE1T2JrSXkxQlFUaWVONXZmZXZlT2J2SjJHdzRZNlVpQ202eXFRNTBSbzNnUVY0RXlhNTd5UllUUkFvenl5UEg1T1lfWlhZRUdCQU9RSlg3MXdoMWZVa1pBUFZGc09lcXRlZnZBSExIb2dOTjA5UWtSY0UzU2pSZmVUMHp5bnIyZXNyTGtETmEwT2hSN0lsZ0lzYnBUY2t2S1NkWUdQM0wyRDhhcVpxREI1ZDRDR3g2VWdzQmo3Q2dra2tOWlRJZXBVNFBNRHNuYi1BbTBoSVkxY3hGbE5yNUtZNG14ZGFZS0taM1RjdXFEc3ZOQkQ0SldSNkx6SGI3Mkt3UDEtUVJIUkJjM1REME9HVlhn" target="_blank">
+                    <div class="title">驗出沙門氏菌！高雄春捲食物中毒案增至140人 攤商累計遭罰144萬</div>
+                    <span class="source">Yahoo新聞 | 4/6 10:38</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5SWmtuRHQ3QUxHNWFBUmV6WEVVVzZIa3lGUmI5VUpwcHBKRGlHME51cEZ3eWFJNEtlTUJPbW5ycUFCdnFrcHp5bXUtQy1iVmE0V2hNY29PZGVoaVF0YXNPdUdNZjdNNHFyaVHSAW9BVV95cUxQaTZGTTdCMlpmNXRveVFoOWNHbmFIdzhYRzFaMExNbUtpY1RKS2RjNHBINmF5TnMzTS1QNmtneDdBSEt0bEFhTzFObFhUT05TSHRENFo4ZVdhLWxQZDNvem1CUEk2WEVtRDdYY0xvUVk" target="_blank">
+                    <div class="title">民進黨北市長擬推沈伯洋 徐弘庭：如放棄獲勝 派自殺炸彈客困住蔣萬安</div>
+                    <span class="source">自由時報 | 4/6 15:16</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE5hVDlBd1hKQm04VlE5Nm5obGhIX0tDWHlwYTlPUVZIblhnZmJrLVNyTDhtMlBLdzFDcWxIc05mYW1Pb3FjMjQ3S0lwNWMtWm5zbmhuUVN2OTd4b1BhaVJz" target="_blank">
+                    <div class="title">農業部：WOAH正式核可台灣重返非洲豬瘟非疫國</div>
+                    <span class="source">中央社 CNA | 4/6 08:24</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTFBCN1BheG4ySTZ3NWoxb1hwbWxNd2xPQ0lnNTR0SGJkcnBHNU4zTXBsS05mU1luZHlqUExSVkpYOENIT29DckNWMDY1QnpRaWNBa2840gFYQVVfeXFMUDk1bjNTNngybUZhQmlVUmhneURWSUhsOGo5MU0zS2dqLXdDNEhXYlJ0bXduRFlKTnFPSkVxRG1pYWJRdEF1UllVYWJYYWdMNzY5RVJDeVR3Yw" target="_blank">
+                    <div class="title">因應中東情勢 政院：油氣供應暫無虞 增產12.5億個一斤塑膠袋</div>
+                    <span class="source">聯合新聞網 | 4/6 06:28</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">🌏</span> 國際焦點</h2>
+            <div class="highlight">
+                <div class="highlight-title">🔥 美伊局勢升級</div>
+                <p>川普威脅轟炸伊朗電廠、伊朗最高領袖回嗆繼續封鎖荷莫茲海峽、白宮考慮停火45天提案談判永久終戰協議</p>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBJMldHdlAzWFJFLXZ4QTRtaEFTNm9hOExVeGVzcFdnaFQyNXNFRmFoTHZXeDhGYlFiLVlya0c1NnJDV3d4VVVpMmJNTDBBbUJYZjFjMHdGY0NuMEk?oc=5" target="_blank">
+                    <div class="title">收到風聲最先開跑? 川普轟炸電廠時限將至伊朗核電廠198俄員工急回國</div>
+                    <span class="source">Newtalk新聞 | 4/6 05:53</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTFBZdDNPWDZDRVF2d0duYUFOcllWN0c5UkhrckxsOTJ4aGhxSjY2R3d6M0w5QTdEbWpXYUtKYzRVX1ZIUnRHcFVjVGp0ZUlydEVfaFdBSzhGTEJMT2wxa01B?oc=5" target="_blank">
+                    <div class="title">Axios：美國伊朗等多方擬停火45天續談永久終戰協議</div>
+                    <span class="source">中央社 CNA | 4/6 02:57</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE51UmNoMU5RZjNfVk02NWx6eUNvTDVxZlNxeW5wT1k4QnRKeHR2aXVDYkQzUDRlYk5wcGF3VE45M0M5T3FfQ3VwNHhBSEFrbzNPeU44SGRhZTdMWHJCc3k2aEt1N0lKUdIBa0FVX3lxTE5nUHNkWDRGMHFrT0pyUUJZUUhraG1kOFA3b2NKQ3UtMVBBbk5rYkhBT29DVXdBTlQ4QWFyZVhTQVNkRzNWcElfcmRLVUhma083TTNyOTNtWGNCSkc2Z203M2dDQVJsYi1vbnRn?oc=5" target="_blank">
+                    <div class="title">烏軍宣布收復480平方公里失地 夜間突襲俄軍戰艦</div>
+                    <span class="source">自由時報 | 4/6 12:46</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTFB5ZXdtelhYY1c4YTIzXzF3cG5IU2RqNE1mTG5sWnA5bkZWWW5ZVlJIUlZJZVJWRjlkZjRqNlhDZHQyUllPWm1sZEk5OVhnVG1TcDZBNzdqV1EwenVjemJYa1FtSHl2d9IBa0FVX3lxTE9oQ1c3ekRkUXRzTDRqbmJQSkhrNVN1cFQ0RWZvZUVlOUtSbjQtVHY1UnNWV0hZa1dwTU1RSjdfMW01Y3EwZHZlb3ZHSkc4TWdyaC1SNm5iYURjQnZOZXcxYU4weVZyWEpCbXFj?oc=5" target="_blank">
+                    <div class="title">「阿提米絲二號」太空人今夜將與地球失聯40分鐘 環月衛星通訊網已提上日程</div>
+                    <span class="source">BBC | 4/6 04:57</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">📊</span> 財經要聞</h2>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMi1wJBVV95cUxQRC1JZmNIYTVET1piSXluT3ZzTVE4Q2llc3ZqXzVsNFVQS3BBMU8wRG8tR1JfV2lfOWo5Y0tlWTB5Y1JvY2dSd2x1M2lFRDZJN3VpMEE4bWhEdS1ld3lsN0VfbmhGVVlXM1dKVy1iWWhRY3NQTnp6Qms1dGxmODRnV0lXOGZ4SWNfcWZ6V19UNF9OSktUQ1E2dllobE5hVDlFamxpcHVXTWVJd1B2R0kzQjJxS005X0FQS2pfSG8xWmNPUFBscHF6QW9NY1ZfeXhlMXhaOF9DUWFkZVRJdWI0SjNBdWpHYkhrNDNxWjJlUTQ1SWV1R1NHQXF6WGt6a08wQ2k1ZHptVy1taDQtTGZRaF9uT0g1TUV1c0RTbERaemlCa0NzbkNjZTZ1NGNkWGttMTRWLUlrN0ZRd0NoNXBuenBta2lBejVhSnp1YU93OFFrRU1INDdr?oc=5" target="_blank">
+                    <div class="title">川普伊朗拒停火方案！道瓊上揚165點 台積電ADR小漲近1％</div>
+                    <span class="source">Yahoo股市 | 4/6 22:04</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE82YzZ6RWJZazJsQ3BkZTV3MmxqckJVRXVQc0JpQl9uREhtWmd2TVpBSmpZNmtMZWo2LXRzSmlLdU5aWlg5OE85Wlk0OHNfZk0?oc=5" target="_blank">
+                    <div class="title">無懼洗盤！10檔主動式台股ETF績效仍勝大盤 00992A今年漲逾24%居冠</div>
+                    <span class="source">news.cnyes.com | 4/6 04:16</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMi2wJBVV95cUxQbVp3eUVSWUtVSURsVzZJRzdiV2pIQURSUHlxak9pX3NvYlJjQlEwelUxUnZCM0ptV2tscWg4R1Q3VFVQOFZYRmxYY0NxcmZIMzRDODVqWjBoaTFfTlpKLXJXVkFfVFdGcG1fSzRUWUxNU21idUNibFZqaDBfSWhnekg4aF9hQ3liODkzQW1ZY2UwSUsxLVJDWXE0QmotMUpJdTNpYkhKQm5UR2pvRFlMN0cxY0k5QlZsM09fZmV3Vl9qeEpfVkJNTHpkSF9BYkY5NFN5TUtGVVdyQTIweXNCMDkzVkcyWTJfT3V3d1BkSFFfYzUtWnA3TXliQXRwbzZ1R3Z3Vms2Z05jMGxSS1F0ZFhyWmY4eGpheGNRZW1ZdTRkMnNpYko4VG1faFlhdEdMSzJmdllQRjh5TGFxVnRkd2ZtYVJPNkpoWVJwWFhySWxnS1REMXRqY001dw" target="_blank">
+                    <div class="title">億萬富翁突破2萬人！有錢人理財術曝光1資產占大宗</div>
+                    <span class="source">Yahoo股市 | 4/6 08:44</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">💻</span> 科技動態</h2>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiXkFVX3lxTFBYeGh5MmozNXdMYmFTeVdHMTNQUllPZ1V6Q3NOZU5FdmRBYXotLU9LY3FLU05jMVBrTmQxV1V4amgwb1dVXzY5Zk14cmlnanhyVVcyeUkwSlU3LUwyT2fSAWhBVV95cUxNVWpRdzdSY0RTNk9fblJQSUZZMHFsdlRpeHdGaXFlazVNczRjTWN6VnVtX2tPdVg3VEpzOThDY21ja3FjU2ppX2FQR1FKN3J0Um9PNHZ0X2dKdWJ2aDRKb2lVQ2V2c1d1Mg?oc=5" target="_blank">
+                    <div class="title">iOS26.4更新果粉回報「耗電大增」　蘋果公告給解答：等3天就會好</div>
+                    <span class="source">ETtoday新聞雲 | 4/6 17:00</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiXkFVX3lxTFBnQ0lGZkltN241WUg0S0lKdXZFNmdKMl9GZnFEQXFBeEY0THJIUlBFSlB2TExBdWd3OEQ4RkE4cWxRc1RoOE8wVUtZR2xxZEtIT3d4eUtPZmFiN2xMU3fSAWhBVV95cUxPb0tCcHpEYWlVNjBYaHRuMGRQb1lXVVdWWHc1WDR4NWhqNkJDNWM4SnJPWWhkeEN6ZlJSS3JGQkY2UWJQb1Y3VXdsVE56RnFTU1pRTXJQOVR2Q1k3emVDNmQyQWpCNTYyeg?oc=5" target="_blank">
+                    <div class="title">明天全台降溫有雨　中部以北防劇烈天氣</div>
+                    <span class="source">ETtoday新聞雲 | 4/6 09:18</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="emoji">⚾</span> 體育新聞</h2>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBhVVpQOXo0RktwNGJDSWN6bkRrQTN5VVVqUUJFNEhBTVZLbWlldTRpS09Gek53TXpCcUN2dXhsSWpHemhOcDdHVzB3cEk3ejJyZ29IVGcwdTdjT3ZoYnRkddIBZkFVX3lxTE1TZDkyNkl4N05RX09ia2RUSF95MHhZSU9LWE12bzg4WERYREwwS0tDX25rVkF6bWVZTkthbmYtNmlYXzJnSk1qTTh0ZGRZSkdLdkdZTnN0bG80TEJCTVlmbkJydFpvUQ?oc=5" target="_blank">
+                    <div class="title">中職》林岳谷再見犧飛！悍將延長賽奪勝 兄弟苦吞4連敗、開季1勝6敗</div>
+                    <span class="source">自由體育 | 4/6 13:02</span>
+                </a>
+            </div>
+            <div class="news-item">
+                <a href="https://news.google.com/rss/articles/CBMiUEFVX3lxTFBneWtmSExfTXMydFJpcXozdzNsaDl0dDJ0X2xxV2lqYWk4Sy1PVWUwV3NyVi1uZUV3c1pEaE9RREdwUVhCcFdiUTJhNWRwdHdG0gFWQVVfeXFMT2hxOGVQbzdkS1N4N21kNE9aZVlmN2NYYVR1WVZNMTR6T1h1NElFcUQ5S0Rkc3BfM011NzRkWTRoNUpkLW9YNE12a2d1R1M1NjZKZE94SFE?oc=5" target="_blank">
+                    <div class="title">MLB／佐佐木朗希5局失6分締最慘戰役 道奇教頭說「沒那麼差」</div>
+                    <span class="source">聯合新聞網 | 4/6 01:20</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📰 晨間新聞簡報 | 資料來源：Google News、Open-Meteo</p>
+            <p>🦐 由 蝦助 生成 | 2026-04-07 08:14</p>
+        </div>
+    </div>
+</body>
+</html>
