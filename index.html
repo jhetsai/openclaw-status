@@ -9,7 +9,14 @@
         body { font-family: -apple-system, "Microsoft JhengHei", sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; padding: 20px; font-size: 14px; }
         .container { max-width: 900px; margin: 0 auto; }
         h1 { color: #0d47a1; border-bottom: 3px solid #1976d2; padding-bottom: 12px; margin-bottom: 25px; font-size: 24px; }
-        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card { background: white; border-radius: 12px; padding: 0; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+        .card-header { padding: 18px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fafafa; border-bottom: 1px solid #eee; user-select: none; }
+        .card-header:hover { background: #f0f0f0; }
+        .card-header h3 { color: #333; font-size: 15px; margin: 0; }
+        .card-header .toggle { font-size: 18px; transition: transform 0.2s; }
+        .card-header.collapsed .toggle { transform: rotate(-90deg); }
+        .card-content { padding: 20px; max-height: 2000px; transition: max-height 0.3s ease, padding 0.3s ease; overflow: hidden; }
+        .card-content.collapsed { max-height: 0; padding-top: 0; padding-bottom: 0; }
         .card h3 { color: #333; font-size: 15px; margin-bottom: 15px; }
         .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .status-item { background: #f8f9fa; border-radius: 8px; padding: 12px 15px; }
@@ -30,6 +37,12 @@
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
     </style>
+<script>
+        function toggleCard(el) {
+            el.classList.toggle('collapsed');
+            el.nextElementSibling.classList.toggle('collapsed');
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -37,28 +50,42 @@
 <p class="time">更新時間：2026-04-07 15:22:32 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
 <div class="card">
-    <h3>🖥️ 主機資訊</h3>
-    <div class="status-grid">
+    <div class="card-header" onclick="toggleCard(this)">
+        <h3>🖥️ 主機資訊</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content">
+        <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
         <div class="status-item"><div class="label">開機時間</div><div class="value">0天 4時 41分</div></div>
         <div class="status-item"><div class="label">系統類型</div><div class="value">VMware 虛擬機</div></div>
+    
     </div>
 </div>
 
 <div class="card">
-    <h3>💾 系統資源</h3>
-    <div class="status-grid">
+    <div class="card-header" onclick="toggleCard(this)">
+        <h3>💾 系統資源</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content">
+        <div class="status-grid">
         <div class="status-item"><div class="label">記憶體</div><div class="value">3.21 / 11.63 GB</div></div>
         <div class="status-item"><div class="label">記憶體使用</div><div class="value ">27.6%</div></div>
         <div class="status-item"><div class="label">CPU 使用率</div><div class="value ">8.4%</div></div>
         <div class="status-item"><div class="label">系統負載</div><div class="value">0.33 / 0.36 / 0.45</div></div>
+    
     </div>
 </div>
 
 <div class="card">
-    <h3>🔗 線上服務</h3>
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:10px;">
+    <div class="card-header" onclick="toggleCard(this)">
+        <h3>🔗 線上服務</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:10px;">
         <a href="https://jhetsai.github.io/inventory/" target="_blank" class="service-card" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;padding:20px;color:white;text-decoration:none;">
             <div style="font-size:28px;margin-bottom:8px;">📦</div>
             <div style="font-size:16px;font-weight:600;">庫存系統</div>
@@ -79,22 +106,32 @@
             <div style="font-size:16px;font-weight:600;">台電電費</div>
             <div style="font-size:12px;opacity:0.85;margin-top:4px;">用電分析與帳單</div>
         </a>
+    
     </div>
 </div>
 
 <div class="card">
-    <h3>🚀 OpenClaw 服務</h3>
-    <div class="status-grid">
+    <div class="card-header" onclick="toggleCard(this)">
+        <h3>🚀 OpenClaw 服務</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content">
+        <div class="status-grid">
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
         <div class="status-item"><div class="label">Gateway PID</div><div class="value">117323</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
+    
     </div>
 </div>
 
 <div class="card">
-    <h3>📱 通訊服務</h3>
-    <table>
+    <div class="card-header" onclick="toggleCard(this)">
+        <h3>📱 通訊服務</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content">
+        <table>
         <tr><th>服務</th><th>狀態</th><th>說明</th></tr>
         <tr><td>Telegram Bot</td><td><span class="badge">運行中</span></td><td>Bot ID: 8793435853</td></tr>
         <tr><td>LINE Bot</td><td><span class="badge">運行中</span></td><td>Webhook: ngrok</td></tr>
@@ -102,8 +139,7 @@
 </div>
 
 <div class="card">
-    <h3>⏰ 排程任務（共 7 個）</h3>
-    <table>
+        <table>
         <tr><th>任務</th><th>時間</th><th>說明</th></tr>
         <tr><td>每日晨間新聞簡報</td><td>06:00</td><td>直接執行</td></tr>
         <tr><td>每日美股損益報告</td><td>08:30</td><td>需確認</td></tr>
@@ -116,18 +152,22 @@
 </div>
 
 <div class="card">
-    <h3>☀️ 太陽能發電（預估）</h3>
-    <div class="status-grid">
+        <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲時有局部陣雨</div></div>
         <div class="status-item"><div class="label">預估發電</div><div class="value">0.2 - 0.4 度</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value warning">偏低</div></div>
+    
     </div>
 </div>
 
 <div class="card">
-    <h3>🔍 API 與工具</h3>
-    <table>
+    <div class="card-header" onclick="toggleCard(this)">
+        <h3>🔍 API 與工具</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content">
+        <table>
         <tr><th>服務</th><th>用途</th><th>月用量</th></tr>
         <tr><td>Brave Search</td><td>網路搜尋</td><td>55 / 1,000</td></tr>
         <tr><td>MiniMax M2.7</td><td>AI 模型</td><td>Starter</td></tr>
@@ -135,7 +175,8 @@
     </table>
 </div>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 15:22:32</div>
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 15:22:32
+    </div>
 </div>
 </body>
 </html>
