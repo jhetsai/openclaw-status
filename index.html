@@ -6,76 +6,51 @@
     <title>系統服務狀態</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, "Microsoft JhengHei", "Segoe UI", sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; padding: 20px; font-size: 14px; }
+        body { font-family: -apple-system, "Microsoft JhengHei", sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; padding: 20px; font-size: 14px; }
         .container { max-width: 900px; margin: 0 auto; }
         h1 { color: #0d47a1; border-bottom: 3px solid #1976d2; padding-bottom: 12px; margin-bottom: 25px; font-size: 24px; }
         h2 { color: #1565c0; margin: 25px 0 12px 0; font-size: 16px; border-left: 4px solid #1976d2; padding-left: 10px; }
         .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .card h3 { color: #333; font-size: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .card h3 { color: #333; font-size: 15px; margin-bottom: 15px; }
         .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .status-item { background: #f8f9fa; border-radius: 8px; padding: 12px 15px; }
         .status-item .label { font-size: 12px; color: #666; margin-bottom: 4px; }
-        .status-item .value { font-size: 16px; font-weight: 600; color: #1a1a2e; }
+        .status-item .value { font-size: 16px; font-weight: 600; }
         .status-item .value.running { color: #2e7d32; }
         .status-item .value.warning { color: #f57c00; }
-        .status-item .value.error { color: #c62828; }
-        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
-        .badge.green { background: #e8f5e9; color: #2e7d32; }
-        .badge.red { background: #ffebee; color: #c62828; }
-        .badge.blue { background: #e3f2fd; color: #1565c0; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e8f5e9; color: #2e7d32; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th, td { border: 1px solid #e0e0e0; padding: 10px 12px; text-align: left; }
-        th { background: #1976d2; color: white; font-weight: 500; }
+        th { background: #1976d2; color: white; }
         tr:nth-child(even) { background: #f8f9fa; }
         .time { color: #888; font-size: 12px; }
         .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
-        .loading { color: #888; font-style: italic; }
-        .refresh-btn { background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+        .refresh-btn { background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; }
         .refresh-btn:hover { background: #1565c0; }
-        .weather-card { display: flex; align-items: center; gap: 15px; }
-        .weather-icon { font-size: 48px; }
-        .weather-info { flex: 1; }
-        .weather-temp { font-size: 32px; font-weight: bold; color: #0d47a1; }
-        .weather-desc { color: #666; }
-        .live-indicator { display: inline-block; width: 8px; height: 8px; background: #4caf50; border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 <div class="container">
-<h1>📊 系統服務狀態 <span class="live-indicator"></span></h1>
-<p class="time">更新時間：<span id="update-time">載入中...</span> <button class="refresh-btn" onclick="location.reload()">🔄 重新整理</button></p>
+<h1>📊 系統服務狀態</h1>
+<p class="time">更新時間：2026-04-07 11:49:46 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
 <div class="card">
     <h3>🖥️ 主機資訊</h3>
     <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value" id="uptime">-</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 1時 8分</div></div>
         <div class="status-item"><div class="label">系統類型</div><div class="value">VMware 虛擬機</div></div>
     </div>
 </div>
 
 <div class="card">
-    <h3>💾 系統資源（即時）</h3>
+    <h3>💾 系統資源</h3>
     <div class="status-grid">
-        <div class="status-item"><div class="label">記憶體</div><div class="value" id="mem-total">-</div></div>
-        <div class="status-item"><div class="label">已用記憶體</div><div class="value" id="mem-used">-</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value" id="cpu">-</div></div>
-        <div class="status-item"><div class="label">系統負載</div><div class="value" id="loadavg">-</div></div>
-    </div>
-</div>
-
-<div class="card">
-    <h3>🌤️ 天氣（即時）</h3>
-    <div id="weather" class="loading">載入中...</div>
-</div>
-
-<div class="card">
-    <h3>💱 匯率（即時）</h3>
-    <div class="status-grid">
-        <div class="status-item"><div class="label">USD/TWD</div><div class="value" id="usd-twd">-</div></div>
-        <div class="status-item"><div class="label">更新時間</div><div class="value" id="fx-time">-</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">2.86 / 11.63 GB</div></div>
+        <div class="status-item"><div class="label">記憶體使用</div><div class="value ">24.6%</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value ">12.7%</div></div>
+        <div class="status-item"><div class="label">系統負載</div><div class="value">0.21 / 0.27 / 0.29</div></div>
     </div>
 </div>
 
@@ -93,8 +68,8 @@
     <h3>📱 通訊服務</h3>
     <table>
         <tr><th>服務</th><th>狀態</th><th>說明</th></tr>
-        <tr><td>Telegram Bot</td><td><span class="badge green">運行中</span></td><td>Bot ID: 8793435853</td></tr>
-        <tr><td>LINE Bot</td><td><span class="badge green">運行中</span></td><td>Webhook: ngrok</td></tr>
+        <tr><td>Telegram Bot</td><td><span class="badge">運行中</span></td><td>Bot ID: 8793435853</td></tr>
+        <tr><td>LINE Bot</td><td><span class="badge">運行中</span></td><td>Webhook: ngrok</td></tr>
     </table>
 </div>
 
@@ -122,78 +97,7 @@
     </table>
 </div>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ <span id="footer-time">-</span></div>
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 11:49:46</div>
 </div>
-
-<script>
-// 更新時間
-function updateTime() {
-    const now = new Date();
-    const timeStr = now.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
-    document.getElementById('update-time').textContent = timeStr;
-    document.getElementById('footer-time').textContent = timeStr;
-}
-
-// 天氣
-async function fetchWeather() {
-    try {
-        const resp = await fetch('https://wttr.in/Shuilin,Taiwan?format=j1');
-        const data = await resp.json();
-        const current = data.current_condition[0];
-        const temp = current.temp_C;
-        const desc = current.weatherDesc[0].value;
-        const icon = getWeatherIcon(desc);
-        const humidity = current.humidity;
-        const wind = current.windspeedKmph;
-        
-        document.getElementById('weather').innerHTML = `
-            <div class="weather-card">
-                <div class="weather-icon">${icon}</div>
-                <div class="weather-info">
-                    <div class="weather-temp">${temp}°C</div>
-                    <div class="weather-desc">${desc} ｜ 濕度 ${humidity}% ｜ 風速 ${wind} km/h</div>
-                </div>
-            </div>
-        `;
-    } catch (e) {
-        document.getElementById('weather').textContent = '無法取得天氣資料';
-    }
-}
-
-function getWeatherIcon(desc) {
-    const d = desc.toLowerCase();
-    if (d.includes('sun') || d.includes('clear')) return '☀️';
-    if (d.includes('cloud')) return '☁️';
-    if (d.includes('rain')) return '🌧️';
-    if (d.includes('overcast')) return '🌥️';
-    if (d.includes('mist') || d.includes('fog')) return '🌫️';
-    if (d.includes('thunder')) return '⛈️';
-    return '🌤️';
-}
-
-// 匯率
-async function fetchExchangeRate() {
-    try {
-        const resp = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/USDTWD=X?interval=1d&range=1d');
-        const data = await resp.json();
-        const rate = data.chart.result[0].meta.regularMarketPrice;
-        const time = new Date(data.chart.result[0].meta.regularMarketTime * 1000);
-        document.getElementById('usd-twd').textContent = rate.toFixed(3);
-        document.getElementById('fx-time').textContent = time.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
-    } catch (e) {
-        document.getElementById('usd-twd').textContent = '31.935 (參考值)';
-        document.getElementById('fx-time').textContent = '快取';
-    }
-}
-
-// 初始化
-updateTime();
-fetchWeather();
-fetchExchangeRate();
-
-// 每分鐘更新時間
-setInterval(updateTime, 60000);
-</script>
-
 </body>
 </html>
