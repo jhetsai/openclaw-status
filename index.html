@@ -18,50 +18,29 @@
         .status-item .value.running { color: #2e7d32; }
         .status-item .value.warning { color: #f57c00; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border: 1px solid #e0e0e0; padding: 10px 12px; text-align: left; }
+        th { background: #1976d2; color: white; }
+        tr:nth-child(even) { background: #f8f9fa; }
         .time { color: #888; font-size: 12px; }
         .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
         .refresh-btn { background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; }
         .refresh-btn:hover { background: #1565c0; }
-        .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .service-card { background: #f8f9fa; border-radius: 10px; padding: 15px; text-align: center; }
-        .service-card .icon { font-size: 28px; margin-bottom: 8px; }
-        .service-card .name { font-weight: 600; font-size: 14px; color: #333; margin-bottom: 4px; }
-        .service-card .desc { font-size: 12px; color: #888; margin-bottom: 8px; }
-        .service-card a { display: inline-block; background: #1976d2; color: white; padding: 5px 12px; border-radius: 6px; font-size: 12px; }
-        .service-card a:hover { background: #1565c0; text-decoration: none; }
-        .task-list { display: flex; flex-direction: column; gap: 8px; }
-        .task-item { display: flex; align-items: center; gap: 12px; background: #f8f9fa; border-radius: 8px; padding: 10px 14px; }
-        .task-item .time { background: #1976d2; color: white; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; min-width: 65px; text-align: center; }
-        .task-item .info { flex: 1; }
-        .task-item .name { font-weight: 600; font-size: 13px; color: #333; }
-        .task-item .note { font-size: 11px; color: #888; }
-        .task-item .badge { font-size: 10px; }
-        .task-item .badge.direct { background: #e3f2fd; color: #1976d2; }
-        .task-item .badge.confirm { background: #fff3e0; color: #f57c00; }
-        .solar-card { background: linear-gradient(135deg, #fff8e1, #ffecb3); border-radius: 10px; padding: 15px; margin-bottom: 12px; }
-        .solar-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .solar-row:last-child { border-bottom: none; }
-        .solar-row .icon { font-size: 20px; }
-        .solar-row .label { flex: 1; color: #666; font-size: 13px; }
-        .solar-row .value { font-weight: 600; color: #333; font-size: 14px; }
-        .solar-row .value.good { color: #2e7d32; }
-        .solar-row .value.med { color: #f57c00; }
-        .solar-row .value.low { color: #c62828; }
-        .solar-note { font-size: 11px; color: #888; margin-top: 10px; font-style: italic; }
-        .weather-est { display: inline-block; background: #1976d2; color: white; padding: 3px 10px; border-radius: 6px; font-size: 12px; margin-left: 8px; }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：2026-04-07 13:22:35 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">更新時間：2026-04-07 15:22:32 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
 <div class="card">
     <h3>🖥️ 主機資訊</h3>
     <div class="status-grid">
-        <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware</div></div>
+        <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value">更新時取得</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 4時 41分</div></div>
         <div class="status-item"><div class="label">系統類型</div><div class="value">VMware 虛擬機</div></div>
     </div>
 </div>
@@ -69,33 +48,22 @@
 <div class="card">
     <h3>💾 系統資源</h3>
     <div class="status-grid">
-        <div class="status-item"><div class="label">記憶體</div><div class="value">2.85 / 11.63 GB</div></div>
-        <div class="status-item"><div class="label">記憶體使用</div><div class="value ">24.5%</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value ">12.6%</div></div>
-        <div class="status-item"><div class="label">系統負載</div><div class="value">0.13 / 0.24 / 0.27</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">3.21 / 11.63 GB</div></div>
+        <div class="status-item"><div class="label">記憶體使用</div><div class="value ">27.6%</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value ">8.4%</div></div>
+        <div class="status-item"><div class="label">系統負載</div><div class="value">0.33 / 0.36 / 0.45</div></div>
     </div>
 </div>
 
 <div class="card">
-    <h3>🔗 線上服務</h3>
-    <div class="service-grid">
-        <div class="service-card"><div class="icon">📦</div><div class="name">庫存系統</div><div class="desc">LINE 照片上傳庫存盤點</div><a href="https://jhetsai.github.io/inventory/" target="_blank">開啟</a></div>
-        <div class="service-card"><div class="icon">📊</div><div class="name">系統狀態</div><div class="desc">每小時自動更新</div><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">開啟</a></div>
-        <div class="service-card"><div class="icon">🌾</div><div class="name">農田天氣</div><div class="desc">農田氣象資訊</div><a href="https://jhetsai.github.io/agri-weather/" target="_blank">開啟</a></div>
-        <div class="service-card"><div class="icon">📁</div><div class="name">電費統計</div><div class="desc">台電電費查詢</div><a href="https://jhetsai.github.io/electricity/" target="_blank">開啟</a></div>
-    </div>
-</div>
-
-<div class="card">
-    <h3>☀️ 太陽能發電估計 <span class="weather-est" id="wx-est">天氣載入中...</span></h3>
-    <div class="solar-card">
-        <div class="solar-row"><span class="icon">🔋</span><span class="label">蓄電池狀態</span><span class="value">需手動檢查</span></div>
-        <div class="solar-row"><span class="icon">🌡️</span><span class="label">面板參考溫度</span><span class="value" id="solar-temp">--°C</span></div>
-        <div class="solar-row"><span class="icon">☀️</span><span class="label">天氣型態</span><span class="value" id="solar-wx">--</span></div>
-        <div class="solar-row"><span class="icon">⚡</span><span class="label">預估發電量/天</span><span class="value" id="solar-est">-- 度</span></div>
-        <div class="solar-row"><span class="icon">📊</span><span class="label">發電效率</span><span class="value" id="solar-eff">--</span></div>
-    </div>
-    <div class="solar-note">※ 系統規格：200W 面板 × 1 / MPPT 控制器 / 湯淺 NP40-12B × 3 並聯 (1,440Wh)</div>
+    <h3>🔗 線上服務連結</h3>
+    <table>
+        <tr><th>服務</th><th>連結</th><th>說明</th></tr>
+        <tr><td>📦 庫存系統</td><td><a href="https://jhetsai.github.io/inventory/" target="_blank">jhetsai.github.io/inventory/</a></td><td>LINE 照片上傳庫存盤點</td></tr>
+        <tr><td>📊 系統狀態</td><td><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">jhetsai.github.io/openclaw-status/</a></td><td>每小時自動更新</td></tr>
+        <tr><td>🌾 農田天氣</td><td><a href="https://jhetsai.github.io/agri-weather/" target="_blank">jhetsai.github.io/agri-weather/</a></td><td>農田氣象資訊</td></tr>
+        <tr><td>📁 開放倉庫</td><td><a href="https://github.com/jhetsai/openclaw" target="_blank">github.com/jhetsai/openclaw</a></td><td>台電系統開源</td></tr>
+    </table>
 </div>
 
 <div class="card">
@@ -119,73 +87,29 @@
 
 <div class="card">
     <h3>⏰ 排程任務（共 7 個）</h3>
-    <div class="task-list">
-        <div class="task-item"><span class="time">06:00</span><div class="info"><div class="name">晨間新聞簡報</div><div class="note">直接執行</div></div><span class="badge direct">自動</span></div>
-        <div class="task-item"><span class="time">08:00</span><div class="info"><div class="name">風速監測警示</div><div class="note">直接執行</div></div><span class="badge direct">自動</span></div>
-        <div class="task-item"><span class="time">08:30</span><div class="info"><div class="name">美股損益報告</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-        <div class="task-item"><span class="time">12:00</span><div class="info"><div class="name">風速監測警示</div><div class="note">直接執行</div></div><span class="badge direct">自動</span></div>
-        <div class="task-item"><span class="time">12:05</span><div class="info"><div class="name">定時記憶存檔</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-        <div class="task-item"><span class="time">12:10</span><div class="info"><div class="name">多使用者記憶存檔</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-        <div class="task-item"><span class="time">14:00</span><div class="info"><div class="name">台股損益報告</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-        <div class="task-item"><span class="time">18:00</span><div class="info"><div class="name">風速監測警示</div><div class="note">直接執行</div></div><span class="badge direct">自動</span></div>
-        <div class="task-item"><span class="time">18:05</span><div class="info"><div class="name">定時記憶存檔</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-        <div class="task-item"><span class="time">18:10</span><div class="info"><div class="name">多使用者記憶存檔</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-        <div class="task-item"><span class="time">19:00</span><div class="info"><div class="name">系統備份報告</div><div class="note">需確認</div></div><span class="badge confirm">確認</span></div>
-    </div>
+    <table>
+        <tr><th>任務</th><th>時間</th><th>說明</th></tr>
+        <tr><td>每日晨間新聞簡報</td><td>06:00</td><td>直接執行</td></tr>
+        <tr><td>每日美股損益報告</td><td>08:30</td><td>需確認</td></tr>
+        <tr><td>每日台股損益報告</td><td>14:00</td><td>需確認</td></tr>
+        <tr><td>每日系統備份報告</td><td>19:00</td><td>需確認</td></tr>
+        <tr><td>定時記憶存檔</td><td>12:00, 18:00</td><td>需確認</td></tr>
+        <tr><td>多使用者記憶存檔</td><td>12:00, 18:00</td><td>需確認</td></tr>
+        <tr><td>風速監測警示</td><td>08:00, 12:00, 18:00</td><td>直接執行</td></tr>
+    </table>
 </div>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 13:22:35</div>
+<div class="card">
+    <h3>🔍 API 與工具</h3>
+    <table>
+        <tr><th>服務</th><th>用途</th><th>月用量</th></tr>
+        <tr><td>Brave Search</td><td>網路搜尋</td><td>55 / 1,000</td></tr>
+        <tr><td>MiniMax M2.7</td><td>AI 模型</td><td>Starter</td></tr>
+        <tr><td>Leonardo.ai</td><td>圖像生成</td><td>150 張/天</td></tr>
+    </table>
+</div>
+
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 15:22:32</div>
 </div>
 </body>
 </html>
-<script>
-async function loadSolarEst() {
-    try {
-        // 從 wttr.in 取得天氣
-        const resp = await fetch('https://wttr.in/Shuilin,Taiwan?format=j1');
-        const data = await resp.json();
-        const current = data.current_condition[0];
-        const temp = current.temp_C;
-        const weather = current.weatherDesc[0].value;
-        const cloudcover = parseInt(current.cloudcover) || 0;
-        const humidity = current.humidity;
-        
-        // 天氣圖示
-        let wxIcon = '☀️';
-        let wxText = weather;
-        if(weather.toLowerCase().includes('rain') || weather.toLowerCase().includes('雨')) { wxIcon = '🌧️'; wxText = '雨天'; }
-        else if(weather.toLowerCase().includes('cloud') || weather.toLowerCase().includes('雲')) { wxIcon = '☁️'; wxText = '多雲'; }
-        else if(weather.toLowerCase().includes('overcast') || weather.toLowerCase().includes('陰')) { wxIcon = '🌥️'; wxText = '陰天'; }
-        else if(weather.toLowerCase().includes('mist') || weather.toLowerCase().includes('fog')) { wxIcon = '🌫️'; wxText = '霧/濛'; }
-        
-        // 發電估算（200W 面板）
-        // 標準測試條件：1000W/m² 輻射，25°C
-        // 陰天 ≈ 20-30% 效率，多雲 ≈ 40-50%，晴天 ≈ 70-85%
-        let efficiency, estKwh;
-        if(weather.toLowerCase().includes('rain') || weather.toLowerCase().includes('雨')) {
-            efficiency = '5-15%'; estKwh = '0.0-0.2';
-        } else if(weather.toLowerCase().includes('overcast') || weather.toLowerCase().includes('陰')) {
-            efficiency = '20-30%'; estKwh = '0.3-0.5';
-        } else if(weather.toLowerCase().includes('cloud') || weather.toLowerCase().includes('雲')) {
-            efficiency = '40-55%'; estKwh = '0.5-0.8';
-        } else {
-            efficiency = '65-85%'; estKwh = '0.8-1.2';
-        }
-        
-        // 溫度影響（超過25°C效率下降）
-        if(temp > 35) { efficiency = '偏熱效率下降'; }
-        
-        document.getElementById('solar-temp').textContent = temp + '°C';
-        document.getElementById('solar-wx').textContent = wxIcon + ' ' + wxText;
-        document.getElementById('solar-est').textContent = estKwh + ' 度';
-        document.getElementById('solar-eff').textContent = efficiency;
-        document.getElementById('wx-est').textContent = wxIcon + ' ' + temp + '°C';
-        
-    } catch(e) {
-        document.getElementById('wx-est').textContent = '無法取得';
-        document.getElementById('solar-temp').textContent = '--';
-        document.getElementById('solar-wx').textContent = '天氣資料取得失敗';
-    }
-}
-loadSolarEst();
-</script>
