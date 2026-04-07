@@ -139,6 +139,11 @@
 </div>
 
 <div class="card">
+    <div class="card-header collapsed" onclick="toggleCard(this)">
+        <h3>⏰ 排程任務（共 7 個）</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content collapsed">
         <table>
         <tr><th>任務</th><th>時間</th><th>說明</th></tr>
         <tr><td>每日晨間新聞簡報</td><td>06:00</td><td>直接執行</td></tr>
@@ -149,15 +154,21 @@
         <tr><td>多使用者記憶存檔</td><td>12:10, 18:10</td><td>需確認</td></tr>
         <tr><td>風速監測警示</td><td>08:00, 12:00, 18:00</td><td>直接執行</td></tr>
     </table>
+    </div>
 </div>
 
 <div class="card">
+    <div class="card-header collapsed" onclick="toggleCard(this)">
+        <h3>☀️ 太陽能發電（預估）</h3>
+        <span class="toggle">▼</span>
+    </div>
+    <div class="card-content collapsed">
         <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲時有局部陣雨</div></div>
         <div class="status-item"><div class="label">預估發電</div><div class="value">0.2 - 0.4 度</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value warning">偏低</div></div>
-    
+    </div>
     </div>
 </div>
 
