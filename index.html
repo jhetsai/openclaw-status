@@ -9,7 +9,6 @@
         body { font-family: -apple-system, "Microsoft JhengHei", sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; padding: 20px; font-size: 14px; }
         .container { max-width: 900px; margin: 0 auto; }
         h1 { color: #0d47a1; border-bottom: 3px solid #1976d2; padding-bottom: 12px; margin-bottom: 25px; font-size: 24px; }
-        h2 { color: #1565c0; margin: 25px 0 12px 0; font-size: 16px; border-left: 4px solid #1976d2; padding-left: 10px; }
         .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
         .card h3 { color: #333; font-size: 15px; margin-bottom: 15px; }
         .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
@@ -27,19 +26,21 @@
         .footer { text-align: center; color: #999; font-size: 12px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
         .refresh-btn { background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; }
         .refresh-btn:hover { background: #1565c0; }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：2026-04-07 11:50:55 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">更新時間：2026-04-07 12:01:39 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
 <div class="card">
     <h3>🖥️ 主機資訊</h3>
     <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 1時 9分</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 1時 20分</div></div>
         <div class="status-item"><div class="label">系統類型</div><div class="value">VMware 虛擬機</div></div>
     </div>
 </div>
@@ -49,9 +50,20 @@
     <div class="status-grid">
         <div class="status-item"><div class="label">記憶體</div><div class="value">2.85 / 11.63 GB</div></div>
         <div class="status-item"><div class="label">記憶體使用</div><div class="value ">24.5%</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value ">12.6%</div></div>
-        <div class="status-item"><div class="label">系統負載</div><div class="value">0.13 / 0.24 / 0.27</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value ">11.7%</div></div>
+        <div class="status-item"><div class="label">系統負載</div><div class="value">0.57 / 0.34 / 0.28</div></div>
     </div>
+</div>
+
+<div class="card">
+    <h3>🔗 線上服務連結</h3>
+    <table>
+        <tr><th>服務</th><th>連結</th><th>說明</th></tr>
+        <tr><td>📦 庫存系統</td><td><a href="https://jhetsai.github.io/inventory/" target="_blank">jhetsai.github.io/inventory/</a></td><td>LINE 照片上傳庫存盤點</td></tr>
+        <tr><td>📊 系統狀態</td><td><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">jhetsai.github.io/openclaw-status/</a></td><td>每小時自動更新</td></tr>
+        <tr><td>🌾 農田天氣</td><td><a href="https://jhetsai.github.io/agri-weather/" target="_blank">jhetsai.github.io/agri-weather/</a></td><td>農田氣象資訊</td></tr>
+        <tr><td>📁 開放倉庫</td><td><a href="https://github.com/jhetsai/openclaw" target="_blank">github.com/jhetsai/openclaw</a></td><td>台電系統開源</td></tr>
+    </table>
 </div>
 
 <div class="card">
@@ -97,7 +109,7 @@
     </table>
 </div>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 11:50:55</div>
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 12:01:39</div>
 </div>
 </body>
 </html>
