@@ -6,98 +6,109 @@
 <title>系統服務狀態</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,"Microsoft JhengHei","Segoe UI",sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh;padding:20px;font-size:14px}
+body{font-family:-apple-system,"Microsoft JhengHei","Segoe UI",sans-serif;background:#0a1628;color:#e8eaed;min-height:100vh;padding:20px;font-size:14px}
 .container{max-width:900px;margin:0 auto}
-h1{color:#0d47a1;border-bottom:3px solid #1976d2;padding-bottom:12px;margin-bottom:25px;font-size:24px}
-.card{background:white;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-.card h3{color:#333;font-size:15px;margin-bottom:15px}
-.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-.status-item{background:#f8f9fa;border-radius:8px;padding:12px 15px}
-.status-item .label{font-size:12px;color:#666;margin-bottom:4px}
-.status-item .value{font-size:16px;font-weight:600;color:#1a1a2e}
-.status-item .value.running{color:#2e7d32}
-.status-item .value.warning{color:#f57c00}
+h1{color:#4fc3f7;padding-bottom:10px;margin-bottom:20px;font-size:22px;display:flex;align-items:center;gap:10px}
 .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px}
-.badge.green{background:#e8f5e9;color:#2e7d32}
+.badge.green{background:rgba(76,175,80,0.2);color:#66bb6a}
+.badge.red{background:rgba(244,67,54,0.2);color:#ef5350}
+.card{background:#1e2a3a;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.card h2{color:#4fc3f7;font-size:16px;margin:0 0 15px 0;display:flex;align-items:center;gap:8px}
+.card h2 .subtitle{color:#78909c;font-size:12px;font-weight:normal;margin-left:auto}
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.status-item{background:rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px}
+.status-item .label{font-size:11px;color:#78909c;margin-bottom:4px;display:block}
+.status-item .value{font-size:15px;font-weight:600;color:#e8eaed}
+.status-item .value.running{color:#66bb6a}
+.status-item .value.warning{color:#ffa726}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{border:1px solid #e0e0e0;padding:10px 12px;text-align:left}
-th{background:#1976d2;color:white;font-weight:500}
-tr:nth-child(even){background:#f8f9fa}
-.time{color:#888;font-size:12px;margin-bottom:15px}
-.footer{text-align:center;color:#999;font-size:12px;margin-top:30px;padding-top:15px;border-top:1px solid #ddd}
-.refresh-btn{background:#1976d2;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block}
+th,td{border:1px solid rgba(255,255,255,0.08);padding:8px 12px;text-align:left}
+th{color:#78909c;font-weight:500;font-size:11px;text-transform:uppercase}
+tr:nth-child(even){background:rgba(255,255,255,0.03)}
+.footer{text-align:center;color:#546e7a;font-size:11px;margin-top:25px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.05)}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links a{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:4px 10px;color:#4fc3f7;font-size:11px;text-decoration:none;font-weight:600}
+.links a:hover{background:rgba(79,195,247,0.15)}
+#cwa_weather_tag{background:rgba(255,193,7,0.2);color:#ffd54f;border-radius:6px;padding:2px 8px;font-size:12px;display:inline-block;margin-left:8px}
 </style>
 </head>
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time" id="update-time">更新時間：載入中...</p>
+<p style="color:#546e7a;font-size:12px;margin-bottom:20px">更新時間：<span id="update-time">載入中...</span></p>
 
+<!-- Block 1: 系統概覽 -->
 <div class="card">
-<h3>🖥️ 主機資訊</h3>
+<h2>🖥️ 系統概覽<span class="subtitle">主機｜資源｜服務</span></h2>
 <div class="status-grid">
-<div class="status-item"><div class="label">主機名稱</div><div class="value" id="hostname">-</div></div>
-<div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-<div class="status-item"><div class="label">開機時間</div><div class="value" id="uptime">-</div></div>
-<div class="status-item"><div class="label">系統類型</div><div class="value">VMware 虛擬機</div></div>
+<div class="status-item"><span class="label">主機名稱</span><span class="value" id="hostname">-</span></div>
+<div class="status-item"><span class="label">開機時間</span><span class="value" id="uptime">-</span></div>
+<div class="status-item"><span class="label">記憶體</span><span class="value" id="memory">-</span></div>
+<div class="status-item"><span class="label">CPU</span><span class="value" id="cpu">-</span></div>
+<div class="status-item"><span class="label">Gateway</span><span class="value running">✅ 運行中</span></div>
+<div class="status-item"><span class="label">Gateway PID</span><span class="value" id="gateway_pid">-</span></div>
 </div>
 </div>
 
+<!-- Block 2: 線上服務 -->
 <div class="card">
-<h3>💾 系統資源</h3>
+<h2>🔗 線上服務<span class="subtitle">服務狀態一覽</span></h2>
 <div class="status-grid">
-<div class="status-item"><div class="label">記憶體</div><div class="value" id="memory">-</div></div>
-<div class="status-item"><div class="label">CPU 使用率</div><div class="value" id="cpu">-</div></div>
+<div class="status-item"><span class="label">系統狀態</span><span class="value running">✅ 正常</span></div>
+<div class="status-item"><span class="label">農田天氣</span><span class="value">🌾</span><div class="links" style="margin-top:6px">
+<a href="https://jhetsai.github.io/agri-weather/" target="_blank">GitHub</a>
+<a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/agri-weather/index.html" target="_blank">R2</a>
+</div></div>
+<div class="status-item"><span class="label">庫存系統</span><span class="value">📦</span><div class="links" style="margin-top:6px">
+<a href="https://jhetsai.github.io/inventory/" target="_blank">GitHub</a>
+<a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw/inventory.html" target="_blank">R2</a>
+</div></div>
+<div class="status-item"><span class="label">台電電費</span><span class="value">⚡</span><div class="links" style="margin-top:6px">
+<a href="https://jhetsai.github.io/openclaw/electricity_manual.html" target="_blank">GitHub</a>
+<a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw/electricity_manual.html" target="_blank">R2</a>
+</div></div>
 </div>
 </div>
 
+<!-- Block 3: 太陽能發電 -->
 <div class="card">
-<h3>🌤️ 中央氣象署（即時）</h3>
+<h2>☀️ 太陽能發電（預估）<span class="subtitle" id="cwa_weather_tag">讀取中...</span></h2>
 <div class="status-grid">
-<div class="status-item"><div class="label">觀測站</div><div class="value" id="cwa_station">-</div></div>
-<div class="status-item"><div class="label">氣溫</div><div class="value" id="cwa_temp">-</div></div>
-<div class="status-item"><div class="label">天氣</div><div class="value" id="cwa_weather">-</div></div>
-<div class="status-item"><div class="label">風速</div><div class="value" id="cwa_wind">-</div></div>
+<div class="status-item"><span class="label">面板規格</span><span class="value">200W × 1 片</span></div>
+<div class="status-item"><span class="label">觀測站</span><span class="value" id="cwa_station">-</span></div>
+<div class="status-item"><span class="label">氣溫</span><span class="value" id="cwa_temp">-</span></div>
+<div class="status-item"><span class="label">風速</span><span class="value" id="cwa_wind">-</span></div>
+<div class="status-item"><span class="label">今日天氣</span><span class="value" id="cwa_weather">-</span></div>
+<div class="status-item"><span class="label">預估發電</span><span class="value" id="solar_est">-</span></div>
 </div>
 </div>
 
+<!-- Block 4: 工具與排程 -->
 <div class="card">
-<h3>🚀 OpenClaw 服務</h3>
-<div class="status-grid">
-<div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
-<div class="status-item"><div class="label">Gateway PID</div><div class="value" id="gateway_pid">-</div></div>
-<div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
-<div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
-</div>
-</div>
-
-<div class="card">
-<h3>📱 通訊服務</h3>
+<h2>📋 工具與排程<span class="subtitle">通訊｜任務｜API</span></h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div>
 <table>
 <tr><th>服務</th><th>狀態</th><th>說明</th></tr>
 <tr><td>Telegram Bot</td><td><span class="badge green">運行中</span></td><td>Bot ID: 8793435853</td></tr>
 <tr><td>LINE Bot</td><td><span class="badge green">運行中</span></td><td>Webhook: ngrok</td></tr>
 </table>
 </div>
-
-<div class="card">
-<h3>⏰ 排程任務</h3>
+<div>
 <table>
 <tr><th>任務</th><th>時間</th><th>說明</th></tr>
-<tr><td>每日晨間新聞簡報</td><td>06:00</td><td>直接執行</td></tr>
-<tr><td>每日美股損益報告</td><td>08:30</td><td>需確認</td></tr>
-<tr><td>每日台股損益報告</td><td>14:00</td><td>需確認</td></tr>
-<tr><td>每日系統備份報告</td><td>19:00</td><td>需確認</td></tr>
-<tr><td>定時記憶存檔</td><td>12:00, 18:00</td><td>需確認</td></tr>
-<tr><td>風速監測警示</td><td>08:00, 12:00, 18:00</td><td>直接執行</td></tr>
+<tr><td>晨間新聞簡報</td><td>06:00</td><td>直接執行</td></tr>
+<tr><td>美股每日報告</td><td>08:30</td><td>需確認</td></tr>
+<tr><td>台股每日報告</td><td>14:00</td><td>需確認</td></tr>
+<tr><td>系統備份</td><td>19:00</td><td>需確認</td></tr>
+<tr><td>風速監測</td><td>08:00,12:00,18:00</td><td>直接執行</td></tr>
 </table>
 </div>
-
-<div class="card">
-<h3>🔍 API 與工具</h3>
+</div>
+<br>
 <table>
 <tr><th>服務</th><th>用途</th><th>月用量</th></tr>
-<tr><td>Brave Search</td><td>網路搜尋</td><td id="brave_usage">$0.64 / $5.00</td></tr>
+<tr><td>Brave Search</td><td>網路搜尋</td><td id="brave_usage" style="color:#ffa726">$0.64 / $5.00</td></tr>
 <tr><td>MiniMax M2.7</td><td>AI 模型</td><td>Starter</td></tr>
 <tr><td>Leonardo.ai</td><td>圖像生成</td><td>150 張/天</td></tr>
 </table>
@@ -107,49 +118,55 @@ tr:nth-child(even){background:#f8f9fa}
 </div>
 
 <script>
-(function() {
-  var now = new Date();
-  var ts = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
-  document.getElementById('update-time').textContent = '更新時間：' + ts;
+(function(){
+  var now=new Date();
+  var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('update-time').textContent=ts;
 
   fetch('http://localhost:3838/api/status')
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      document.getElementById('hostname').textContent = d.hostname || '-';
-      document.getElementById('uptime').textContent = d.uptime || '-';
-      var mu = parseFloat(d.memUsed) || 0;
-      var mt = parseFloat(d.memTotal) || 0;
-      document.getElementById('memory').textContent = mu.toFixed(1) + ' / ' + mt.toFixed(1) + ' GB';
-      document.getElementById('cpu').textContent = (parseFloat(d.cpuPercent) || 0).toFixed(1) + '%';
-      document.getElementById('gateway_pid').textContent = d.gateway_pid || '-';
-    })
-    .catch(function(e) { console.log('system-api failed'); });
+    .then(function(r){return r.json();})
+    .then(function(d){
+      document.getElementById('hostname').textContent=d.hostname||'-';
+      document.getElementById('uptime').textContent=d.uptime||'-';
+      document.getElementById('memory').textContent=(parseFloat(d.memUsed)||0).toFixed(1)+' / '+(parseFloat(d.memTotal)||0).toFixed(1)+' GB';
+      document.getElementById('cpu').textContent=(parseFloat(d.cpuPercent)||0).toFixed(1)+'%';
+      document.getElementById('gateway_pid').textContent=d.gateway_pid||'-';
+    }).catch(function(e){});
 
   fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWA-355EEEE7-217C-4428-9A71-7F797C8E66A6&limit=50')
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      var stations = d.records.Station;
-      var target = null;
-      for (var i = 0; i < stations.length; i++) {
-        var s = stations[i];
-        if (s.GeoInfo && s.GeoInfo.CountyName === '雲林縣' && ['麥寮','古坑','古坑(花卉中心)'].indexOf(s.StationName) !== -1) {
-          target = s; break;
-        }
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var st=d.records.Station;
+      var target=null;
+      for(var i=0;i<st.length;i++){
+        var g=st[i].GeoInfo||{};
+        if(g.CountyName==='雲林縣'&&['麥寮','古坑','古坑(花卉中心)'].indexOf(st[i].StationName)!==-1){target=st[i];break;}
       }
-      if (!target) {
-        for (var i = 0; i < stations.length; i++) {
-          if (stations[i].GeoInfo && stations[i].GeoInfo.CountyName === '雲林縣') { target = stations[i]; break; }
-        }
-      }
-      if (!target && stations.length > 0) target = stations[0];
-      if (!target) return;
-      var we = target.WeatherElement;
-      document.getElementById('cwa_station').textContent = target.StationName;
-      document.getElementById('cwa_temp').textContent = we.AirTemperature + '°C';
-      document.getElementById('cwa_weather').textContent = we.Weather || '-';
-      document.getElementById('cwa_wind').textContent = we.WindSpeed + ' m/s';
-    })
-    .catch(function(e) { console.log('CWA failed'); });
+      if(!target){for(var i=0;i<st.length;i++){if((st[i].GeoInfo||{}).CountyName==='雲林縣'){target=st[i];break;}}}
+      if(!target&&st.length>0)target=st[0];
+      if(!target)return;
+      var we=target.WeatherElement;
+      document.getElementById('cwa_station').textContent=target.StationName;
+      document.getElementById('cwa_temp').textContent=we.AirTemperature+'°C';
+      document.getElementById('cwa_weather').textContent=we.Weather||'-';
+      document.getElementById('cwa_wind').textContent=we.WindSpeed+' m/s';
+      var w=we.Weather||'';
+      var eff='0.3-0.5度',color='#ffa726';
+      if(w.indexOf('晴')!==-1||w.indexOf('Sun')!==-1){eff='0.8-1.0度';color='#66bb6a';}
+      else if(w.indexOf('多雲')!==-1||w.indexOf('雲')!==-1){eff='0.4-0.6度';color='#42a5f5';}
+      else if(w.indexOf('陰')!==-1){eff='0.2-0.4度';color='#ffa726';}
+      else if(w.indexOf('雨')!==-1||w.indexOf('陣雨')!==-1){eff='0.1-0.2度';color='#ef5350';}
+      document.getElementById('solar_est').textContent=eff;
+      document.getElementById('solar_est').style.color=color;
+      document.getElementById('cwa_weather_tag').textContent=we.Weather||'載入中';
+      document.getElementById('cwa_weather_tag').style.background='rgba(255,193,7,0.2)';
+      document.getElementById('cwa_weather_tag').style.color='#ffd54f';
+      document.getElementById('cwa_weather_tag').style.borderRadius='6px';
+      document.getElementById('cwa_weather_tag').style.padding='2px 8px';
+      document.getElementById('cwa_weather_tag').style.display='inline-block';
+      document.getElementById('cwa_weather_tag').style.fontSize='12px';
+      document.getElementById('cwa_weather_tag').style.marginLeft='8px';
+    }).catch(function(e){document.getElementById('cwa_weather_tag').textContent='讀取失敗';});
 })();
 </script>
 </body>
