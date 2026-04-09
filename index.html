@@ -103,16 +103,16 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：2026-04-09 11:45:42 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">更新時間：2026-04-09 15:17:48 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
         <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value">1天 8時 16分</div></div>
-        <div class="status-item"><div class="label">記憶體</div><div class="value">4.12 / 11.63 GB</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">9.7%</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">1天 11時 48分</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">3.36 / 11.63 GB</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">10.0%</div></div>
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
@@ -134,7 +134,7 @@
         <div style="background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);border-radius:12px;padding:20px;color:white;position:relative;min-height:90px;">
             <div style="font-size:28px;margin-bottom:8px;">📊</div>
             <div style="font-size:16px;font-weight:600;">系統狀態</div>
-            <div style="font-size:12px;opacity:0.85;margin-top:4px;">每小時自動更新</div>
+            <div style="font-size:12px;opacity:0.85;margin-top:4px;">每日 12:00 自動更新</div>
             <div style="position:absolute;bottom:8px;right:8px;display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
                 <a href="https://jhetsai.github.io/openclaw-status/" target="_blank" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:6px;padding:3px 8px;color:white;font-size:10px;text-decoration:none;font-weight:600;">GitHub</a>
                 <a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw-status/index.html" target="_blank" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:6px;padding:3px 8px;color:white;font-size:10px;text-decoration:none;font-weight:600;">R2</a>
@@ -166,11 +166,11 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
         <div class="status-item"><div class="label">麥寮測站</div><div class="value">水林 多雲</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">28.2°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">20.2 km/h</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">28.1°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">24.6 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
-        <div class="status-item"><div class="label">資料時間</div><div class="value">11:45</div></div>
+        <div class="status-item"><div class="label">資料時間</div><div class="value">15:17</div></div>
         </div>
         </details>
 
@@ -183,13 +183,8 @@
     </table>
             <br><table>
         <tr><th>任務</th><th>時間</th><th>說明</th></tr>
-        <tr><td>每日晨間新聞簡報</td><td>06:00</td><td>直接執行</td></tr>
-        <tr><td>每日美股損益報告</td><td>08:30</td><td>需確認</td></tr>
-        <tr><td>每日台股損益報告</td><td>15:00</td><td>需確認</td></tr>
-        <tr><td>每日系統備份報告</td><td>19:00</td><td>需確認</td></tr>
-        <tr><td>定時記憶存檔</td><td>12:05, 18:05</td><td>需確認</td></tr>
-        <tr><td>多使用者記憶存檔</td><td>12:10, 18:10</td><td>需確認</td></tr>
-        <tr><td>風速監測警示</td><td>08:00, 12:00, 18:00</td><td>直接執行</td></tr>
+        <tr><td>風速監測警示</td><td>08:00, 12:00, 18:00</td><td>風速 >30 km/h 發 Telegram 警示</td></tr>
+        <tr><td>系統狀態更新</td><td>12:00</td><td>每日更新系統狀態頁面</td></tr>
     </table>
             <br><table>
         <tr><th>服務</th><th>用途</th><th>月用量</th></tr>
@@ -199,7 +194,7 @@
     </table>
         </details>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-09 11:45:42
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-09 15:17:48
     </div>
 </div>
 </body>
