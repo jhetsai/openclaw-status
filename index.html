@@ -59,36 +59,36 @@
       }
     }).catch(function(e){});
 
-  // Fetch CWA weather
-  fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWA-355EEEE7-217C-4428-9A71-7F797C8E66A6&limit=50')
+  // Fetch Open-Meteo weather (CORS allowed, real-time)
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=23.71&longitude=120.29&current=temperature_2m,weathercode,windspeed_10m&timezone=Asia%2FTaipei')
     .then(function(r){return r.json();})
     .then(function(d){
-      var st=d.records.Station;
-      var target=null;
-      for(var i=0;i<st.length;i++){
-        var g=st[i].GeoInfo||{};
-        if(g.CountyName==='雲林縣'&&['麥寮','古坑','古坑(花卉中心)'].indexOf(st[i].StationName)!==-1){target=st[i];break;}
-      }
-      if(!target){for(var i=0;i<st.length;i++){if((st[i].GeoInfo||{}).CountyName==='雲林縣'){target=st[i];break;}}}
-      if(!target&&st.length>0)target=st[0];
-      if(!target)return;
-      var we=target.WeatherElement;
-      var wtxt=we.Weather||'';
+      var c=d.current||{};
+      var temp=c.temperature_2m||'?';
+      var wind=c.windspeed_10m||'?';
+      var code=c.weathercode||0;
+      var wtxt='晴';
+      if(code===0)wtxt='晴';
+      else if(code<=3)wtxt='多雲';
+      else if(code<=48)wtxt='霧';
+      else if(code<=55)wtxt='毛毛雨';
+      else if(code<=65)wtxt='雨';
+      else if(code<=75)wtxt='雪';
+      else wtxt='惡劣';
       var eff='正常',effColor='#f57c00';
-      if(wtxt.indexOf('晴')!==-1){eff='高';effColor='#2e7d32';}
-      else if(wtxt.indexOf('多雲')!==-1||wtxt.indexOf('雲')!==-1){eff='正常';}
-      else if(wtxt.indexOf('陰')!==-1){eff='偏低';}
-      else if(wtxt.indexOf('雨')!==-1){eff='低';effColor='#c62828';}
+      if(code===0){eff='高';effColor='#2e7d32';}
+      else if(code<=3){eff='正常';}
+      else if(code<=48){eff='偏低';}
+      else{eff='低';effColor='#c62828';}
       var items=document.querySelectorAll('.status-item');
       for(var i=0;i<items.length;i++){
         var label=items[i].querySelector('.label');
         if(!label)continue;
         var txt=label.textContent;
-        if(txt==='麥寮測站'||txt==='今日天氣'){
-          items[i].querySelector('.value').textContent=target.StationName+' '+wtxt;
-        }
-        if(txt==='氣溫')items[i].querySelector('.value').textContent=we.AirTemperature+'°C';
-        if(txt==='風速')items[i].querySelector('.value').textContent=we.WindSpeed+' m/s';
+        if(txt==='麥寮測站')items[i].querySelector('.value').textContent='水林 '+wtxt;
+        if(txt==='氣溫')items[i].querySelector('.value').textContent=temp+'°C';
+        if(txt==='風速')items[i].querySelector('.value').textContent=wind+' km/h';
+        if(txt==='今日天氣')items[i].querySelector('.value').textContent=wtxt;
         if(txt==='發電效率'){items[i].querySelector('.value').textContent=eff;items[i].querySelector('.value').style.color=effColor;}
       }
     }).catch(function(e){});
