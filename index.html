@@ -90,6 +90,11 @@
         if(txt==='風速')items[i].querySelector('.value').textContent=wind+' km/h';
         if(txt==='今日天氣')items[i].querySelector('.value').textContent=wtxt;
         if(txt==='發電效率'){items[i].querySelector('.value').textContent=eff;items[i].querySelector('.value').style.color=effColor;}
+        if(txt==='資料時間'){
+          var d=new Date();
+          var ts=d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');
+          items[i].querySelector('.value').textContent=ts;
+        }
       }
     }).catch(function(e){});
 })();
@@ -160,11 +165,12 @@
             <summary>☀️ 太陽能發電（預估）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
-        <div class="status-item"><div class="label">麥寮測站</div><div class="value">麥寮 晴</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">27.6°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">3.7 m/s</div></div>
-        <div class="status-item"><div class="label">今日天氣</div><div class="value">晴</div></div>
-        <div class="status-item"><div class="label">發電效率</div><div class="value">高</div></div>
+        <div class="status-item"><div class="label">麥寮測站</div><div class="value">-</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">-°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">- km/h</div></div>
+        <div class="status-item"><div class="label">今日天氣</div><div class="value">-</div></div>
+        <div class="status-item"><div class="label">發電效率</div><div class="value">-</div></div>
+        <div class="status-item"><div class="label">資料時間</div><div class="value">-</div></div>
         </div>
         </details>
 
