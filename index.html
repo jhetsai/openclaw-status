@@ -47,16 +47,16 @@ const fs=require("fs");try{const d=JSON.parse(fs.readFileSync("/root/.openclaw/b
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-    <p class="time">更新時間：2026-04-09 09:23</p>
+<p class="time">更新時間：2026-04-08 09:46</p>
 
         <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value">1天 5時 53分</div></div>
-        <div class="status-item"><div class="label">記憶體</div><div class="value">2.88 / 11.63GB</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">9.6%</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 13時 49分</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">3.84 / 11.63GB</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">6.8%</div></div>
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
@@ -113,9 +113,11 @@ const fs=require("fs");try{const d=JSON.parse(fs.readFileSync("/root/.openclaw/b
             <summary>☀️ 太陽能發電（預估）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
-        <div class="status-item"><div class="label">今日天氣</div><div class="value">🌤️ 一般</div></div>
-        <div class="status-item"><div class="label">預估發電</div><div class="value">0.3 - 0.5 度</div></div>
-        <div class="status-item"><div class="label">發電效率</div><div class="value warning">正常</div></div>
+        <div class="status-item"><div class="label">麥寮測站</div><div class="value" id="cwa_station">讀取中...</div></div>
+        <div class="status-item"><div class="label">預估發電</div><div class="value">0.2 - 0.4 度</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value" id="cwa_temp">--°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value" id="cwa_wind">-- m/s</div></div>
+        <div class="status-item"><div class="label">發電效率</div><div class="value" id="solar_eff">--</div></div>
         </div>
         </details>
 
@@ -147,5 +149,30 @@ const fs=require("fs");try{const d=JSON.parse(fs.readFileSync("/root/.openclaw/b
 <div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-07 15:22:32
     </div>
 </div>
+
+// Fetch CWA real-time weather
+fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWA-355EEEE7-217C-4428-9A71-7F797C8E66A6&limit=50')
+  .then(r => r.json())
+  .then(d => {
+    let stations = d.records.Station;
+    let target = stations.find(s => s.GeoInfo.CountyName === '雲林縣' && ['麥寮','古坑','古坑(花卉中心)'].includes(s.StationName));
+    if (!target) target = stations.find(s => s.GeoInfo.CountyName === '雲林縣');
+    if (!target) target = stations[0];
+    let we = target.WeatherElement;
+    document.getElementById('cwa_station').textContent = target.StationName + ' ' + we.Weather;
+    document.getElementById('cwa_temp').textContent = we.AirTemperature + '°C';
+    document.getElementById('cwa_wind').textContent = we.WindSpeed + ' m/s';
+    // Update solar efficiency based on weather
+    let weather = we.Weather || '';
+    let eff = '正常';
+    let estimate = '0.3-0.5度';
+    if (weather.includes('晴')) { eff='高'; estimate='0.8-1.0度'; }
+    else if (weather.includes('多雲')||weather.includes('雲')) { eff='正常'; estimate='0.4-0.6度'; }
+    else if (weather.includes('陰')) { eff='偏低'; estimate='0.2-0.4度'; }
+    else if (weather.includes('雨')) { eff='低'; estimate='0.1-0.2度'; }
+    document.getElementById('solar_eff').textContent = eff;
+    document.getElementById('cwa_station').style.color = eff==='高'?'#2e7d32':eff==='低'?'#c62828':'#f57c00';
+  })
+  .catch(e => console.log('CWA fetch failed'));
 </body>
 </html>
