@@ -40,8 +40,7 @@
     </style>
 <script>
 const fs=require("fs");try{const d=JSON.parse(fs.readFileSync("/root/.openclaw/brave_search_usage.json","utf8"));const c=d.cost||0,w=d.cost_warning||4;document.querySelectorAll("table tr").forEach(r=>{if(r.cells&&r.cells[0]&&r.cells[0].textContent.includes("Brave Search")){if(c>=w){r.cells[2].style.color="#c62828";r.cells[2].style.fontWeight="bold"}}})}catch(e){}
-
-
+fetch('https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWA-355EEEE7-217C-4428-9A71-7F797C8E66A6&limit=50').then(r=>r.json()).then(d=>{let s=d.records.Station;let t=s.find(x=>x.GeoInfo.CountyName==='雲林縣'&&['麥寮','古坑','古坑(花卉中心)'].includes(x.StationName));if(!t)t=s.find(x=>x.GeoInfo.CountyName==='雲林縣');if(!t)t=s[0];let w=t.WeatherElement;document.getElementById('cwa_station').textContent=t.StationName+' '+w.Weather;document.getElementById('cwa_temp').textContent=w.AirTemperature+'°C';document.getElementById('cwa_wind').textContent=w.WindSpeed+' m/s';let eff='正常';if(w.Weather.includes('晴'))eff='高';else if(w.Weather.includes('多雲')||w.Weather.includes('雲'))eff='正常';else if(w.Weather.includes('陰'))eff='偏低';else if(w.Weather.includes('雨'))eff='低';document.getElementById('solar_eff').textContent=eff;}).catch(e=>console.log('CWA failed'));
     </script>
 </head>
 <body>
