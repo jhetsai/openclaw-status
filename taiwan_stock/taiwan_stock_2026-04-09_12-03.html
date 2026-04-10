@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+body{font-family:-apple-system,'Microsoft JhengHei',sans-serif;background:#f5f5f5;padding:20px}
+.card{background:white;border-radius:12px;padding:20px;margin:15px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+h1{color:#1a1a2e;margin-bottom:5px}
+.date{color:#888;font-size:14px}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:15px 0}
+.kpi{background:#f8f9fa;border-radius:10px;padding:15px;text-align:center}
+.kpi .label{font-size:12px;color:#888}
+.kpi .value{font-size:24px;font-weight:bold;color:#1a1a2e}
+.kpi .value.red{color:#c62828}
+.kpi .value.green{color:#2e7d32}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 8px;text-align:right;border-bottom:1px solid #eee}
+th{background:#f8f9fa;color:#666;font-size:12px;text-align:left}
+td{font-size:13px}
+td:first-child,td:nth-child(2){text-align:left}
+.up{color:#c62828}
+.down{color:#2e7d32}
+.footer{text-align:center;color:#888;font-size:12px;margin-top:20px}
+</style></head><body>
+<h1>📊 台股持有報告</h1>
+<div class="date">2026-04-09 ｜ 今日 vs 昨日</div>
+
+<div class="card">
+<div class="kpi-grid">
+<div class="kpi"><div class="label">總成本</div><div class="value">$1,883,548</div></div>
+<div class="kpi"><div class="label">總市值</div><div class="value">$3,281,473</div></div>
+<div class="kpi"><div class="label">帳面獲利</div><div class="value green">+1,397,925</div></div>
+<div class="kpi"><div class="label">總報酬率</div><div class="value green">+74.2%</div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>📈 個股明細（04/07 vs 04/03）</h2>
+<table>
+<tr><th>代號</th><th>名稱</th><th>昨日收盤</th><th>今日收盤</th><th>漲跌</th><th>日報酬</th><th>總報酬</th></tr>
+<tr>
+<td>0056</td>
+<td>元大高股息</td>
+<td>$37.82</td>
+<td>$38.07</td>
+<td class="up">▲ 0.25</td>
+<td class="up">+1,500</td>
+<td class="up">+40.0%</td>
+</tr>
+<tr>
+<td>00692</td>
+<td>富邦公司治理</td>
+<td>$65.25</td>
+<td>$66.55</td>
+<td class="up">▲ 1.30</td>
+<td class="up">+13,096</td>
+<td class="up">+214.8%</td>
+</tr>
+<tr>
+<td>00712</td>
+<td>復華富時不動產</td>
+<td>$8.61</td>
+<td>$8.69</td>
+<td class="up">▲ 0.08</td>
+<td class="up">+2,320</td>
+<td class="down">-6.3%</td>
+</tr>
+<tr>
+<td>00713</td>
+<td>元大台灣高息低波</td>
+<td>$51.35</td>
+<td>$51.80</td>
+<td class="up">▲ 0.45</td>
+<td class="up">+2,328</td>
+<td class="up">+47.9%</td>
+</tr>
+<tr>
+<td>00717</td>
+<td>富邦美國特別股</td>
+<td>$14.86</td>
+<td>$14.93</td>
+<td class="up">▲ 0.07</td>
+<td class="up">+420</td>
+<td class="up">+6.1%</td>
+</tr>
+<tr>
+<td>00878</td>
+<td>國泰永續高股息</td>
+<td>$22.03</td>
+<td>$22.30</td>
+<td class="up">▲ 0.27</td>
+<td class="up">+7,695</td>
+<td class="up">+178.1%</td>
+</tr>
+<tr>
+<td>00891</td>
+<td>中信關鍵半導體</td>
+<td>$23.56</td>
+<td>$23.98</td>
+<td class="up">▲ 0.42</td>
+<td class="up">+7,560</td>
+<td class="up">+194.6%</td>
+</tr>
+<tr>
+<td>00940</td>
+<td>元大台灣價值高息</td>
+<td>$9.49</td>
+<td>$9.60</td>
+<td class="up">▲ 0.11</td>
+<td class="up">+990</td>
+<td class="up">+13.7%</td>
+</tr>
+<tr>
+<td>009802</td>
+<td>富邦旗艦50</td>
+<td>$12.24</td>
+<td>$12.41</td>
+<td class="up">▲ 0.17</td>
+<td class="up">+923</td>
+<td class="up">+35.3%</td>
+</tr>
+<tr>
+<td>1101</td>
+<td>台泥</td>
+<td>$23.70</td>
+<td>$24.00</td>
+<td class="up">▲ 0.30</td>
+<td class="up">+1,650</td>
+<td class="down">-38.0%</td>
+</tr>
+<tr>
+<td>2886</td>
+<td>兆豐金</td>
+<td>$39.25</td>
+<td>$39.40</td>
+<td class="up">▲ 0.15</td>
+<td class="up">+1,600</td>
+<td class="up">+62.0%</td>
+</tr>
+</table>
+<div style="margin-top:15px;padding:10px;background:#f8f9fa;border-radius:8px;text-align:center">
+<span style="font-size:14px">📊 今日市值變化：</span>
+<span class="up" style="font-size:18px;font-weight:bold">+40,081 (+1.24%)</span>
+</div>
+</div>
+<div class="footer">台股投資組合 ｜ 2026-04-07 14:08 ｜ 蝦助出品</div>
+</body></html>

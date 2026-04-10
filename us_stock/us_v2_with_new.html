@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="font-family:Arial;margin:0;padding:20px;font-size:14px;">
+<h1 style="color:#1a1a2e;margin:0 0 5px 0;">美股每日損益報告</h1>
+<p style="color:#666;margin:0 0 15px 0;">2026年4月1日(二) | 最新收盤：04/01</p>
+
+<div style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:15px;border-radius:8px;margin-bottom:15px;text-align:center;">
+<div style="font-size:14px;">今日總損益</div>
+<div style="font-size:24px;font-weight:bold;margin:5px 0;">+149 USD</div><div style='font-size:12px;'>約 +4,765 TWD</div></div>
+
+<!-- USD/TWD 兩週曲線圖 -->
+<div style="background:#f8f9fa;padding:15px;border-radius:8px;margin-bottom:15px;">
+<div style="font-weight:bold;margin-bottom:10px;">💵 美元/台幣 一個月走势图（USD/TWD）</div>
+<canvas id="usdTwdChart" height="100"></canvas>
+<div style="font-size:11px;color:#666;margin-top:5px;">資料來源：Wise.com（僅供參考）</div>
+</div>
+
+<!-- FTFNMR 指數 -->
+<div style="background:#fff3e0;padding:15px;border-radius:8px;margin-bottom:15px;">
+<div style="font-weight:bold;margin-bottom:8px;">🏠 FTFNMR（FTSE NAREIT Mortgage REITs 指數）</div>
+<table style="width:100%;border-collapse:collapse;">
+<tr style="background:#ffcc80;color:#333;">
+<th style="padding:8px;border:1px solid #ddd;text-align:center;">指數</th>
+<th style="padding:8px;border:1px solid #ddd;text-align:right;">價格</th>
+<th style="padding:8px;border:1px solid #ddd;text-align:right;">日漲跌</th>
+<th style="padding:8px;border:1px solid #ddd;text-align:right;">年初至今</th>
+</tr>
+<tr>
+<td style="padding:8px;border:1px solid #ddd;text-align:center;font-weight:bold;">FTFNMR</td>
+<td style="padding:8px;border:1px solid #ddd;text-align:right;">$2.54</td>
+<td style="padding:8px;border:1px solid #ddd;text-align:right;color:#F44336;">-0.05 (-1.93%)</td>
+<td style="padding:8px;border:1px solid #ddd;text-align:right;color:#F44336;">-5.93%</td>
+</tr>
+</table>
+<div style="font-size:11px;color:#666;margin-top:5px;">52週區間：2.10 - 2.77 | 資料來源：FT.com</div>
+</div>
+
+<h2 style="margin:15px 0 10px 0;font-size:15px;color:#333;">持股明細（2026/04/01 收盤）</h2>
+<table style="width:100%;border-collapse:collapse;margin-bottom:15px;">
+<tr style="background:#1a1a2e;color:white;">
+<th style="padding:10px;border:1px solid #ddd;text-align:center;">代號</th>
+<th style="padding:10px;border:1px solid #ddd;">名稱</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:center;">股數</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:right;">成本均價</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:right;">03/31</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:right;">04/01</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:center;">漲跌</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:right;">當日損益</th>
+<th style="padding:10px;border:1px solid #ddd;text-align:right;">累計報酬</th>
+</tr>
+<tr><td style='border:1px solid #ddd;padding:8px;text-align:center;font-weight:bold;'>AAPL</td><td style='border:1px solid #ddd;padding:8px;'>蘋果</td><td style='border:1px solid #ddd;padding:8px;text-align:center;'>105</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$145.02</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$253.79</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$255.63</td><td style='border:1px solid #ddd;padding:8px;text-align:center;color:#4CAF50;font-weight:bold;'>+1.84 (+0.73%)</td><td style='border:1px solid #ddd;padding:8px;text-align:right;color:#4CAF50;font-weight:bold;'>+193 USD (+6,170 TWD)</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>+11,614 USD (+370,895 TWD)</td></tr>
+<tr><td style='border:1px solid #ddd;padding:8px;text-align:center;font-weight:bold;'>MSFT</td><td style='border:1px solid #ddd;padding:8px;'>微軟</td><td style='border:1px solid #ddd;padding:8px;text-align:center;'>55</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$263.51</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$370.17</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$369.37</td><td style='border:1px solid #ddd;padding:8px;text-align:center;color:#F44336;font-weight:bold;'>-0.80 (-0.22%)</td><td style='border:1px solid #ddd;padding:8px;text-align:right;color:#F44336;font-weight:bold;'>-44 USD (-1,405 TWD)</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>-5,822 USD (-185,935 TWD)</td></tr>
+<tr><td style='border:1px solid #ddd;padding:8px;text-align:center;font-weight:bold;'>BND</td><td style='border:1px solid #ddd;padding:8px;'>債券ETF</td><td style='border:1px solid #ddd;padding:8px;text-align:center;'>115</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$73.21</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$73.64</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>$73.64</td><td style='border:1px solid #ddd;padding:8px;text-align:center;color:#F44336;font-weight:bold;'>-0.00 (-0.00%)</td><td style='border:1px solid #ddd;padding:8px;text-align:right;color:#F44336;font-weight:bold;'>-0 USD (-0 TWD)</td><td style='border:1px solid #ddd;padding:8px;text-align:right;'>-49 USD (-1,579 TWD)</td></tr>
+</table>
+
+<div style="background:#fff3cd;padding:12px;border-radius:8px;margin-bottom:15px;">
+<div style="font-weight:bold;margin-bottom:8px;">熱門個股分析</div>
+<ul style="margin:0;padding-left:20px;">
+<li>AI科技族群：Nvidia、Google、Broadcom持續受惠於AI資料中心需求</li>
+<li>製造業回流：Intel、MP Materials受惠關稅政策與政府補貼</li>
+<li>潔淨能源：Bloon Energy受到AI用電需求高速增長影響</li>
+<li>生技製藥：制藥業併購消息頻傳</li>
+<li>金融銀行：聯準會利率政策不明之際，銀行股吸引防御性資金</li>
+</ul>
+</div>
+
+<div style="background:#e8f5e9;padding:12px;border-radius:8px;">
+<div style="font-weight:bold;margin-bottom:8px;">市場趨勢觀察</div>
+<ul style="margin:0;padding-left:20px;">
+<li>美股反彈：4月首日美股出現反彈，市場情緒有所恢復</li>
+<li>AI投資持續：科技股長期趨勢仍向上</li>
+<li>資金輪動：從大型科技股轉向早期成長股和價值股</li>
+<li>债券市場穩定：BND波動極小，適合防御性配置</li>
+</ul>
+</div>
+
+<p style="color:#999;font-size:10px;text-align:center;margin-top:20px;">資料來源：NASDAQ / FT.com（2026/04/01 收盤）| 蝦助</p>
+
+<script>
+new Chart(document.getElementById('usdTwdChart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: ['03/10','03/12','03/14','03/16','03/18','03/20','03/22','03/24','03/26','03/28','03/30','04/01','04/03','04/05','04/07','04/09'],
+    datasets: [{
+      label: 'USD/TWD',
+      data: [31.85,31.90,31.95,32.00,32.08,32.15,32.12,32.18,32.05,31.98,32.20,32.08,32.10,31.95,31.90,31.76],
+      borderColor: '#667eea',
+      backgroundColor: 'rgba(102,126,234,0.1)',
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { min: 31.5, max: 32.5, ticks: { callback: v => v.toFixed(2) } }
+    }
+  }
+});
+</script>
+</body>
+</html>
