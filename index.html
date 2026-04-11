@@ -45,7 +45,7 @@
   document.querySelector('.time').innerHTML='更新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
 
   // Fetch system-api status
-  fetch('https://jhetsai.github.io/openclaw-status/index.html')
+  fetch('http://localhost:3838/api/status')
     .then(function(r){return r.json();})
     .then(function(d){
       var items=document.querySelectorAll('.status-item');
@@ -110,8 +110,8 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 1時 56分</div></div>
-        <div class="status-item"><div class="label">記憶體</div><div class="value">2.13 / 7.71 GB</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 8時 52分</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">3.0 / 7.7 GB</div></div>
         <div class="status-item"><div class="label">CPU 使用率</div><div class="value">3.1%</div></div>
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
@@ -175,8 +175,8 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
         <div class="status-item"><div class="label">麥寮測站</div><div class="value">水林 多雲</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">27.4°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">17.5 km/h</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">26.7°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">21.9 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
         <div class="status-item"><div class="label">📡 版本最後上傳時間</div><div class="value" id="status-ts">-</div></div>
@@ -210,7 +210,7 @@
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
   };
   var now = new Date();
-  var ts = d.ts || '2026-04-11 15:46:34';
+  var ts = '2026-04-11 17:17:11';
   var el = document.getElementById('top-ts');
   if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
   el = document.getElementById('status-ts');
