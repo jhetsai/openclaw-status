@@ -39,10 +39,7 @@
     </style>
 <script>
 (function(){
-  // Update time
-  var now=new Date();
-  var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-  document.querySelector('.time').innerHTML='📡 資料更新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+  // Update time — will be set from API data in .then()
 
   // Fetch system-api status
   fetch('http://localhost:3838/api/status')
@@ -94,9 +91,10 @@
         if(txt==='今日天氣')items[i].querySelector('.value').textContent=wtxt;
         if(txt==='發電效率'){items[i].querySelector('.value').textContent=eff;items[i].querySelector('.value').style.color=effColor;}
         if(txt==='資料時間'){
-          var d=new Date();
-          var ts=d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');
-          items[i].querySelector('.value').textContent=ts;
+          items[i].querySelector('.value').textContent=d.ts||'-';
+          // 同步更新頂部時間
+          var up=document.getElementById('update-ts');
+          if(up)up.textContent=d.ts||'-';
         }
       }
     }).catch(function(e){});
@@ -106,19 +104,8 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">📝 頁面更新時間：<span id="update-ts">-</span> <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">📡 資料更新時間：<span id="update-ts">-</span> <a href="?" class="refresh-btn">🔄 重新整理</a></p>
   <script>
-  (function(){
-    var up=document.getElementById("update-ts");
-    if(up){
-      var d=new Date();
-      var pad=function(n){return n<10?"0"+n:n;};
-      up.textContent=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());
-    }
-  })();
-  </script>
-
-        <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
