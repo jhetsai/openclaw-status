@@ -103,7 +103,7 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">📡 資料更新時間：<span class="ts-val">-</span> <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time" id="page-ts">📡 資料更新時間：- <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
         <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
@@ -179,7 +179,7 @@
         <div class="status-item"><div class="label">風速</div><div class="value">17.5 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
-        <div class="status-item"><div class="label">📡 資料更新時間</div><div class="value">-</div></div>
+        <div class="status-item"><div class="label">📡 資料更新時間</div><div class="value" id="status-ts">-</div></div>
         </div>
         </details>
 
@@ -202,14 +202,14 @@
     </table>
         </details>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ <span class="ts-val">-</span></div>
+<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-11 10:21:12
+    </div>
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function(){
-  fetch('http://localhost:3838/api/status').then(function(r){return r.json();}).then(function(d){
-    var ts = d.ts || '-';
-    document.querySelectorAll('.ts-val').forEach(function(el){el.textContent=ts;});
-  }).catch(function(){document.querySelectorAll('.ts-val').forEach(function(x){x.textContent='-';});});
-});
+document.getElementById('page-ts').innerHTML = '📡 資料更新時間：' + new Date().toLocaleString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}) + ' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+document.getElementById('footer-ts').textContent = new Date().toLocaleString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+document.getElementById('status-ts').textContent = new Date().toLocaleString('zh-TW', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
 </script>
 </body>
 </html>
