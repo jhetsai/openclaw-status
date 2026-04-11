@@ -103,7 +103,7 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time" id="page-ts">📡 資料更新時間：- <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time" id="top-ts">📡 最後刷新時間：- <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
         <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
@@ -179,7 +179,7 @@
         <div class="status-item"><div class="label">風速</div><div class="value">17.5 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
-        <div class="status-item"><div class="label">📡 資料更新時間</div><div class="value" id="status-ts">-</div></div>
+        <div class="status-item"><div class="label">📡 最後刷新時間</div><div class="value" id="status-ts">-</div></div>
         </div>
         </details>
 
@@ -202,14 +202,20 @@
     </table>
         </details>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-11 10:21:12
-    </div>
 </div>
-
 <script>
-document.getElementById('page-ts').innerHTML = '📡 資料更新時間：' + new Date().toLocaleString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}) + ' <a href="?" class="refresh-btn">🔄 重新整理</a>';
-document.getElementById('footer-ts').textContent = new Date().toLocaleString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-document.getElementById('status-ts').textContent = new Date().toLocaleString('zh-TW', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+(function(){
+  var fmt = function(d){
+    var pad=function(n){return n<10?'0'+n:n;};
+    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  };
+  var now = new Date();
+  var ts = fmt(now);
+  var el = document.getElementById('top-ts');
+  if(el) el.innerHTML = '📡 最後刷新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+  el = document.getElementById('status-ts');
+  if(el) el.textContent = ts;
+})();
 </script>
 </body>
 </html>
