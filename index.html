@@ -103,7 +103,7 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time" id="top-ts">📡 最後刷新時間：- <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time" id="top-ts">📡 版本最後上傳時間：- <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
         <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
@@ -179,7 +179,7 @@
         <div class="status-item"><div class="label">風速</div><div class="value">17.5 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
-        <div class="status-item"><div class="label">📡 最後刷新時間</div><div class="value" id="status-ts">-</div></div>
+        <div class="status-item"><div class="label">📡 版本最後上傳時間</div><div class="value" id="status-ts">-</div></div>
         </div>
         </details>
 
@@ -212,7 +212,7 @@
   var now = new Date();
   var ts = fmt(now);
   var el = document.getElementById('top-ts');
-  if(el) el.innerHTML = '📡 最後刷新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+  if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
   el = document.getElementById('status-ts');
   if(el) el.textContent = ts;
 })();
