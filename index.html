@@ -42,7 +42,7 @@
   // Update time
   var now=new Date();
   var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-  document.querySelector('.time').innerHTML='更新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+  document.querySelector('.time').innerHTML='📡 資料更新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
 
   // Fetch system-api status
   fetch('http://localhost:3838/api/status')
@@ -106,7 +106,7 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：<span id="update-ts">-</span> <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time">📝 頁面更新時間：<span id="update-ts">-</span> <a href="?" class="refresh-btn">🔄 重新整理</a></p>
   <script>
   (function(){
     var up=document.getElementById("update-ts");
@@ -192,7 +192,7 @@
         <div class="status-item"><div class="label">風速</div><div class="value">18.9 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
-        <div class="status-item"><div class="label">資料時間</div><div class="value">11:23</div></div>
+        <div class="status-item"><div class="label">📡 資料更新時間</div><div class="value">11:23</div></div>
         </div>
         </details>
 
