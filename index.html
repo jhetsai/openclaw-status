@@ -210,7 +210,7 @@
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
   };
   var now = new Date();
-  var ts = fmt(now);
+  var ts = '2026-04-11 15:37:30';
   var el = document.getElementById('top-ts');
   if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
   el = document.getElementById('status-ts');
