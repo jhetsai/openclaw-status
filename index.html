@@ -37,13 +37,6 @@
         a { color: #1976d2; text-decoration: none; }
         a:hover { text-decoration: underline; }
     </style>
-<script>
-(function(){
-  // Update time
-  var now=new Date();
-  var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-  document.querySelector('.time').innerHTML='📡 資料更新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
-
   // Fetch system-api status
   fetch('http://localhost:3838/api/status')
     .then(function(r){return r.json();})
@@ -97,6 +90,12 @@
         }
       }
     }).catch(function(e){});
+  // Update page-top timestamp from d.ts
+  if(d.ts){
+    var ts=d.ts;
+    var el=document.querySelector('.time');
+    if(el)el.innerHTML='📡 資料更新時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+  }
 })();
 </script>
 </head>
