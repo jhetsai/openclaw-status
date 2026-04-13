@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>持股總覽｜蝦助</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;min-height:100vh;padding:10px}
+.header{text-align:center;margin-bottom:16px}
+.header h1{color:#1a1a2e;font-size:20px;margin-bottom:4px}
+.header p{color:#666;font-size:12px}
+.card{background:white;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.kpi-row{display:flex;gap:12px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.kpi-box{flex:0 0 auto;background:#2196F3;color:white;padding:12px 20px;border-radius:10px;text-align:center;min-width:120px}
+.kpi-box .label{font-size:11px;opacity:0.9}
+.kpi-box .value{font-size:22px;font-weight:bold;margin:4px 0}
+.kpi-box .sub{font-size:10px;opacity:0.85}
+.section-title{color:#333;font-size:14px;font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #2196F3}
+table{width:100%;border-collapse:collapse;font-size:11px;table-layout:auto}
+th,td{padding:6px 4px;text-align:center;border-bottom:1px solid #eee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+th{background:#1a1a2e;color:white}
+.up{color:#4CAF50;font-weight:bold}
+.down{color:#F44336;font-weight:bold}
+.footer{text-align:center;color:#999;font-size:10px;margin-top:16px}
+@media (min-width:768px){
+body{padding:20px}
+.header{margin-bottom:24px}
+.header h1{font-size:24px}
+.header p{font-size:13px}
+.card{padding:20px;margin-bottom:16px}
+.kpi-row{gap:80px;margin:15px 0}
+.kpi-box{padding:15px 25px;min-width:160px}
+.kpi-box .label{font-size:12px}
+.kpi-box .value{font-size:28px}
+.kpi-box .sub{font-size:11px}
+.section-title{font-size:16px;margin-bottom:12px;padding-bottom:8px}
+table{font-size:13px}
+th,td{padding:10px 8px}
+.footer{font-size:11px;margin-top:20px}
+}
+.mob-table{display:table}
+.desk-table{display:none}
+@media (min-width:768px){.mob-table{display:none}.desk-table{display:table}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>📊 持股總覽</h1>
+<p>最後更新：2026/04/13 14:18 | USD/TWD：31.73</p>
+</div>
+<div class="card">
+<div class="kpi-row">
+<div class="kpi-box"><div class="label">總市值</div><div class="value">5,198,988</div><div class="sub">TWD</div></div>
+<div class="kpi-box"><div class="label">總成本</div><div class="value">3,093,348</div><div class="sub">TWD</div></div>
+<div class="kpi-box"><div class="label">累計報酬</div><div class="value" style="color:#FFD700">+2,105,640</div><div class="sub" style="color:#FFD700">+68.1%</div></div>
+</div>
+</div>
+<div class="card">
+<h3 class="section-title">📈 台股（11 檔）</h3>
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>股</th><th>價</th><th>漲%</th><th>累計</th></tr>
+<tr><td>0056</td><td>元大高股息</td><td>6,000</td><td>$39.52</td><td class='up'>+0.28%</td><td style='color:#FFD700;font-weight:bold'>+73,920</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>10,074</td><td>$70.95</td><td class='down'>-0.21%</td><td style='color:#FFD700;font-weight:bold'>+501,786</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>29,000</td><td>$8.88</td><td class='down'>-0.11%</td><td style='color:#FF6B6B;font-weight:bold'>-11,310</td></tr><tr><td>00713</td><td>元大台灣高息低波</td><td>5,173</td><td>$52.50</td><td class='up'>+0.00%</td><td style='color:#FFD700;font-weight:bold'>+90,424</td></tr><tr><td>00717</td><td>富邦美國特別股</td><td>6,000</td><td>$15.00</td><td class='down'>-0.07%</td><td style='color:#FFD700;font-weight:bold'>+5,580</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>28,500</td><td>$23.01</td><td class='down'>-0.04%</td><td style='color:#FFD700;font-weight:bold'>+427,215</td></tr><tr><td>00891</td><td>中信關鍵半導體</td><td>18,000</td><td>$26.03</td><td class='up'>+0.77%</td><td style='color:#FFD700;font-weight:bold'>+322,020</td></tr><tr><td>00940</td><td>元大台灣價值高息</td><td>9,000</td><td>$9.90</td><td class='up'>+0.61%</td><td style='color:#FFD700;font-weight:bold'>+13,500</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>5,427</td><td>$13.43</td><td class='up'>+1.36%</td><td style='color:#FFD700;font-weight:bold'>+23,119</td></tr><tr><td>1101</td><td>台泥</td><td>5,499</td><td>$25.25</td><td class='down'>-0.59%</td><td style='color:#FF6B6B;font-weight:bold'>-73,962</td></tr><tr><td>2886</td><td>兆豐金</td><td>10,664</td><td>$39.30</td><td class='down'>-1.38%</td><td style='color:#FFD700;font-weight:bold'>+159,747</td></tr>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>股數</th><th>成本</th><th>昨收</th><th>現價</th><th>當日</th><th>漲%</th><th>累計</th></tr>
+<tr><td>0056</td><td>元大高股息</td><td>6,000</td><td>$39.52</td><td class='up'>+0.28%</td><td style='color:#FFD700;font-weight:bold'>+73,920</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>10,074</td><td>$70.95</td><td class='down'>-0.21%</td><td style='color:#FFD700;font-weight:bold'>+501,786</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>29,000</td><td>$8.88</td><td class='down'>-0.11%</td><td style='color:#FF6B6B;font-weight:bold'>-11,310</td></tr><tr><td>00713</td><td>元大台灣高息低波</td><td>5,173</td><td>$52.50</td><td class='up'>+0.00%</td><td style='color:#FFD700;font-weight:bold'>+90,424</td></tr><tr><td>00717</td><td>富邦美國特別股</td><td>6,000</td><td>$15.00</td><td class='down'>-0.07%</td><td style='color:#FFD700;font-weight:bold'>+5,580</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>28,500</td><td>$23.01</td><td class='down'>-0.04%</td><td style='color:#FFD700;font-weight:bold'>+427,215</td></tr><tr><td>00891</td><td>中信關鍵半導體</td><td>18,000</td><td>$26.03</td><td class='up'>+0.77%</td><td style='color:#FFD700;font-weight:bold'>+322,020</td></tr><tr><td>00940</td><td>元大台灣價值高息</td><td>9,000</td><td>$9.90</td><td class='up'>+0.61%</td><td style='color:#FFD700;font-weight:bold'>+13,500</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>5,427</td><td>$13.43</td><td class='up'>+1.36%</td><td style='color:#FFD700;font-weight:bold'>+23,119</td></tr><tr><td>1101</td><td>台泥</td><td>5,499</td><td>$25.25</td><td class='down'>-0.59%</td><td style='color:#FF6B6B;font-weight:bold'>-73,962</td></tr><tr><td>2886</td><td>兆豐金</td><td>10,664</td><td>$39.30</td><td class='down'>-1.38%</td><td style='color:#FFD700;font-weight:bold'>+159,747</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 class="section-title">💵 美股（3 檔）收盤 2026-04-13 14:11</h3>
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>股</th><th>價</th><th>漲%</th><th>累計</th></tr>
+<tr><td>AAPL</td><td>蘋果</td><td>105</td><td>$260.48</td><td class='down'>-0.00%</td><td style='color:#FFD700;font-weight:bold'>+384,672</td></tr><tr><td>MSFT</td><td>微軟</td><td>55</td><td>$370.87</td><td class='down'>-0.59%</td><td style='color:#FFD700;font-weight:bold'>+187,359</td></tr><tr><td>BND</td><td>債ETF</td><td>115</td><td>$73.64</td><td class='down'>-0.15%</td><td style='color:#FFD700;font-weight:bold'>+1,569</td></tr>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>股數</th><th>成本</th><th>昨收</th><th>現價</th><th>當日</th><th>漲%</th><th>累計</th></tr>
+<tr><td>AAPL</td><td>蘋果</td><td>105</td><td>$260.48</td><td class='down'>-0.00%</td><td style='color:#FFD700;font-weight:bold'>+384,672</td></tr><tr><td>MSFT</td><td>微軟</td><td>55</td><td>$370.87</td><td class='down'>-0.59%</td><td style='color:#FFD700;font-weight:bold'>+187,359</td></tr><tr><td>BND</td><td>債ETF</td><td>115</td><td>$73.64</td><td class='down'>-0.15%</td><td style='color:#FFD700;font-weight:bold'>+1,569</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 class="section-title">💰 2026年配息總覽</h3>
+<table style="width:100%;font-size:12px;">
+<tr><th>項目</th><th>金額</th><th>說明</th></tr>
+<tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold">+53,221 元</td><td>1~4月對帳單</td></tr>
+<tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+7,251 元</td><td>5月（0056、00717、00940）</td></tr>
+<tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+USD 111.87</td><td>≈ TWD 3,573（已扣30%預扣稅）</td></tr>
+<tr style="background:#f5f5f5;font-weight:bold;"><td>合計實收</td><td style="color:#2e7d32;">≈ 56,794 元</td><td>台股+美股</td></tr>
+<tr style="background:#fff9e6;"><td>總累計</td><td style="color:#FFD700;font-weight:bold">+2,165,493 元</td><td>市值增值+實收配息</td></tr>
+</table>
+</div>
+<div class="footer">📊 持股總覽｜蝦助出品｜2026/04/13 14:18</div>
+</body>
+</html>

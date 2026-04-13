@@ -413,3 +413,43 @@ _最後更新：2026-04-08 23:54_
 | OPENCLAW_SYSTEM_MANUAL.pdf | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw_status/OPENCLAW_SYSTEM_MANUAL.pdf |
 | status_live.html | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw_status/status_live.html |
 
+
+---
+_最後更新：2026-04-10 23:49_
+
+## Git 設定修正（2026/04/10）
+- 移除 origin 的 pushurl，現在只推送到 openclaw-status
+- 刪除 post-commit hook，不再自動同步到 inventory
+- 設定已修正，workspace 變更會送到正確的 repo
+
+## Repo 整理（2026/04/10）
+
+### Inventory Repo（jhetsai/inventory）
+- 已清理，只保留 15 個必要檔案
+- 刪除：memory/, openclaw_status/, scripts/, weather/, stocks/, trip/, work/, posters/ 等
+- 現有檔案：inventory.html/json, senao_inventory.*, scan.html, INVENTORY_*.md/html, LINE_*.md, photos/.gitkeep, README.md
+
+### Stock Repo（jhetsai/stock）- 新建立
+- GitHub: https://github.com/jhetsai/stock
+- GitHub Pages: https://jhetsai.github.io/stock/
+- R2: stock/index.html, stock/mobile.html
+
+### 持股總覽连结（2026/04/10 更新）
+- R2: https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/stock/index.html
+- GitHub: https://jhetsai.github.io/stock/
+
+## 系統狀態頁面（2026/04/10 更新）
+- 持股總覽連結已更新為新 stock repo
+- GitHub: https://jhetsai.github.io/openclaw-status/
+- R2: https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw-status/index.html
+
+## 體育賽事查詢（2026/04/11 新增）
+
+### PTT 直播資訊連結（首選）
+- **NBA 直播懶人包**：https://www.ptt.cc/bbs/NBA/M.1771421630.A.9BF.html
+- **棒球 轉播懶人包**：https://www.ptt.cc/bbs/Baseball/M.1767197310.A.8E0.html
+
+### 查詢順序
+1. PTT NBA 懶人包（籃球）
+2. PTT Baseball 懶人包（棒球）
+3. HamiVideo / ELTA TV（實際觀看）

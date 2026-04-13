@@ -159,3 +159,55 @@ git branch -M main
 GIT_TERMINAL_PROMPT=0 git push origin main -q 2>&1 || echo "Push failed"
 
 echo "[$(date '+%H:%M:%S')] 更新完成"
+
+# Also upload raw JSON to R2 for the R2 status page
+curl -s "http://localhost:3838/api/status" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+d['ts'] = '$(TZ=Asia/Taipei date "+%Y-%m-%d %H:%M:%S")'
+print(json.dumps(d))
+" > /tmp/openclaw_status.json
+
+python3 - "$WORK_DIR/index.html" << 'PYEOF'
+import sys, json, boto3
+
+ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
+SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+    aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
+
+# Upload JSON
+with open('/tmp/openclaw_status.json') as f:
+    data = json.load(f)
+    data['ts'] = '$(TZ=Asia/Taipei date "+%Y-%m-%d %H:%M:%S")'
+s3.put_object(Bucket='shared-files', Key='openclaw-status/status.json',
+    Body=json.dumps(data, ensure_ascii=False),
+    ContentType='application/json')
+print('JSON uploaded')
+PYEOF
+
+# Also upload the baked HTML to R2
+python3 - "$WORK_DIR/index.html" << 'PYEOF2'
+import sys, boto3, json
+html_path = sys.argv[1]
+ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
+SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+    aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
+with open(html_path) as f:
+    content = f.read()
+# Remove the problematic fetch from R2 JSON, use bake-in data instead
+content = content.replace(
+    "fetch('https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw-status/status.json')",
+    "Promise.resolve(null)"
+)
+# Fix ts to use baked d.ts
+content = content.replace(
+    "var ts = d.ts || '2026-04-11 16:00:48';",
+    "var ts = d ? (d.ts || '-') : '-';"
+)
+s3.put_object(Bucket='shared-files', Key='openclaw-status/index.html',
+    Body=content.encode('utf-8'),
+    ContentType='text/html')
+print('R2 HTML uploaded')
+PYEOF2

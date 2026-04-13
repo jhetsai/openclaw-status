@@ -1,324 +1,48 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>庫存管理系統</title>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; }
-        
-        .container { max-width: 100%; margin: 0 auto; }
-        h1 { background: #1a237e; color: white; padding: 16px 20px; font-size: 1.4em; text-align: center; margin-bottom: 0; }
-        
-        .stats-bar { display: flex; flex-wrap: wrap; background: white; border-bottom: 3px solid #1a237e; }
-        .stat-item { flex: 1 1 50%; padding: 16px; text-align: center; border-right: 1px solid #e0e0e0; }
-        .stat-item:last-child { border-right: none; }
-        .stat-item .number { font-size: 2em; font-weight: 800; color: #1a237e; }
-        .stat-item .label { font-size: 0.85em; color: #666; margin-top: 4px; }
-        .stat-item.zero { background: #fafafa; }
-        .stat-item.stock { background: #e8f5e9; }
-        
-        .card { background: white; margin: 12px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
-        .card-title { background: #3949ab; color: white; padding: 12px 16px; font-size: 1em; font-weight: 600; }
-        .card-title.zero-cat { background: #616161; }
-        
-        .search-bar { display: flex; gap: 8px; padding: 12px; background: #fff; border-bottom: 1px solid #e0e0e0; }
-        .search-bar input { flex: 1; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
-        .search-bar input:focus { border-color: #1a237e; outline: none; }
-        
-        .btn { padding: 12px 20px; border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-scan { background: #d32f2f; color: white; }
-        .btn-search { background: #1976d2; color: white; }
-        .btn-edit { background: #f57c00; color: white; }
-        .btn-done { background: #388e3c; color: white; display: none; }
-        
-        .inventory-table { width: 100%; border-collapse: collapse; background: white; }
-        .inventory-table th { background: #303f9f; color: white; padding: 14px 12px; text-align: center; font-weight: 600; font-size: 0.9em; }
-        .inventory-table td { padding: 14px 12px; text-align: center; border-bottom: 1px solid #e0e0e0; font-size: 1em; }
-        .inventory-table .code { font-weight: 700; color: #1a237e; font-family: monospace; }
-        .inventory-table .name { text-align: left !important; max-width: 200px; }
-        .inventory-table .qty { font-weight: bold; font-size: 1.1em; }
-        .inventory-table .qty.zero { color: #999; }
-        .inventory-table .qty.has-stock { color: #2e7d32; }
-        .inventory-table tr:hover { background: #f5f5f5; }
-        
-        .verified { color: #388e3c; font-size: 1.2em; }
-        .pending { color: #ffa000; font-size: 1.2em; }
-        
-        .last-updated { text-align: center; padding: 12px; color: #666; font-size: 0.85em; background: #fafafa; }
-        
-        /* POS Touch-friendly checkbox */
-        .inventory-table input[type="checkbox"] { width: 28px; height: 28px; cursor: pointer; }
-        });
-        
-        /* Responsive */
-        @media (min-width: 769px) {
-            .container { max-width: 1400px; }
-            .stat-item { flex: 1 1 20%; }
-            .stat-item:nth-child(5) { border-right: none; }
-            .inventory-table { font-size: 1.05em; }
-            .inventory-table th, .inventory-table td { padding: 16px 14px; }
-        }
-        
-        @media (max-width: 768px) and (min-width: 481px) {
-            .stat-item { flex: 1 1 33%; }
-            .stat-item:nth-child(3) { border-right: none; }
-        }
-        
-        @media (max-width: 480px) {
-            h1 { padding: 12px; font-size: 1.2em; }
-            .stat-item { flex: 1 1 50%; padding: 12px; }
-            .stat-item .number { font-size: 1.6em; }
-            .search-bar { flex-direction: column; }
-            .btn { justify-content: center; }
-            .inventory-table { font-size: 0.9em; }
-            .inventory-table th, .inventory-table td { padding: 10px 8px; }
-            .inventory-table .name { max-width: 120px; }
-        }
-        
-        @media (max-width: 480px) and (orientation: landscape) {
-            .stat-item { flex: 1 1 25%; padding: 8px; }
-            .stat-item .number { font-size: 1.4em; }
-            .inventory-table th, .inventory-table td { padding: 8px 6px; font-size: 0.85em; }
-        }
-        
-        /* Scanner Modal */
-        #scanner-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 20px; }
-        #scanner-modal.active { display: flex; align-items: center; justify-content: center; }
-        .scanner-content { background: white; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; }
-        .scanner-content h3 { margin-bottom: 16px; text-align: center; }
-        #qr-reader { width: 100%; }
-        .close-scanner { margin-top: 12px; width: 100%; background: #666; color: white; padding: 12px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; }
-    </style>
-</head>
-<body><style>
-    #password-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #1a237e; display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    #password-box { background: white; padding: 40px; border-radius: 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-    #password-box h2 { color: #1a237e; margin-bottom: 20px; }
-    #password-box input { padding: 14px 20px; font-size: 1.1em; border: 2px solid #e0e0e0; border-radius: 8px; width: 100%; margin-bottom: 16px; }
-    #password-box button { padding: 14px 32px; font-size: 1em; background: #1a237e; color: white; border: none; border-radius: 8px; cursor: pointer; }
-    #password-box button:hover { background: #3949ab; }
-    #password-error { color: #d32f2f; margin-top: 12px; display: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蝦助系統總入口</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Microsoft JhengHei',sans-serif;background:#f0f2f5;min-height:100vh;padding:20px}
+h1{color:#1a1a2e;text-align:center;margin-bottom:30px;font-size:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.1);text-decoration:none;color:inherit;transition:transform 0.2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+.card h2{font-size:18px;margin-bottom:8px}
+.card p{font-size:13px;color:#666}
+.card.blue{border-left:4px solid #1976d2}
+.card.green{border-left:4px solid #2e7d32}
+.card.orange{border-left:4px solid #f57c00}
+.card.purple{border-left:4px solid #7b1fa2}
+.card.red{border-left:4px solid #c62828}
 </style>
-
-<div id="password-overlay">
-    <div id="password-box">
-        <h2>&#128274; 庫存管理系統</h2>
-        <input type="password" id="password-input" placeholder="請輸入密碼" onkeypress="if(event.key==='Enter')checkPassword()">
-        <button onclick="checkPassword()">登入</button>
-        <p id="password-error">密碼錯誤，請再試一次</p>
-    </div>
+</head>
+<body>
+<h1>📌 蝦助系統總入口</h1>
+<div class="grid">
+<a class="card blue" href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/stock/">
+<h2>📊 持股總攬</h2>
+<p>台股 + 美股即時損益</p>
+</a>
+<a class="card green" href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw-status/">
+<h2>🖥️ 系統狀態</h2>
+<p>主機資源、天氣、發電效率</p>
+</a>
+<a class="card orange" href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/inventory/">
+<h2>📦 庫存系統</h2>
+<p>LINE 照片上傳庫存盤點</p>
+</a>
+<a class="card purple" href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/agri-weather/">
+<h2>🌾 農業天氣</h2>
+<p>農田氣象資訊</p>
+</a>
+<a class="card red" href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/electricity/">
+<h2>⚡ 台電電費系統</h2>
+<p>用電分析與帳單</p>
+</a>
 </div>
-
-<script>
-var correctPassword = "0000";
-var isAuthenticated = false;
-
-function checkPassword() {
-    var input = document.getElementById('password-input').value;
-    if (input === correctPassword) {
-        isAuthenticated = true;
-        sessionStorage.setItem('inventoryLoggedIn', 'true');
-        document.getElementById('password-overlay').style.display = 'none';
-        showLogoutButton();
-    } else {
-        document.getElementById('password-error').style.display = 'block';
-        document.getElementById('password-input').value = '';
-    }
-}
-
-function showLogoutButton() {
-    var logoutBtn = document.createElement('button');
-    logoutBtn.innerHTML = '&#128682; 登出';
-    logoutBtn.className = 'btn logout-btn';
-    logoutBtn.onclick = logout;
-    logoutBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;background:#d32f2f;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;';
-    document.body.appendChild(logoutBtn);
-}
-
-function logout() {
-    sessionStorage.removeItem('inventoryLoggedIn');
-    location.reload();
-}
-
-// Check if already logged in
-if (sessionStorage.getItem('inventoryLoggedIn') === 'true') {
-    isAuthenticated = true;
-    window.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('password-overlay').style.display = 'none';
-        showLogoutButton();
-    });
-}
-</script>
-    <h1>📦 庫存管理系統</h1>
-    
-    <div class="stats-bar">
-        <div class="stat-item"><div class="number" id="totalItems">0</div><div class="label">本次品項</div></div>
-        <div class="stat-item stock"><div class="number" id="inStock">0</div><div class="label">有庫存</div></div>
-        <div class="stat-item zero"><div class="number" id="zeroStock">0</div><div class="label">零庫存</div></div>
-        <div class="stat-item"><div class="number" id="totalQty">0</div><div class="label">實際總數</div></div>
-        <div class="stat-item"><div class="number" id="totalOnline">0</div><div class="label">網購總數</div></div>
-    </div>
-    
-    <div class="card">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="🔍 搜尋品號或品名...">
-            <button class="btn btn-scan" onclick="openScanner()">📷 掃描</button>
-            <button class="btn btn-edit" id="editBtn" onclick="toggleEditMode()">✏️ 確認</button>
-            <button class="btn btn-done" id="doneBtn" onclick="toggleEditMode()">✅ 完成</button>
-        </div>
-        <div id="inventoryList"></div>
-    </div>
-    
-    <div class="last-updated" id="lastUpdated">載入中...</div>
-    
-    <div id="scanner-modal">
-        <div class="scanner-content">
-            <h3>📷 掃描 QR Code / Barcode</h3>
-            <div id="qr-reader"></div>
-            <button class="close-scanner" onclick="closeScanner()">關閉</button>
-        </div>
-    </div>
-
-        <script>
-    let inventoryData = { categories: [], last_updated: null };
-    let isEditMode = false;
-    let html5QrcodeScanner = null;
-    let lastUploaded = null;
-
-    async function loadInventory() {
-        try {
-            const response = await fetch('inventory.json');
-            const data = await response.json();
-            inventoryData = data;
-            lastUploaded = data.last_updated;
-            renderInventory();
-        } catch (error) {
-            console.error('Error loading inventory:', error);
-            document.getElementById('inventoryList').innerHTML = '<p style="padding:20px;text-align:center;color:#d32f2f;">載入失敗</p>';
-        }
-    }
-
-    function renderInventory(filter = '') {
-        const list = document.getElementById('inventoryList');
-        filter = filter.toLowerCase();
-        
-        let htmlHasStock = '', htmlZeroStock = '';
-        let totalItems = 0, totalQty = 0, totalOnline = 0, inStock = 0, zeroStock = 0;
-        
-        inventoryData.categories.forEach(function(cat) {
-            cat.items.forEach(function(item) {
-                const code = (item.code || '').toLowerCase();
-                const name = (item.name || '').toLowerCase();
-                if (filter && !code.includes(filter) && !name.includes(filter)) return;
-                
-                const qty = item.quantity || 0;
-                const onlineQty = item.onlineQuantity || 0;
-                const isVerified = item.verified || false;
-                const note = item.note || '';
-                const isBothZero = (qty === 0 && onlineQty === 0);
-                const qtyClass = (qty === 0) ? 'qty zero' : 'qty has-stock';
-                
-                totalItems++;
-                totalQty += qty;
-                totalOnline += onlineQty;
-                
-                const checkbox = isEditMode 
-                    ? '<input type="checkbox" ' + (isVerified ? 'checked' : '') + ' onchange="toggleVerified(\'' + item.code + '\', this.checked)">' 
-                    : (isVerified ? '&#9989;' : '&#9203;');
-                
-                const row = '<tr><td class="code">' + (item.code || '-') + '</td><td class="name">' + (item.name || '-') + '</td><td class="' + qtyClass + '">' + qty + '</td><td class="' + qtyClass + '">' + onlineQty + '</td><td>' + checkbox + '</td><td>' + (note || '-') + '</td></tr>';
-                
-                if (isBothZero) {
-                    zeroStock++;
-                    htmlZeroStock += row;
-                } else {
-                    if (qty > 0 || onlineQty > 0) inStock++;
-                    htmlHasStock += row;
-                }
-            });
-        });
-        
-        let html = '';
-        if (htmlHasStock) html += '<div class="card-title">&#128230; 本次上傳品項</div><table class="inventory-table"><thead><tr><th>品號</th><th>品名</th><th>實際</th><th>網購</th><th>&#10003;</th><th>備註</th></tr></thead><tbody>' + htmlHasStock + '</tbody></table>';
-        if (htmlZeroStock) html += '<div class="card-title zero-cat">&#128128; 零庫存品項</div><table class="inventory-table"><thead><tr><th>品號</th><th>品名</th><th>實際</th><th>網購</th><th>&#10003;</th><th>備註</th></tr></thead><tbody>' + htmlZeroStock + '</tbody></table>';
-        
-        list.innerHTML = html || '<p style="padding:20px;text-align:center;">找不到品項</p>';
-        
-        document.getElementById('totalItems').textContent = totalItems;
-        document.getElementById('inStock').textContent = inStock;
-        document.getElementById('zeroStock').textContent = zeroStock;
-        document.getElementById('totalQty').textContent = totalQty;
-        document.getElementById('totalOnline').textContent = totalOnline;
-        document.getElementById('lastUpdated').textContent = '&#128194; 更新：' + (inventoryData.last_updated || '未知');
-    }
-
-    function toggleEditMode() {
-        isEditMode = !isEditMode;
-        document.getElementById('editBtn').style.display = isEditMode ? 'none' : 'inline-flex';
-        document.getElementById('doneBtn').style.display = isEditMode ? 'inline-flex' : 'none';
-        document.getElementById('searchInput').disabled = isEditMode;
-        if (isEditMode) document.getElementById('searchInput').value = '';
-        renderInventory();
-    }
-
-    function toggleVerified(code, checked) {
-        inventoryData.categories.forEach(function(cat) {
-            cat.items.forEach(function(item) {
-                if (item.code === code) item.verified = checked;
-            });
-        });
-        saveInventory();
-    }
-
-    async function saveInventory() {
-        try {
-            const response = await fetch('inventory.json', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(inventoryData)
-            });
-            if (!response.ok) throw new Error('Save failed');
-        } catch (error) {
-            console.error('Error saving:', error);
-        }
-    }
-
-    function openScanner() {
-        document.getElementById('scanner-modal').classList.add('active');
-        if (!html5QrcodeScanner) {
-            html5QrcodeScanner = new Html5Qrcode("qr-reader");
-        }
-        html5QrcodeScanner.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            function(qrCodeMessage) {
-                const code = qrCodeMessage.trim();
-                document.getElementById('searchInput').value = code;
-                closeScanner();
-                renderInventory(code);
-            },
-            function(errorMessage) {}
-        ).catch(function(err) {
-            console.error(err);
-            alert('相機無法開啟');
-        });
-    }
-
-    function closeScanner() {
-        document.getElementById('scanner-modal').classList.remove('active');
-        if (html5QrcodeScanner) {
-            html5QrcodeScanner.stop().catch(function() {});
-        }
-    }
-
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        if (!isEditMode) renderInventory(e.target.value);
-    });
-
-    loadInventory();
-    </script>
 </body>
 </html>

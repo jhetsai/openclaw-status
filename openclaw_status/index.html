@@ -103,16 +103,16 @@
 <body>
 <div class="container">
 <h1>📊 系統服務狀態</h1>
-<p class="time">更新時間：2026-04-09 11:23:44 <a href="?" class="refresh-btn">🔄 重新整理</a></p>
+<p class="time" id="top-ts">📡 版本最後上傳時間：- <a href="?" class="refresh-btn">🔄 重新整理</a></p>
 
         <details>
             <summary>🖥️ 系統概覽（主機｜資源｜服務）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">開機時間</div><div class="value">1天 7時 54分</div></div>
-        <div class="status-item"><div class="label">記憶體</div><div class="value">4.09 / 11.63 GB</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">9.7%</div></div>
+        <div class="status-item"><div class="label">開機時間</div><div class="value">0天 13時 48分</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">2.1 / 7.7 GB</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">2.8%</div></div>
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
@@ -163,8 +163,8 @@
             <div style="font-size:16px;font-weight:600;">持股總覽</div>
             <div style="font-size:12px;opacity:0.85;margin-top:4px;">台股 + 美股整合</div>
             <div style="position:absolute;bottom:8px;right:8px;display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
-                <a href="https://jhetsai.github.io/openclaw/index.html" target="_blank" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:6px;padding:3px 8px;color:white;font-size:10px;text-decoration:none;font-weight:600;">GitHub</a>
-                <a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw/stock_portfolio.html" target="_blank" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:6px;padding:3px 8px;color:white;font-size:10px;text-decoration:none;font-weight:600;">R2</a>
+                <a href="https://jhetsai.github.io/stock/" target="_blank" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:6px;padding:3px 8px;color:white;font-size:10px;text-decoration:none;font-weight:600;">GitHub</a>
+                <a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/stock/index.html" target="_blank" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:6px;padding:3px 8px;color:white;font-size:10px;text-decoration:none;font-weight:600;">R2</a>
             </div>
         </div>
     </div>
@@ -174,12 +174,12 @@
             <summary>☀️ 太陽能發電（預估）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
-        <div class="status-item"><div class="label">麥寮測站</div><div class="value">水林 多雲</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">27.9°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">18.9 km/h</div></div>
-        <div class="status-item"><div class="label">今日天氣</div><div class="value">多雲</div></div>
+        <div class="status-item"><div class="label">麥寮測站</div><div class="value">水林 晴</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">24.5°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">6.8 km/h</div></div>
+        <div class="status-item"><div class="label">今日天氣</div><div class="value">晴</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">正常</div></div>
-        <div class="status-item"><div class="label">資料時間</div><div class="value">11:23</div></div>
+        <div class="status-item"><div class="label">📡 版本最後上傳時間</div><div class="value" id="status-ts">-</div></div>
         </div>
         </details>
 
@@ -192,18 +192,30 @@
     </table>
             <br><table>
         <tr><th>任務</th><th>時間</th><th>說明</th></tr>
-        <tr><td>風速監測警示</td><td>08:00, 12:00, 18:00</td><td>風速 >30 km/h 發 Telegram 警示</td></tr>
+        <tr><td>風速監測警示</td><td>12:00, 18:00</td><td>風速 >30 km/h 發 Telegram 警示</td></tr>
     </table>
             <br><table>
         <tr><th>服務</th><th>用途</th><th>月用量</th></tr>
-        <tr><td>Brave Search</td><td>網路搜尋</td><td>$0.64 / $5.00</td></tr>
+        <tr><td>Brave Search</td><td>網路搜尋</td><td>$1.17 / $5</td></tr>
         <tr><td>MiniMax M2.7</td><td>AI 模型</td><td>Starter</td></tr>
         <tr><td>Leonardo.ai</td><td>圖像生成</td><td>150 張/天</td></tr>
     </table>
         </details>
 
-<div class="footer">📊 系統服務狀態 ｜ 蝦助出品 ｜ 2026-04-09 11:23:44
-    </div>
 </div>
+<script>
+(function(){
+  var fmt = function(d){
+    var pad=function(n){return n<10?'0'+n:n;};
+    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  };
+  var now = new Date();
+  var ts = '2026-04-13 22:39:20';
+  var el = document.getElementById('top-ts');
+  if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
+  el = document.getElementById('status-ts');
+  if(el) el.textContent = ts;
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>工作筆記｜神腦生活 北港華勝店</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Microsoft JhengHei',sans-serif;background:#f0f2f5;font-size:14px;color:#1a1a1a;min-height:100vh;padding-bottom:60px}
+header{background:linear-gradient(135deg,#1a237e,#1565c0);color:white;padding:16px 18px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+header h1{font-size:16px;font-weight:bold;margin-bottom:4px}
+header p{font-size:11px;opacity:0.85}
+.search-bar{padding:10px 14px;background:white;position:sticky;top:60px;z-index:90;border-bottom:1px solid #eee}
+.search-bar input{width:100%;padding:9px 14px;border:1.5px solid #ddd;border-radius:20px;font-size:13px;outline:none}
+.search-bar input:focus{border-color:#1565c0}
+.card{background:white;margin:10px 14px;border-radius:12px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.section-title{font-size:13px;font-weight:bold;color:#1565c0;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e3f2fd;display:flex;align-items:center;gap:6px}
+.section-title .icon{font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+th{background:#e3f2fd;color:#1565c0;padding:6px 8px;text-align:left;font-size:11px}
+td{padding:5px 8px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.kv{display:flex;gap:8px;margin:6px 0;flex-wrap:wrap}
+.kv-item{background:#f5f5f5;border-radius:8px;padding:8px 12px;font-size:12px;min-width:100px;flex:1}
+.kv-item .label{font-size:10px;color:#888;margin-bottom:2px}
+.kv-item .value{font-weight:bold;color:#1a1a1a;font-size:13px}
+.kv-item.highlight{background:#fff3e0;border:1px solid #ffb74d}
+.step{margin:8px 0;padding:8px 10px;background:#fafafa;border-radius:8px;border-left:3px solid #1565c0;font-size:12px;line-height:1.7}
+.step-num{display:inline-block;background:#1565c0;color:white;border-radius:50%;width:18px;height:18px;text-align:center;line-height:18px;font-size:10px;margin-right:6px;font-weight:bold}
+.step-title{font-weight:bold;color:#1565c0;font-size:12px;margin:8px 0 4px}
+.step ul{margin:4px 0 4px 18px}
+.step li{margin:2px 0}
+.alert{background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;padding:10px 12px;margin:8px 0;font-size:12px;color:#e65100}
+.alert .title{font-weight:bold;margin-bottom:4px}
+.info{background:#e3f2fd;border-radius:8px;padding:10px 12px;margin:8px 0;font-size:12px;color:#0d47a1}
+.info .title{font-weight:bold;margin-bottom:4px}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #eee;display:flex;z-index:200;padding:6px 0;box-shadow:0 -2px 8px rgba(0,0,0,0.08)}
+.nav-item{flex:1;text-align:center;padding:4px;font-size:10px;color:#888;text-decoration:none}
+.nav-item .nav-icon{font-size:20px;display:block;margin-bottom:2px}
+.nav-item.active{color:#1565c0;font-weight:bold}
+.time-badge{display:inline-block;background:#c62828;color:white;border-radius:10px;padding:1px 7px;font-size:10px;margin-right:4px;font-weight:bold}
+.time-badge.green{background:#2e7d32}
+.toggle-btn{background:#f5f5f5;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;margin:4px 4px 4px 0;display:inline-block;color:#444}
+.toggle-btn.active{background:#1565c0;color:white}
+.fade-in{animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.hidden{display:none}
+.toc-item{padding:7px 10px;border-radius:8px;margin:3px 0;cursor:pointer;background:#fafafa;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.toc-item:hover{background:#e3f2fd}
+.toc-item .arrow{color:#bbb;font-size:12px;transition:transform 0.2s}
+.toc-item.open .arrow{transform:rotate(90deg)}
+.content-block{margin:6px 0 12px;padding:0 10px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>📋 工作筆記｜神腦生活</h1>
+<p>北港華勝店｜2026年版</p>
+</header>
+
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="🔍 搜尋工作項目..." oninput="filterContent()">
+</div>
+
+<!-- 快速資訊 -->
+<div class="card" id="info">
+<div class="section-title"><span class="icon">📞</span>快速資訊</div>
+<div class="kv">
+<div class="kv-item highlight">
+<div class="label">公司電話</div>
+<div class="value">057825828</div>
+</div>
+<div class="kv-item">
+<div class="label">PIN</div>
+<div class="value">12345678</div>
+</div>
+</div>
+<div class="alert">
+<div class="title">⚠️ 上班規範</div>
+上班需提前15分鐘到
+</div>
+<div class="info">
+<div class="title">💡 繳費資訊</div>
+線路編號開頭為 <strong>5783Y</strong>
+</div>
+</div>
+
+<!-- 每日工作流程 -->
+<div class="card" id="daily">
+<div class="section-title"><span class="icon">📅</span>每日工作流程</div>
+
+<div class="step">
+<div class="step-title"><span class="time-badge green">11:00</span>開店準備</div>
+<ul>
+<li>收費台後方看板隨身碟幻燈片</li>
+<li>MOD 頻道 864</li>
+<li>門口三星M8 撥 YT神腦官網影片</li>
+<li>門口左側播隨身碟影片</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-title"><span class="time-badge">20:00</span>異動盤</div>
+<ul>
+<li>8.報表 → FAG 庫存明細表_異動盤點</li>
+<li>選擇日期，變更排序方式為「1.品號」</li>
+<li>列印報表並清點數量，畫記確認</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-title"><span class="time-badge">20:00</span>全盤（SIM卡）B21～B21Z</div>
+<ul>
+<li>8.報表 → FBG 庫存明細表_全盤</li>
+<li>品號為 B21 ～ B21Z</li>
+<li>清點數量</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-title"><span class="time-badge">20:40</span>關店前置</div>
+關閉展示櫃燈光、電視、華碩手機、蘋果展示機、小米展示櫃
+</div>
+
+<div class="step">
+<div class="step-title"><span class="time-badge">21:00</span>憑證作業</div>
+<ul>
+<li>8.報表 → JSC 憑證檢核表-新版</li>
+<li>列印報表</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-title"><span class="time-badge">21:00</span>窗口收付作業系統</div>
+<ul>
+<li>收費繳款單</li>
+<li>確認日期</li>
+<li>確認筆數，列印兩張</li>
+</ul>
+</div>
+</div>
+
+<!-- 物流作業 -->
+<div class="card" id="logistics">
+<div class="section-title"><span class="icon">📦</span>物流作業</div>
+
+<div class="step">
+<div class="step-title">一、貨物（數位商城轉撥收件）</div>
+<ul>
+<li>2.請轉調處理</li>
+<li>B2C 轉撥撥入驗收</li>
+<li>點望遠鏡查詢</li>
+<li>清點確認收件結單</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-title">二、網購維修</div>
+<ul>
+<li>H.維修/神腦網購管理</li>
+<li>HIB 維修/神腦網購驗收作業</li>
+<li>整批帶入</li>
+<li>清點確認數量結單</li>
+<li>通知客戶取件</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-title">三、轉撥給他店（門市轉門市）</div>
+<ul>
+<li>2.請轉調處理</li>
+<li>B2E 轉撥撥出作業</li>
+<li>列印地址清單並包裝</li>
+<li>填寫貨運單</li>
+</ul>
+</div>
+</div>
+
+<!-- 系統操作 -->
+<div class="card" id="systems">
+<div class="section-title"><span class="icon">💻</span>系統操作</div>
+
+<div class="step">
+<div class="step-title">🔑 關鍵字快速查詢商品編號</div>
+MyPortal 首頁 → 門市業務 → 供貨快報 → 輸入品號品名關鍵字查詢
+</div>
+
+<div class="step">
+<div class="step-title">📦 查詢產品庫存</div>
+MyPortal 首頁 → 門市業務 → 庫存查詢 → 輸入產品編號<br>
+（門市區域空白 = 查詢南區各店）
+</div>
+
+<div class="step">
+<div class="step-title">📱 行動電話合約查詢</div>
+mBMS 中華上線系統 → 行動申裝系統 → mBMS訂單 → 異動作業<br>
+→ 輸入行動電話與租用人證號 → 查看風險資料 → 點選身分證驗證<br>
+→ 企業客戶實地訪查條件 → 繼續受理 → 顯示合約資訊
+</div>
+</div>
+
+<!-- 如意卡e儲值 -->
+<div class="card" id="esavings">
+<div class="section-title"><span class="icon">💳</span>如意卡e儲值</div>
+<div class="step">
+<div class="step-title">第一步：查詢餘額</div>
+mBMS 中華上線系統 → 其他業務 → 如意卡e儲值作業<br>
+→ 輸入儲值門號（檢查門號）→ 點選查詢 → 告知餘額與到期日
+</div>
+<div class="step">
+<div class="step-title">第二步：查聯單號</div>
+mBMS → 報表作業 → 聯單號碼查詢作業 → 輸入行動電話與申請日期
+</div>
+<div class="step">
+<div class="step-title">第三步：結帳</div>
+CCR 結帳系統 → 點選特殊商品（F7）→ 選擇商品名稱 → E儲值<br>
+→ 輸入手機號碼、聯單號碼、儲值金額（月租費為0）<br>
+→ 勾選「單消卡票」→ 確認受理
+</div>
+</div>
+
+<!-- 結帳流程 -->
+<div class="card" id="checkout">
+<div class="section-title"><span class="icon">💰</span>結帳流程</div>
+<div class="step">
+<div class="step-title">CCR 結帳步驟</div>
+<ol style="margin-left:18px">
+<li>輸入員工工號</li>
+<li>點選業務員（F1）</li>
+<li>輸入商品條碼</li>
+<li>詢問會員 → 點選會員（F3）或 Skip</li>
+<li>詢問發票載具或統編</li>
+<li>點選小計</li>
+<li>點選繳費方式<br>
+<span style="font-size:11px;color:#888">Apple Pay = 輸入 8個0</span></li>
+</ol>
+</div>
+<div class="alert">
+<div class="title">💡 國泰世華匯款</div>
+首頁按8 → 輸入1795 → 下一步 → 輸入店號 3330070 → 下一頁<br>
+→ 放錢 → 確認金額與數量 → 確認輸入資訊無誤後確定存入 → 結束離開並列印明細
+</div>
+</div>
+
+<!-- 機密資料 -->
+<div class="card" id="secret">
+<div class="section-title"><span class="icon">🔒</span>機密資料</div>
+<table>
+<tr><th>項目</th><th>portal</th><th>繳費</th><th>合約</th><th>金庫</th><th>CCR</th></tr>
+<tr><td>帳號1</td><td>cts975207</td><td>WC5424</td><td>WC5424</td><td>*7827596#</td><td>975207</td></tr>
+<tr><td>帳號2</td><td>zxcv11…..</td><td>WC5424</td><td>zxcv00000000**</td><td>—</td><td>975207</td></tr>
+</table>
+</div>
+
+<!-- 底部導航 -->
+<div class="nav-bar">
+<a class="nav-item active" href="#info">📋</a>
+<a class="nav-item" href="#daily">📅</a>
+<a class="nav-item" href="#logistics">📦</a>
+<a class="nav-item" href="#systems">💻</a>
+<a class="nav-item" href="#checkout">💰</a>
+</div>
+
+<script>
+function filterContent() {
+  var q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(function(card) {
+    var visible = q === '' || card.textContent.toLowerCase().includes(q);
+    card.style.display = visible ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>
