@@ -5,7 +5,7 @@ from datetime import datetime
 WORKSPACE = "/home/jhe/.openclaw/workspace"
 TW_JSON = os.path.join(WORKSPACE, "taiwan_stock/taiwan_stocks.json")
 US_PRICES = os.path.join(WORKSPACE, "us_stock/us_prices.json")
-OUT_HTML = os.path.join(WORKSPACE, "stock_portfolio.html")
+OUT_HTML = os.path.join(WORKSPACE, "stock", "index.html")
 
 with open(TW_JSON) as f:
     tw_stocks = json.load(f)
