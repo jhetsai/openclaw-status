@@ -392,6 +392,7 @@ _最後更新：2026-04-08 18:05_
 | 📷 LINE 扫码 | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw/scan.html |
 | 🖥️ 系統狀態頁面 | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw-status/index.html |
 | 📈 台股每日報告 | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stock_report.pdf |
+| 📊 台股查詢系統（TWSE API） | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stock/twse_query.html |
 | 📈 美股每日報告 | https://pub.ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stock_report.pdf |
 
 ## Brave Search 費用追蹤（2026/04/08 更新）
