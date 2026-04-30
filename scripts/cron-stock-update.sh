@@ -42,6 +42,8 @@ s3.upload_file('/home/jhe/.openclaw/workspace/taiwan_stock/taiwan_stocks.json', 
 print('taiwan_stocks.json OK')
 PYEOF
 
+python3 "$WORKSPACE/scripts/gen-stock-html.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
+
 # 更新 us_stocks.json 並上傳
 python3 scripts/update_us_stocks.py >> logs/cron-stock.log 2>&1
 python3 scripts/upload_r2.py "$WORKSPACE/us_stock/us_stocks.json" >> logs/cron-stock.log 2>&1
@@ -56,6 +58,8 @@ s3.upload_file('/home/jhe/.openclaw/workspace/us_stock/us_stocks.json', 'shared-
     ExtraArgs={'ContentType':'application/json'})
 print('us_stocks.json OK')
 PYEOF
+
+python3 "$WORKSPACE/scripts/gen-stock-html.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
 
 # 更新並上傳 market_status.json
 python3 scripts/update_market_status.py >> logs/cron-stock.log 2>&1
@@ -84,5 +88,7 @@ try:
 except Exception as e:
     print(f'Exchange rate fetch error: {e}')
 PYEOF
+
+python3 "$WORKSPACE/scripts/gen-stock-html.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
 
 echo "Cron stock update completed at $(date '+%Y-%m-%d %H:%M:%S')" >> logs/cron-stock.log
