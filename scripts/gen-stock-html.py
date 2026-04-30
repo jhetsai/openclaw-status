@@ -427,3 +427,21 @@ with open(OUT_HTML, "w") as f:
     f.write(HTML)
 print(f"OK: {len(HTML)} bytes")
 print(f"當日: {day_sign}{total_day:,.0f} | 累計: {gain_sign}{total_gain:,.0f}")
+
+# ===== R2 Upload =====
+import boto3, os
+try:
+    with open(os.path.expanduser("~/.api_keys")) as f:
+        for line in f:
+            if line.strip() and not line.startswith("#") and "=" in line:
+                k, v = line.strip().split("=", 1)
+                os.environ[k.strip()] = v.strip()
+except:
+    pass
+
+s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+    aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+    aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
+with open(OUT_HTML, 'rb') as f:
+    s3.put_object(Bucket='shared-files', Key='stock/index.html', Body=f.read(), ContentType='text/html')
+print("R2 stock/index.html uploaded")
