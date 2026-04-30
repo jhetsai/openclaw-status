@@ -6,6 +6,13 @@ R2_HTML="$WORKSPACE/openclaw-status/index.html"
 TMP_API="/tmp/status_api.json"
 TS=$(date '+%Y-%m-%d_%H%M%S')
 
+# Load API keys from ~/.api_keys
+if [ -f ~/.api_keys ]; then
+    set -a
+    source ~/.api_keys
+    set +a
+fi
+
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Bake 系統狀態頁面..."
 
 # fetch system api
@@ -16,10 +23,10 @@ python3 "$WORKSPACE/scripts/bake-status-page.py" "$R2_HTML" "$TMP_API"
 
 # Upload to R2 with versioned backup
 python3 - "$R2_HTML" << 'PYEOF2'
-import sys, boto3, datetime
+import sys, boto3, datetime, os
 html_path = sys.argv[1]
-ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
-SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+ACCESS_KEY = os.environ.get('R2_ACCESS_KEY')
+SECRET_KEY = os.environ.get('R2_SECRET_KEY')
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
     aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
 

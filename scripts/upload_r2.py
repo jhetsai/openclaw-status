@@ -4,8 +4,8 @@ import sys
 import os
 
 # R2 credentials
-ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
-SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+ACCESS_KEY = os.environ.get('R2_ACCESS_KEY')
+SECRET_KEY = os.environ.get('R2_SECRET_KEY')
 ENDPOINT = 'https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com'
 BUCKET = 'shared-files'
 

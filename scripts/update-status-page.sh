@@ -166,8 +166,8 @@ print(json.dumps(d))
 python3 - "$WORK_DIR/index.html" << 'PYEOF'
 import sys, json, boto3
 
-ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
-SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+ACCESS_KEY = os.environ.get('R2_ACCESS_KEY')
+SECRET_KEY = os.environ.get('R2_SECRET_KEY')
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
     aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
 
@@ -185,8 +185,8 @@ PYEOF
 python3 - "$WORK_DIR/index.html" << 'PYEOF2'
 import sys, boto3, json
 html_path = sys.argv[1]
-ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
-SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+ACCESS_KEY = os.environ.get('R2_ACCESS_KEY')
+SECRET_KEY = os.environ.get('R2_SECRET_KEY')
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
     aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
 with open(html_path) as f:

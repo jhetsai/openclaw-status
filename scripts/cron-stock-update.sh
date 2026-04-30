@@ -28,8 +28,8 @@ python3 scripts/upload_r2.py "$WORKSPACE/taiwan_stock/taiwan_stocks.json" >> log
 python3 - << 'PYEOF' >> logs/cron-stock.log 2>&1
 import boto3, os
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-    aws_access_key_id='R2_ACCESS_KEY_REDACTED',
-    aws_secret_access_key='R2_SECRET_KEY_REDACTED')
+    aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+    aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
 s3.upload_file('/home/jhe/.openclaw/workspace/taiwan_stock/taiwan_stocks.json', 'shared-files', 'taiwan_stocks.json',
     ExtraArgs={'ContentType':'application/json'})
 print('taiwan_stocks.json OK')
@@ -43,8 +43,8 @@ python3 scripts/upload_r2.py "$WORKSPACE/us_stock/us_stocks.json" >> logs/cron-s
 python3 - << 'PYEOF' >> logs/cron-stock.log 2>&1
 import boto3
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-    aws_access_key_id='R2_ACCESS_KEY_REDACTED',
-    aws_secret_access_key='R2_SECRET_KEY_REDACTED')
+    aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+    aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
 s3.upload_file('/home/jhe/.openclaw/workspace/us_stock/us_stocks.json', 'shared-files', 'us_stocks.json',
     ExtraArgs={'ContentType':'application/json'})
 print('us_stocks.json OK')
@@ -69,8 +69,8 @@ try:
     with open('/home/jhe/.openclaw/workspace/exchange_rate.json', 'w') as f:
         json.dump({'USD_TWD': usd_rate, 'JPY_TWD': jpy_rate, 'updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, f)
     s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-        aws_access_key_id='R2_ACCESS_KEY_REDACTED',
-        aws_secret_access_key='R2_SECRET_KEY_REDACTED')
+        aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+        aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
     s3.upload_file('/home/jhe/.openclaw/workspace/exchange_rate.json', 'shared-files', 'exchange_rate.json',
         ExtraArgs={'ContentType':'application/json'})
     print(f'Exchange rate USD={usd_rate} JPY={jpy_rate} uploaded')

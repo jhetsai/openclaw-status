@@ -86,7 +86,7 @@ wx_eff_map = {
 }
 # Get UV and cloud from WeatherAPI for model-based estimate
 try:
-    wapi_url = 'https://api.weatherapi.com/v1/current.json?key=WEATHER_API_KEY_REDACTED&q=23.71,120.29&aqi=no'
+    wapi_url = 'https://api.weatherapi.com/v1/current.json?key=' + os.environ.get('WEATHER_API_KEY', '') + '&q=23.71,120.29&aqi=no'
     with urllib.request.urlopen(wapi_url, timeout=10) as wr:
         wd = json.loads(wr.read())
     uv_val = wd['current']['uv']

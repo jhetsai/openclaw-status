@@ -17,8 +17,8 @@ python3 "$WORKSPACE/scripts/gen-stock-html.py"
 python3 << 'PYEOF'
 import boto3
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-    aws_access_key_id='R2_ACCESS_KEY_REDACTED',
-    aws_secret_access_key='R2_SECRET_KEY_REDACTED')
+    aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+    aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
 s3.upload_file('/home/jhe/.openclaw/workspace/stock/index.html', 'shared-files', 'stock/index.html', ExtraArgs={'ContentType':'text/html'})
 print('R2 stock/index.html OK')
 PYEOF

@@ -51603,3 +51603,71 @@ TW=交易中, US=交易中
 下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
 Exchange rate USD=31.647267 JPY=0.197508 uploaded
 Cron stock update completed at 2026-04-30 19:00:28
+🔄 持股更新中... (2026-04-30 19:30:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 12389 bytes
+當日: -23,849 | 累計: +2,498,641
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 270.17 (Finnhub)
+  MSFT: 424.46 (Finnhub)
+  BND: 73.39 (Finnhub)
+  FNMR: 2.53 (Yahoo)
+  WTX: 39849.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 711.58 (Finnhub)
+  NAS100: 661.57 (Finnhub)
+  DOW: 488.67 (Finnhub)
+  VIX: 28.01 (Finnhub)
+  TNX: 85.7 (Finnhub)
+  GOLD: 417.41 (Finnhub)
+  OIL: 150.63 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1071 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 19 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 12389 bytes
+當日: -23,849 | 累計: +2,498,641
+R2 stock/index.html OK
+✅ 持股更新完成 (2026-04-30 19:30:01)
+Taiwan stocks updated with time: 2026-04-30 19:30:18
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+Updated 3 stocks with latest prices
+  AAPL: 270.17 (cost 145.02)
+  MSFT: 424.46 (cost 263.51)
+  BND: 73.39 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+TW=交易中, US=交易中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.647267 JPY=0.197508 uploaded
+Cron stock update completed at 2026-04-30 19:30:26

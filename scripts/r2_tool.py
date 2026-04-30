@@ -3,8 +3,8 @@ import boto3
 import sys
 import os
 
-ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
-SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+ACCESS_KEY = os.environ.get('R2_ACCESS_KEY')
+SECRET_KEY = os.environ.get('R2_SECRET_KEY')
 ENDPOINT = 'https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com'
 BUCKET = 'shared-files'
 PUBLIC_URL = 'https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev'

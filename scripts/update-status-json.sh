@@ -19,8 +19,8 @@ with open(fpath) as f:
     d = json.load(f)
 d['ts'] = ts
 
-ACCESS_KEY = 'R2_ACCESS_KEY_REDACTED'
-SECRET_KEY = 'R2_SECRET_KEY_REDACTED'
+ACCESS_KEY = os.environ.get('R2_ACCESS_KEY')
+SECRET_KEY = os.environ.get('R2_SECRET_KEY')
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
     aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
 

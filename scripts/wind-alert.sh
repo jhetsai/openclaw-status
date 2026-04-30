@@ -1,9 +1,11 @@
 #!/bin/bash
 # wind-alert.sh - 水林鄉風速預報，每次檢查都發通知（不論是否超標）
-BOT_TOKEN="TELEGRAM_BOT_TOKEN_REDACTED"
+source ~/.api_keys 2>/dev/null || true
+
+BOT_TOKEN="${TELEGRAM_BOT_TOKEN}"
 CHAT_ID="1181571031"
 LOG="/home/jhe/.openclaw/workspace/logs/wind_alert.log"
-WEATHER_API_KEY="WEATHER_API_KEY_REDACTED"
+WEATHER_API_KEY="${WEATHER_API_KEY}"
 
 WX=$(curl -s "https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=23.71,120.29&days=1&aqi=no&alerts=no")
 

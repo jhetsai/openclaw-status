@@ -173,8 +173,8 @@ def generate_morning_report():
         import boto3
         s3 = boto3.client('s3', 
             endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-            aws_access_key_id='R2_ACCESS_KEY_REDACTED',
-            aws_secret_access_key='R2_SECRET_KEY_REDACTED')
+            aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+            aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
         s3.upload_file(out_path, 'shared-files', 'morning_ai_report.html')
         url = "https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/morning_ai_report.html"
         
