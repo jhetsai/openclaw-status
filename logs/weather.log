@@ -54,3 +54,25 @@ OK - 2026-04-30 17:59, 22.0°C, Partly cloudy, Wind 17.3km/h
 OK - 2026-04-30 17:59, 22.0°C, Partly cloudy, Wind 17.3km/h
 OK - 2026-04-30 18:29, 18.3°C, Partly cloudy, Wind 16.9km/h
 OK - 2026-04-30 19:29, 18.1°C, Partly cloudy, Wind 18.0km/h
+Traceback (most recent call last):
+  File "/home/jhe/.openclaw/workspace/scripts/fetch-weather-to-r2.py", line 9, in <module>
+    response = urllib.request.urlopen(URL, timeout=15)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 521, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 630, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 559, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/lib/python3.12/urllib/request.py", line 639, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 403: Forbidden
