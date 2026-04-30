@@ -5,6 +5,13 @@
 WORKSPACE="/home/jhe/.openclaw/workspace"
 cd "$WORKSPACE"
 
+# Load API keys
+if [ -f ~/.api_keys ]; then
+    set -a
+    source ~/.api_keys
+    set +a
+fi
+
 # 檢查是否為休市日
 HOLIDAY_CHECK=$(python3 scripts/check_holiday.py)
 TW_HOLIDAY=$(echo "$HOLIDAY_CHECK" | python3 -c "import json,sys; d=json.load(sys.stdin); print('yes' if d['tw_holiday'] else 'no')" 2>/dev/null || echo "no")
