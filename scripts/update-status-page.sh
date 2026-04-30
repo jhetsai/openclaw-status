@@ -82,10 +82,10 @@ cat > "$WORK_DIR/index.html" << 'HTMLEOF'
     <h3>🔗 線上服務連結</h3>
     <table>
         <tr><th>服務</th><th>連結</th><th>說明</th></tr>
-        <tr><td>📦 庫存系統</td><td><a href="https://jhetsai.github.io/inventory/" target="_blank">jhetsai.github.io/inventory/</a></td><td>LINE 照片上傳庫存盤點</td></tr>
-        <tr><td>📊 系統狀態</td><td><a href="https://jhetsai.github.io/openclaw-status/" target="_blank">jhetsai.github.io/openclaw-status/</a></td><td>每小時自動更新</td></tr>
-        <tr><td>🌾 農田天氣</td><td><a href="https://jhetsai.github.io/agri-weather/" target="_blank">jhetsai.github.io/agri-weather/</a></td><td>農田氣象資訊</td></tr>
-        <tr><td>📁 開放倉庫</td><td><a href="https://github.com/jhetsai/openclaw" target="_blank">github.com/jhetsai/openclaw</a></td><td>台電系統開源</td></tr>
+        <tr><td>📦 庫存系統</td><td>R2</td><td>LINE 照片上傳庫存盤點</td></tr>
+        <tr><td>📊 系統狀態</td><td>R2</td><td>每小時自動更新</td></tr>
+        <tr><td>🌾 農田天氣</td><td>R2</td><td>農田氣象資訊</td></tr>
+        <tr><td>⚡ 台電系統</td><td>R2</td><td>台電電費查詢</td></tr>
     </table>
 </div>
 
@@ -151,12 +151,7 @@ sed -i "s|REPLACECPUCLASS|$CPU_PCT_CLASS|g" "$WORK_DIR/index.html"
 sed -i "s|REPLACELOADAVG|$LOADAVG|g" "$WORK_DIR/index.html"
 sed -i "s|REPLACEFOOTERTIME|$(date '+%Y-%m-%d %H:%M:%S')|g" "$WORK_DIR/index.html"
 
-# Commit and push
-cd "$WORK_DIR"
-git add index.html
-git commit -m "Update: $(date '+%H:%M')" -q 2>/dev/null || exit 0
-git branch -M main
-GIT_TERMINAL_PROMPT=0 git push origin main -q 2>&1 || echo "Push failed"
+
 
 echo "[$(date '+%H:%M:%S')] 更新完成"
 

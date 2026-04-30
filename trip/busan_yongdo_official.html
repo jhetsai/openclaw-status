@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>釜山影島深度旅遊手冊 2026</title>
+<style>
+@font-face {
+  font-family: 'CJK';
+  src: url('file:///usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'CJK';
+  src: url('file:///usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans CJK TC', 'Noto Sans CJK', 'CJK', 'AR PL UMing TW MBE', sans-serif;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #333;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  width: 100%;
+  min-height: 297mm;
+  padding: 12mm 15mm;
+  page-break-after: always;
+  position: relative;
+}
+.page:last-child { page-break-after: auto; }
+
+/* COVER */
+.cover {
+  background: linear-gradient(160deg, #0a2a4a 0%, #1a4a6e 50%, #2a6a8e 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 297mm;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('https://images.unsplash.com/photo-1565626424178-c699f6601afd?w=1920&q=85') center/cover no-repeat;
+  opacity: 0.25;
+}
+.cover-content { position: relative; z-index: 2; padding: 40px; }
+.cover-badge {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 30px;
+  padding: 6px 20px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-bottom: 25px;
+}
+.cover-emoji { font-size: 65px; margin-bottom: 15px; }
+.cover-title { font-size: 52px; font-weight: 700; letter-spacing: 10px; margin-bottom: 6px; }
+.cover-sub { font-size: 20px; font-weight: 300; letter-spacing: 6px; opacity: 0.85; margin-bottom: 20px; }
+.cover-div { width: 70px; height: 2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); margin: 15px auto; }
+.cover-info { font-size: 12px; opacity: 0.7; line-height: 2.2; letter-spacing: 2px; }
+.cover-footer { position: absolute; bottom: 35px; font-size: 10px; opacity: 0.4; letter-spacing: 2px; }
+
+/* SECTION HEADER */
+.section-header {
+  background: linear-gradient(135deg, #1a4a6e, #2a7a9e);
+  color: white;
+  padding: 8px 15px;
+  margin: -12mm -15mm 15px -15mm;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-num { 
+  background: white; color: #1a4a6e; 
+  width: 30px; height: 30px; border-radius: 50%; 
+  display: flex; align-items: center; justify-content: center; 
+  font-weight: 700; font-size: 13px; 
+}
+.section-title { font-size: 16px; font-weight: 700; letter-spacing: 3px; }
+
+/* IMAGES */
+.hero-img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin: 8px 0; }
+.hero-banner {
+  background: linear-gradient(135deg, #1a4a6e, #2a7a9e);
+  color: white; padding: 12px; border-radius: 8px;
+  text-align: center; margin: 8px 0;
+}
+.hero-banner h4 { font-size: 15px; margin-bottom: 3px; }
+.hero-banner p { font-size: 11px; opacity: 0.9; }
+
+/* MAP PAGE */
+.map-full-container { text-align: center; margin: 5px 0; }
+.map-full-container img {
+  width: 100%; max-width: 100%;
+  border-radius: 8px; border: 2px solid #ddd;
+}
+.map-caption {
+  font-size: 11px; color: #777; margin-top: 6px;
+  text-align: center;
+}
+
+/* INTRO */
+.intro-text { font-size: 13px; line-height: 2; color: #444; margin: 8px 0; }
+
+/* INFO GRID */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.info-card {
+  background: #f5f9fb; border-radius: 8px;
+  padding: 10px 12px; border: 1px solid #e0e8ec;
+}
+.info-card h5 { color: #1a4a6e; font-size: 12px; margin-bottom: 5px; }
+.tip-box {
+  background: linear-gradient(135deg, #e8f8f0, #d4edda);
+  border: 1px solid #7dcea0; border-radius: 6px;
+  padding: 7px 11px; margin: 6px 0; font-size: 12px;
+}
+.tip-box::before { content: '💡 '; }
+.warn-box {
+  background: #fff8e6; border: 1px solid #ffc107;
+  border-radius: 6px; padding: 7px 11px; margin: 6px 0; font-size: 12px;
+}
+.warn-box::before { content: '⚠️ '; }
+
+/* ATTRACTION CARD */
+.attr-card {
+  border: 1px solid #e0e8ec; border-radius: 10px;
+  margin: 8px 0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.attr-header {
+  background: linear-gradient(135deg, #1a4a6e, #2a7a9e);
+  color: white; padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.attr-icon { font-size: 20px; }
+.attr-title { font-size: 14px; font-weight: 700; }
+.attr-sub { font-size: 10px; opacity: 0.8; }
+.attr-body { padding: 12px 14px; }
+.attr-img { width: 100%; height: 130px; object-fit: cover; border-radius: 6px; margin-bottom: 8px; }
+.attr-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 11px; margin-bottom: 8px; }
+.info-label { color: #1a4a6e; font-weight: 500; }
+.info-value { color: #555; }
+.attr-desc { font-size: 11px; line-height: 1.8; color: #444; border-top: 1px solid #eee; padding-top: 6px; margin-top: 4px; }
+.attr-desc h6 { color: #1a4a6e; font-size: 11px; margin: 5px 0 3px; }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 22px; margin: 8px 0; }
+.timeline::before {
+  content: ''; position: absolute; left: 5px; top: 5px; bottom: 5px;
+  width: 3px; background: linear-gradient(to bottom, #1a4a6e, #2a7a9e); border-radius: 2px;
+}
+.tl-item { position: relative; margin-bottom: 9px; padding: 8px 12px; background: #f8fafc; border-radius: 7px; }
+.tl-item::before {
+  content: ''; position: absolute; left: -19px; top: 13px;
+  width: 9px; height: 9px; background: #2a7a9e; border: 2px solid white;
+  border-radius: 50%; box-shadow: 0 0 0 2px #1a4a6e;
+}
+.tl-time { font-size: 10px; font-weight: 700; color: #1a4a6e; }
+.tl-title { font-size: 12px; font-weight: 500; }
+.tl-desc { font-size: 10px; color: #888; }
+
+/* FOOD */
+.food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 7px 0; }
+.food-card { border: 1px solid #e8eef3; border-radius: 7px; overflow: hidden; }
+.food-card img { width: 100%; height: 80px; object-fit: cover; }
+.food-info { padding: 7px 9px; }
+.food-name { font-size: 12px; font-weight: 700; }
+.food-desc { font-size: 10px; color: #777; }
+.food-price { font-size: 12px; color: #e67e22; font-weight: 500; margin-top: 3px; }
+
+/* TABLE */
+.data-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 11px; }
+.data-table th { background: #1a4a6e; color: white; padding: 6px 9px; text-align: left; }
+.data-table td { padding: 5px 9px; border-bottom: 1px solid #eee; }
+.data-table tr:nth-child(even) { background: #f6f9fb; }
+
+/* CHECKLIST */
+.checklist { background: #f6f9fb; border-radius: 7px; padding: 8px 12px; margin: 6px 0; }
+.checklist h5 { color: #1a4a6e; font-size: 11px; margin-bottom: 4px; }
+.check-item { display: flex; align-items: center; padding: 2px 0; font-size: 11px; color: #555; }
+.check-box { width: 13px; height: 13px; border: 2px solid #1a4a6e; border-radius: 3px; margin-right: 6px; flex-shrink: 0; }
+
+/* WAVE DIVIDER */
+.wave { text-align: center; margin: 10px 0; color: #ccc; font-size: 14px; letter-spacing: 8px; }
+
+/* PRICE */
+.price-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dotted #eee; font-size: 11px; }
+.price-label { color: #666; }
+.price-value { color: #1a4a6e; font-weight: 500; }
+
+/* TWO COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* PAGE FOOTER */
+.page-footer { position: absolute; bottom: 8mm; left: 15mm; right: 15mm; display: flex; justify-content: space-between; font-size: 8px; color: #bbb; border-top: 1px solid #eee; padding-top: 5px; }
+.page-num { position: absolute; bottom: 8mm; right: 15mm; font-size: 9px; color: #bbb; }
+
+/* HIGHLIGHT */
+.highlight-box {
+  background: linear-gradient(135deg, #f0f7fa, #e3f2fa);
+  border-left: 4px solid #1a4a6e;
+  padding: 8px 13px; margin: 6px 0; border-radius: 0 7px 7px 0;
+}
+.highlight-box h5 { color: #1a4a6e; font-size: 11px; margin-bottom: 3px; }
+
+/* HISTORY BOX */
+.history-box {
+  background: linear-gradient(135deg, #fffbf0, #fff3cd);
+  border: 1px solid #ffe066; border-radius: 7px;
+  padding: 8px 13px; margin: 6px 0;
+}
+.history-box h5 { color: #b37d00; font-size: 11px; margin-bottom: 3px; }
+.history-box p { font-size: 10px; line-height: 1.7; color: #666; }
+
+@media print {
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page cover">
+  <div class="cover-content">
+    <div class="cover-badge">Yeongdo Island · Busan · 2026</div>
+    <div class="cover-emoji">🏝️</div>
+    <div class="cover-title">釜山影島</div>
+    <div class="cover-sub">深度旅遊手冊</div>
+    <div class="cover-div"></div>
+    <div class="cover-info">
+      私房秘境・歷史文化・在地美食<br>
+      8月夏季行程完整攻略
+    </div>
+  </div>
+  <div class="cover-footer">BUSAN YEONGDO TRAVEL GUIDE 2026</div>
+</div>
+
+<!-- PAGE 2: MAP -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">🗺️</div>
+    <div class="section-title">影島旅遊地圖（官方版）</div>
+  </div>
+  <div class="map-full-container">
+    <img src="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/yeongdo_tourist_map_hires.jpg" alt="釜山影島官方旅遊地圖">
+    <div class="map-caption">📍 來源：釜山影島區廳官方觀光地圖（ Walking Yeongdo 影島を歩く）</div>
+  </div>
+  <div class="two-col" style="margin-top:10px;">
+    <div class="highlight-box" style="margin:0;">
+      <h5>🗺️ 地圖使用說明</h5>
+      <p>此地圖為釜山影島區廳官方發行的繁日文觀光地圖。圖上標示了30個景點編號，相關說明列於地圖下方。地圖右側說明各景點如何抵達，左側為散步路線建議。</p>
+    </div>
+    <div class="warn-box" style="margin:0;">
+      <strong>⚠️ 重要提醒：</strong>影島8月炎熱潮濕，建議早起遊覽，中午在室內休息，傍晚再繼續。太宗台建議16:00後前往，避免中午暴曬。</div>
+  </div>
+  <div class="section-header" style="margin-top:12px;">
+    <div class="section-num">🚇</div>
+    <div class="section-title">交通方式</div>
+  </div>
+  <table class="data-table">
+    <tr><th>方式</th><th>說明</th><th>所需時間</th></tr>
+    <tr><td>🚇 地鐵</td><td>1號線至南浦站6號出口，步行約3分鐘至影島大橋</td><td>約10分鐘</td></tr>
+    <tr><td>🚌 公車</td><td>7號、71號、508號在「影島大橋」站牌上車</td><td>依路線而定</td></tr>
+    <tr><td>🚕 計程車</td><td>南浦洞搭乘，告訴司機「영도대교」</td><td>約5分鐘</td></tr>
+  </table>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">2</div>
+</div>
+
+<!-- PAGE 3: ABOUT + TRANSPORT -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">認識影島 About Yeongdo</div>
+  </div>
+  <img class="hero-img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=80" alt="Busan" style="height:110px;">
+  <div class="hero-banner"><h4>🏝️ 釜山的秘密花園</h4><p>影島是釜山最有故事性的角落，藏著比觀光客看到的多十倍的風景</p></div>
+  <div class="intro-text">
+    <p>影島（Yeongdo）是釜山南區的島嶼，與釜山本土隔著影島大橋。從南浦洞步行穿過影島大橋即可抵達。這裡沒有喧囂的觀光客，只有在地的魚市場、老巷弄、和讓人忘記時間的海景。</p>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <h5>📊 基本資料</h5>
+      <div class="attr-info" style="font-size:10px;">
+        <span class="info-label">韓文</span><span class="info-value">영도（Yeongdo）</span>
+        <span class="info-label">所屬</span><span class="info-value">釜山廣域市 南區</span>
+        <span class="info-label">面積</span><span class="info-value">14.1 km²</span>
+        <span class="info-label">人口</span><span class="info-value">約 45,000 人</span>
+        <span class="info-label">8月氣溫</span><span class="info-value">25-35°C，潮濕</span>
+      </div>
+    </div>
+    <div class="info-card">
+      <h5>🎯 影島特色</h5>
+      <div class="tip-box" style="margin:3px 0;">沒有連鎖咖啡店和觀光土產店</div>
+      <div class="tip-box" style="margin:3px 0;">海岸線完整，夕陽無遮蔽</div>
+      <div class="tip-box" style="margin:3px 0;">阿珠嬤的魚市場用現金交易</div>
+    </div>
+  </div>
+  <div class="section-header" style="margin-top:10px;">
+    <div class="section-num">02</div>
+    <div class="section-title">交通指南 Transportation</div>
+  </div>
+  <table class="data-table">
+    <tr><th>公車</th><th>主要行經路線</th><th>可到景點</th></tr>
+    <tr><td><strong>7號</strong></td><td>南浦站 → 影島大橋 → 白淺灘 → 太宗台</td><td>白淺灘文化村、太宗台</td></tr>
+    <tr><td><strong>71號</strong></td><td>南浦站 → 影島大橋 → 海洋博物館</td><td>國立海洋博物館</td></tr>
+    <tr><td><strong>508號</strong></td><td>影島境內環線</td><td>二妓台、75廣場</td></tr>
+    <tr><td><strong>1006號</strong></td><td>長程高速公車</td><td>影島全區</td></tr>
+  </table>
+  <div class="two-col" style="margin-top:6px;">
+    <div class="tip-box" style="margin:0;"><strong>推薦：</strong>使用 Kakao Map 查公車到站時間</div>
+    <div class="warn-box" style="margin:0;"><strong>注意：</strong>影島公車班次比首爾少，尖峰時段可能20-30分鐘一班</div>
+  </div>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">3</div>
+</div>
+
+<!-- PAGE 4: ATTRACTIONS - BRIDGE + HUINNYEOUL -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title">影島大橋 & 白淺灘文化村</div>
+  </div>
+  <div class="attr-card">
+    <div class="attr-header">
+      <div class="attr-icon">🌉</div>
+      <div class="attr-title-group">
+        <div class="attr-title">影島大橋 영도대교</div>
+        <div class="attr-sub">Yeongdo Bridge（地圖編號①）</div>
+      </div>
+    </div>
+    <div class="attr-body">
+      <img class="attr-img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Yeongdo Bridge" style="height:120px;">
+      <div class="attr-info">
+        <span class="info-label">📍 地址</span><span class="info-value">釜山廣域市 中區 大橋洞1街</span>
+        <span class="info-label">🚇 最近的站</span><span class="info-value">地鐵1號線 南浦站 6號出口</span>
+        <span class="info-label">🕐 開橋秀</span><span class="info-value">每週六 14:00-14:15</span>
+        <span class="info-label">🎫 門票</span><span class="info-value">免費參觀</span>
+      </div>
+      <div class="attr-desc">
+        <h6>🌉 韓國第一座開合橋</h6>
+        <p>影島大橋建於1934年，是韓國第一座可開合的橋梁。每天開合7次，讓船隻通過。1966年停止開合，2013年拓寬為6線道重新開通。現在每週六下午2點仍進行開橋秀，是影島最著名的表演。</p>
+      </div>
+    </div>
+  </div>
+  <div class="attr-card">
+    <div class="attr-header" style="background:linear-gradient(135deg,#6a2c70,#b83b5e);">
+      <div class="attr-icon">🎨</div>
+      <div class="attr-title-group">
+        <div class="attr-title">白淺灘文化村 흰여울문화마을</div>
+        <div class="attr-sub">Huinnyeoul Culture Village（地圖編號⑦）</div>
+      </div>
+    </div>
+    <div class="attr-body">
+      <img class="attr-img" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80" alt="Huinnyeoul" style="height:120px;">
+      <div class="attr-info">
+        <span class="info-label">📍 地址</span><span class="info-value">釜山廣域市 影島區 瀛仙洞4街 605-3</span>
+        <span class="info-label">🚌 公車</span><span class="info-value">7號在「白淺灘文化村」站下</span>
+        <span class="info-label">🕐 開放</span><span class="info-value">24小時（店家10:00-22:00）</span>
+        <span class="info-label">🎫 門票</span><span class="info-value">免費參觀</span>
+        <span class="info-label">⏱️ 建議</span><span class="info-value">2-3 小時</span>
+      </div>
+      <div class="attr-desc">
+        <h6>🌊 名字由來</h6>
+        <p>「白淺灘」（흰여울）指的是這裡的岩石在陽光下呈現白色的光澤。2010年代藝術家們開始在老房子開工作室，形成現在的藝術村。</p>
+        <h6>📸 必拍：小王子和狐狸壁畫</h6>
+        <p>著名的壁畫——拿著行李箱的小王子坐在台階上，旁邊是一隻狐狸。</p>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">4</div>
+</div>
+
+<!-- PAGE 5: TAEJONGDAE + MARINE MUSEUM -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title">太宗台 & 國立海洋博物館</div>
+  </div>
+  <div class="attr-card">
+    <div class="attr-header" style="background:linear-gradient(135deg,#27ae60,#2ecc71);">
+      <div class="attr-icon">🏔️</div>
+      <div class="attr-title-group">
+        <div class="attr-title">太宗台 태종대</div>
+        <div class="attr-sub">Taejongdae Park（地圖編號⑮）</div>
+      </div>
+    </div>
+    <div class="attr-body">
+      <img class="attr-img" src="https://images.unsplash.com/photo-1502759683299-cdcd6974244f?w=800&q=80" alt="Taejongdae" style="height:120px;">
+      <div class="attr-info">
+        <span class="info-label">📍 地址</span><span class="info-value">釜山廣域市 影島區 濟扶島路 209</span>
+        <span class="info-label">🚌 公車</span><span class="info-value">7號在「太宗台」站下</span>
+        <span class="info-label">🕐 開放</span><span class="info-value">24小時（設施 09:00-18:00）</span>
+        <span class="info-label">🎫 門票</span><span class="info-value">免費（小火車 ₩4,000）</span>
+        <span class="info-label">⏱️ 建議</span><span class="info-value">3-4 小時</span>
+      </div>
+      <div class="attr-desc">
+        <h6>🌅 釜山最美的夕陽在這裡</h6>
+        <p>太宗台位於影島最南端懸崖，以陡峭岩壁和無遮蔽海景聞名。以新羅第29代語山王（金云春）命名，相傳他在此處射箭練習。</p>
+        <h6>🚂 建議玩法：搭乘哆哆列車</h6>
+        <p>繞行園內約30分鐘，在第4站（太宗台頂）下，景色最美。天氣好時可看到日本對馬島。</p>
+      </div>
+    </div>
+  </div>
+  <div class="attr-card">
+    <div class="attr-header" style="background:linear-gradient(135deg,#00bcd4,#0097a7);">
+      <div class="attr-icon">🚢</div>
+      <div class="attr-title-group">
+        <div class="attr-title">國立海洋博物館 국립해양박물관</div>
+        <div class="attr-sub">National Maritime Museum（地圖編號㉑）</div>
+      </div>
+    </div>
+    <div class="attr-body">
+      <img class="attr-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Maritime Museum" style="height:110px;">
+      <div class="attr-info">
+        <span class="info-label">📍 地址</span><span class="info-value">釜山廣域市 影島區 大橋洞 131-5</span>
+        <span class="info-label">🚌 公車</span><span class="info-value">71號在「海洋博物館」站下</span>
+        <span class="info-label">🕐 開放</span><span class="info-value">09:00-18:00（週一休館）</span>
+        <span class="info-label">🎫 門票</span><span class="info-value">免費參觀</span>
+        <span class="info-label">⏱️ 建議</span><span class="info-value">1.5-2 小時</span>
+      </div>
+      <div class="attr-desc">
+        <h6>🐋 2012年成立</h6>
+        <p>韓國唯一以海洋為主題的國立博物館。展示了韓國海洋歷史、海女文化、海洋生物等主題。</p>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">5</div>
+</div>
+
+<!-- PAGE 6: IGIDAE + 75 SQUARE + NAMHANG -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title">二妓台・75廣場・南港市場</div>
+  </div>
+  <div class="attr-card">
+    <div class="attr-header" style="background:linear-gradient(135deg,#8e44ad,#9b59b6);">
+      <div class="attr-icon">🌊</div>
+      <div class="attr-title-group">
+        <div class="attr-title">二妓台 & 絕影海岸散步路</div>
+        <div class="attr-sub">Igidae Coastal Trail（地圖編號⑨）</div>
+      </div>
+    </div>
+    <div class="attr-body">
+      <img class="attr-img" src="https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&q=80" alt="Igidae" style="height:110px;">
+      <div class="attr-info">
+        <span class="info-label">🕐 開放</span><span class="info-value">24小時</span>
+        <span class="info-label">🎫 門票</span><span class="info-value">免費</span>
+        <span class="info-label">⏱️ 建議</span><span class="info-value">1-1.5 小時</span>
+        <span class="info-label">🚌 公車</span><span class="info-value">508號在「二妓台」站下</span>
+      </div>
+      <div class="attr-desc">
+        <h6>🌅 賞夕陽秘境</h6>
+        <p>二妓台是影島南端的懸崖公園。絕影海岸散步路沿著懸崖修建，全長35km，是釜山著名的健行路線。傍晚時分整片天空被染成橘紅色。</p>
+        <h6>⚠️ 注意軍事區域</h6>
+        <p>二妓台附近有軍事設施，請勿越過標示線。</p>
+      </div>
+    </div>
+  </div>
+  <div class="two-col" style="margin-top:5px;">
+    <div class="info-card">
+      <h5>🏖️ 75廣場（地圖編號⑧）</h5>
+      <p style="font-size:10px;line-height:1.7;">過影島大橋後，沿著去營寧的路走，就會看到這個有八角形亭子的廣場。以建造年份命名，可以在此安靜欣賞海景。</p>
+    </div>
+    <div class="info-card">
+      <h5>🐟 南港市場（南港魚市場）</h5>
+      <p style="font-size:10px;line-height:1.7;">影島最古老的傳統市場。1960年代形成，約120家店舖，多數是家族傳承2-3代的老店。可以用便宜的價格吃到新鲜海鮮。</p>
+    </div>
+  </div>
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-num">06</div>
+    <div class="section-title">影島美食推薦</div>
+  </div>
+  <div class="food-grid">
+    <div class="food-card">
+      <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&q=80" alt="Pork Soup">
+      <div class="food-info"><div class="food-name">🥘 豬肉湯飯</div><div class="food-desc">40年老店，湯頭用豬骨熬煮8小時</div><div class="food-price">₩8,000-10,000</div></div>
+    </div>
+    <div class="food-card">
+      <img src="https://images.unsplash.com/photo-1540648639573-8c848de23f0a?w=400https://images.unsplash.com/photo-1510797215324-43dd9644e0e1?w=400&q=80q=80" alt="Seafood">
+      <div class="food-info"><div class="food-name">🦐 生猛海鮮</div><div class="food-desc">南港市場當日現撈，現場代客烹調</div><div class="food-price">₩15,000-30,000</div></div>
+    </div>
+    <div class="food-card">
+      <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=400&q=80" alt="Korean Food">
+      <div class="food-info"><div class="food-name">🥞 海鮮煎餅</div><div class="food-desc">影島小卷、蚵仔和韭菜混合煎製</div><div class="food-price">₩12,000-15,000</div></div>
+    </div>
+    <div class="food-card">
+      <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80" alt="Cold Noodle">
+      <div class="food-info"><div class="food-name">🍜 冷藏蒜味麵</div><div class="food-desc">夏天必吃！冰冰涼涼的麵條配上蒜味醬汁</div><div class="food-price">₩8,000</div></div>
+    </div>
+  </div>
+  <div class="warn-box"><strong>💡 提醒：</strong>南港市場很多阿珠嬤只收現金，請準備足夠的韓元。</div>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">6</div>
+</div>
+
+<!-- PAGE 7: ITINERARY -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title">完整行程推薦 Itinerary</div>
+  </div>
+  <div class="hero-banner"><h4>🗓️ 影島一日輕鬆版（8月適用）</h4><p>深度、不趕、享受每一個瞬間</p></div>
+  <img class="hero-img" src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1200&q=80" alt="Scenic" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin:6px 0;">
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-time">08:30</div><div class="tl-title">南浦站出發</div><div class="tl-desc">地鐵1號線南浦站6號出口，步行至影島大橋</div></div>
+    <div class="tl-item"><div class="tl-time">09:00</div><div class="tl-title">影島大橋（看開橋秀）</div><div class="tl-desc">如果剛好是週六，14:00有開橋秀。否則只是拍照留念</div></div>
+    <div class="tl-item"><div class="tl-time">09:30</div><div class="tl-title">白淺灘文化村</div><div class="tl-desc">慢走、拍照、找一家咖啡廳坐著看海。建議待2.5小時（需防晒）</div></div>
+    <div class="tl-item"><div class="tl-time">12:00</div><div class="tl-title">午餐 & 休息</div><div class="tl-desc">建議找有空調的餐廳或咖啡廳躲中午的太陽</div></div>
+    <div class="tl-item"><div class="tl-time">14:00</div><div class="tl-title">國立海洋博物館</div><div class="tl-desc">室內有冷氣，預留1.5小時（週一休館）</div></div>
+    <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-title">二妓台（賞夕陽）</div><div class="tl-desc">搭508或7號公車，17:00前抵達，在懸崖上看夕陽</div></div>
+    <div class="tl-item"><div class="tl-time">18:00</div><div class="tl-title">南港市場晚餐</div><div class="tl-desc">40年老店的豬肉湯飯或海鮮煎餅</div></div>
+    <div class="tl-item"><div class="tl-time">20:00</div><div class="tl-title">回程</div><div class="tl-desc">步行過影島大橋回南浦洞，搭地鐵回程</div></div>
+  </div>
+  <div class="checklist">
+    <h5>✅ 建議隨身物品（8月）</h5>
+    <div class="check-item"><div class="check-box"></div>帽子和防晒（必備）</div>
+    <div class="check-item"><div class="check-box"></div>水瓶（隨時補充水分）</div>
+    <div class="check-item"><div class="check-box"></div>好走的鞋（影島多坡）</div>
+    <div class="check-item"><div class="check-box"></div>雨具（8月梅雨季）</div>
+    <div class="check-item"><div class="check-box"></div>現金（市場只收現金）</div>
+    <div class="check-item"><div class="check-box"></div>T-money 卡</div>
+    <div class="check-item"><div class="check-box"></div>行動電源</div>
+  </div>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">7</div>
+</div>
+
+<!-- PAGE 8: PRACTICAL INFO -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title">實用資訊 Practical Info</div>
+  </div>
+  <div class="two-col">
+    <div class="info-card">
+      <h5>📱 推薦 APP</h5>
+      <table class="data-table" style="margin:0;font-size:10px;">
+        <tr><th>APP</th><th>用途</th></tr>
+        <tr><td><strong>Kakao Map</strong></td><td>公車到站時間</td></tr>
+        <tr><td><strong>Naver Map</strong></td><td>地鐵和步行導航</td></tr>
+        <tr><td><strong>Kakao T</strong></td><td>計程車預約</td></tr>
+        <tr><td><strong>Papago</strong></td><td>中韓翻譯</td></tr>
+        <tr><td><strong>Visit Busan Pass</strong></td><td>景點免費入場</td></tr>
+      </table>
+    </div>
+    <div class="info-card">
+      <h5>💰 預算參考（一日）</h5>
+      <div class="price-row"><span class="price-label">交通費</span><span class="price-value">₩30,000</span></div>
+      <div class="price-row"><span class="price-label">午餐</span><span class="price-value">₩15,000</span></div>
+      <div class="price-row"><span class="price-label">海洋博物館</span><span class="price-value">免費</span></div>
+      <div class="price-row"><span class="price-label">咖啡 x2</span><span class="price-value">₩14,000</span></div>
+      <div class="price-row"><span class="price-label">晚餐</span><span class="price-value">₩15,000</span></div>
+      <div class="price-row" style="border-top:2px solid #1a4a6e;margin-top:3px;padding-top:3px;"><span class="price-label"><strong>總計</strong></span><span class="price-value" style="font-size:13px;"><strong>約 ₩74,000</strong></span></div>
+      <div class="price-row"><span></span><span style="font-size:10px;color:#888;">≈ NT$2,000</span></div>
+    </div>
+  </div>
+  <h4 style="color:#1a4a6e;font-size:13px;margin:8px 0 5px;">🚨 緊急聯絡</h4>
+  <table class="data-table">
+    <tr><th>項目</th><th>電話/方式</th></tr>
+    <tr><td>韓國旅遊諮詢（中文）</td><td>1330（可說中文）</td></tr>
+    <tr><td>警察</td><td>112</td></tr>
+    <tr><td>救護車/消防</td><td>119</td></tr>
+    <tr><td>中華民國駐韓國代表處</td><td>+82-2-6322-1800</td></tr>
+  </table>
+  <div class="wave">✦ ✦ ✦</div>
+  <div style="text-align:center;padding:14px;background:linear-gradient(135deg,#f0f7fa,#e3f2fa);border-radius:10px;margin-top:5px;">
+    <div style="font-size:26px;margin-bottom:6px;">🏝️</div>
+    <div style="font-size:14px;color:#1a4a6e;font-weight:700;margin-bottom:5px;">祝你旅程愉快</div>
+    <div style="font-size:11px;color:#777;line-height:2;">影島是那種會讓人愛上的地方。<br>不用趕時間，慢慢走，處處都是風景。</div>
+  </div>
+  <div class="page-footer"><span>釜山影島深度旅遊手冊 2026</span><span>版權所有</span></div>
+  <div class="page-num">8</div>
+</div>
+
+</body>
+</html>

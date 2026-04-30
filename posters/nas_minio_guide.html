@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synology DS220+ 安裝 MinIO（DSM 圖形化）</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f7fa; color: #333; line-height: 1.7; padding: 24px; }
+  .container { max-width: 760px; margin: 0 auto; }
+  h1 { color: #1a73e8; font-size: 26px; margin-bottom: 8px; }
+  .subtitle { color: #666; margin-bottom: 32px; font-size: 14px; }
+  .section { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  h2 { color: #333; font-size: 18px; margin-bottom: 16px; border-left: 4px solid #1a73e8; padding-left: 12px; }
+  h3 { color: #555; font-size: 15px; margin: 16px 0 8px; }
+  .step { display: flex; margin-bottom: 18px; }
+  .step-num { background: #1a73e8; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; flex-shrink: 0; margin-right: 14px; }
+  .step-content { padding-top: 4px; }
+  code { background: #e8f0fe; color: #1a73e8; padding: 2px 8px; border-radius: 4px; font-family: "Menlo", "Consolas", monospace; font-size: 14px; }
+  pre { background: #1a1a2e; color: #a8dadc; padding: 16px; border-radius: 8px; font-family: "Menlo", "Consolas", monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; margin: 12px 0; white-space: pre-wrap; }
+  .warn { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 14px; margin: 14px 0; font-size: 14px; }
+  .warn-title { color: #856404; font-weight: bold; margin-bottom: 6px; }
+  .success { background: #d4edda; border: 1px solid #28a745; border-radius: 8px; padding: 14px; margin: 14px 0; font-size: 14px; }
+  .success-title { color: #155724; font-weight: bold; margin-bottom: 6px; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  .highlight { color: #1a73e8; font-weight: bold; }
+  .note { font-size: 13px; color: #888; margin-top: 6px; }
+  .img-hint { background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px; padding: 20px; text-align: center; color: #888; margin: 10px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🄀 Synology DS220+ 安裝 MinIO 教學</h1>
+<p class="subtitle">DSM 圖形化操作，無需指令列</p>
+
+<div class="section">
+<h2>📋 前置準備</h2>
+<ul>
+  <li>Synology DS220+（RAM 已擴充到 10GB）✅</li>
+  <li>DSM 7.x 版本</li>
+  <li>一個共用的資料夾（用來存放 MinIO 資料）</li>
+</ul>
+</div>
+
+<!-- Step 1: Docker -->
+<div class="section">
+<h2>步驟一：安裝 Docker 套件</h2>
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    開啟<strong>套件中心</strong>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    搜尋「<strong>Docker</strong>」→ 點「安裝」
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    安裝完成後，DSM 左側找到<strong>Docker</strong>圖示，點擊讓服務啟動
+    <p class="note">Docker 必須保持運行，MinIO 才會在背景執行</p>
+  </div>
+</div>
+</div>
+
+<!-- Step 2: Create folders -->
+<div class="section">
+<h2>步驟二：建立 MinIO 專用資料夾</h2>
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    開啟<strong>File Station</strong>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    在<strong>共用資料夾</strong>（例如 <code>docker</code> 或 <code>public</code>）裡建立新資料夾：<br>
+    <code>minio → data</code><br>
+    <code>minio → config</code>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    在每個資料夾上按右鍵 → 「內容」→ 「權限」→<br>
+    新增「<strong>everyone</strong>」→ 權限勾選「<strong>完全控制</strong>」→ 儲存
+  </div>
+</div>
+</div>
+
+<!-- Step 3: Pull and run -->
+<div class="section">
+<h2>步驟三：下載並啟動 MinIO 容器（DSM 圖形）</h2>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    開啟 DSM 左側的<strong>Docker</strong>套件
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    點左側「<strong>註冊表</strong>」→ 右上搜尋「<strong>minio</strong>」→ 找到官方 <code>minio/minio</code> → 點「選擇」→「下載」
+    <p class="note">映像檔約 200MB，下載需要幾分鐘</p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    下載完成後，點左側「<strong>映像檔</strong>」→ 找到 minio → 點「啟動」
+  </div>
+</div>
+
+<div class="img-hint">
+  📷 DSM 截圖：Docker → 註冊表 → 搜尋 minio → 下載完成 → 啟動
+</div>
+
+<h3>啟動設定（重要！一個一個填）</h3>
+
+<div class="step">
+  <div class="step-num">A</div>
+  <div class="step-content">
+    <strong>容器名稱</strong>：填 <code>minio</code>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">B</div>
+  <div class="step-content">
+    <strong>新增連接埠轉遞</strong>：<br>
+    本機連接埠 <code>9000</code> → 容器連接埠 <code>9000</code><br>
+    本機連接埠 <code>9001</code> → 容器連接埠 <code>9001</code>
+    <p class="note">兩個都要新增！</p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">C</div>
+  <div class="step-content">
+    <strong>新增環境變數</strong>（Environment Variables）：<br>
+    <code>MINIO_ROOT_USER</code> = <code>minioadmin</code><br>
+    <code>MINIO_ROOT_PASSWORD</code> = <code>你的密碼（至少8字）</code>
+    <p class="note">請記下你設定的密碼</p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">D</div>
+  <div class="step-content">
+    <strong>新增資料夾掛載</strong>：<br>
+    本機資料夾 → 選取 <code>/volume1/docker/minio/data</code><br>
+    掛載路徑 → 填 <code>/data</code><br>
+    （再新增一筆）<br>
+    本機資料夾 → 選取 <code>/volume1/docker/minio/config</code><br>
+    掛載路徑 → 填 <code>/root/.minio</code>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">E</div>
+  <div class="step-content">
+    <strong>啟動策略</strong>：勾選「<strong>啟用自動重新啟動</strong>」
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">F</div>
+  <div class="step-content">
+    點「<strong>完成</strong>」啟動容器
+  </div>
+</div>
+</div>
+
+<!-- Step 4: Firewall -->
+<div class="section">
+<h2>步驟四：開通 NAS 防火牆連接埠</h2>
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    DSM 控制台 → <strong>安全性</strong> → <strong>防火牆</strong>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    點「<strong>編輯防火牆規則</strong>」
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    新增規則：<br>
+    動作 → 允許<br>
+    連接埠 → 自訂（<code>9000</code>, <code>9001</code>）<br>
+    來源 IP → 任意（0.0.0.0/0）
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    儲存套用
+  </div>
+</div>
+</div>
+
+<!-- Step 5: Create bucket -->
+<div class="section">
+<h2>步驟五：開網頁設定 Bucket</h2>
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    在電腦瀏覽器打開：<br>
+    <code>http://你的NAS_IP:9001</code>
+    <p class="note">例如：http://192.168.18.200:9001</p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    登入 MinIO 管理介面<br>
+    帳號：<code>minioadmin</code><br>
+    密碼：你剛設定的密碼
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    進入後點左側「<strong>Buckets</strong>」→「<strong>Create Bucket</strong>」
+    <p>命名建議：<code>openclaw</code> 或 <code>shared</code></p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    建立完成後，點左側「<strong>Access Keys</strong>」→「<strong>Create access key</strong>」
+    <p>把<strong>Access Key</strong>和<strong>Secret Key</strong>記下來，等一下要給蝦助</p>
+  </div>
+</div>
+</div>
+
+<div class="section">
+<h2>✅ 完成！請告訴蝦助以下資訊</h2>
+<div class="success">
+  <div class="success-title">請提供這 4 個資訊：</div>
+  <ol>
+    <li>NAS IP 位址（例如 <code>192.168.18.200</code>）</li>
+    <li>Bucket 名稱（例如 <code>openclaw</code>）</li>
+    <li>Access Key（金鑰 ID）</li>
+    <li>Secret Key（私密金鑰）</li>
+  </ol>
+</div>
+<p>有了這些，我就可以把 R2 上傳改成送到你的 NAS 🚀</p>
+</div>
+
+</div>
+</body>
+</html>

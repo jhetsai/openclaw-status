@@ -1,28 +1,121 @@
 #!/usr/bin/env python3
 """fetch-stock-prices.py - 抓台股+美股最新股價，更新 JSON"""
-import json, urllib.request, urllib.error, os
+import json, urllib.request, urllib.error, os, subprocess
 from datetime import datetime, timedelta
 
 WORKSPACE = "/home/jhe/.openclaw/workspace"
+
+KEYS = {}
+key_file = os.path.join(WORKSPACE, ".api_keys")
+if os.path.exists(key_file):
+    with open(key_file) as f:
+        for line in f:
+            if "=" in line:
+                k, v = line.strip().split("=", 1)
+                KEYS[k] = v
+FINNHUB_KEY = KEYS.get("FINNHUB_API_KEY", "")
 TW_FILE = os.path.join(WORKSPACE, "taiwan_stock/taiwan_stocks.json")
 TWSE_DATA_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_data.json")
 TWSE_HTML_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_query.html")
 
-def fetch_yahoo_price(symbol):
-    url = "https://query1.finance.yahoo.com/v8/finance/chart/" + symbol + "?interval=1d&range=1d"
+YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com']
+
+def fetch_yahoo_tw_price(code):
+    """Fetch real-time Taiwan stock price from tw.stock.yahoo.com"""
+    url = f"https://tw.stock.yahoo.com/quote/{code}"
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
-        with urllib.request.urlopen(req, timeout=5) as r:
-            data = json.loads(r.read())
-            meta = data["chart"]["result"][0]["meta"]
-            return meta.get("regularMarketPrice") or meta.get("previousClose")
+        result = subprocess.run(
+            ['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', url],
+            capture_output=True, text=True, timeout=12
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            import re
+            html = result.stdout
+            # Try to find real-time price from the page's JSON data
+            m = re.search(r'"price"\s*:\s*\{\s*"raw"\s*:\s*([0-9.]+)', html)
+            if m:
+                return float(m.group(1))
+            # Fallback: try to find price in different format
+            m = re.search(r'"regularMarketPrice"\s*:\s*([0-9.]+)', html)
+            if m:
+                return float(m.group(1))
+        return None
     except Exception as e:
-        print("  Warning: " + symbol + " failed: " + str(e))
+        print(f"  Warning: Yahoo TW {code} error: {e}")
+        return None
+
+def fetch_yahoo_price(symbol):
+    for host in YAHOO_HOSTS:
+        url = f"https://{host}/v8/finance/chart/{symbol}?interval=1d&range=1d"
+        try:
+            result = subprocess.run(
+                ['curl', '-4', '-s', '--max-time', '8', '-H', 'User-Agent: Mozilla/5.0', url],
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                data = json.loads(result.stdout)
+                result_data = data.get("chart", {}).get("result")
+                if result_data:
+                    meta = result_data[0]["meta"]
+                    return meta.get("regularMarketPrice") or meta.get("previousClose")
+            else:
+                print(f"  Warning: {symbol} @ {host} failed (rc={result.returncode}), trying next...")
+                continue
+        except Exception as e:
+            print(f"  Warning: {symbol} @ {host} error: {e}, trying next...")
+            continue
+    print("  Warning: " + symbol + " all Yahoo hosts failed")
+    return None
+
+def fetch_yahoo_quote(symbol):
+    """Fetch price and prev from Yahoo, returns (price, prev)"""
+    for host in YAHOO_HOSTS:
+        url = f"https://{host}/v8/finance/chart/{symbol}?interval=1d&range=5d"
+        try:
+            result = subprocess.run(
+                ['curl', '-4', '-s', '--max-time', '8', '-H', 'User-Agent: Mozilla/5.0', url],
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                data = json.loads(result.stdout)
+                result_data = data.get("chart", {}).get("result")
+                if result_data:
+                    meta = result_data[0]["meta"]
+                    price = meta.get("regularMarketPrice") or meta.get("previousClose")
+                    prev = meta.get("previousClose") or meta.get("chartPreviousClose")
+                    if not prev:
+                        closes = result_data[0].get("indicators", {}).get("quote", [{}])[0].get("close", [])
+                        if len(closes) >= 2:
+                            prev = closes[-2]
+                    return price, prev
+            else:
+                continue
+        except Exception:
+            continue
+    return None, None
+
+def fetch_taiwan_futures(symbol):
+    """Fetch Taiwan futures (WTX&, WTXP&) from Yahoo Taiwan page"""
+    url = f"https://tw.stock.yahoo.com/future/{symbol}"
+    try:
+        result = subprocess.run(
+            ['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
+            capture_output=True, text=True, timeout=12
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            import re
+            html = result.stdout
+            m = re.search(r'"price"\s*:\s*\{\s*"raw"\s*:\s*"?([0-9.]+)', html)
+            if m:
+                return float(m.group(1))
+        return None
+    except Exception as e:
+        print(f"  Warning: {symbol} error: {e}")
         return None
 
 def fetch_twse_realtime(codes):
     stock_str = "|".join("tse_" + c + ".tw" for c in codes)
-    url = "http://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=" + stock_str + "&json=1&delay=0"
+    url = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=" + stock_str + "&json=1&delay=0"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=5) as r:
@@ -33,9 +126,11 @@ def fetch_twse_realtime(codes):
             z = item.get("z", "-"); y = item.get("y", "-")
             o = item.get("o", "-"); h = item.get("h", "-"); l = item.get("l", "-")
             n = item.get("n", "")
+            # Use o (open/auction price) only if z is not available; prefer Yahoo fallback over unreliable auction price
+            price_raw = z if z and z != "-" else None
             result[code] = {
                 "name": n,
-                "price": float(z) if z and z != "-" else None,
+                "price": float(price_raw) if price_raw else None,
                 "yclose": float(y) if y and y != "-" else None,
                 "open": float(o) if o and o != "-" else None,
                 "high": float(h) if h and h != "-" else None,
@@ -114,9 +209,25 @@ TW_STOCKS = [
 TW_CODES = [s["code"] for s in TW_STOCKS]
 
 US_STOCKS = [
+    # US Stocks (Finnhub)
     {"symbol": "AAPL", "code": "AAPL"},
     {"symbol": "MSFT", "code": "MSFT"},
     {"symbol": "BND",  "code": "BND"},
+    # Other indices (Yahoo only)
+    {"symbol": "^FNMR", "code": "FNMR", "ref_only": True},
+    # Taiwan futures (Yahoo only)
+    {"symbol": "WTX&", "code": "WTX", "ref_only": True},
+    {"symbol": "WTXP&", "code": "WTXP", "ref_only": True},
+    # US Indices via Finnhub ETF equivalents
+    {"symbol": "SPY", "code": "SP500", "ref_only": True},    # S&P 500 ETF
+    {"symbol": "QQQ", "code": "NAS100", "ref_only": True},   # NASDAQ 100 ETF
+    {"symbol": "DIA", "code": "DOW", "ref_only": True},     # DOW ETF
+    {"symbol": "VIXY", "code": "VIX", "ref_only": True},    # VIX ETF
+    {"symbol": "TLT", "code": "TNX", "ref_only": True},      # 20Y Bond ETF
+    {"symbol": "GLD", "code": "GOLD", "ref_only": True},    # Gold ETF
+    {"symbol": "USO", "code": "OIL", "ref_only": True},     # Oil ETF
+    # Taiwan (Yahoo only)
+    {"symbol": "^TWII", "code": "TAIEX", "ref_only": True},
 ]
 
 # ─── 計算前一交易日 ─────────────────────────────
@@ -127,21 +238,100 @@ while prev.weekday() >= 5:
 prev_weekday = prev.strftime("%m/%d")
 
 # ══════════════════════════════════════════════════
-print("Fetching Taiwan stocks from Yahoo...")
-tw_prices = {}
-for item in TW_STOCKS:
-    p = fetch_yahoo_price(item["symbol"])
-    if p:
-        tw_prices[item["code"]] = p
-        print("  " + item["code"] + ": " + str(p))
+print("Fetching Taiwan stocks from TWSE API...")
+tw_prices = {}; tw_realtime = {}
+tw_realtime = fetch_twse_realtime(TW_CODES)
+for code, info in tw_realtime.items():
+    if info.get("price"):
+        tw_prices[code] = info["price"]
+        print("  " + code + ": " + str(info["price"]))
 
-print("Fetching US stocks from Yahoo...")
+# Always supplement missing stocks with Yahoo TW real-time
+missing = [c for c in TW_CODES if c not in tw_prices]
+if missing:
+    print(f"  TWSE got {len(tw_prices)} stocks, supplementing {len(missing)} missing with Yahoo TW real-time...")
+    tw_yahoo_tw_ok = 0
+    for code in missing:
+        price = fetch_yahoo_tw_price(code)
+        if price:
+            tw_prices[code] = price
+            print("  [Yahoo TW] " + code + ": " + str(price))
+            tw_yahoo_tw_ok += 1
+    print("  Yahoo TW supplemented " + str(tw_yahoo_tw_ok) + " stocks")
+
+# Final fallback: if Yahoo TW still missing some, use Yahoo Finance API (delayed)
+missing2 = [c for c in TW_CODES if c not in tw_prices]
+if missing2:
+    print("  Still missing " + str(len(missing2)) + " stocks, using Yahoo Finance API (delayed)...")
+    for code in missing2:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{code}.TW?interval=1d&range=1d"
+        try:
+            result = subprocess.run(
+                ['curl', '-4', '-s', '--max-time', '8', '-H', 'User-Agent: Mozilla/5.0', url],
+                capture_output=True, text=True, timeout=12
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                data = json.loads(result.stdout)
+                meta = data['chart']['result'][0]['meta']
+                price = meta.get('regularMarketPrice') or meta.get('previousClose')
+                if price:
+                    tw_prices[code] = price
+                    print("  [Yahoo API] " + code + ": " + str(price))
+                else:
+                    print("  [Yahoo API] " + code + ": no price data")
+            else:
+                print("  [Yahoo API] " + code + ": failed (rc=" + str(result.returncode) + ")")
+        except Exception as e:
+            print("  [Yahoo API] " + code + ": error " + str(e))
+    print("  After fallback: " + str(len(tw_prices)) + " stocks total")
+
+def fetch_finnhub_quote(symbol):
+    """Fetch US stock price+prev from Finnhub, returns (price, prev) or (None, None)"""
+    if not FINNHUB_KEY:
+        return None, None
+    url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token={FINNHUB_KEY}"
+    try:
+        with urllib.request.urlopen(url, timeout=10) as response:
+            data = json.loads(response.read().decode("utf-8"))
+            if data.get("c") and data["c"] > 0:
+                return data["c"], data.get("pc", data["c"])
+    except Exception:
+        pass
+    return None, None
+
+print("Fetching US stocks from Finnhub...")
 us_prices = {}
+us_prev = {}
 for item in US_STOCKS:
-    p = fetch_yahoo_price(item["symbol"])
-    if p:
-        us_prices[item["code"]] = p
-        print("  " + item["code"] + ": " + str(p))
+    sym = item["symbol"]
+    code = item["code"]
+    # WTX& and WTXP& need special handling via Taiwan page
+    if sym in ("WTX&", "WTXP&"):
+        p = fetch_taiwan_futures(sym)
+        if p:
+            us_prices[code] = p
+            print(f"  {code}: {p} (Taiwan futures)")
+        else:
+            print(f"  {code}: failed")
+    else:
+        # Try Finnhub first (it provides prev_close directly)
+        price, prev = fetch_finnhub_quote(sym)
+        if price:
+            us_prices[code] = price
+            us_prev[code] = prev
+            src = "Finnhub"
+        else:
+            # Yahoo fallback
+            price, prev = fetch_yahoo_quote(sym)
+            if price:
+                us_prices[code] = price
+                if prev:
+                    us_prev[code] = prev
+                src = "Yahoo"
+            else:
+                print(f"  {code}: failed (both Finnhub and Yahoo)")
+                continue
+        print(f"  {code}: {us_prices[code]} ({src})")
 
 print("Fetching TWSE realtime...")
 tw_realtime = fetch_twse_realtime(TW_CODES)
@@ -171,17 +361,20 @@ if tw_prices and os.path.exists(TW_FILE):
                 s["prev_date"] = prev_weekday
             mv = s["shares"] * tw_prices[code]
             s["market_value"] = mv
-            s["gain"] = mv - s.get("total_cost", 0)
+            s["total_cost"] = s["shares"] * s["cost"]
+            s["gain"] = s["market_value"] - s["total_cost"]
             s["gain_pct"] = round(s["gain"] / s.get("total_cost", 1) * 100, 2)
+            s["update_time"] = datetime.now().strftime("%Y-%m-%d %H:%M")
     with open(TW_FILE, "w") as f:
         json.dump(stocks, f, ensure_ascii=False, indent=2)
     print("Updated TW JSON (" + str(len(tw_prices)) + " stocks)")
 
 # ─── 儲存美股價格 ─────────────────────────────────
 US_FILE = os.path.join(WORKSPACE, "us_stock/us_prices.json")
+us_save = {"prices": us_prices, "prev": us_prev, "updated": datetime.now().strftime("%Y-%m-%d %H:%M")}
 with open(US_FILE, "w") as f:
-    json.dump({"prices": us_prices, "updated": datetime.now().strftime("%Y-%m-%d %H:%M")}, f)
-print("Saved US prices (" + str(len(us_prices)) + " stocks)")
+    json.dump(us_save, f)
+print("Saved US prices (" + str(len(us_prices)) + " stocks), prev: " + str(len(us_prev)))
 
 # ─── 生成 TWSE 靜態 HTML ────────────────────────
 print("Generating TWSE static HTML...")
@@ -213,6 +406,10 @@ twse_data = {
     "prevDate": prev_weekday,
     "realtime": tw_realtime_parsed,
     "dividend": tw_dividend,
+    "upcoming_div": [
+        d for d in tw_dividend
+        if d.get("Date","") >= (lambda t: f"{t.year-1911:03d}{t.month:02d}{t.day:02d}")(datetime.now())
+    ]
 }
 with open(TWSE_DATA_FILE, "w") as f:
     json.dump(twse_data, f, ensure_ascii=False, indent=2)

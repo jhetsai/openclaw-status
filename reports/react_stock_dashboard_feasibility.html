@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React 持股儀表板可行性評估</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f7; color: #1d1d1f; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  header { text-align: center; margin-bottom: 50px; }
+  header h1 { font-size: 2em; color: #1d1d1f; margin-bottom: 10px; }
+  header .subtitle { color: #86868b; font-size: 1.1em; }
+  .date { color: #86868b; font-size: 0.9em; margin-top: 10px; }
+  
+  section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  section h2 { font-size: 1.4em; color: #1d1d1f; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f5f5f7; }
+  
+  /* Architecture Diagram */
+  .arch-box { background: #f5f5f7; border-radius: 12px; padding: 25px; margin: 15px 0; }
+  .arch-flow { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; }
+  .arch-node { background: white; border-radius: 10px; padding: 12px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; min-width: 120px; }
+  .arch-node.green { border-left: 4px solid #22c55e; }
+  .arch-node.blue { border-left: 4px solid #3b82f6; }
+  .arch-node.purple { border-left: 4px solid #8b5cf6; }
+  .arch-node.orange { border-left: 4px solid #f59e0b; }
+  .arch-title { font-weight: 600; font-size: 0.9em; margin-bottom: 3px; }
+  .arch-desc { font-size: 0.75em; color: #86868b; }
+  .arch-arrow { color: #86868b; font-size: 1.5em; }
+  
+  /* Current vs New */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .compare-card { padding: 20px; border-radius: 12px; }
+  .compare-current { background: #fef3c7; }
+  .compare-new { background: #d1fae5; }
+  .compare-title { font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+  .compare-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.9em; }
+  .compare-item:last-child { border-bottom: none; }
+  .compare-label { color: #424245; }
+  .compare-value { font-weight: 500; }
+  
+  /* Components */
+  .component-list { display: grid; gap: 15px; }
+  .component-item { display: flex; gap: 15px; padding: 15px; background: #f5f5f7; border-radius: 10px; }
+  .component-num { width: 30px; height: 30px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9em; flex-shrink: 0; }
+  .component-content { flex: 1; }
+  .component-name { font-weight: 600; margin-bottom: 3px; }
+  .component-desc { font-size: 0.85em; color: #86868b; }
+  .component-time { font-size: 0.8em; color: #667eea; font-weight: 500; margin-top: 5px; }
+  
+  /* Effort Table */
+  .effort-table { width: 100%; border-collapse: collapse; }
+  .effort-table th, .effort-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #f5f5f7; }
+  .effort-table th { background: #f5f5f7; font-weight: 600; font-size: 0.9em; }
+  .effort-table td { font-size: 0.9em; }
+  .effort-high { color: #ef4444; }
+  .effort-med { color: #f59e0b; }
+  .effort-low { color: #22c55e; }
+  
+  /* Mock Screenshot */
+  .mock-browser { background: #1d1d1f; border-radius: 12px; padding: 15px; margin: 20px 0; }
+  .mock-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mock-red { background: #ff5f57; }
+  .mock-yellow { background: #febc2e; }
+  .mock-green { background: #28c840; }
+  .mock-content { background: white; border-radius: 8px; padding: 15px; }
+  .mock-header-bar { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f5f5f7; margin-bottom: 15px; }
+  .mock-title { font-weight: 700; font-size: 1.1em; }
+  .mock-badge { background: #22c55e; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.75em; }
+  .mock-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+  .mock-stat { background: #f5f5f7; padding: 10px; border-radius: 8px; text-align: center; }
+  .mock-stat-val { font-size: 1.1em; font-weight: 700; }
+  .mock-stat-label { font-size: 0.7em; color: #86868b; }
+  .mock-stat-up { color: #22c55e; }
+  .mock-stat-down { color: #ef4444; }
+  .mock-table { width: 100%; font-size: 0.8em; }
+  .mock-table th { background: #f5f5f7; padding: 8px; text-align: left; font-weight: 600; }
+  .mock-table td { padding: 8px; border-bottom: 1px solid #f5f5f7; }
+  
+  /* Recommendation */
+  .rec-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 35px; text-align: center; }
+  .rec-box h3 { font-size: 1.4em; margin-bottom: 15px; }
+  .rec-box p { font-size: 1.05em; opacity: 0.95; margin-bottom: 25px; line-height: 1.7; }
+  .rec-cta { display: inline-block; background: white; color: #667eea; padding: 12px 30px; border-radius: 8px; font-weight: 700; text-decoration: none; }
+  
+  @media (max-width: 768px) {
+    .compare-grid, .mock-stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📊 React 持股儀表板可行性評估</h1>
+    <p class="subtitle">建置 React 股價展示平台的需求與時間分析</p>
+    <p class="date">2026-04-21</p>
+  </header>
+
+  <!-- 現有系統 vs 新系統 -->
+  <section>
+    <h2>一、現有系統 vs 新系統</h2>
+    
+    <div class="compare-grid">
+      <div class="compare-card compare-current">
+        <div class="compare-title">📋 現在的系統</div>
+        <div class="compare-item">
+          <span class="compare-label">介面</span>
+          <span class="compare-value">基礎 HTML</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">速度</span>
+          <span class="compare-value">快</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">美觀</span>
+          <span class="compare-value">普通</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">互動</span>
+          <span class="compare-value">無</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">響應式</span>
+          <span class="compare-value">有限</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">開發時間</span>
+          <span class="compare-value">已完成</span>
+        </div>
+      </div>
+      
+      <div class="compare-card compare-new">
+        <div class="compare-title">✨ React 新系統</div>
+        <div class="compare-item">
+          <span class="compare-label">介面</span>
+          <span class="compare-value">漂亮 Dashboard</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">速度</span>
+          <span class="compare-value">非常快</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">美觀</span>
+          <span class="compare-value">漂亮（可自訂）</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">互動</span>
+          <span class="compare-value">完全支援</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">響應式</span>
+          <span class="compare-value">完美支援</span>
+        </div>
+        <div class="compare-item">
+          <span class="compare-label">開發時間</span>
+          <span class="compare-value">需要時間</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 系統架構 -->
+  <section>
+    <h2>二、系統架構（不破壞現有系統）</h2>
+    
+    <div class="arch-box">
+      <div class="arch-flow">
+        <div class="arch-node green">
+          <div class="arch-title">Python 爬蟲</div>
+          <div class="arch-desc">fetch-stock-prices.py</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node blue">
+          <div class="arch-title">JSON 資料庫</div>
+          <div class="arch-desc">taiwan_stocks.json</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node purple">
+          <div class="arch-title">React 前端</div>
+          <div class="arch-desc">持股儀表板</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node orange">
+          <div class="arch-title">你的瀏覽器</div>
+          <div class="arch-desc">漂亮顯示</div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="padding: 15px; background: #d1fae5; border-radius: 10px; margin-top: 15px;">
+      <strong style="color: #065f46;">✅ 關鍵：現有的 Python 爬蟲完全不動</strong>
+      <span style="color: #065f46;">，只是多了一個「漂亮的顯示層」</span>
+    </div>
+  </section>
+
+  <!-- 功能需求 -->
+  <section>
+    <h2>三、需要做的功能</h2>
+    
+    <div class="component-list">
+      <div class="component-item">
+        <div class="component-num">1</div>
+        <div class="component-content">
+          <div class="component-name">持股總覽（卡片式）</div>
+          <div class="component-desc">顯示所有持股的名稱、代碼、持股數、成本、市值、獲利</div>
+          <div class="component-time">⏱️ 難度：低</div>
+        </div>
+      </div>
+      
+      <div class="component-item">
+        <div class="component-num">2</div>
+        <div class="component-content">
+          <div class="component-name">當日/累計損益顯示</div>
+          <div class="component-desc">大字顯示當日變化和累計獲利，用顏色區分正負</div>
+          <div class="component-time">⏱️ 難度：低</div>
+        </div>
+      </div>
+      
+      <div class="component-item">
+        <div class="component-num">3</div>
+        <div class="component-content">
+          <div class="component-name">股價走勢圖</div>
+          <div class="component-desc">簡單的線圖或柱狀圖顯示股價歷史（用 Chart.js 或 Recharts）</div>
+          <div class="component-time">⏱️ 難度：中</div>
+        </div>
+      </div>
+      
+      <div class="component-item">
+        <div class="component-num">4</div>
+        <div class="component-content">
+          <div class="component-name">持股分布圖</div>
+          <div class="component-desc">圓餅圖顯示各持股佔比</div>
+          <div class="component-time">⏱️ 難度：中</div>
+        </div>
+      </div>
+      
+      <div class="component-item">
+        <div class="component-num">5</div>
+        <div class="component-content">
+          <div class="component-name">美股/台股切換</div>
+          <div class="component-desc">Tab 切換或下拉選單顯示不同市場</div>
+          <div class="component-time">⏱️ 難度：低</div>
+        </div>
+      </div>
+      
+      <div class="component-item">
+        <div class="component-num">6</div>
+        <div class="component-content">
+          <div class="component-name">響應式設計</div>
+          <div class="component-desc">手機、平板、電腦都能漂亮顯示</div>
+          <div class="component-time">⏱️ 難度：低</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mock 畫面 -->
+  <section>
+    <h2>四、完成後的 Mockup</h2>
+    
+    <div class="mock-browser">
+      <div class="mock-bar">
+        <div class="mock-dot mock-red"></div>
+        <div class="mock-dot mock-yellow"></div>
+        <div class="mock-dot mock-green"></div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header-bar">
+          <div class="mock-title">📊 持股儀表板</div>
+          <div class="mock-badge">+68,103 今天</div>
+        </div>
+        <div class="mock-stats">
+          <div class="mock-stat">
+            <div class="mock-stat-val mock-stat-up">+68,103</div>
+            <div class="mock-stat-label">今日獲利</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-val">2,425,217</div>
+            <div class="mock-stat-label">累計獲利</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-val mock-stat-up">+2,356,705</div>
+            <div class="mock-stat-label">總報酬</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-val">3,820,648</div>
+            <div class="mock-stat-label">總市值</div>
+          </div>
+        </div>
+        <table class="mock-table">
+          <thead>
+            <tr>
+              <th>代碼</th>
+              <th>名稱</th>
+              <th>成本</th>
+              <th>現價</th>
+              <th>獲利</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0056</td>
+              <td>元大高股息</td>
+              <td>27.20</td>
+              <td>41.92</td>
+              <td style="color:#22c55e">+88,320</td>
+            </tr>
+            <tr>
+              <td>00878</td>
+              <td>國泰永續高股息</td>
+              <td>8.01</td>
+              <td>24.72</td>
+              <td style="color:#22c55e">+476,715</td>
+            </tr>
+            <tr>
+              <td>AAPL</td>
+              <td>蘋果</td>
+              <td>$145.02</td>
+              <td>$273.05</td>
+              <td style="color:#22c55e">+$13,443</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 所需時間 -->
+  <section>
+    <h2>五、所需時間估算</h2>
+    
+    <table class="effort-table">
+      <thead>
+        <tr>
+          <th>階段</th>
+          <th>任務</th>
+          <th>難度</th>
+          <th>時間</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>環境設定（Node.js + React + Vercel 帳號）</td>
+          <td class="effort-low">低</td>
+          <td>1-2 小時</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>基本介面佈局（Header + 導航）</td>
+          <td class="effort-low">低</td>
+          <td>2-3 小時</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>持股卡片顯示（讀取 JSON）</td>
+          <td class="effort-low">低</td>
+          <td>3-4 小時</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>损益统计显示</td>
+          <td class="effort-low">低</td>
+          <td>2-3 小時</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Chart.js 圖表整合</td>
+          <td class="effort-med">中</td>
+          <td>4-6 小時</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>美股/台股切換功能</td>
+          <td class="effort-low">低</td>
+          <td>2-3 小時</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>響應式設計（手機支持）</td>
+          <td class="effort-med">中</td>
+          <td>3-4 小時</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>部署上線 + 測試</td>
+          <td class="effort-low">低</td>
+          <td>2-3 小時</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div style="margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; text-align: center;">
+      <div style="font-size: 1.3em; font-weight: 700; margin-bottom: 8px;">⏱️ 總時間估計</div>
+      <div style="font-size: 2em; font-weight: 700;">1.5 - 2 週</div>
+      <div style="font-size: 0.9em; opacity: 0.9; margin-top: 8px;">每天投入 2-3 小時的情況下</div>
+    </div>
+  </section>
+
+  <!-- 我需要什麼 -->
+  <section>
+    <h2>六、我需要你提供什麼</h2>
+    
+    <div style="padding: 20px; background: #f5f5f7; border-radius: 12px;">
+      <div style="font-weight: 600; margin-bottom: 15px;">🎯 開始之前，我需要你回答：</div>
+      <ul style="margin-left: 25px; line-height: 2;">
+        <li>你想要什麼「風格」的介面？（深色/淺色/簡約/專業）</li>
+        <li>有特別想要参考的網站或介面嗎？</li>
+        <li>最想要優先呈現哪 3 個功能？</li>
+        <li>你希望什麼時候開始？</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 結論 -->
+  <section>
+    <div class="rec-box">
+      <h3>🎯 結論</h3>
+      <p>
+        React 持股儀表板<strong>絕對可行</strong>。<br>
+        你的現有 Python 爬蟲完全不需改動，<br>
+        只需要加一個「漂亮的顯示層」。<br><br>
+        <strong>時間：1.5-2 週</strong>（每天 2-3 小時）<br>
+        <strong>費用：免費</strong>（Vercel 免費方案）
+      </p>
+      <a class="rec-cta">告訴我你想要的介面風格</a>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

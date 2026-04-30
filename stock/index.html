@@ -19,7 +19,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;min-height:100vh
 .kpi-box .sub{font-size:9px;opacity:0.85}
 .kpi-box.orange{background:#E65100}
 .kpi-box.green{background:#2E7D32}
-.section-title{color:#333;font-size:14px;font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #2196F3}
+.section-title{color:#333;font-size:14px;font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #2196F3;cursor:pointer;user-select:none;display:block}
+.section-title:hover{opacity:0.8}
+.section-title::after{content:' ▼';font-size:10px;color:#888}
+.card.collapsed>table,.card.collapsed>div.kpi-row,.card.collapsed>p{display:none}
+.card.collapsed>.section-title{border-bottom:none;margin-bottom:0;padding-bottom:4px}
+.card.collapsed>.section-title::after{content:' ▶';font-size:10px;color:#888}
 .mob-table{display:table}
 .desk-table{display:none}
 table{width:100%;border-collapse:collapse;font-size:11px;table-layout:auto}
@@ -51,74 +56,92 @@ th,td{padding:9px 7px}
 <body>
 <div class="header">
 <h1>📊 持股總覽</h1>
-<p>最後更新：2026/04/15 15:39 | USD/TWD：31.73</p>
+<p>最後更新：2026/04/30 19:00 | USD/TWD：31.569</p>
 </div>
 <div class="card">
 <div class="kpi-row">
 <div class="kpi-box">
 <div class="label">總市值</div>
-<div class="value">5,307,089</div>
+<div class="value">5,581,334</div>
 <div class="sub">TWD</div>
 </div>
 <div class="kpi-box">
 <div class="label">總成本</div>
-<div class="value">3,093,348</div>
+<div class="value">3,082,693</div>
 <div class="sub">TWD</div>
 </div>
 <div class="kpi-box orange">
 <div class="label">累計報酬</div>
-<div class="value" style="color:#FFD700">+2,213,741</div>
-<div class="sub" style="color:#FFD700">+71.6%</div>
+<div class="value" style="color:#FFD700">+2,498,641</div>
+<div class="sub" style="color:#FFD700">+81.1%</div>
 </div>
 <div class="kpi-box" style="background:#1565C0">
 <div class="label">台股當日</div>
-<div class="value" style="color:#FFD700">+28,377</div>
-<div class="sub" style="color:#FFD700">TWD</div>
+<div class="value" style="color:#FF6B6B">-12,534</div>
+<div class="sub" style="color:#FF6B6B">TWD</div>
 </div>
 <div class="kpi-box" style="background:#E65100">
 <div class="label">美股當日</div>
-<div class="value" style="color:#FFD700">+14,677</div>
-<div class="sub" style="color:#FFD700">TWD</div>
+<div class="value" style="color:#FF6B6B">-11,315</div>
+<div class="sub" style="color:#FF6B6B">TWD</div>
 </div>
 </div>
 </div>
-<div class="card">
-<h3 class="section-title">📈 台股（11 檔）</h3>
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📈 台股（11 檔）</h3>
 <table class="mob-table">
 
 <tr><th>代</th><th>名</th><th>股</th><th>現價</th><th>漲%</th><th>累計</th></tr>
-<tr><td>0056</td><td>元大高股息</td><td>6,000</td><td>$40.26</td><td class='up'>+0.73%</td><td style='color:#FFD700;font-weight:bold'>+78,360</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>10,074</td><td>$73.70</td><td class='up'>+1.45%</td><td style='color:#FFD700;font-weight:bold'>+529,489</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>29,000</td><td>$8.99</td><td class='up'>+0.67%</td><td style='color:#FF6B6B;font-weight:bold'>-8,120</td></tr><tr><td>00713</td><td>元大台灣高息低波</td><td>5,173</td><td>$53.20</td><td class='up'>+0.66%</td><td style='color:#FFD700;font-weight:bold'>+94,045</td></tr><tr><td>00717</td><td>富邦美國特別股</td><td>6,000</td><td>$15.13</td><td class='up'>+0.73%</td><td style='color:#FFD700;font-weight:bold'>+6,360</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>28,500</td><td>$23.36</td><td class='up'>+0.69%</td><td style='color:#FFD700;font-weight:bold'>+437,190</td></tr><tr><td>00891</td><td>中信關鍵半導體</td><td>18,000</td><td>$27.33</td><td class='up'>+2.02%</td><td style='color:#FFD700;font-weight:bold'>+345,420</td></tr><tr><td>00940</td><td>元大台灣價值高息</td><td>9,000</td><td>$10.02</td><td class='up'>+0.60%</td><td style='color:#FFD700;font-weight:bold'>+14,580</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>5,427</td><td>$13.97</td><td class='up'>+1.90%</td><td style='color:#FFD700;font-weight:bold'>+26,050</td></tr><tr><td>1101</td><td>台泥</td><td>5,499</td><td>$24.60</td><td class='down'>-2.77%</td><td style='color:#FF6B6B;font-weight:bold'>-77,536</td></tr><tr><td>2886</td><td>兆豐金</td><td>10,664</td><td>$39.30</td><td class='down'>-0.13%</td><td style='color:#FFD700;font-weight:bold'>+159,747</td></tr>
+<tr><td>0056</td><td>元大高股息</td><td>6,000</td><td>$40.90</td><td class='down'>-0.07%</td><td style='color:#FFD700;font-weight:bold'>+88,200</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>10,074</td><td>$79.10</td><td class='down'>-0.44%</td><td style='color:#FFD700;font-weight:bold'>+583,889</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>29,000</td><td>$9.06</td><td class='down'>-1.52%</td><td style='color:#FF6B6B;font-weight:bold'>-6,090</td></tr><tr><td>00713</td><td>元大台灣高息低波</td><td>5,173</td><td>$52.85</td><td class='down'>-0.28%</td><td style='color:#FFD700;font-weight:bold'>+92,235</td></tr><tr><td>00717</td><td>富邦美國特別股</td><td>6,000</td><td>$15.03</td><td class='up'>+0.00%</td><td style='color:#FFD700;font-weight:bold'>+6,606</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>28,500</td><td>$25.39</td><td class='up'>+0.36%</td><td style='color:#FFD700;font-weight:bold'>+495,045</td></tr><tr><td>00891</td><td>中信關鍵半導體</td><td>18,000</td><td>$30.95</td><td class='up'>+0.62%</td><td style='color:#FFD700;font-weight:bold'>+410,580</td></tr><tr><td>00940</td><td>元大台灣價值高息</td><td>9,000</td><td>$10.34</td><td class='up'>+0.10%</td><td style='color:#FFD700;font-weight:bold'>+17,460</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>5,427</td><td>$15.85</td><td class='up'>+0.70%</td><td style='color:#FFD700;font-weight:bold'>+36,252</td></tr><tr><td>1101</td><td>台泥</td><td>5,499</td><td>$24.50</td><td class='up'>+0.00%</td><td style='color:#FF6B6B;font-weight:bold'>-78,086</td></tr><tr><td>2886</td><td>兆豐金</td><td>10,664</td><td>$39.10</td><td class='down'>-2.49%</td><td style='color:#FFD700;font-weight:bold'>+157,614</td></tr>
 </table>
 <table class="desk-table">
 
 <tr><th>代號</th><th>名稱</th><th>股數</th><th>成本均價</th><th>昨收</th><th>現價</th><th>當日</th><th>漲%</th><th>累計</th></tr>
-<tr><td>0056</td><td>元大高股息</td><td>6,000</td><td>$27.20</td><td>$39.97</td><td>$40.26</td><td class='up'>+1,740</td><td class='up'>+0.73%</td><td style='color:#FFD700;font-weight:bold'>+78,360</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>10,074</td><td>$21.14</td><td>$72.65</td><td>$73.70</td><td class='up'>+10,578</td><td class='up'>+1.45%</td><td style='color:#FFD700;font-weight:bold'>+529,489</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>29,000</td><td>$9.27</td><td>$8.93</td><td>$8.99</td><td class='up'>+1,740</td><td class='up'>+0.67%</td><td style='color:#FF6B6B;font-weight:bold'>-8,120</td></tr><tr><td>00713</td><td>元大台灣高息低波</td><td>5,173</td><td>$35.02</td><td>$52.85</td><td>$53.20</td><td class='up'>+1,811</td><td class='up'>+0.66%</td><td style='color:#FFD700;font-weight:bold'>+94,045</td></tr><tr><td>00717</td><td>富邦美國特別股</td><td>6,000</td><td>$14.07</td><td>$15.02</td><td>$15.13</td><td class='up'>+660</td><td class='up'>+0.73%</td><td style='color:#FFD700;font-weight:bold'>+6,360</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>28,500</td><td>$8.02</td><td>$23.20</td><td>$23.36</td><td class='up'>+4,560</td><td class='up'>+0.69%</td><td style='color:#FFD700;font-weight:bold'>+437,190</td></tr><tr><td>00891</td><td>中信關鍵半導體</td><td>18,000</td><td>$8.14</td><td>$26.79</td><td>$27.33</td><td class='up'>+9,720</td><td class='up'>+2.02%</td><td style='color:#FFD700;font-weight:bold'>+345,420</td></tr><tr><td>00940</td><td>元大台灣價值高息</td><td>9,000</td><td>$8.40</td><td>$9.96</td><td>$10.02</td><td class='up'>+540</td><td class='up'>+0.60%</td><td style='color:#FFD700;font-weight:bold'>+14,580</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>5,427</td><td>$9.17</td><td>$13.71</td><td>$13.97</td><td class='up'>+1,411</td><td class='up'>+1.90%</td><td style='color:#FFD700;font-weight:bold'>+26,050</td></tr><tr><td>1101</td><td>台泥</td><td>5,499</td><td>$38.70</td><td>$25.30</td><td>$24.60</td><td class='down'>-3,849</td><td class='down'>-2.77%</td><td style='color:#FF6B6B;font-weight:bold'>-77,536</td></tr><tr><td>2886</td><td>兆豐金</td><td>10,664</td><td>$24.32</td><td>$39.35</td><td>$39.30</td><td class='down'>-533</td><td class='down'>-0.13%</td><td style='color:#FFD700;font-weight:bold'>+159,747</td></tr>
+<tr><td>0056</td><td>元大高股息</td><td>6,000</td><td>$26.20</td><td>$40.93</td><td>$40.90</td><td class='down'>-180</td><td class='down'>-0.07%</td><td style='color:#FFD700;font-weight:bold'>+88,200</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>10,074</td><td>$21.14</td><td>$79.45</td><td>$79.10</td><td class='down'>-3,526</td><td class='down'>-0.44%</td><td style='color:#FFD700;font-weight:bold'>+583,889</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>29,000</td><td>$9.27</td><td>$9.20</td><td>$9.06</td><td class='down'>-4,060</td><td class='down'>-1.52%</td><td style='color:#FF6B6B;font-weight:bold'>-6,090</td></tr><tr><td>00713</td><td>元大台灣高息低波</td><td>5,173</td><td>$35.02</td><td>$53.00</td><td>$52.85</td><td class='down'>-776</td><td class='down'>-0.28%</td><td style='color:#FFD700;font-weight:bold'>+92,235</td></tr><tr><td>00717</td><td>富邦美國特別股</td><td>6,000</td><td>$13.93</td><td>$15.03</td><td>$15.03</td><td class='up'>+0</td><td class='up'>+0.00%</td><td style='color:#FFD700;font-weight:bold'>+6,606</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>28,500</td><td>$8.02</td><td>$25.30</td><td>$25.39</td><td class='up'>+2,565</td><td class='up'>+0.36%</td><td style='color:#FFD700;font-weight:bold'>+495,045</td></tr><tr><td>00891</td><td>中信關鍵半導體</td><td>18,000</td><td>$8.14</td><td>$30.76</td><td>$30.95</td><td class='up'>+3,420</td><td class='up'>+0.62%</td><td style='color:#FFD700;font-weight:bold'>+410,580</td></tr><tr><td>00940</td><td>元大台灣價值高息</td><td>9,000</td><td>$8.40</td><td>$10.33</td><td>$10.34</td><td class='up'>+90</td><td class='up'>+0.10%</td><td style='color:#FFD700;font-weight:bold'>+17,460</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>5,427</td><td>$9.17</td><td>$15.74</td><td>$15.85</td><td class='up'>+597</td><td class='up'>+0.70%</td><td style='color:#FFD700;font-weight:bold'>+36,252</td></tr><tr><td>1101</td><td>台泥</td><td>5,499</td><td>$38.70</td><td>$24.50</td><td>$24.50</td><td class='up'>+0</td><td class='up'>+0.00%</td><td style='color:#FF6B6B;font-weight:bold'>-78,086</td></tr><tr><td>2886</td><td>兆豐金</td><td>10,664</td><td>$24.32</td><td>$40.10</td><td>$39.10</td><td class='down'>-10,664</td><td class='down'>-2.49%</td><td style='color:#FFD700;font-weight:bold'>+157,614</td></tr>
 </table>
 </div>
-<div class="card">
-<h3 class="section-title">💵 美股（3 檔）2026-04-15 13:47</h3>
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">💵 美股（3 檔）</h3>
 <table class="mob-table">
 
 <tr><th>代</th><th>名</th><th>股</th><th>現價</th><th>漲%</th><th>累計</th></tr>
-<tr><td>AAPL</td><td>蘋果</td><td>105</td><td>$258.83</td><td class='down'>-0.14%</td><td style='color:#FFD700;font-weight:bold'>+379,175</td></tr><tr><td>MSFT</td><td>微軟</td><td>55</td><td>$393.11</td><td class='up'>+2.27%</td><td style='color:#FFD700;font-weight:bold'>+226,171</td></tr><tr><td>BND</td><td>債ETF</td><td>115</td><td>$73.98</td><td class='up'>+0.24%</td><td style='color:#FFD700;font-weight:bold'>+2,810</td></tr>
+<tr><td>AAPL</td><td>蘋果</td><td>105</td><td>$270.17</td><td class='down'>-0.20%</td><td style='color:#FFD700;font-weight:bold'>+414,840</td></tr><tr><td>MSFT</td><td>微軟</td><td>55</td><td>$424.46</td><td class='down'>-1.12%</td><td style='color:#FFD700;font-weight:bold'>+279,457</td></tr><tr><td>BND</td><td>債ETF</td><td>116</td><td>$73.39</td><td class='down'>-0.45%</td><td style='color:#FFD700;font-weight:bold'>+639</td></tr>
 </table>
 <table class="desk-table">
 
 <tr><th>代號</th><th>名稱</th><th>股數</th><th>成本均價</th><th>昨收</th><th>現價</th><th>當日</th><th>漲%</th><th>累計</th></tr>
-<tr><td>AAPL</td><td>蘋果</td><td>105</td><td>$145.02</td><td>$259.20</td><td>$258.83</td><td class='down'>-1,233</td><td class='down'>-0.14%</td><td style='color:#FFD700;font-weight:bold'>+379,175</td></tr><tr><td>MSFT</td><td>微軟</td><td>55</td><td>$263.51</td><td>$384.37</td><td>$393.11</td><td class='up'>+15,253</td><td class='up'>+2.27%</td><td style='color:#FFD700;font-weight:bold'>+226,171</td></tr><tr><td>BND</td><td>債ETF</td><td>115</td><td>$73.21</td><td>$73.80</td><td>$73.98</td><td class='up'>+657</td><td class='up'>+0.24%</td><td style='color:#FFD700;font-weight:bold'>+2,810</td></tr>
+<tr><td>AAPL</td><td>蘋果</td><td>105</td><td>$145.02</td><td>$270.71</td><td>$270.17</td><td class='down'>-1,790</td><td class='down'>-0.20%</td><td style='color:#FFD700;font-weight:bold'>+414,840</td></tr><tr><td>MSFT</td><td>微軟</td><td>55</td><td>$263.51</td><td>$429.25</td><td>$424.46</td><td class='down'>-8,317</td><td class='down'>-1.12%</td><td style='color:#FFD700;font-weight:bold'>+279,457</td></tr><tr><td>BND</td><td>債ETF</td><td>116</td><td>$73.22</td><td>$73.72</td><td>$73.39</td><td class='down'>-1,208</td><td class='down'>-0.45%</td><td style='color:#FFD700;font-weight:bold'>+639</td></tr>
 </table>
 </div>
-<div class="card">
-<h3 class="section-title">💰 2026年配息總覽</h3>
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📊 期貨 / 指數參考</h3>
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>價格</th><th>漲%</th></tr>
+<tr><td>^TWII</td><td>台灣加權指數</td><td>38926.63</td><td class='down'>-0.01%</td></tr><tr><td>WTX&</td><td>台指期(近一)</td><td>39722.00</td><td class='up'>+0.00%</td></tr><tr><td>SPY</td><td>S&P 500</td><td>711.58</td><td class='down'>-0.02%</td></tr><tr><td>QQQ</td><td>Nasdaq 100</td><td>661.57</td><td class='up'>+0.61%</td></tr><tr><td>DIA</td><td>道瓊</td><td>488.67</td><td class='down'>-0.56%</td></tr><tr><td>VIXY</td><td>VIX恐慌指數</td><td>28.01</td><td class='up'>+2.26%</td></tr><tr><td>TLT</td><td>10年公債殖利率</td><td>85.70</td><td class='down'>-0.78%</td></tr><tr><td>GLD</td><td>黃金</td><td>417.41</td><td class='down'>-1.07%</td></tr><tr><td>USO</td><td>原油</td><td>150.63</td><td class='up'>+7.90%</td></tr><tr><td>^FNMR</td><td>NAREIT Mortgage</td><td>2.53</td><td class='down'>-0.39%</td></tr>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>昨收</th><th>現價</th><th>漲%</th></tr>
+<tr><td>^TWII</td><td>台灣加權指數</td><td>38932.40</td><td>38926.63</td><td class='down'>-0.01%</td></tr><tr><td>WTX&</td><td>台指期(近一)</td><td>39722.00</td><td>39722.00</td><td class='up'>+0.00%</td></tr><tr><td>SPY</td><td>S&P 500</td><td>711.69</td><td>711.58</td><td class='down'>-0.02%</td></tr><tr><td>QQQ</td><td>Nasdaq 100</td><td>657.55</td><td>661.57</td><td class='up'>+0.61%</td></tr><tr><td>DIA</td><td>道瓊</td><td>491.42</td><td>488.67</td><td class='down'>-0.56%</td></tr><tr><td>VIXY</td><td>VIX恐慌指數</td><td>27.39</td><td>28.01</td><td class='up'>+2.26%</td></tr><tr><td>TLT</td><td>10年公債殖利率</td><td>86.37</td><td>85.70</td><td class='down'>-0.78%</td></tr><tr><td>GLD</td><td>黃金</td><td>421.91</td><td>417.41</td><td class='down'>-1.07%</td></tr><tr><td>USO</td><td>原油</td><td>139.60</td><td>150.63</td><td class='up'>+7.90%</td></tr><tr><td>^FNMR</td><td>NAREIT Mortgage</td><td>2.54</td><td>2.53</td><td class='down'>-0.39%</td></tr>
+</table>
+</div>
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">💰 2026年配息總覽</h3>
 <table>
 <tr><th>項目</th><th>金額</th><th>說明</th></tr>
 <tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold">+53,221 元</td><td>1~4月對帳單</td></tr>
 <tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+7,251 元</td><td>5月（0056、00717、00940）</td></tr>
 <tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+USD 111.87</td><td>≈ TWD 3,573（已扣30%預扣稅）</td></tr>
 <tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32">≈ 56,794 元</td><td>台股+美股</td></tr>
-<tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold">+2,165,493 元</td><td>市值增值+實收配息</td></tr>
+<tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold">+2,683,476 元</td><td>市值增值+美股匯差（成本匯率 28.5）</td></tr>
 </table>
 </div>
-<div class="footer">📊 持股總覽｜蝦助出品｜2026/04/15 15:39</div>
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📅 近期除息預告</h3>
+<table>
+<tr><th>代碼</th><th>名稱</th><th>除息日</th><th>發放日</th><th>現金股利</th></tr>
+<tr><td>00940</td><td>元大台灣價值高息</td><td>2026/05/07</td><td>2026/06/01</td><td>-</td></tr>
+</table>
+</div>
+<div class="footer">📊 持股總覽｜蝦助出品｜2026/04/30 19:00</div>
 </body>
 </html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>線上服務建構評估報告</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f7; color: #1d1d1f; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  header { text-align: center; margin-bottom: 50px; }
+  header h1 { font-size: 2.2em; color: #1d1d1f; margin-bottom: 10px; }
+  header .subtitle { color: #86868b; font-size: 1.1em; }
+  .date { color: #86868b; font-size: 0.9em; margin-top: 10px; }
+  
+  section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  section h2 { font-size: 1.4em; color: #1d1d1f; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f5f5f7; }
+  h3 { font-size: 1.1em; color: #424245; margin: 15px 0 10px; }
+  
+  .system-card { display: flex; gap: 20px; padding: 20px; background: #f5f5f7; border-radius: 12px; margin-bottom: 15px; }
+  .system-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .system-info { flex: 1; }
+  .system-name { font-weight: 600; font-size: 1.1em; margin-bottom: 5px; }
+  .system-type { font-size: 0.85em; color: #86868b; }
+  .system-status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; }
+  .status-ok { background: #d1fae5; color: #065f46; }
+  .status-warning { background: #fef3c7; color: #92400e; }
+  
+  .platform-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .platform-card { border: 2px solid #f5f5f7; border-radius: 12px; padding: 20px; transition: border-color 0.3s; }
+  .platform-card:hover { border-color: #0071e3; }
+  .platform-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+  .platform-logo { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .logo-hugo { background: #ff4081; }
+  .logo-wordpress { background: #21759b; }
+  .logo-react { background: #61dafb; color: #282c34; }
+  .logo-ghost { background: #ff1a75; }
+  .logo-strapi { background: #4945ff; }
+  .logo-airtable { background: #18b0d8; }
+  .platform-name { font-weight: 700; font-size: 1.1em; }
+  .platform-tag { font-size: 0.8em; color: #86868b; }
+  .platform-desc { font-size: 0.9em; color: #424245; margin-bottom: 15px; }
+  .platform-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { padding: 4px 10px; background: #f5f5f7; border-radius: 6px; font-size: 0.8em; }
+  .tag.green { background: #d1fae5; color: #065f46; }
+  .tag.yellow { background: #fef3c7; color: #92400e; }
+  .tag.red { background: #fee2e2; color: #991b1b; }
+  
+  .matrix-table { width: 100%; border-collapse: collapse; }
+  .matrix-table th { background: #f5f5f7; padding: 12px 15px; text-align: left; font-size: 0.9em; font-weight: 600; }
+  .matrix-table td { padding: 12px 15px; border-bottom: 1px solid #f5f5f7; font-size: 0.9em; }
+  .matrix-table tr:last-child td { border-bottom: none; }
+  .check { color: #22c55e; font-weight: bold; }
+  .cross { color: #ef4444; font-weight: bold; }
+  .partial { color: #eab308; font-weight: bold; }
+  
+  .recommendation { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 40px; text-align: center; }
+  .recommendation h2 { color: white; border: none; font-size: 1.5em; margin-bottom: 20px; }
+  .recommendation p { font-size: 1.1em; opacity: 0.95; max-width: 600px; margin: 0 auto 30px; }
+  .rec-approach { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+  .rec-card { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 20px 30px; backdrop-filter: blur(10px); flex: 1; min-width: 200px; }
+  .rec-card h4 { font-size: 1em; margin-bottom: 8px; }
+  .rec-card p { font-size: 0.9em; opacity: 0.9; margin: 0; }
+  
+  .diagram-box { background: #f5f5f7; border-radius: 12px; padding: 30px; margin: 20px 0; text-align: center; }
+  .flow { display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
+  .flow-box { background: white; border-radius: 10px; padding: 15px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 500; }
+  .flow-arrow { color: #86868b; font-size: 1.5em; }
+  .flow-box.highlight { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+  
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pros, .cons { padding: 20px; border-radius: 12px; }
+  .pros { background: #d1fae5; }
+  .cons { background: #fee2e2; }
+  .pros h4, .cons h4 { font-size: 1em; margin-bottom: 10px; }
+  .pros li, .cons li { font-size: 0.9em; margin-left: 20px; margin-bottom: 5px; }
+  
+  @media (max-width: 768px) {
+    .platform-grid, .pros-cons { grid-template-columns: 1fr; }
+    .matrix-table { font-size: 0.8em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📊 線上服務建構評估報告</h1>
+    <p class="subtitle">現有系統分析與平台推薦</p>
+    <p class="date">2026-04-21</p>
+  </header>
+
+  <!-- 現有系統 -->
+  <section>
+    <h2>📦 一、現有系統概覽</h2>
+    
+    <div class="system-card">
+      <div class="system-icon">📈</div>
+      <div class="system-info">
+        <div class="system-name">持股更新系統</div>
+        <div class="system-type">類型：即時數據展示</div>
+      </div>
+      <span class="system-status status-ok">正常運作</span>
+    </div>
+    
+    <div class="system-card">
+      <div class="system-icon">☀️</div>
+      <div class="system-info">
+        <div class="system-name">太陽能監控系統</div>
+        <div class="system-type">類型：即時數據 + 圖表</div>
+      </div>
+      <span class="system-status status-ok">正常運作</span>
+    </div>
+    
+    <div class="system-card">
+      <div class="system-icon">⚡</div>
+      <div class="system-info">
+        <div class="system-name">台電電費查詢</div>
+        <div class="system-type">類型：工具類應用</div>
+      </div>
+      <span class="system-status status-ok">正常運作</span>
+    </div>
+    
+    <div class="system-card">
+      <div class="system-icon">📦</div>
+      <div class="system-info">
+        <div class="system-name">庫存系統</div>
+        <div class="system-type">類型：資料庫應用</div>
+      </div>
+      <span class="system-status status-ok">正常運作</span>
+    </div>
+    
+    <div class="system-card">
+      <div class="system-icon">✈️</div>
+      <div class="system-info">
+        <div class="system-name">旅遊手冊 PDF</div>
+        <div class="system-type">類型：文件展示</div>
+      </div>
+      <span class="system-status status-ok">正常運作</span>
+    </div>
+  </section>
+
+  <!-- 系統分類 -->
+  <section>
+    <h2>🔍 二、系統分類分析</h2>
+    
+    <div class="diagram-box">
+      <div class="flow">
+        <div class="flow-box">你的系統</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="background:#fef3c7">即時數據型</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">需要專屬架構</div>
+      </div>
+      <br>
+      <div class="flow">
+        <div class="flow-box">文件/PDF</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="background:#d1fae5">內容展示型</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">可用 CMS 管理</div>
+      </div>
+      <br>
+      <div class="flow">
+        <div class="flow-box">對外形象</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box highlight">個人網站型</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">WordPress/Hugo</div>
+      </div>
+    </div>
+    
+    <div class="pros-cons" style="margin-top: 20px;">
+      <div class="pros">
+        <h4>✅ 適合搬到 WordPress/Hugo 的</h4>
+        <ul>
+          <li>旅遊手冊（文件展示）</li>
+          <li>個人介紹/履歷網站</li>
+          <li>技術文章/部落格</li>
+          <li>產品展示頁</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>❌ 不適合搬到 WordPress 的</h4>
+        <ul>
+          <li>持股即時更新（需要 API）</li>
+          <li>太陽能監控（需要專屬爬蟲）</li>
+          <li>台電電費查詢（需要政府 API）</li>
+          <li>庫存系統（需要資料庫）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 平台比較 -->
+  <section>
+    <h2>⚖️ 三、平台方案比較</h2>
+    
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo logo-hugo">H</div>
+          <div>
+            <div class="platform-name">Hugo</div>
+            <div class="platform-tag">靜態網站生成器</div>
+          </div>
+        </div>
+        <div class="platform-desc">用 Markdown 寫文章，生成超快静态网站。適合技術人。</div>
+        <div class="platform-tags">
+          <span class="tag green">免費</span>
+          <span class="tag green">速度快</span>
+          <span class="tag green">免主機費</span>
+          <span class="tag yellow">需寫指令</span>
+        </div>
+      </div>
+      
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo logo-wordpress">W</div>
+          <div>
+            <div class="platform-name">WordPress</div>
+            <div class="platform-tag">內容管理系統</div>
+          </div>
+        </div>
+        <div class="platform-desc">最多人用的網站平台。外掛多，管理方便，但不適合即時數據。</div>
+        <div class="platform-tags">
+          <span class="tag green">好上手</span>
+          <span class="tag green">外掛多</span>
+          <span class="tag yellow">需要主機</span>
+          <span class="tag red">即時數據弱</span>
+        </div>
+      </div>
+      
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo logo-react">R</div>
+          <div>
+            <div class="platform-name">React/Next.js</div>
+            <div class="platform-tag">現代 Web App</div>
+          </div>
+        </div>
+        <div class="platform-desc">可以做任何類型的網站和應用，但需要較強的技術能力。</div>
+        <div class="platform-tags">
+          <span class="tag green">最強大</span>
+          <span class="tag green">可串 API</span>
+          <span class="tag red">學習曲線高</span>
+          <span class="tag yellow">開發時間長</span>
+        </div>
+      </div>
+      
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo logo-ghost">G</div>
+          <div>
+            <div class="platform-name">Ghost</div>
+            <div class="platform-tag">專業部落格</div>
+          </div>
+        </div>
+        <div class="platform-desc">專為内容创作设计的平台。介面乾淨漂亮，適合写文章。</div>
+        <div class="platform-tags">
+          <span class="tag green">寫作體驗好</span>
+          <span class="tag green">會員制功能</span>
+          <span class="tag yellow">外掛少</span>
+          <span class="tag yellow">需要主機</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 功能對照表 -->
+  <section>
+    <h2>📋 四、功能對照表</h2>
+    
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>需求</th>
+          <th>Hugo</th>
+          <th>WordPress</th>
+          <th>React</th>
+          <th>Ghost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>即時股價更新</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">需外掛</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>文件/PDF 展示</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>漂亮個人網站</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>太陽能監控儀表板</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">需外掛</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>庫存管理系統</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">有限</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>技術維護難度</td>
+          <td><span class="check">低</span></td>
+          <td><span class="check">低</span></td>
+          <td><span class="check">高</span></td>
+          <td><span class="check">低</span></td>
+        </tr>
+        <tr>
+          <td>費用</td>
+          <td><span class="check">免費</span></td>
+          <td><span class="partial">中等</span></td>
+          <td><span class="check">免費*</span></td>
+          <td><span class="partial">中等</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 架構圖 -->
+  <section>
+    <h2>🏗️ 五、建議架構圖</h2>
+    
+    <div class="diagram-box">
+      <div style="font-size: 0.9em; font-weight: 600; margin-bottom: 20px;">現有系統 → 未來整合架構</div>
+      <div class="flow" style="flex-wrap: wrap;">
+        <div class="flow-box">持股系統</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">Python 爬蟲</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box highlight">R2 / GitHub Pages</div>
+      </div>
+      <br>
+      <div class="flow" style="flex-wrap: wrap;">
+        <div class="flow-box">太陽能監控</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">API 資料</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box highlight">即時儀表板</div>
+      </div>
+      <br>
+      <div class="flow" style="flex-wrap: wrap;">
+        <div class="flow-box highlight">Hugo / Ghost</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">個人網站</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">對外展示</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 建議方案 -->
+  <section>
+    <div class="recommendation">
+      <h2>💡 最終建議方案</h2>
+      <p>根據你的系統特性，建議採「混合方案」</p>
+      <div class="rec-approach">
+        <div class="rec-card">
+          <h4>第一步：Hugo 建個人網站</h4>
+          <p>用 Hugo 架一個漂亮的個人網站，展示你的旅遊和技術文章</p>
+        </div>
+        <div class="rec-card">
+          <h4>第二步：現有系統保留</h4>
+          <p>持股更新、太陽能監控繼續用現有 Python + HTML 的方式</p>
+        </div>
+        <div class="rec-card">
+          <h4>第三步：連結整合</h4>
+          <p>在 Hugo 網站上連結你現有的系統，打造完整線上形象</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 總結 -->
+  <section>
+    <h2>📝 六、總結</h2>
+    
+    <table class="matrix-table">
+      <tr>
+        <td><strong>WordPress 适合场景</strong></td>
+        <td>內容網站、部落格、技術文章</td>
+      </tr>
+      <tr>
+        <td><strong>不適合场景</strong></td>
+        <td>即時股價、太陽能監控、庫存系統</td>
+      </tr>
+      <tr>
+        <td><strong>建議方案</strong></td>
+        <td>Hugo（個人網站）+ 現有系統（技術系統）</td>
+      </tr>
+      <tr>
+        <td><strong>WordPress 能做的事</strong></td>
+        <td>旅遊手冊展示、個人履歷、文章發布</td>
+      </tr>
+    </table>
+  </section>
+</div>
+</body>
+</html>

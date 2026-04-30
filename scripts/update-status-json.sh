@@ -5,7 +5,7 @@
 STATUS_API="http://localhost:3838/api/status"
 TS=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
 WORKSPACE="/home/jhe/.openclaw/workspace"
-R2_HTML="$WORKSPACE/openclaw_status/index.html"
+R2_HTML="$WORKSPACE/openclaw-status/index.html"
 TMP_JSON="/tmp/openclaw_status.json"
 
 # 1. 抓 API 寫入 JSON
@@ -30,7 +30,7 @@ s3.put_object(Bucket='shared-files', Key='openclaw-status/status.json',
     ContentType='application/json')
 
 # 更新 HTML 裡的 JS 變數（bake-in 方式）
-R2_HTML = '/home/jhe/.openclaw/workspace/openclaw_status/index.html'
+R2_HTML = '/home/jhe/.openclaw/workspace/openclaw-status/index.html'
 with open(R2_HTML) as f:
     content = f.read()
 

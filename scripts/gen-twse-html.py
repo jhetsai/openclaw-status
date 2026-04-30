@@ -7,17 +7,17 @@ DATA_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_data.json")
 OUT_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_query.html")
 
 TW_STOCKS = [
-    {"symbol": "0056.TW", "code": "0056", "annDiv": 1.6},
-    {"symbol": "00692.TW", "code": "00692", "annDiv": 1.0},
-    {"symbol": "00712.TW", "code": "00712", "annDiv": 0.35},
-    {"symbol": "00713.TW", "code": "00713", "annDiv": 1.73},
-    {"symbol": "00717.TW", "code": "00717", "annDiv": 0.6},
-    {"symbol": "00878.TW", "code": "00878", "annDiv": 0.45},
-    {"symbol": "00891.TW", "code": "00891", "annDiv": 0.3},
-    {"symbol": "00940.TW", "code": "00940", "annDiv": 0.84},
-    {"symbol": "009802.TW", "code": "009802", "annDiv": 0.5},
-    {"symbol": "1101.TW", "code": "1101", "annDiv": None},
-    {"symbol": "2886.TW", "code": "2886", "annDiv": None},
+    {"symbol": "0056.TW", "code": "0056", "annDiv": 1.6, "name": "元大高股息"},
+    {"symbol": "00692.TW", "code": "00692", "annDiv": 1.0, "name": "富邦公司治理"},
+    {"symbol": "00712.TW", "code": "00712", "annDiv": 0.35, "name": "復華富時不動產"},
+    {"symbol": "00713.TW", "code": "00713", "annDiv": 1.73, "name": "元大台灣高息低波"},
+    {"symbol": "00717.TW", "code": "00717", "annDiv": 0.6, "name": "富邦美國特別股"},
+    {"symbol": "00878.TW", "code": "00878", "annDiv": 0.45, "name": "國泰永續高股息"},
+    {"symbol": "00891.TW", "code": "00891", "annDiv": 0.3, "name": "中信關鍵半導體"},
+    {"symbol": "00940.TW", "code": "00940", "annDiv": 0.84, "name": "元大台灣價值高息"},
+    {"symbol": "009802.TW", "code": "009802", "annDiv": 0.5, "name": "富邦旗艦50"},
+    {"symbol": "1101.TW", "code": "1101", "annDiv": None, "name": "台泥"},
+    {"symbol": "2886.TW", "code": "2886", "annDiv": None, "name": "兆豐金"},
 ]
 
 with open(DATA_FILE) as f:
@@ -29,10 +29,7 @@ rt = d.get("realtime", {})
 divs = d.get("dividend", [])
 codes_set = {s["code"] for s in TW_STOCKS}
 
-stock_names = {}
-for s in TW_STOCKS:
-    info = rt.get(s["code"], {})
-    stock_names[s["code"]] = info.get("name") or s["symbol"].replace(".TW", "")
+stock_names = {s["code"]: s.get("name") or s["symbol"].replace(".TW", "") for s in TW_STOCKS}
 
 # ── 即時行情 ──
 rows = []

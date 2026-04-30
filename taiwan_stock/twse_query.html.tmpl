@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>台股查詢系統｜蝦助</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;min-height:100vh;padding:12px}
+.header{text-align:center;margin-bottom:14px}
+.header h1{color:#1a1a2e;font-size:20px;margin-bottom:4px}
+.header p{color:#666;font-size:11px}
+.card{background:white;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.kpi-row{display:flex;gap:8px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.kpi-box{flex:0 0 auto;background:#2196F3;color:white;padding:8px 12px;border-radius:8px;text-align:center;min-width:90px}
+.kpi-box .label{font-size:9px;opacity:0.9}
+.kpi-box .value{font-size:18px;font-weight:bold;margin:2px 0}
+.kpi-box.orange{background:#E65100}
+.controls{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.controls input{flex:1;min-width:150px;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px}
+.controls select{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:white}
+.controls .badge{padding:4px 10px;background:#e0e0e0;border-radius:20px;font-size:11px;color:#555}
+.search-summary{font-size:12px;color:#666;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th,td{padding:6px 4px;text-align:center;border-bottom:1px solid #eee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+th{background:#1a1a2e;color:white;font-size:9px;position:sticky;top:0;cursor:pointer;user-select:none}
+th:hover{background:#2d2d4a}
+.up{color:#4CAF50;font-weight:bold}
+.down{color:#F44336;font-weight:bold}
+.nav{font-size:12px;color:#666;margin-top:8px;display:flex;gap:8px;justify-content:center;align-items:center}
+.nav button{padding:4px 14px;background:#f5f5f5;border:1px solid #ddd;border-radius:6px;cursor:pointer}
+.nav button:disabled{opacity:0.4;cursor:not-allowed}
+.footer{text-align:center;color:#999;font-size:10px;margin-top:12px}
+@media(min-width:768px){
+body{padding:20px}
+.header h1{font-size:24px}
+.card{padding:20px;margin-bottom:16px}
+.kpi-row{gap:60px}
+.kpi-box{padding:12px 20px;min-width:130px}
+.kpi-box .label{font-size:11px}
+.kpi-box .value{font-size:24px}
+table{font-size:12px}
+th,td{padding:8px 6px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>📈 台股查詢系統</h1>
+<p>臺灣證券交易所 TWSE｜__COUNT__ 檔｜更新：__NOW_STR__</p>
+</div>
+
+<div class="card">
+<div class="kpi-row">
+<div class="kpi-box"><div class="label">掛牌數</div><div class="value" id="kpi-total">-</div></div>
+<div class="kpi-box"><div class="label">符合條件</div><div class="value" id="kpi-count">-</div></div>
+<div class="kpi-box"><div class="label">平均 DY</div><div class="value" id="kpi-avgdy">-</div></div>
+<div class="kpi-box orange"><div class="label">DY &gt; 4%</div><div class="value" id="kpi-highdy">-</div></div>
+</div>
+</div>
+
+<div class="card">
+<div class="controls">
+<input type="text" id="searchInput" placeholder="輸入代碼或名稱搜尋（按 / 快速聚焦）" oninput="filterTable()">
+<select id="filterSelect" onchange="filterTable()">
+<option value="all">全部</option>
+<option value="dy3">DY &gt; 3%</option>
+<option value="dy4" selected>DY &gt; 4%</option>
+<option value="dy5">DY &gt; 5%</option>
+<option value="pe-low">本益比 &lt; 15</option>
+<option value="pe-mid">本益比 &lt; 20</option>
+</select>
+<select id="sortSelect" onchange="filterTable()">
+<option value="dy-desc" selected>殖利率▼</option>
+<option value="code">代碼</option>
+<option value="pe-asc">本益比▲</option>
+<option value="price-desc">現價▼</option>
+<option value="volume-desc">成交量▼</option>
+</select>
+<span class="badge" id="lastUpdate"></span>
+</div>
+<div class="search-summary" id="searchSummary">讀取中...</div>
+<div style="overflow-x:auto">
+<table id="stockTable">
+<thead>
+<tr>
+<th onclick="sortBy('code')">代號</th>
+<th onclick="sortBy('name')">名稱</th>
+<th onclick="sortBy('price')">現價</th>
+<th onclick="sortBy('change')">漲跌</th>
+<th onclick="sortBy('chgpct')">漲%</th>
+<th onclick="sortBy('pe')">本益比</th>
+<th onclick="sortBy('dy')">DY</th>
+<th onclick="sortBy('pb')">P/B</th>
+<th onclick="sortBy('volume')">成交量</th>
+</tr>
+</thead>
+<tbody id="stockBody"></tbody>
+</table>
+</div>
+<div class="nav">
+<button onclick="prevPage()" id="prevBtn" disabled>◀ 上一頁</button>
+<span id="pageInfo"></span>
+<button onclick="nextPage()" id="nextBtn">下一頁 ▶</button>
+</div>
+</div>
+<div class="footer">📊 台股查詢系統｜蝦助出品｜TWSE｜最後更新：__NOW_STR__</div>
+
+<script>
+var PAGE_SIZE = 50;
+var allStocks = __STOCKS_JSON__;
+var currentPage = 1;
+var currentFiltered = [];
+
+function fvol(v) {
+  if (!v) return '-';
+  if (v >= 1e6) return (v/1e6).toFixed(1)+'M';
+  if (v >= 1e3) return (v/1e3).toFixed(0)+'K';
+  return v;
+}
+
+function filterTable() {
+  var q = document.getElementById('searchInput').value.trim().toLowerCase();
+  var filter = document.getElementById('filterSelect').value;
+  var sort = document.getElementById('sortSelect').value;
+  currentFiltered = allStocks.filter(function(s) {
+    if (q && s.code.toLowerCase().indexOf(q) === -1 && s.name.toLowerCase().indexOf(q) === -1) return false;
+    if (filter === 'dy3' && (s.dy == null || s.dy < 3)) return false;
+    if (filter === 'dy4' && (s.dy == null || s.dy < 4)) return false;
+    if (filter === 'dy5' && (s.dy == null || s.dy < 5)) return false;
+    if (filter === 'pe-low' && (s.pe == null || s.pe >= 15)) return false;
+    if (filter === 'pe-mid' && (s.pe == null || s.pe >= 20)) return false;
+    return true;
+  });
+  if (sort === 'dy-desc') currentFiltered.sort(function(a,b){return (b.dy||-999)-(a.dy||-999);});
+  else if (sort === 'code') currentFiltered.sort(function(a,b){return a.code.localeCompare(b.code);});
+  else if (sort === 'pe-asc') currentFiltered.sort(function(a,b){return (a.pe||9999)-(b.pe||9999);});
+  else if (sort === 'price-desc') currentFiltered.sort(function(a,b){return (b.price||0)-(a.price||0);});
+  else if (sort === 'volume-desc') currentFiltered.sort(function(a,b){return (b.volume||0)-(a.volume||0);});
+  currentPage = 1;
+  renderTable();
+  updateKPI();
+  var label = q ? '「'+q+'」找到 '+currentFiltered.length+' 檔' : '共 '+currentFiltered.length+' 檔（預設 DY>4%）';
+  document.getElementById('searchSummary').textContent = label;
+}
+
+function sortBy(col) {
+  document.getElementById('sortSelect').value = col + '-desc';
+  filterTable();
+}
+
+function renderTable() {
+  var start = (currentPage - 1) * PAGE_SIZE;
+  var page = currentFiltered.slice(start, start + PAGE_SIZE);
+  var tbody = document.getElementById('stockBody');
+  if (!page.length) { tbody.innerHTML = '<tr><td colspan="9" style="color:#999;padding:20px">查無資料</td></tr>'; return; }
+  var html = '';
+  for (var i = 0; i < page.length; i++) {
+    var s = page[i];
+    var pc = s.change > 0 ? 'up' : s.change < 0 ? 'down' : '';
+    var ps = s.change > 0 ? '+' : '';
+    var dypct = s.dy != null ? s.dy.toFixed(2) : '-';
+    var dicolor = s.dy && s.dy >= 5 ? '#4CAF50' : s.dy && s.dy >= 4 ? '#FF9800' : '';
+    var dyweight = s.dy && s.dy >= 4 ? 'font-weight:bold;' : '';
+    html += '<tr>' +
+      '<td>' + s.code + '</td>' +
+      '<td style="text-align:left;max-width:80px;overflow:hidden;text-overflow:ellipsis">' + s.name + '</td>' +
+      '<td>' + (s.price ? s.price.toFixed(2) : '-') + '</td>' +
+      '<td class="' + pc + '">' + (s.change != null ? ps+s.change.toFixed(2) : '-') + '</td>' +
+      '<td class="' + pc + '">' + (s.chgpct != null ? ps+s.chgpct.toFixed(2)+'%' : '-') + '</td>' +
+      '<td>' + (s.pe != null ? s.pe.toFixed(2) : '-') + '</td>' +
+      '<td style="color:' + dicolor + ';' + dyweight + '">' + dypct + '%</td>' +
+      '<td>' + (s.pb != null ? s.pb.toFixed(2) : '-') + '</td>' +
+      '<td>' + fvol(s.volume) + '</td>' +
+      '</tr>';
+  }
+  tbody.innerHTML = html;
+  var total = Math.ceil(currentFiltered.length / PAGE_SIZE);
+  document.getElementById('pageInfo').textContent = '第 ' + currentPage + ' / ' + total + ' 頁';
+  document.getElementById('prevBtn').disabled = currentPage <= 1;
+  document.getElementById('nextBtn').disabled = currentPage >= total;
+}
+
+function updateKPI() {
+  document.getElementById('kpi-total').textContent = allStocks.length;
+  document.getElementById('kpi-count').textContent = currentFiltered.length;
+  var dys = currentFiltered.filter(function(s){return s.dy != null;}).map(function(s){return s.dy;});
+  var avg = dys.length ? (dys.reduce(function(a,b){return a+b;},0)/dys.length).toFixed(2) : '-';
+  document.getElementById('kpi-avgdy').textContent = dys.length ? avg+'%' : '-';
+  document.getElementById('kpi-highdy').textContent = currentFiltered.filter(function(s){return s.dy && s.dy > 4;}).length;
+}
+
+function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
+function nextPage() { var total = Math.ceil(currentFiltered.length / PAGE_SIZE); if (currentPage < total) { currentPage++; renderTable(); } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' || e.key === 'Enter') { document.getElementById('searchInput').focus(); e.preventDefault(); }
+  if (e.key === 'Escape') { document.getElementById('searchInput').value=''; filterTable(); }
+  if (e.key === 'ArrowLeft' && document.activeElement.tagName !== 'INPUT') prevPage();
+  if (e.key === 'ArrowRight' && document.activeElement.tagName !== 'INPUT') nextPage();
+});
+
+filterTable();
+</script>
+</body>
+</html>

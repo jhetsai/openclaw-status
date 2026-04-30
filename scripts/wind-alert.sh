@@ -1,40 +1,40 @@
 #!/bin/bash
-# wind-alert.sh - 檢查水林鄉風速，超過30km/h則發Telegram警示
-set -e
-
+# wind-alert.sh - 水林鄉風速預報，每次檢查都發通知（不論是否超標）
 BOT_TOKEN="TELEGRAM_BOT_TOKEN_REDACTED"
 CHAT_ID="1181571031"
 LOG="/home/jhe/.openclaw/workspace/logs/wind_alert.log"
+WEATHER_API_KEY="WEATHER_API_KEY_REDACTED"
 
-# 抓取風速預報
-WX=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=23.71&longitude=120.29&hourly=wind_speed_10m,wind_gusts_10m&timezone=Asia%2FTaipei&forecast_days=1")
+WX=$(curl -s "https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=23.71,120.29&days=1&aqi=no&alerts=no")
 
-# 取出未來24小時最高風速
-MAX_WIND=$(echo "$WX" | python3 -c "
+MAX_GUST=$(echo "$WX" | python3 -c "
 import sys, json
 d = json.load(sys.stdin)
-hours = d['hourly']
-winds = hours['wind_speed_10m'][0:24]  # 未來24小時
-gusts = hours['wind_gusts_10m'][0:24]
-max_w = max(winds)
-max_g = max(gusts)
-max_val = max(max_w, max_g)
-times = hours['time'][winds.index(max_w)]
-print(f'{max_val:.1f}')
+hours = d['forecast']['forecastday'][0]['hour']
+max_gust = max(h['gust_kph'] for h in hours)
+print(f'{max_gust:.1f}')
 ")
 
-MAX_WIND_INT=$(echo "$MAX_WIND" | python3 -c "print(int(float(input().strip())))")
+NOW_GUST=$(echo "$WX" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+current = d['current']['gust_kph']
+print(f'{current:.1f}')
+")
 
-echo "[$(date '+%Y-%m-%d %H:%M')] 最高風速: ${MAX_WIND} km/h" >> "$LOG"
+WMAX_INT=$(echo "$MAX_GUST" | python3 -c "print(int(float(input().strip())))")
 
-if [ "$MAX_WIND_INT" -ge 30 ]; then
-    MSG="🚨【水林鄉風速警示】
-未來24小時最高風速：${MAX_WIND} km/h
-已超過警戒線 30 km/h"
-    curl -s -X POST "https://api.telegram.org/${BOT_TOKEN}/sendMessage" \
-        -d "chat_id=${CHAT_ID}" \
-        -d "text=${MSG}" > /dev/null
-    echo "  → 已發送警示" >> "$LOG"
+echo "[$(date '+%Y-%m-%d %H:%M')] 當前陣風: ${NOW_GUST} km/h | 未來24h最高: ${MAX_GUST} km/h" >> "$LOG"
+
+if [ "$WMAX_INT" -ge 30 ]; then
+    TEXT="⚠️ 風速警示：水林
+🌬️ 當前風速：${NOW_GUST} km/h
+📈 未來24h最高：${MAX_GUST} km/h"
 else
-    echo "  → 無超標，正常" >> "$LOG"
+    TEXT="🌬️ 水林風速報告
+🌡️ 當前風速：${NOW_GUST} km/h
+📈 未來24h最高：${MAX_GUST} km/h"
 fi
+
+curl -s "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${TEXT}" > /dev/null
+echo "  -> 已發送通知（${MAX_GUST} km/h）"

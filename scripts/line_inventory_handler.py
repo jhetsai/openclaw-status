@@ -115,7 +115,7 @@ def handle_confirm():
     total = len(items)
     delete_pending()
     
-    return f"✅ 已更新！\n{total} 項商品\n請到 https://jhetsai.github.io/inventory/ 查看"
+    return f"✅ 已更新！\n{total} 項商品\n請到 https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/openclaw/inventory.html 查看"
 
 def handle_modify(modify_text):
     """處理修改數量"""
