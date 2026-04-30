@@ -48,7 +48,7 @@ python3 scripts/upload_r2.py "$WORKSPACE/us_stock/us_stocks.json" >> logs/cron-s
 
 # 同步上傳 us_stocks.json 到根目錄
 python3 - << 'PYEOF' >> logs/cron-stock.log 2>&1
-import boto3
+import boto3, os
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
     aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
     aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
@@ -63,7 +63,7 @@ python3 scripts/upload_r2.py "$WORKSPACE/stock/market_status.json" >> logs/cron-
 
 # 更新匯率並上傳到 R2
 python3 - << 'PYEOF' >> logs/cron-stock.log 2>&1
-import boto3, subprocess, json
+import boto3, subprocess, json, os
 from datetime import datetime
 import urllib.request, json
 
