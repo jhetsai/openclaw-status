@@ -13,7 +13,7 @@ with open(html_path) as f:
 
 # Fetch weather from CWA (Taiwan weather bureau)
 # Use 箔子寮 station (nearest to 水林)
-CWA_API = 'CWA_API_KEY_REDACTED'
+CWA_API = os.environ.get('CWA_API_KEY', '')
 CWA_URL = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization={CWA_API}'
 
 try:
