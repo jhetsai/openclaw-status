@@ -367,18 +367,18 @@ async function loadOM() {
         });
         document.getElementById('om-forecast').innerHTML = omHtml;
 
-        // 24-hour chart
+        // 24-hour chart - WeatherAPI 已依台灣時區提供完整24小時，直接取用第一天的資料
         const now = new Date();
         const labels = [], temps = [], pops = [], winds = [];
-        for (let i = 0; i < omTimes.length && labels.length < 24; i += 3) {
-            const omDate = new Date(omTimes[i].includes('T') ? omTimes[i] : omTimes[i].replace(' ', 'T'));
-            if (omDate >= now) {
-                labels.push(omTimes[i].includes('T') ? omTimes[i].slice(11,16) : omTimes[i].split(' ')[1]?.slice(0,5) || '');
-                temps.push(omTemp[i]);
-                pops.push(omPop[i]||0);
-                winds.push(omWind[i]||0);
-            }
+        for (let i = 0; i < 24 && i < omTimes.length; i += 3) {
+            const t = omTimes[i];
+            labels.push(t.includes('T') ? t.slice(11,16) : t.split(' ')[1]?.slice(0,5) || '');
+            temps.push(omTemp[i]);
+            pops.push(omPop[i]||0);
+            winds.push(omWind[i]||0);
         }
+        console.log('Chart labels (24h only):', labels);
+        console.log('Chart winds:', winds); // 供 tooltip 使用
 
         if (typeof chart !== 'undefined' && chart) chart.destroy();
         const ctx = document.getElementById('hourlyChart').getContext('2d');
@@ -387,7 +387,11 @@ async function loadOM() {
             data: { labels, datasets: [
                 { label: '溫度 (°C)', data: temps, borderColor: '#e74c3c', backgroundColor: 'rgba(231,76,60,0.1)', yAxisID: 'yTemp', tension: 0.3, fill: true },
                 { label: '降雨機率 (%)', data: pops, borderColor: '#3498db', backgroundColor: 'rgba(52,152,219,0.3)', yAxisID: 'yPop', tension: 0.3, fill: true },
-                { label: '風速 (km/h)', data: winds, borderColor: '#9c27b0', backgroundColor: 'rgba(156,39,176,0.1)', yAxisID: 'yWind', tension: 0.3, fill: false }
+                { label: '風速 (km/h)', data: winds, borderColor: '#9c27b0', backgroundColor: 'rgba(156,39,176,0.1)', yAxisID: 'yWind', tension: 0.3, fill: false,
+                  pointBackgroundColor: winds.map(w => w > 15 ? '#d32f2f' : '#9c27b0'),
+                  pointRadius: winds.map(w => w > 15 ? 6 : 3),
+                  pointHoverRadius: 8
+                }
             ]},
             options: { responsive: true, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } }, scales: { yTemp: { type: 'linear', position: 'left', title: { display: true, text: '°C' }, grid: { drawOnChartArea: false } }, yPop: { type: 'linear', position: 'right', min: 0, max: 100, title: { display: true, text: '%' } }, yWind: { type: 'linear', position: 'right', min: 0, title: { display: true, text: 'km/h' }, grid: { drawOnChartArea: false } } } }
         });
@@ -405,7 +409,7 @@ async function loadOM() {
 const WIND_DIR_CN = {N:'北',NNE:'北北東',NE:'東北',ENE:'東北東',E:'東',ESE:'東南東',SE:'東南',SSE:'南南東',S:'南',SSW:'南南西',SW:'西南',WSW:'西南西',W:'西',WNW:'西北西',NW:'西北',NNW:'北北西'};
 
 const WA_COND_CHINESE = {
-    'Sunny':'晴', 'Clear':'晴', 'Partly cloudy':'局部多雲', 'Cloudy':'多雲', 'Overcast':'陰',
+    'Sunny':'晴', 'Clear':'晴', 'Partly cloudy':'局部多雲', 'Partly Cloudy':'局部多雲', 'Cloudy':'多雲', 'Overcast':'陰',
     'Mist':'薄霧', 'Fog':'霧', 'Freezing fog':'凍霧',
     'Patchy rain nearby':'局部短暫雨', 'Patchy light drizzle':'局部細雨', 'Light drizzle':'細雨',
     'Patchy light rain':'局部小雨', 'Light rain':'小雨', 'Light rain shower':'小陣雨',

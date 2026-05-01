@@ -76,3 +76,30 @@ Traceback (most recent call last):
   File "/usr/lib/python3.12/urllib/request.py", line 639, in http_error_default
     raise HTTPError(req.full_url, code, msg, hdrs, fp)
 urllib.error.HTTPError: HTTP Error 403: Forbidden
+Weather updated: 22.4°C
+Weather updated: 22.3°C
+Weather updated: 22.4°C
+Weather updated: 22.3°C
+Weather updated: 18.2°C
+Weather updated: 22.4°C
+Weather updated: 22.4°C
+Weather updated: 22.3°C
+Weather updated: 18.2°C
+Weather updated: 22.0°C
+Weather updated: 22.0°C
+Weather updated: 22.1°C
+Weather updated: 18.1°C
+Weather updated: 22.4°C
+Weather updated: 18.2°C
+Weather updated: 22.2°C
+Weather updated: 22.2°C
+Weather updated: 22.0°C
+Weather updated: 22.2°C
+Weather updated: 23.2°C
+Weather updated: 23.4°C
+Weather updated: 23.0°C
+Weather updated: 18.2°C
+Weather updated: 23.1°C
+Weather updated: 23.4°C -> R2: weather-api/current.json
+Weather updated: 21.5°C -> R2: weather-api/current.json
+Weather updated: 22.3°C -> R2: weather-api/current.json

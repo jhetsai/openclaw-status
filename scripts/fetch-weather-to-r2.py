@@ -18,9 +18,10 @@ R2_BUCKET = 'shared-files'
 R2_ENDPOINT = 'https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com'
 
 def fetch_weather():
-    url = f'https://api.weatherapi.com/v1/current.json?key={API_KEY}&q={LAT},{LON}&aqi=no'
+    # Use forecast.json (not current.json) so we have 3-day forecast data
+    url = f'https://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={LAT},{LON}&days=3&aqi=no&alerts=no'
     try:
-        with urllib.request.urlopen(url, timeout=10) as r:
+        with urllib.request.urlopen(url, timeout=15) as r:
             return json.loads(r.read())
     except Exception as e:
         print(f'Weather fetch error: {e}')
@@ -35,8 +36,10 @@ if data:
     s3 = boto3.client('s3', endpoint_url=R2_ENDPOINT,
         aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
         aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
-    s3.upload_file('/tmp/weather.json', R2_BUCKET, 'weather.json', 
-        ExtraArgs={'ContentType': 'application/json'})
-    print(f"Weather updated: {data['current']['temp_c']}°C")
+    # Upload to R2 as weather-api/current.json (matches agri-weather/index.html fetch path)
+    content = json.dumps(data, ensure_ascii=False)
+    s3.put_object(Bucket=R2_BUCKET, Key='weather-api/current.json', Body=content.encode('utf-8'),
+                  ContentType='application/json')
+    print(f"Weather updated: {data['current']['temp_c']}°C -> R2: weather-api/current.json")
 else:
     print('Weather fetch failed')

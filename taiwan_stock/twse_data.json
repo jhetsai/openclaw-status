@@ -1,6 +1,6 @@
 {
-  "updated": "2026-04-30 20:00",
-  "prevDate": "04/29",
+  "updated": "2026-05-01 09:40",
+  "prevDate": "04/30",
   "realtime": {
     "0056": {
       "price": 40.9,
@@ -170,9 +170,9 @@
       "high": 39.95,
       "low": 39.1,
       "estYield": null,
-      "pe": "16.99",
-      "dy": "4.36",
-      "pb": "1.52",
+      "pe": "16.57",
+      "dy": "4.48",
+      "pb": "1.48",
       "revCur": 6152506.0,
       "revPrev": 6460103.0,
       "revLy": 0.0,
@@ -180,6 +180,20 @@
     }
   },
   "dividend": [
+    {
+      "Date": "1150519",
+      "Code": "00878",
+      "Name": "國泰永續高股息",
+      "Exdividend": "息",
+      "StockDividendRatio": "",
+      "SubscriptionRatio": "",
+      "SubscriptionPricePerShare": "",
+      "CashDividend": "",
+      "SharesOffered": "",
+      "SharesEmpOwner": "",
+      "SharesholderOwner": "",
+      "StockHoldingRatio": ""
+    },
     {
       "Date": "1150507",
       "Code": "00940",
@@ -196,6 +210,20 @@
     }
   ],
   "upcoming_div": [
+    {
+      "Date": "1150519",
+      "Code": "00878",
+      "Name": "國泰永續高股息",
+      "Exdividend": "息",
+      "StockDividendRatio": "",
+      "SubscriptionRatio": "",
+      "SubscriptionPricePerShare": "",
+      "CashDividend": "",
+      "SharesOffered": "",
+      "SharesEmpOwner": "",
+      "SharesholderOwner": "",
+      "StockHoldingRatio": ""
+    },
     {
       "Date": "1150507",
       "Code": "00940",

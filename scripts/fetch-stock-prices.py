@@ -6,14 +6,14 @@ from datetime import datetime, timedelta
 WORKSPACE = "/home/jhe/.openclaw/workspace"
 
 KEYS = {}
-key_file = os.path.join(WORKSPACE, ".api_keys")
+key_file = os.path.expanduser("~/.api_keys")
 if os.path.exists(key_file):
     with open(key_file) as f:
         for line in f:
             if "=" in line:
                 k, v = line.strip().split("=", 1)
                 KEYS[k] = v
-FINNHUB_KEY = KEYS.get("FINNHUB_API_KEY", "")
+FINNHUB_KEY = KEYS.get("FINNHUB_KEY", "")
 TW_FILE = os.path.join(WORKSPACE, "taiwan_stock/taiwan_stocks.json")
 TWSE_DATA_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_data.json")
 TWSE_HTML_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_query.html")

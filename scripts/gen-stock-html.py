@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import urllib.request, json, os, subprocess
+import urllib.request, json, os, subprocess, re
 from datetime import datetime
 
 WORKSPACE = "/home/jhe/.openclaw/workspace"
@@ -57,18 +57,28 @@ if os.path.exists(TWSE_DATA_FILE):
                     capture_output=True, text=True, timeout=10
                 )
                 if result.returncode == 0:
-                    import re
                     html = result.stdout
-                    dates = re.findall(r'<div[^>]*>(\d{4}/\d{2}/\d{2})</div>', html)
-                    # Convert ROC date_tw (YYYYMMDD format) to AD for comparison (e.g., 1150423 -> 2026/04/23)
+                    # Extract all cells from Yahoo dividend table
+                    cells = re.findall(r'<div class="Fxg\(1\).*?">(?:<span>)?([^<]+)(?:</span>)?(?:</div>)', html)
+                    # Convert ROC exdiv date to AD for matching
                     roc_year = int(date_tw[:3])
                     ad_year = roc_year + 1911
                     month = date_tw[3:5]
                     day = date_tw[5:]
                     date_tw_ad = f"{ad_year}/{month}/{day}"
-                    for i in range(0, len(dates)-1, 2):
-                        if dates[i] == date_tw_ad:
-                            payout_str = dates[i+1]
+                    # Each entry spans 10 cells: period, cash_div, stock, yield%, close, exdiv, exright, payout, stock_payout, filldays
+                    n = 10
+                    for i in range(0, len(cells)-n+1, n):
+                        period = cells[i+3].strip()
+                        c_div = cells[i+4].strip()
+                        exdiv = cells[i+8].strip()
+                        pyd = cells[i+10].strip()
+                        if period in ('所屬期間', '現金股利', '股票股利', '現金殖利率', '', None) or not period:
+                            continue
+                        if exdiv == date_tw_ad and c_div not in ('-', '', None):
+                            payout_str = pyd
+                            if cash == "-" or cash == "":
+                                cash = c_div
                             break
             except:
                 pass

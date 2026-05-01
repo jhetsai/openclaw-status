@@ -1,8 +1,8 @@
 {
-  "date": "2026-04-30 20:00:19",
+  "date": "2026-05-01 09:40:29",
   "tw": {
-    "status": "交易中",
-    "holiday": false
+    "status": "休市中",
+    "holiday": true
   },
   "us": {
     "status": "交易中",

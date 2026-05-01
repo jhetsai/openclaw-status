@@ -28,7 +28,7 @@ WMAX_INT=$(echo "$MAX_GUST" | python3 -c "print(int(float(input().strip())))")
 
 echo "[$(date '+%Y-%m-%d %H:%M')] 當前陣風: ${NOW_GUST} km/h | 未來24h最高: ${MAX_GUST} km/h" >> "$LOG"
 
-if [ "$WMAX_INT" -ge 30 ]; then
+if [ "$WMAX_INT" -ge 20 ]; then
     TEXT="⚠️ 風速警示：水林
 🌬️ 當前風速：${NOW_GUST} km/h
 📈 未來24h最高：${MAX_GUST} km/h"
