@@ -9,7 +9,7 @@ HISTORY_FILE = os.path.join(WORKSPACE, "stock_history.json")
 TW_CODES = ["0056", "00692", "00712", "00713", "00717", "00878", "00891", "00940", "009802", "1101", "2886"]
 US_CODES = ["AAPL", "MSFT", "BND"]
 
-def fetch_yahoo_history(symbol, market="TW", days=30):
+def fetch_yahoo_history(symbol, market="TW", days=120):
     suffix = ".TW" if market == "TW" else ""
     url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}{suffix}?interval=1d&range={days}d"
     try:
@@ -38,7 +38,7 @@ def load_history():
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE) as f:
             return json.load(f)
-    return {"tw": {}, "us": {}, "updated": ""}
+    return {"tw": {}, "us": {}}
 
 def save_history(history):
     history["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -53,20 +53,29 @@ history = load_history()
 print("  抓取台股歷史...")
 for code in TW_CODES:
     print(f"    {code}...", end=" ", flush=True)
-    h = fetch_yahoo_history(code, "TW", 30)
+    h = fetch_yahoo_history(code, "TW", 120)
     if h:
-        history["tw"][code] = h
-        print(f"{len(h)} 筆")
+        # 增量更新：合併舊資料，去重（以日期為key）
+        existing = {d["date"]: d for d in history["tw"].get(code, [])}
+        for item in h:
+            existing[item["date"]] = item
+        merged = sorted(existing.values(), key=lambda x: x["date"])
+        history["tw"][code] = list(merged)
+        print(f"{len(h)} 筆 (共 {len(history['tw'][code])} 筆，含舊資料)")
     else:
         print("失敗")
 
 print("  抓取美股歷史...")
 for code in US_CODES:
     print(f"    {code}...", end=" ", flush=True)
-    h = fetch_yahoo_history(code, "US", 30)
+    h = fetch_yahoo_history(code, "US", 120)
     if h:
-        history["us"][code] = h
-        print(f"{len(h)} 筆")
+        existing = {d["date"]: d for d in history["us"].get(code, [])}
+        for item in h:
+            existing[item["date"]] = item
+        merged = sorted(existing.values(), key=lambda x: x["date"])
+        history["us"][code] = list(merged)
+        print(f"{len(h)} 筆 (共 {len(history['us'][code])} 筆，含舊資料)")
     else:
         print("失敗")
 

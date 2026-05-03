@@ -1,0 +1,6 @@
+[main/sessions/d28ce5b5-bd69-45bc-9810-ab2d8d541b08.jsonl#L14] User: 怎麼回應很慢 發生什麼狀況
+[main/sessions/d28ce5b5-bd69-45bc-9810-ab2d8d541b08.jsonl#L18] User: 系統狀況如何
+[main/sessions/d28ce5b5-bd69-45bc-9810-ab2d8d541b08.jsonl#L21] User: [System] Your previous turn was interrupted by a gateway restart while OpenClaw was waiting on tool/model work. Continue from the existing transcript and finish the interrupted response.
+[main/sessions/d28ce5b5-bd69-45bc-9810-ab2d8d541b08.jsonl#L25] Assistant: 還在！測試成功，系統正常運作。剛才 gateway 有重啟過，現在恢復了 👍
+[main/sessions/d28ce5b5-bd69-45bc-9810-ab2d8d541b08.jsonl#L28] Assistant: ✅ 收到！
+[main/sessions/d28ce5b5-bd69-45bc-9810-ab2d8d541b08.jsonl#L31] Assistant: 哈哈對，剛才卡了一下，現在沒事了。有事直接說 🙂

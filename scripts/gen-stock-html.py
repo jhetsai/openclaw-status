@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import urllib.request, json, os, subprocess, re
 from datetime import datetime
+from html.parser import HTMLParser
 
 WORKSPACE = "/home/jhe/.openclaw/workspace"
 TW_JSON = os.path.join(WORKSPACE, "taiwan_stock/taiwan_stocks.json")
@@ -9,6 +10,83 @@ US_STOCKS = os.path.join(WORKSPACE, "us_stock/us_stocks.json")
 OUT_HTML = os.path.join(WORKSPACE, "stock", "index.html")
 TWSE_DATA_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_data.json")
 
+# ===== Yahoo 配息抓取（HTMLParser） =====
+class DivParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.texts = []
+    def handle_data(self, data):
+        d = data.strip()
+        if d:
+            self.texts.append(d)
+
+def fetch_tw_dividends(tw_stocks):
+    """動態抓取Yahoo配息資料（入帳日2026年內）"""
+    today = datetime.now().strftime('%Y/%m/%d')
+    shares_map = {}
+    for s in tw_stocks:
+        code = s.get('symbol', '')
+        shares = s.get('shares', 0)
+        if code and shares:
+            shares_map[code] = shares
+
+    confirmed_total = 0
+    pending_total = 0
+    confirmed_rows = []
+    pending_rows = []
+
+    for code in shares_map:
+        url = f'https://tw.stock.yahoo.com/quote/{code}.TW/dividend'
+        try:
+            r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url], capture_output=True, text=True, timeout=12)
+            html = r.stdout
+        except:
+            continue
+
+        for m in re.finditer(r'>(\d{4}Q[1-4])</div>|>(\d{4}M\d{1,2})</div>', html):
+            period = m.group(1) or m.group(2)
+            start = m.start()
+            chunk = html[start:start+1500]
+
+            p = DivParser()
+            p.feed(chunk)
+            texts = p.texts
+            if texts and texts[0].startswith('>'):
+                texts[0] = texts[0][1:]
+            try:
+                p_idx = texts.index(period)
+            except ValueError:
+                continue
+
+            cash = None
+            dates = []
+            for t in texts[p_idx+1:]:
+                if cash is None and re.match(r'^\d+\.\d+$', t):
+                    cash = float(t)
+                elif re.match(r'^\d{4}/\d{2}/\d{2}$', t):
+                    dates.append(t)
+
+            if not (cash and len(dates) >= 2):
+                continue
+
+            ex_date, payout_date = dates[0], dates[1]
+            payout_yr = payout_date.split('/')[0]
+            if payout_yr != '2026':
+                continue
+
+            sh = shares_map.get(code, 0)
+            amt = sh * cash
+            row = {'code': code, 'period': period, 'cash': cash, 'shares': sh, 'amount': amt, 'ex_date': ex_date, 'payout': payout_date}
+
+            if payout_date < today:
+                confirmed_total += amt
+                confirmed_rows.append(row)
+            else:
+                pending_total += amt
+                pending_rows.append(row)
+
+    return confirmed_total, pending_total, confirmed_rows, pending_rows
+
 with open(TW_JSON) as f:
     tw_stocks = [s for s in json.load(f) if "shares" in s]
 with open(US_PRICES) as f:
@@ -16,6 +94,19 @@ with open(US_PRICES) as f:
 us_prices = us_data.get("prices", {})
 with open(US_STOCKS) as f:
     us_stocks_data = json.load(f)
+
+# 動態抓配息
+div_confirmed, div_pending, div_confirmed_rows, div_pending_rows = fetch_tw_dividends(tw_stocks)
+
+# 配息明細HTML（預設隱藏）
+CONFIRMED_DETAIL_HTML = ""
+for r in sorted(div_confirmed_rows, key=lambda x: x['payout']):
+    CONFIRMED_DETAIL_HTML += f"<tr><td>{r['code']}</td><td>{r['period']}</td><td>{r['cash']}</td><td>{r['shares']}</td><td>{r['amount']:,.0f}</td><td>{r['ex_date']}</td><td>{r['payout']}</td></tr>\n"
+PENDING_DETAIL_HTML = ""
+for r in sorted(div_pending_rows, key=lambda x: x['payout']):
+    PENDING_DETAIL_HTML += f"<tr><td>{r['code']}</td><td>{r['period']}</td><td>{r['cash']}</td><td>{r['shares']}</td><td>{r['amount']:,.0f}</td><td>{r['ex_date']}</td><td>{r['payout']}</td></tr>\n"
+CONFIRMED_DETAIL_BLOCK = f"""<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 已入帳明細（{len(div_confirmed_rows)}筆）</summary><table style="font-size:12px"><tr><th>代</th><th>期</th><th>現人</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>{CONFIRMED_DETAIL_HTML}</table></details>"""
+PENDING_DETAIL_BLOCK = f"""<details style="margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 待發放明細（{len(div_pending_rows)}筆）</summary><table style="font-size:12px"><tr><th>代</th><th>期</th><th>現人</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>{PENDING_DETAIL_HTML}</table></details>"""
 
 # Load upcoming ex-dividend dates
 upcoming_div = []
@@ -421,12 +512,14 @@ HTML = f"""<!DOCTYPE html>
 <h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">💰 2026年配息總覽</h3>
 <table>
 <tr><th>項目</th><th>金額</th><th>說明</th></tr>
-<tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold">+53,221 元</td><td>1~4月對帳單</td></tr>
-<tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+7,251 元</td><td>5月（0056、00717、00940）</td></tr>
+<tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold">+{div_confirmed:,.0f} 元</td><td>入帳日在2026年內（Yahoo動態）</td></tr>
+<tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+{div_pending:,.0f} 元</td><td>已除息尚未入帳（Yahoo動態）</td></tr>
 <tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+USD 111.87</td><td>≈ TWD 3,573（已扣30%預扣稅）</td></tr>
 <tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32">≈ 56,794 元</td><td>台股+美股</td></tr>
 <tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold">{total_with_fx_sign}{total_with_fx:,.0f} 元</td><td>市值增值+美股匯差（成本匯率 28.5）</td></tr>
 </table>
+{CONFIRMED_DETAIL_BLOCK}
+{PENDING_DETAIL_BLOCK}
 </div>
 {upcoming_div_html}
 <div class="footer">📊 持股總覽｜蝦助出品｜{now_str}</div>

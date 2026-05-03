@@ -1,0 +1,253 @@
+{
+  "updated": "2026/05/03",
+  "tw": {
+    "confirmed": {
+      "total": 53220,
+      "rows": [
+        {
+          "code": "00940",
+          "period": "2025M11",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2025/12/10",
+          "payout": "2026/01/02"
+        },
+        {
+          "code": "00713",
+          "period": "2025Q3",
+          "cash": 0.78,
+          "shares": 5173,
+          "amount": 4035,
+          "ex_date": "2025/12/19",
+          "payout": "2026/01/12"
+        },
+        {
+          "code": "009802",
+          "period": "2025Q3",
+          "cash": 0.092,
+          "shares": 5427,
+          "amount": 499,
+          "ex_date": "2025/12/16",
+          "payout": "2026/01/12"
+        },
+        {
+          "code": "00712",
+          "period": "2025Q3",
+          "cash": 0.19,
+          "shares": 29000,
+          "amount": 5510,
+          "ex_date": "2025/12/17",
+          "payout": "2026/01/14"
+        },
+        {
+          "code": "00940",
+          "period": "2025M12",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/01/08",
+          "payout": "2026/02/02"
+        },
+        {
+          "code": "0056",
+          "period": "2025Q4",
+          "cash": 0.866,
+          "shares": 6000,
+          "amount": 5196,
+          "ex_date": "2026/01/22",
+          "payout": "2026/02/11"
+        },
+        {
+          "code": "00717",
+          "period": "2025Q4",
+          "cash": 0.141,
+          "shares": 6000,
+          "amount": 846,
+          "ex_date": "2026/01/20",
+          "payout": "2026/02/12"
+        },
+        {
+          "code": "00940",
+          "period": "2026M1",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/02/02",
+          "payout": "2026/03/02"
+        },
+        {
+          "code": "00878",
+          "period": "2025Q4",
+          "cash": 0.42,
+          "shares": 28500,
+          "amount": 11970,
+          "ex_date": "2026/02/26",
+          "payout": "2026/03/23"
+        },
+        {
+          "code": "00891",
+          "period": "2025Q4",
+          "cash": 0.75,
+          "shares": 18000,
+          "amount": 13500,
+          "ex_date": "2026/02/26",
+          "payout": "2026/03/25"
+        },
+        {
+          "code": "00940",
+          "period": "2026M2",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/03/11",
+          "payout": "2026/04/01"
+        },
+        {
+          "code": "009802",
+          "period": "2025Q4",
+          "cash": 0.092,
+          "shares": 5427,
+          "amount": 499,
+          "ex_date": "2026/03/17",
+          "payout": "2026/04/13"
+        },
+        {
+          "code": "00713",
+          "period": "2025Q4",
+          "cash": 0.78,
+          "shares": 5173,
+          "amount": 4035,
+          "ex_date": "2026/03/20",
+          "payout": "2026/04/14"
+        },
+        {
+          "code": "00712",
+          "period": "2025Q4",
+          "cash": 0.19,
+          "shares": 29000,
+          "amount": 5510,
+          "ex_date": "2026/03/18",
+          "payout": "2026/04/15"
+        }
+      ]
+    },
+    "pending": {
+      "total": 26466,
+      "rows": [
+        {
+          "code": "00940",
+          "period": "2026M3",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/04/09",
+          "payout": "2026/05/04"
+        },
+        {
+          "code": "0056",
+          "period": "2026Q1",
+          "cash": 1.0,
+          "shares": 6000,
+          "amount": 6000,
+          "ex_date": "2026/04/23",
+          "payout": "2026/05/14"
+        },
+        {
+          "code": "00717",
+          "period": "2026Q1",
+          "cash": 0.141,
+          "shares": 6000,
+          "amount": 846,
+          "ex_date": "2026/04/20",
+          "payout": "2026/05/15"
+        },
+        {
+          "code": "00940",
+          "period": "2026M4",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/05/07",
+          "payout": "2026/06/01"
+        },
+        {
+          "code": "00878",
+          "period": "2026Q1",
+          "cash": 0.66,
+          "shares": 28500,
+          "amount": 18810,
+          "ex_date": "2026/05/19",
+          "payout": "2026/06/12"
+        }
+      ]
+    }
+  },
+  "us": {
+    "confirmed": {
+      "total_usd": 131.49,
+      "total_twd": 4151.0,
+      "rows": [
+        {
+          "code": "AAPL",
+          "date": "2026-02-09",
+          "per_share": 0.26,
+          "shares": 105,
+          "gross": 27.3,
+          "total": 19.11,
+          "withheld_30pct": true
+        },
+        {
+          "code": "MSFT",
+          "date": "2026-02-19",
+          "per_share": 0.91,
+          "shares": 55,
+          "gross": 50.05,
+          "total": 35.03,
+          "withheld_30pct": true
+        },
+        {
+          "code": "BND",
+          "date": "2026-02-02",
+          "per_share": 0.245,
+          "shares": 113,
+          "gross": 27.685,
+          "total": 19.379,
+          "withheld_30pct": true
+        },
+        {
+          "code": "BND",
+          "date": "2026-03-02",
+          "per_share": 0.228,
+          "shares": 114,
+          "gross": 25.992,
+          "total": 18.194,
+          "withheld_30pct": true
+        },
+        {
+          "code": "BND",
+          "date": "2026-04-01",
+          "per_share": 0.25,
+          "shares": 115,
+          "gross": 28.75,
+          "total": 20.125,
+          "withheld_30pct": true
+        },
+        {
+          "code": "BND",
+          "date": "2026-05-01",
+          "per_share": 0.242,
+          "shares": 116,
+          "gross": 28.072,
+          "total": 19.65,
+          "withheld_30pct": true
+        }
+      ]
+    },
+    "pending": {
+      "total_usd": 0,
+      "total_twd": 0.0,
+      "rows": []
+    }
+  }
+}

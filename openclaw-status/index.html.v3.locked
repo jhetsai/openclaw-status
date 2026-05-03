@@ -178,7 +178,7 @@
             <summary>📋 工具與排程（通訊｜任務｜API）</summary>
             <table>
         <tr><th>服務</th><th>狀態</th><th>說明</th></tr>
-        <tr><td>Telegram Bot</td><td><span class="badge">運行中</span></td><td>Bot ID: 8793435853</td></tr>
+        <tr><td>Telegram Bot</td><td><span class="badge">運行中</span></td><td>Bot ID: ****</td></tr>
         <tr><td>LINE Bot</td><td><span class="badge">運行中</span></td><td>Webhook: ngrok</td></tr>
     </table>
             <br><table>

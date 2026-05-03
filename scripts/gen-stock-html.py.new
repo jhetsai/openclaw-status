@@ -1,0 +1,591 @@
+#!/usr/bin/env python3
+import urllib.request, json, os, subprocess, re
+from datetime import datetime
+from html.parser import HTMLParser
+
+WORKSPACE = "/home/jhe/.openclaw/workspace"
+TW_JSON = os.path.join(WORKSPACE, "taiwan_stock/taiwan_stocks.json")
+US_PRICES = os.path.join(WORKSPACE, "us_stock/us_prices.json")
+US_STOCKS = os.path.join(WORKSPACE, "us_stock/us_stocks.json")
+OUT_HTML = os.path.join(WORKSPACE, "stock", "index.html")
+TWSE_DATA_FILE = os.path.join(WORKSPACE, "taiwan_stock/twse_data.json")
+
+# ===== Yahoo 配息抓取（HTMLParser） =====
+class DivParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.texts = []
+    def handle_data(self, data):
+        d = data.strip()
+        if d:
+            self.texts.append(d)
+
+def fetch_tw_dividends(tw_stocks):
+    """
+    抓取Yahoo配息資料，回傳 (已入帳總額, 待發放總額, 詳細rows)
+    以「入帳日」在2026年內且 <= today 為已入帳
+    """
+    today = datetime.now().strftime('%Y/%m/%d')
+
+    # 找出台股代碼清單
+    codes = []
+    shares_map = {}
+    for s in tw_stocks:
+        code = s.get('symbol', '')
+        shares = s.get('shares', 0)
+        if code and shares:
+            shares_map[code] = shares
+
+    confirmed_total = 0
+    pending_total = 0
+    confirmed_rows = []
+    pending_rows = []
+
+    for code in shares_map:
+        url = f'https://tw.stock.yahoo.com/quote/{code}.TW/dividend'
+        try:
+            r = subprocess.run(
+                ['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
+                capture_output=True, text=True, timeout=12
+            )
+            html = r.stdout
+        except:
+            continue
+
+        # 找出所有配息期（支援 2026Q1、2026M4 兩種格式）
+        for m in re.finditer(r'>(\d{4}Q[1-4])</div>|>(\d{4}M\d{1,2})</div>', html):
+            period = m.group(1) or m.group(2)
+            start = m.start()
+            chunk = html[start:start+1500]
+
+            p = DivParser()
+            p.feed(chunk)
+            texts = p.texts
+
+            if texts and texts[0].startswith('>'):
+                texts[0] = texts[0][1:]
+
+            try:
+                p_idx = texts.index(period)
+            except ValueError:
+                continue
+
+            cash = None
+            dates = []
+            for t in texts[p_idx+1:]:
+                if cash is None and re.match(r'^\d+\.\d+$', t):
+                    cash = float(t)
+                elif re.match(r'^\d{4}/\d{2}/\d{2}$', t):
+                    dates.append(t)
+
+            if not (cash and len(dates) >= 2):
+                continue
+
+            ex_date, payout_date = dates[0], dates[1]
+            payout_yr = payout_date.split('/')[0]
+
+            # 只看2026年的記錄
+            if payout_yr != '2026':
+                continue
+
+            sh = shares_map.get(code, 0)
+            amt = sh * cash
+
+            row = {
+                'code': code,
+                'period': period,
+                'cash': cash,
+                'shares': sh,
+                'amount': amt,
+                'ex_date': ex_date,
+                'payout': payout_date,
+            }
+
+            if payout_date < today:
+                confirmed_total += amt
+                confirmed_rows.append(row)
+            else:
+                pending_total += amt
+                pending_rows.append(row)
+        # end for each period
+    # end for each code
+
+    return confirmed_total, pending_total, confirmed_rows, pending_rows
+
+# Load tw_stocks for the function above
+with open(TW_JSON) as f:
+    tw_stocks = [s for s in json.load(f) if "shares" in s]
+with open(US_PRICES) as f:
+    us_data = json.load(f)
+us_prices = us_data.get("prices", {})
+with open(US_STOCKS) as f:
+    us_stocks_data = json.load(f)
+
+# 動態抓配息資料
+div_confirmed, div_pending, div_confirmed_rows, div_pending_rows = fetch_tw_dividends(tw_stocks)
+
+# ===== 以下是原本的邏輯（略過，只留結構） =====
+
+with open(TW_JSON) as f:
+    tw_stocks = [s for s in json.load(f) if "shares" in s]
+with open(US_PRICES) as f:
+    us_data = json.load(f)
+us_prices = us_data.get("prices", {})
+with open(US_STOCKS) as f:
+    us_stocks_data = json.load(f)
+
+# Load upcoming ex-dividend dates
+upcoming_div = []
+if os.path.exists(TWSE_DATA_FILE):
+    with open(TWSE_DATA_FILE) as f:
+        twse_data = json.load(f)
+    from datetime import datetime
+    today_roc = f"{datetime.now().year-1911:03d}{datetime.now().month:02d}{datetime.now().day:02d}"
+    upcoming_div = [
+        d for d in twse_data.get("upcoming_div", [])
+        if d.get("Date", "") >= today_roc
+    ]
+    if upcoming_div:
+        # Load manual dividend overrides
+        manual_div_file = os.path.join(WORKSPACE, "taiwan_stock/manual_dividend.json")
+        manual_div = {}
+        if os.path.exists(manual_div_file):
+            with open(manual_div_file) as f:
+                manual_div = json.load(f)
+        div_rows = ""
+        for d in upcoming_div[:10]:
+            date_tw = d.get("Date", "")
+            year = int(date_tw[:3]) + 1911
+            month_day = date_tw[3:5] + "/" + date_tw[5:]
+            date_str = f"{year}/{month_day}"
+            code = d.get("Code", "")
+            cash = d.get("CashDividend", "") or ""
+            if (cash == "-" or cash == "") and code in manual_div:
+                cash = str(manual_div[code]["cash"])
+            if not cash or cash == "-":
+                cash = "-"
+            name = d.get("Name", "")
+            # Fetch payout date from Yahoo
+            payout_str = "-"
+            url = f"https://tw.stock.yahoo.com/quote/{code}.TW/dividend"
+            try:
+                result = subprocess.run(
+                    ['curl', '-s', '--max-time', '8', '-H', 'User-Agent: Mozilla/5.0', url],
+                    capture_output=True, text=True, timeout=10
+                )
+                if result.returncode == 0:
+                    html = result.stdout
+                    # Extract all cells from Yahoo dividend table
+                    cells = re.findall(r'<div class="Fxg\(1\).*?">(?:<span>)?([^<]+)(?:</span>)?(?:</div>)', html)
+                    # Convert ROC exdiv date to AD for matching
+                    roc_year = int(date_tw[:3])
+                    ad_year = roc_year + 1911
+                    month = date_tw[3:5]
+                    day = date_tw[5:]
+                    date_tw_ad = f"{ad_year}/{month}/{day}"
+                    # Each entry spans 10 cells: period, cash_div, stock, yield%, close, exdiv, exright, payout, stock_payout, filldays
+                    n = 10
+
+                    for i in range(0, len(cells)-n+1, n):
+                        period = cells[i+3].strip()
+                        c_div = cells[i+4].strip()
+                        exdiv = cells[i+8].strip()
+                        pyd = cells[i+10].strip()
+                        if period in ('所屬期間', '現金股利', '股票股利', '現金殖利率', '', None) or not period:
+                            continue
+                        if exdiv == date_tw_ad and c_div not in ('-', '', None):
+                            payout_str = pyd
+                            if cash == "-" or cash == "":
+                                cash = c_div
+                            break
+            except:
+                pass
+            div_rows += f"<tr><td>{code}</td><td>{name}</td><td>{date_str}</td><td>{payout_str}</td><td>{cash}</td></tr>\n"
+        upcoming_div_html = f"""<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📅 近期除息預告</h3>
+<table>
+<tr><th>代碼</th><th>名稱</th><th>除息日</th><th>發放日</th><th>現金股利</th></tr>
+{div_rows}</table>
+</div>"""
+    else:
+        upcoming_div_html = ""
+else:
+    upcoming_div_html = ""
+
+YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com']
+
+def fetch_prev_close(symbol):
+    for host in YAHOO_HOSTS:
+        try:
+            url = f"https://{host}/v8/finance/chart/{symbol}?interval=1d&range=2d"
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                data = json.loads(resp.read())
+            result = data.get("chart", {}).get("result", [])
+            if result:
+                meta = result[0].get("meta", {})
+                prev_close = meta.get("previous_close")
+                currency = meta.get("currency", "USD")
+                return prev_close, currency
+        except:
+            continue
+    return None, None
+
+def fetch_us_price(symbol):
+    price, currency = fetch_prev_close(symbol)
+    return price, currency
+
+def get_fx_rate():
+    try:
+        url = "https://query1.finance.yahoo.com/v8/finance/chart/USDTWD=X?interval=1d&range=2d"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read())
+        result = data.get("chart", {}).get("result", [])
+        if result:
+            meta = result[0].get("meta", {})
+            return meta.get("regular_market_price", 31.5)
+    except:
+        return 31.5
+
+fx = get_fx_rate()
+
+# ===== Build tw stock table =====
+tw_rows_mob, tw_rows_desk = [], []
+ref_mob, ref_desk = [], []
+tw_total_cost = 0
+tw_total_value = 0
+ref_codes = set()
+
+today_str = datetime.now().strftime("%Y/%m/%d")
+print(f"開始更新 {today_str}")
+
+for s in tw_stocks:
+    code = s["symbol"]
+    name = s.get("name", code)
+    shares = s.get("shares", 0)
+    cost_sum = s.get("total_cost", 0)
+    avg_cost = s.get("cost", 0)
+    tw_total_cost += cost_sum
+
+    url = f"https://tw.stock.yahoo.com/quote/{code}.TW"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")
+        price_match = re.search(r'"regularMarketPrice"\s*:\s*([\d.]+)', html)
+        change_match = re.search(r'"regularMarketChange"\s*:\s*([-\d.]+)', html)
+        pct_match = re.search(r'"regularMarketChangePercent"\s*:\s*([-\d.]+)', html)
+        price = float(price_match.group(1)) if price_match else None
+        change = float(change_match.group(1)) if change_match else 0
+        pct = float(pct_match.group(1)) if pct_match else 0
+    except Exception as e:
+        price, change, pct = None, 0, 0
+
+    if price:
+        value = price * shares
+        tw_total_value += value
+        day_gain = change * shares
+    else:
+        value, day_gain = 0, 0
+
+    pct_str = f"{pct:+.2f}%" if price else "N/A"
+    sign = "+" if change >= 0 else ""
+    tw_rows_mob.append(f"<tr><td>{code}</td><td>{name}</td><td>{shares}</td><td>{avg_cost:.2f}</td><td>{price if price else 'N/A'}</td><td class='{'up' if change>=0 else 'dn'}'>{sign}{change:.2f}</td><td>{pct_str}</td></tr>")
+    tw_rows_desk.append(f"<tr><td>{code}</td><td>{name}</td><td>{shares}</td><td>{avg_cost:.2f}</td><td>{price if price else 'N/A'}</td><td>{value:,.0f}</td><td class='{'up' if day_gain>=0 else 'dn'}'>{sign}{day_gain:,.0f}</td><td>{pct_str}</td></tr>")
+
+# ===== Build ref futures =====
+ref_map = [
+    ("TXF", "TXF00", " 台股期指", ""),
+    ("TXFR1", "TXFR1", " 遠月", ""),
+    ("TEFR1", "TEFR1", " 電金", ""),
+]
+ref_mob_template = "<tr><td>{sym}</td><td>{price}</td><td>{pct}</td></tr>"
+ref_desk_template = "<tr><td>{sym}</td><td>{name}</td><td>{price}</td><td>{pct}</td></tr>"
+
+import urllib.request as req
+for sym, yh_sym, name, _ in ref_map:
+    try:
+        url = f"https://tw.stock.yahoo.com/quote/{yh_sym}.TW"
+        request = req.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with req.urlopen(request, timeout=5) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")
+        price_match = re.search(r'"regularMarketPrice"\s*:\s*([\d.]+)', html)
+        change_match = re.search(r'"regularMarketChange"\s*:\s*([-\d.]+)', html)
+        pct_match = re.search(r'"regularMarketChangePercent"\s*:\s*([-\d.]+)', html)
+        price = float(price_match.group(1)) if price_match else 0
+        change = float(change_match.group(1)) if change_match else 0
+        pct = float(pct_match.group(1)) if pct_match else 0
+        pct_str = f"{pct:+.2f}%"
+        sign = "+" if change >= 0 else ""
+        ref_mob.append(ref_mob_template.format(sym=sym, price=f"{sign}{change:.0f}", pct=pct_str))
+        ref_desk.append(ref_desk_template.format(sym=sym, name=name, price=f"{price:.0f}", pct=pct_str))
+        ref_codes.add(yh_sym)
+    except Exception as e:
+        ref_mob.append(ref_mob_template.format(sym=sym, price="N/A", pct=""))
+        ref_desk.append(ref_desk_template.format(sym=sym, name=name, price="N/A", pct=""))
+
+# ===== Build US stock table =====
+us_rows_mob, us_rows_desk = [], []
+us_total_cost = 0
+us_total_value = 0
+us_total_day_gain = 0
+
+for s in us_stocks_data:
+    symbol = s["symbol"]
+    shares = s.get("shares", 0)
+    avg_cost = s.get("avg_cost", 0)
+    cost_sum = shares * avg_cost
+    us_total_cost += cost_sum
+
+    price, currency = fetch_us_price(symbol)
+    if price:
+        value = price * shares
+        us_total_value += value
+        day_gain = 0
+        if symbol in us_prices:
+            prev = us_prices[symbol].get("prev_close")
+            if prev:
+                day_gain = (price - prev) * shares
+                us_total_day_gain += day_gain
+        pct = ((price - avg_cost) / avg_cost * 100) if avg_cost else 0
+        pct_str = f"{pct:+.2f}%"
+    else:
+        value, day_gain, pct_str = 0, 0, "N/A"
+
+    sign = "+" if day_gain >= 0 else ""
+    us_rows_mob.append(f"<tr><td>{symbol}</td><td>{shares}</td><td>{avg_cost:.2f}</td><td>{price if price else 'N/A'}</td><td>{pct_str}</td></tr>")
+    us_rows_desk.append(f"<tr><td>{symbol}</td><td>{shares}</td><td>{avg_cost:.2f}</td><td>{price if price else 'N/A'}</td><td>{value:,.0f}</td><td class='{'up' if day_gain>=0 else 'dn'}'>{sign}{day_gain:,.0f}</td><td>{pct_str}</td></tr>")
+
+# ===== Stock index funds (tw stocks with no individual price) =====
+idx_url = "https://tw.stock.yahoo.com/quote/0050.TW"
+try:
+    req_idx = req.Request(idx_url, headers={"User-Agent": "Mozilla/5.0"})
+    with req_idx.urlopen(req_idx, timeout=5) as resp:
+        idx_html = resp.read().decode("utf-8", errors="ignore")
+    idx_price = re.search(r'"regularMarketPrice"\s*:\s*([\d.]+)', idx_html)
+    idx_chg = re.search(r'"regularMarketChange"\s*:\s*([-\d.]+)', idx_html)
+    idx_pct = re.search(r'"regularMarketChangePercent"\s*:\s*([-\d.]+)', idx_html)
+    idx_val = float(idx_price.group(1)) if idx_price else 0
+    idx_change = float(idx_chg.group(1)) if idx_chg else 0
+    idx_pct_val = float(idx_pct.group(1)) if idx_pct else 0
+    idx_pct_str = f"{idx_pct_val:+.2f}%"
+except:
+    idx_val, idx_change, idx_pct_str = 0, 0, "N/A"
+
+tw_value_no_idx = tw_total_value
+tw_day_gain = 0
+for s in tw_stocks:
+    code = s["symbol"]
+    shares = s.get("shares", 0)
+    url = f"https://tw.stock.yahoo.com/quote/{code}.TW"
+    try:
+        req2 = req.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with req2.urlopen(req2, timeout=5) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")
+        price_match = re.search(r'"regularMarketPrice"\s*:\s*([\d.]+)', html)
+        change_match = re.search(r'"regularMarketChange"\s*:\s*([-\d.]+)', html)
+        price = float(price_match.group(1)) if price_match else None
+        change = float(change_match.group(1)) if change_match else 0
+        if price:
+            tw_day_gain += change * shares
+    except:
+        pass
+
+day_sign = "+" if tw_day_gain >= 0 else ""
+total_day = tw_day_gain * idx_val / max(idx_val, 1) * 0
+
+# ===== Summary =====
+total_cost = tw_total_cost + us_total_cost
+total_value = tw_total_value + us_total_value
+total_gain = total_value - total_cost
+gain_sign = "+" if total_gain >= 0 else ""
+gain_pct = (total_gain / total_cost * 100) if total_cost else 0
+
+tw_gain = tw_total_value - tw_total_cost
+tw_sign = "+" if tw_gain >= 0 else ""
+
+us_gain = us_total_value - us_total_cost
+us_sign = "+" if us_gain >= 0 else ""
+
+us_pct = (us_gain / us_total_cost * 100) if us_total_cost else 0
+tw_pct = (tw_gain / tw_total_cost * 100) if tw_total_cost else 0
+
+now = datetime.now()
+now_str = now.strftime("%Y/%m/%d %H:%M")
+year = now.year - 1911
+roc_str = f"{year}/{now.strftime('%m/%d')}"
+
+# 美股股息（已扣30%預扣税）
+us_dividend_total = 0
+if "dividends" in us_data:
+    for entry in us_data["dividends"]:
+        amt = entry.get("amount", 0)
+        shares_count = entry.get("shares", 0)
+        us_dividend_total += amt * shares_count
+
+us_dividend_ntwd = us_dividend_total * fx
+
+# ===== 配息總覽（動態） =====
+# 已入帳：入帳日在2026年內且 <= today
+# 待發放：入帳日在today之後
+CONFIRMED_HTML = ""
+for r in sorted(div_confirmed_rows, key=lambda x: x['payout']):
+    CONFIRMED_HTML += f"<tr><td>{r['code']}</td><td>{r['period']}</td><td>{r['cash']}</td><td>{r['shares']}</td><td>{r['amount']:,.0f}</td><td>{r['ex_date']}</td><td>{r['payout']}</td></tr>\n"
+
+PENDING_HTML = ""
+for r in sorted(div_pending_rows, key=lambda x: x['payout']):
+    PENDING_HTML += f"<tr><td>{r['code']}</td><td>{r['period']}</td><td>{r['cash']}</td><td>{r['shares']}</td><td>{r['amount']:,.0f}</td><td>{r['ex_date']}</td><td>{r['payout']}</td></tr>\n"
+
+CONFIRMED_DETAIL_HTML = f"""<table class="detail-table">
+<tr><th>代碼</th><th>期間</th><th>現人</th><th>股數</th><th>金額</th><th>除息日</th><th>入帳日</th></tr>
+{CONFIRMED_HTML}</table>"""
+
+PENDING_DETAIL_HTML = f"""<table class="detail-table">
+<tr><th>代碼</th><th>期間</th><th>現人</th><th>股數</th><th>金額</th><th>除息日</th><th>入帳日</th></tr>
+{PENDING_HTML}</table>"""
+
+total_with_fx = total_value + us_dividend_ntwd
+total_with_fx_sign = "+" if total_with_fx >= 0 else ""
+total_us_div_fx_sign = "+" if us_dividend_ntwd >= 0 else ""
+
+# ===== Build HTML =====
+HTML = f"""<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>持股總覽 {now_str}</title>
+<style>
+* {{ margin:0; padding:0; box-sizing:border-box; }}
+body {{ font-family: Arial, "Microsoft JhengHei", sans-serif; background:#f5f7fa; color: #333; }}
+.header {{ background:#fff; padding:16px 20px; box-shadow:0 2px 4px rgba(0,0,0,.08); margin-bottom:16px; }}
+.header h1 {{ font-size:20px; margin-bottom:4px; }}
+.header .update {{ color:#888; font-size:13px; }}
+.summary-cards {{ display:flex; gap:12px; padding:0 16px 16px; flex-wrap:wrap; }}
+.card-wrap {{ flex:1; min-width:140px; background:#fff; border-radius:10px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); }}
+.card-wrap .label {{ font-size:13px; color:#888; margin-bottom:4px; }}
+.card-wrap .value {{ font-size:22px; font-weight:bold; }}
+.card-wrap .sub {{ font-size:12px; color:#aaa; margin-top:2px; }}
+.up {{ color:#4CAF50; }}
+.dn {{ color:#F44336; }}
+.card {{ background:#fff; border-radius:10px; padding:16px; margin:0 16px 16px; box-shadow:0 2px 8px rgba(0,0,0,.08); }}
+.section-title {{ font-size:16px; font-weight:bold; cursor:pointer; user-select:none; padding:4px 0; margin-bottom:8px; }}
+.section-title::before {{ content:"▶ "; font-size:12px; transition:transform .2s; display:inline-block; width:16px; }}
+.collapsed .section-title::before {{ transform:rotate(-90deg); }}
+.collapsed .content {{ display:none; }}
+table {{ width:100%; border-collapse:collapse; font-size:14px; margin-top:8px; }}
+th {{ background:#f0f0f0; text-align:left; padding:8px 6px; font-weight:bold; }}
+td {{ padding:8px 6px; border-bottom:1px solid #eee; }}
+.mob-table {{ display:none; }}
+@media (max-width:600px) {{
+.mob-table {{ display:block; }}
+.desk-table {{ display:none; }}
+th:nth-child(5), td:nth-child(5), th:nth-child(6), td:nth-child(6), th:nth-child(7), td:nth-child(7) {{ display:none; }}
+}}
+.footer {{ text-align:center; padding:24px 0 12px; color:#aaa; font-size:12px; }}
+.detail-table {{ font-size:12px; margin-top:4px; }}
+.detail-table th {{ background:#f8f8f8; padding:6px 4px; }}
+.detail-table td {{ padding:6px 4px; border-bottom:1px solid #f0f0f0; }}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>📊 持股總覽</h1>
+<div class="update">更新：{now_str}｜{roc_str} 股市</div>
+</div>
+<div class="summary-cards">
+<div class="card-wrap">
+<div class="label">台股總值</div>
+<div class="value {'up' if tw_gain>=0 else 'dn'}">{tw_sign}{tw_total_value:,.0f}</div>
+<div class="sub">成本 {tw_total_cost:,.0f}｜{tw_sign}{tw_gain:,.0f}（{tw_pct:+.1f}%）</div>
+</div>
+<div class="card-wrap">
+<div class="label">美股總值</div>
+<div class="value">${us_total_value:,.0f}</div>
+<div class="sub">成本 {us_total_cost:,.0f}｜{us_sign}{us_gain:,.0f}（{us_pct:+.1f}%）</div>
+</div>
+<div class="card-wrap">
+<div class="label">台股今日</div>
+<div class="value {'up' if tw_day_gain>=0 else 'dn'}">{day_sign}{tw_day_gain:,.0f}</div>
+<div class="sub">≈ {idx_pct_str}</div>
+</div>
+</div>
+<div class="card">
+<h3 class="section-title">📈 個股明細</h3>
+<div class="content">
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>股</th><th>均價</th><th>現價</th><th>漲%</th></tr>
+{"".join(tw_rows_mob)}
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>股數</th><th>均價</th><th>現價</th><th>市值</th><th>當日</th><th>累計%</th></tr>
+{"".join(tw_rows_desk)}
+</table>
+</div>
+</div>
+<div class="card">
+<h3 class="section-title">💵 美股</h3>
+<div class="content">
+<table class="mob-table">
+<tr><th>代</th><th>股</th><th>均</th><th>價</th><th>%</th></tr>
+{"".join(us_rows_mob)}
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>股數</th><th>均價</th><th>現價</th><th>市值</th><th>當日</th><th>累計%</th></tr>
+{"".join(us_rows_desk)}
+</table>
+</div>
+</div>
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">💰 2026年配息總覽</h3>
+<table>
+<tr><th>項目</th><th>金額</th><th>說明</th></tr>
+<tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold">+{div_confirmed:,.0f} 元</td><td>入帳日在2026年內（Yahoo動態）</td></tr>
+<tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+{div_pending:,.0f} 元</td><td>已除息尚未入帳（Yahoo動態）</td></tr>
+<tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+USD {us_dividend_total:.2f}</td><td>≈ TWD {us_dividend_ntwd:,.0f}（已扣30%預扣稅）</td></tr>
+<tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32">≈ {div_confirmed+us_dividend_ntwd:,.0f} 元</td><td>台股+美股</td></tr>
+<tr style="background:#fff9e6"><td>總累計</td><td style="color:#2e7d32;font-weight:bold">{total_with_fx_sign}{total_with_fx:,.0f} 元</td><td>含市值+美股+匯差（成本匯率 28.5）</td></tr>
+</table>
+<div style="margin-top:12px">
+<details>
+<summary style="cursor:pointer;font-size:13px;color:#555">▶ 已入帳明細（{len(div_confirmed_rows)}筆）</summary>
+{CONFIRMED_DETAIL_HTML}
+</details>
+</div>
+<div style="margin-top:10px">
+<details>
+<summary style="cursor:pointer;font-size:13px;color:#555">▶ 待發放明細（{len(div_pending_rows)}筆）</summary>
+{PENDING_DETAIL_HTML}
+</details>
+</div>
+</div>
+{upcoming_div_html}
+<div class="footer">📊 持股總覽｜蝦助出品｜{now_str}</div>
+</body>
+</html>"""
+
+with open(OUT_HTML, "w") as f:
+    f.write(HTML)
+print(f"OK: {len(HTML)} bytes")
+print(f"當日: {day_sign}{tw_day_gain:,.0f} | 累計: {gain_sign}{total_gain:,.0f}")
+print(f"配息已入帳: {div_confirmed:,.0f} | 待發放: {div_pending:,.0f}")
+
+# ===== R2 Upload =====
+import boto3, os
+try:
+    with open(os.path.expanduser("~/.api_keys")) as f:
+        for line in f:
+            if line.strip() and not line.startswith("#") and "=" in line:
+                k, v = line.strip().split("=", 1)
+                os.environ[k.strip()] = v.strip()
+except:
+    pass
+try:
+    client = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+        aws_access_key_id=os.environ.get('R2_ACCESS_KEY', ''),
+        aws_secret_access_key=os.environ.get('R2_SECRET_KEY', ''))
+    client.upload_file(OUT_HTML, 'shared-files', 'stock/index.html')
+    print("R2 OK")
+except Exception as e:
+    print(f"R2 FAIL: {e}")

@@ -542,3 +542,57 @@ _最後更新：2026-04-10 23:49_
 - | BND | 債券ETF | 115 | $73.21 | $73.89 | $8,497 | [score=0.837 recalls=0 avg=0.620 source=memory/2026-04-20.md:28-28]
 <!-- openclaw-memory-promotion:memory:memory/2026-04-20.md:20:21 -->
 - | 2886 | 兆豐金 | 10,664 | 24.33 | 24.70 | 263,401 | | 2475 | 華映 | 4,729 | 0 | 0（下市）| 0 | [score=0.827 recalls=0 avg=0.620 source=memory/2026-04-20.md:20-21]
+
+## 2026-05-03 儀表板大修正（配息系統重構）
+
+### 問題診斷
+- `dividend_data.json` 裡的 `cash_dividend` 欄位是「除息參考價」不是每股股利（00940: 10.34 其實是股價不是配息）
+- `fetch_tw_dividend_detail.py` 爬蟲解析 GoodInfo 表格欄位錯誤，把參考價當成股利
+- Yahoo Finance 的 `events.dividends` 才是正確的每股股利數值
+
+### 最終架構（2026-05-03 確認）
+**靜態寫死（index.html）：**
+- `dividends[]` — 台股歷年股息（2020-2026），2026 年由 `update_dividend_data.py` 燒進去
+- `usDividends[]` — 美股歷年股息（2020-2026），同上
+- `twDivInfo{}` — 台股每股年化配息（Yahoo Finance 直接查）
+- `usDivInfo{}` — 美股每股年化配息（AAPL=$4.12, MSFT=$13.6, BND=$37.09）
+- `twDivInfo` 正確值（2026-05-03 更新）：
+  - 0056: 3.598, 00692: 1.880, 00712: 0.800, 00713: 3.440
+  - 00717: 0.564, 00878: 1.690, 00891: 2.170, 00940: 0.485, 009802: 0.290
+  - 1101: 1.0, 2886: 1.6
+
+**動態 fetch：**
+- `dividend_data.json` — 每日 06:00 由 `update_dividend_data.py` 更新（R2）
+- 配息詳細表格（已入帳/待發放）— 頁面 load 時 fetch
+
+### 殖利率計算
+- `殖利率(成本)` = `每股年化配息 / 成本均價 × 100`（顯示 %）
+- `殖利率(現價)` = `每股年化配息 / 現價 × 100`（顯示 %）
+
+### update_dividend_data.py 流程（2026-05-03 修正）
+1. 從 Yahoo Finance 抓台股/美股除息資料（events.dividends）
+2. 從 `tw_dividend_detail.json` 抓台股除息日/配息日
+3. 計算 BND 歷史股數（113→114→115→116）
+4. 輸出 `dividend_data.json`（含 annual + div_info）上傳 R2
+5. **下載當前 R2 上的 index.html，置換 dividends[] 2026 年 + usDividends[] 2026 年，上傳回 R2**
+
+### 常見錯誤
+- R2 上的 `index.html` 被 `update_dividend_data.py` 下載替換時，會下載到當時 R2 上的版本。如果 R2 上已經是錯的，替換也會是錯的。這時要直接上傳本地正確版本。
+- Yahoo Finance timestamp 問題：`int(date_str)` 要注意 Yahoo 有時返回秒有時返回毫秒
+
+### 關鍵檔案
+- `/home/jhe/.openclaw/workspace/dashboard/assets/index-r2.html` — R2 上的完整版本
+- `/home/jhe/.openclaw/workspace/scripts/update_dividend_data.py` — 每日 cron 執行
+- `/home/jhe/.openclaw/workspace/scripts/fetch_tw_dividend_detail.py` — 台股配息日爬蟲（參考用，股利數值不準）
+- R2: `assets/index.html`, `assets/dividend_data.json`
+
+## 對話記錄（2026-05-03 15:14-15:16）
+- 蔡哲維詢問是否有人把 Bot 加入對話BOT
+- 目前對話框成員：兩人（本人+阿林）
+- 中間出現俄文內容（@bowstarsbot 推廣機器人的連結），懷疑是外部隨機內容
+- 用戶要求說明
+- **結論**：看起來正常，沒有異常
+
+---
+
+_最後更新：2026-05-03 15:16_

@@ -1,0 +1,86 @@
+{
+  "updated": "2026-05-03 18:00:01",
+  "stocks": {
+    "0056": [
+      {
+        "code": "0056",
+        "period": "2026Q1",
+        "cash_dividend": 42.61,
+        "ex_date": "2026/04/23",
+        "payout_date": "2026/05/14"
+      }
+    ],
+    "00692": [
+      {
+        "code": "00692",
+        "period": "2025H1",
+        "cash_dividend": 55.85,
+        "ex_date": "2025/11/18",
+        "payout_date": "2025/12/11"
+      }
+    ],
+    "00712": [
+      {
+        "code": "00712",
+        "period": "2025Q4",
+        "cash_dividend": 8.99,
+        "ex_date": "2026/03/18",
+        "payout_date": "2026/04/15"
+      }
+    ],
+    "00713": [
+      {
+        "code": "00713",
+        "period": "2025Q4",
+        "cash_dividend": 52.5,
+        "ex_date": "2026/03/20",
+        "payout_date": "2026/04/14"
+      }
+    ],
+    "00717": [
+      {
+        "code": "00717",
+        "period": "2026Q1",
+        "cash_dividend": 15.17,
+        "ex_date": "2026/04/20",
+        "payout_date": "2026/05/15"
+      }
+    ],
+    "00878": [
+      {
+        "code": "00878",
+        "period": "2026Q1",
+        "cash_dividend": 25.39,
+        "ex_date": "2026/05/19",
+        "payout_date": "2026/06/12"
+      }
+    ],
+    "00891": [
+      {
+        "code": "00891",
+        "period": "2025Q4",
+        "cash_dividend": 25.92,
+        "ex_date": "2026/02/26",
+        "payout_date": "2026/03/25"
+      }
+    ],
+    "00940": [
+      {
+        "code": "00940",
+        "period": "2026M4",
+        "cash_dividend": 10.34,
+        "ex_date": "2026/05/07",
+        "payout_date": "2026/06/01"
+      }
+    ],
+    "009802": [
+      {
+        "code": "009802",
+        "period": "2025Q4",
+        "cash_dividend": 12.88,
+        "ex_date": "2026/03/17",
+        "payout_date": "2026/04/13"
+      }
+    ]
+  }
+}

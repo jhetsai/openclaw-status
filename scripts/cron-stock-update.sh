@@ -25,8 +25,7 @@ fi
 # 執行持股更新
 bash scripts/update-stocks.sh >> logs/cron-stock.log 2>&1
 
-# 加入 update_time 到 taiwan_stocks.json
-python3 scripts/add_update_time_tw.py >> logs/cron-stock.log 2>&1
+# (add_update_time_tw.py 已由 fetch-stock-prices.py 內含，無需單獨執行)
 
 # 上傳 taiwan_stocks.json 到 R2
 python3 scripts/upload_r2.py "$WORKSPACE/taiwan_stock/taiwan_stocks.json" >> logs/cron-stock.log 2>&1
