@@ -77392,3 +77392,1566 @@ OK: 15193 bytes
 當日: +27,654 | 累計: +2,514,181
 R2 stock/index.html uploaded
 Cron stock update completed at 2026-05-03 20:01:39
+[2026-05-03 20:30:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 20:30:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.14 (Finnhub)
+  MSFT: 414.44 (Finnhub)
+  BND: 73.36 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.65 (Finnhub)
+  NAS100: 674.15 (Finnhub)
+  DOW: 495.02 (Finnhub)
+  VIX: 27.43 (Finnhub)
+  TNX: 85.61 (Finnhub)
+  GOLD: 423.18 (Finnhub)
+  OIL: 142.8 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.14 (cost 145.02)
+  MSFT: 414.44 (cost 263.51)
+  BND: 73.36 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 20:31:36
+Fetching Taiwan dividend details for 11 stocks...
+  Fetching 0056... [DEBUG] START code=0056
+[2026-05-03 21:00:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:00:02)
+📈 抓取股價...
+[2026-05-03 21:00:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:00:02)
+📈 抓取股價...
+[DEBUG] rc=0 len=325872
+[DEBUG] cells=288
+[DEBUG] period at i=36: '2026Q1'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2026Q1' ex='2026/04/23' cash='42.61'
+[DEBUG] appended: {'code': '0056', 'period': '2026Q1', 'cash_dividend': 42.61, 'ex_date': '2026/04/23', 'payout_date': '2026/05/14'}
+[DEBUG] i=42: p='-' ex='2025Q4' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '0056', 'period': '2026Q1', 'cash_dividend': 42.61, 'ex_date': '2026/04/23', 'payout_date': '2026/05/14'}]
+  rows=[{'code': '0056', 'period': '2026Q1', 'cash_dividend': 42.61, 'ex_date': '2026/04/23', 'payout_date': '2026/05/14'}]
+OK (1 records)
+  Fetching 00692... [DEBUG] START code=00692
+[DEBUG] rc=0 len=318594
+[DEBUG] cells=264
+[DEBUG] period at i=36: '2025H1'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2025H1' ex='2025/11/18' cash='55.85'
+[DEBUG] appended: {'code': '00692', 'period': '2025H1', 'cash_dividend': 55.85, 'ex_date': '2025/11/18', 'payout_date': '2025/12/11'}
+[DEBUG] i=42: p='15' ex='2025H1' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00692', 'period': '2025H1', 'cash_dividend': 55.85, 'ex_date': '2025/11/18', 'payout_date': '2025/12/11'}]
+  rows=[{'code': '00692', 'period': '2025H1', 'cash_dividend': 55.85, 'ex_date': '2025/11/18', 'payout_date': '2025/12/11'}]
+OK (1 records)
+  Fetching 00712... [DEBUG] START code=00712
+[DEBUG] rc=0 len=353576
+[DEBUG] cells=408
+[DEBUG] period at i=36: '2025Q4'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2025Q4' ex='2026/03/18' cash='8.99'
+[DEBUG] appended: {'code': '00712', 'period': '2025Q4', 'cash_dividend': 8.99, 'ex_date': '2026/03/18', 'payout_date': '2026/04/15'}
+[DEBUG] i=42: p='20' ex='2025Q3' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00712', 'period': '2025Q4', 'cash_dividend': 8.99, 'ex_date': '2026/03/18', 'payout_date': '2026/04/15'}]
+  rows=[{'code': '00712', 'period': '2025Q4', 'cash_dividend': 8.99, 'ex_date': '2026/03/18', 'payout_date': '2026/04/15'}]
+OK (1 records)
+  Fetching 00713... [DEBUG] START code=00713
+[DEBUG] rc=0 len=313978
+[DEBUG] cells=240
+[DEBUG] period at i=36: '2025Q4'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2025Q4' ex='2026/03/20' cash='52.50'
+[DEBUG] appended: {'code': '00713', 'period': '2025Q4', 'cash_dividend': 52.5, 'ex_date': '2026/03/20', 'payout_date': '2026/04/14'}
+[DEBUG] i=42: p='14' ex='2025Q3' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00713', 'period': '2025Q4', 'cash_dividend': 52.5, 'ex_date': '2026/03/20', 'payout_date': '2026/04/14'}]
+  rows=[{'code': '00713', 'period': '2025Q4', 'cash_dividend': 52.5, 'ex_date': '2026/03/20', 'payout_date': '2026/04/14'}]
+OK (1 records)
+  Fetching 00717... [DEBUG] START code=00717
+[DEBUG] rc=0 len=345895
+[DEBUG] cells=376
+[DEBUG] period at i=36: '2026Q1'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2026Q1' ex='2026/04/20' cash='15.17'
+[DEBUG] appended: {'code': '00717', 'period': '2026Q1', 'cash_dividend': 15.17, 'ex_date': '2026/04/20', 'payout_date': '2026/05/15'}
+[DEBUG] i=42: p='-' ex='2025Q4' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00717', 'period': '2026Q1', 'cash_dividend': 15.17, 'ex_date': '2026/04/20', 'payout_date': '2026/05/15'}]
+  rows=[{'code': '00717', 'period': '2026Q1', 'cash_dividend': 15.17, 'ex_date': '2026/04/20', 'payout_date': '2026/05/15'}]
+OK (1 records)
+  Fetching 00878... [DEBUG] START code=00878
+[DEBUG] rc=0 len=325890
+[DEBUG] cells=288
+[DEBUG] period at i=36: '2026Q1'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2026Q1' ex='2026/05/19' cash='25.39'
+[DEBUG] appended: {'code': '00878', 'period': '2026Q1', 'cash_dividend': 25.39, 'ex_date': '2026/05/19', 'payout_date': '2026/06/12'}
+[DEBUG] i=42: p='-' ex='2025Q4' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00878', 'period': '2026Q1', 'cash_dividend': 25.39, 'ex_date': '2026/05/19', 'payout_date': '2026/06/12'}]
+  rows=[{'code': '00878', 'period': '2026Q1', 'cash_dividend': 25.39, 'ex_date': '2026/05/19', 'payout_date': '2026/06/12'}]
+OK (1 records)
+  Fetching 00891... [DEBUG] START code=00891
+[DEBUG] rc=0 len=314176
+[DEBUG] cells=240
+[DEBUG] period at i=36: '2025Q4'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2025Q4' ex='2026/02/26' cash='25.92'
+[DEBUG] appended: {'code': '00891', 'period': '2025Q4', 'cash_dividend': 25.92, 'ex_date': '2026/02/26', 'payout_date': '2026/03/25'}
+[DEBUG] i=42: p='30' ex='' cash='2025'
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00891', 'period': '2025Q4', 'cash_dividend': 25.92, 'ex_date': '2026/02/26', 'payout_date': '2026/03/25'}]
+  rows=[{'code': '00891', 'period': '2025Q4', 'cash_dividend': 25.92, 'ex_date': '2026/02/26', 'payout_date': '2026/03/25'}]
+OK (1 records)
+  Fetching 00940... [DEBUG] START code=00940
+[DEBUG] rc=0 len=319254
+[DEBUG] cells=256
+[DEBUG] period at i=36: '2026M4'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2026M4' ex='2026/05/07' cash='10.34'
+[DEBUG] appended: {'code': '00940', 'period': '2026M4', 'cash_dividend': 10.34, 'ex_date': '2026/05/07', 'payout_date': '2026/06/01'}
+[DEBUG] i=42: p='-' ex='2026M3' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '00940', 'period': '2026M4', 'cash_dividend': 10.34, 'ex_date': '2026/05/07', 'payout_date': '2026/06/01'}]
+  rows=[{'code': '00940', 'period': '2026M4', 'cash_dividend': 10.34, 'ex_date': '2026/05/07', 'payout_date': '2026/06/01'}]
+OK (1 records)
+  Fetching 009802... [DEBUG] START code=009802
+[DEBUG] rc=0 len=277782
+[DEBUG] cells=88
+[DEBUG] period at i=36: '2025Q4'
+[DEBUG] start_idx=36
+[DEBUG] i=36: p='2025Q4' ex='2026/03/17' cash='12.88'
+[DEBUG] appended: {'code': '009802', 'period': '2025Q4', 'cash_dividend': 12.88, 'ex_date': '2026/03/17', 'payout_date': '2026/04/13'}
+[DEBUG] i=42: p='1' ex='2025Q3' cash=''
+[DEBUG] break: period no match
+[DEBUG] returning results=[{'code': '009802', 'period': '2025Q4', 'cash_dividend': 12.88, 'ex_date': '2026/03/17', 'payout_date': '2026/04/13'}]
+  rows=[{'code': '009802', 'period': '2025Q4', 'cash_dividend': 12.88, 'ex_date': '2026/03/17', 'payout_date': '2026/04/13'}]
+OK (1 records)
+  Fetching 1101... [DEBUG] START code=1101
+[DEBUG] rc=0 len=360584
+[DEBUG] cells=348
+[DEBUG] returning []: no period found
+  rows=[]
+No data
+  Fetching 2886... [DEBUG] START code=2886
+[DEBUG] rc=0 len=334599
+[DEBUG] cells=257
+[DEBUG] returning []: no period found
+  rows=[]
+No data
+
+Done. Saved 9 records → /home/jhe/.openclaw/workspace/taiwan_stock/tw_dividend_detail.json
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.14 (Finnhub)
+  MSFT: 414.44 (Finnhub)
+  BND: 73.36 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.65 (Finnhub)
+  NAS100: 674.15 (Finnhub)
+  DOW: 495.02 (Finnhub)
+  VIX: 27.43 (Finnhub)
+  TNX: 85.61 (Finnhub)
+  GOLD: 423.18 (Finnhub)
+  OIL: 142.8 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.14 (Finnhub)
+  MSFT: 414.44 (Finnhub)
+  BND: 73.36 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.65 (Finnhub)
+  NAS100: 674.15 (Finnhub)
+  DOW: 495.02 (Finnhub)
+  VIX: 27.43 (Finnhub)
+  TNX: 85.61 (Finnhub)
+  GOLD: 423.18 (Finnhub)
+  OIL: 142.8 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+taiwan_stocks.json OK
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.14 (cost 145.02)
+  MSFT: 414.44 (cost 263.51)
+  BND: 73.36 (cost 73.22)
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.14 (cost 145.02)
+  MSFT: 414.44 (cost 263.51)
+  BND: 73.36 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+us_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:01:40
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:01:41
+[2026-05-03 21:10:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:10:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.14 (Finnhub)
+  MSFT: 414.44 (Finnhub)
+  BND: 73.36 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.65 (Finnhub)
+  NAS100: 674.15 (Finnhub)
+  DOW: 495.02 (Finnhub)
+  VIX: 27.43 (Finnhub)
+  TNX: 85.61 (Finnhub)
+  GOLD: 423.18 (Finnhub)
+  OIL: 142.8 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.14 (cost 145.02)
+  MSFT: 414.44 (cost 263.51)
+  BND: 73.36 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:11:44
+[2026-05-03 21:20:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:20:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.14 (Finnhub)
+  MSFT: 414.44 (Finnhub)
+  BND: 73.36 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.65 (Finnhub)
+  NAS100: 674.15 (Finnhub)
+  DOW: 495.02 (Finnhub)
+  VIX: 27.43 (Finnhub)
+  TNX: 85.61 (Finnhub)
+  GOLD: 423.18 (Finnhub)
+  OIL: 142.8 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.14 (cost 145.02)
+  MSFT: 414.44 (cost 263.51)
+  BND: 73.36 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15193 bytes
+當日: +27,654 | 累計: +2,514,181
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:21:44
+[2026-05-03 21:30:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:30:01)
+📈 抓取股價...
+[2026-05-03 21:30:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:30:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+us_stocks.json OK
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:31:38
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:31:43
+[2026-05-03 21:40:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:40:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:41:46
+[2026-05-03 21:50:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 21:50:02)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 21:51:45
+[2026-05-03 22:00:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 22:00:02)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 22:01:49
+[2026-05-03 22:10:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 22:10:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 22:11:41
+[2026-05-03 22:20:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 22:20:02)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 22:21:46
+[2026-05-03 22:30:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 22:30:02)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 22:31:49
+[2026-05-03 22:40:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 22:40:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 22:41:51
+[2026-05-03 22:50:02] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 22:50:02)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 22:51:41
+[2026-05-03 23:00:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 23:00:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 23:01:46
+[2026-05-03 23:10:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 23:10:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 23:11:39
+[2026-05-03 23:20:01] 兩市場休市，仍更新最後收盤價
+🔄 持股更新中... (2026-05-03 23:20:01)
+📈 抓取股價...
+Generated: /home/jhe/.openclaw/workspace/taiwan_stock/twse_query.html
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Fetching Taiwan stocks from TWSE API...
+  0056: 40.9
+  00692: 79.1
+  00712: 9.06
+  00713: 52.85
+  00878: 25.39
+  00891: 30.95
+  00940: 10.34
+  009802: 15.85
+  1101: 24.5
+  2886: 39.1
+  TWSE got 10 stocks, supplementing 1 missing with Yahoo TW real-time...
+  [Yahoo TW] 00717: 15.03
+  Yahoo TW supplemented 1 stocks
+Fetching US stocks from Finnhub...
+  AAPL: 280.16 (Finnhub)
+  MSFT: 414.46 (Finnhub)
+  BND: 73.38 (Finnhub)
+  FNMR: 2.56 (Yahoo)
+  WTX: 40103.0 (Taiwan futures)
+  WTXP: failed
+  SP500: 720.67 (Finnhub)
+  NAS100: 674.17 (Finnhub)
+  DOW: 495.04 (Finnhub)
+  VIX: 27.42 (Finnhub)
+  TNX: 85.63 (Finnhub)
+  GOLD: 423.2 (Finnhub)
+  OIL: 142.82 (Finnhub)
+  TAIEX: 38926.63 (Yahoo)
+Fetching TWSE realtime...
+Fetching TWSE BWIBBU...
+  BWIBBU fetched 1072 stocks
+Fetching TWSE revenue...
+  Revenue fetched 1073 stocks
+Fetching TWSE dividend...
+  Dividend fetched 24 records
+  TWSE prev close: 11 stocks
+Updated TW JSON (11 stocks)
+Saved US prices (13 stocks), prev: 12
+Generating TWSE static HTML...
+Generating stock overview...
+Done!
+📊 生成持股總攬...
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/taiwan_stocks.json
+taiwan_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Updated 3 stocks with latest prices
+  AAPL: 280.16 (cost 145.02)
+  MSFT: 414.46 (cost 263.51)
+  BND: 73.38 (cost 73.22)
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/us_stocks.json
+us_stocks.json OK
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+TW=休市中, US=休市中
+上傳成功！
+下載連結：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/market_status.json
+Exchange rate USD=31.629326 JPY=0.201614 uploaded
+OK: 15189 bytes
+當日: +27,828 | 累計: +2,514,356
+R2 stock/index.html uploaded
+Cron stock update completed at 2026-05-03 23:21:48

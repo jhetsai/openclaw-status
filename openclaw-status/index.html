@@ -70,9 +70,9 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">已開機</div><div class="value">0天 19時 12分</div></div>
-        <div class="status-item"><div class="label">記憶體</div><div class="value">2.7 / 7.7 GB</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">5.0%</div></div>
+        <div class="status-item"><div class="label">已開機</div><div class="value">0天 22時 12分</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">2.3 / 7.7 GB</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">4.8%</div></div>
         <div class="status-item"><div class="label">Gateway 狀態</div><div class="value running">✅ 運行中</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.22.0</div></div>
@@ -119,10 +119,10 @@
             <summary>☀️ 太陽能發電（預估）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">200W × 1 片</div></div>
-        <div class="status-item"><div class="label">麥寮測站</div><div class="value">雲林東勢 晴</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">27.7°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">3.2 km/h</div></div>
-        <div class="status-item"><div class="label">今日天氣</div><div class="value">晴</div></div>
+        <div class="status-item"><div class="label">麥寮測站</div><div class="value">雲林東勢 陰</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">26.7°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">6.8 km/h</div></div>
+        <div class="status-item"><div class="label">今日天氣</div><div class="value">陰</div></div>
         <div class="status-item"><div class="label">發電效率</div><div class="value">0W (0%)</div></div>
         <div class="status-item"><div class="label">📡 版本最後上傳時間</div><div class="value" id="status-ts">-</div></div>
         </div>
@@ -155,7 +155,7 @@
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
   };
   var now = new Date();
-  var ts = '2026-05-03 20:00:01';
+  var ts = '2026-05-03 23:00:01';
   var el = document.getElementById('top-ts');
   if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
   el = document.getElementById('status-ts');

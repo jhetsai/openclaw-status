@@ -417,9 +417,9 @@ const twDivInfo = {
   '2886': {div: 1.600, freq: '年配'},
 };
 const usDivInfo = {
-  'AAPL': {div: 1.030, freq: '季配'},
-  'MSFT': {div: 3.400, freq: '季配'},
-  'BND': {div: 3.091, freq: '月配'},
+  'AAPL': {div: 1.04, freq: '季配'},
+  'MSFT': {div: 3.64, freq: '季配'},
+  'BND': {div: 0.952, freq: '月配'},
 };
 
 
@@ -558,8 +558,8 @@ const totalGainAll = totalMktvalAll - totalCostAll;
 const totalRetAll = (totalGainAll / totalCostAll * 100).toFixed(1);
 const twDivSum = twStocks.reduce((a,s)=>a+s.annDiv,0);
 const annDivUsd = usStocks.reduce((a,s)=>a+s.annDivTwd,0);
-const annDivAll = twDivSum + annDivUsd;
-const monthlyDiv = (annDivAll / 12).toFixed(0);
+// 台股不扣稅，美股扣30%稅，所以分開計算
+const monthlyDiv = ((twDivSum + annDivUsd * 0.70) / 12).toFixed(0);
 const portfolioYield = ((214650.34) / totalCostAll * 100).toFixed(2);
 
 
