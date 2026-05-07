@@ -41,7 +41,6 @@ s3.upload_file('/home/jhe/.openclaw/workspace/taiwan_stock/taiwan_stocks.json', 
 print('taiwan_stocks.json OK')
 PYEOF
 
-python3 "$WORKSPACE/scripts/gen-stock-html.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
 
 # 更新 us_stocks.json 並上傳
 python3 scripts/update_us_stocks.py >> logs/cron-stock.log 2>&1
@@ -58,36 +57,15 @@ s3.upload_file('/home/jhe/.openclaw/workspace/us_stock/us_stocks.json', 'shared-
 print('us_stocks.json OK')
 PYEOF
 
-python3 "$WORKSPACE/scripts/gen-stock-html.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
 
 # 更新並上傳 market_status.json
 python3 scripts/update_market_status.py >> logs/cron-stock.log 2>&1
 python3 scripts/upload_r2.py "$WORKSPACE/stock/market_status.json" >> logs/cron-stock.log 2>&1
 
-# 更新匯率並上傳到 R2
-python3 - << 'PYEOF' >> logs/cron-stock.log 2>&1
-import boto3, subprocess, json, os
-from datetime import datetime
-import urllib.request, json
+# 更新匯率並上傳到 R2（使用臺灣銀行即期匯率本行買入）
+python3 "$WORKSPACE/scripts/scrape_taiwan_bank_rate.py" >> "$WORKSPACE/logs/exchange_rate.log" 2>&1
 
-# Fetch both USD/TWD and JPY/TWD
-try:
-    with urllib.request.urlopen('https://open.er-api.com/v6/latest/USD', timeout=10) as r:
-        usd_rate = json.loads(r.read())['rates']['TWD']
-    with urllib.request.urlopen('https://open.er-api.com/v6/latest/JPY', timeout=10) as r:
-        jpy_rate = json.loads(r.read())['rates']['TWD']
-    with open('/home/jhe/.openclaw/workspace/exchange_rate.json', 'w') as f:
-        json.dump({'USD_TWD': usd_rate, 'JPY_TWD': jpy_rate, 'updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, f)
-    s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-        aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
-        aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
-    s3.upload_file('/home/jhe/.openclaw/workspace/exchange_rate.json', 'shared-files', 'exchange_rate.json',
-        ExtraArgs={'ContentType':'application/json'})
-    print(f'Exchange rate USD={usd_rate} JPY={jpy_rate} uploaded')
-except Exception as e:
-    print(f'Exchange rate fetch error: {e}')
-PYEOF
-
-python3 "$WORKSPACE/scripts/gen-stock-html.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
+# 更新 portfolio_data.json（合併股價+配息+匯率為單一資料源）
+python3 "$WORKSPACE/scripts/gen_portfolio_data.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
 
 echo "Cron stock update completed at $(date '+%Y-%m-%d %H:%M:%S')" >> logs/cron-stock.log
