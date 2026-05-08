@@ -1,3 +1,8 @@
-
 # API Keys (do not commit)
 ~/.api_keys
+
+# Daily auto-generated (no need to track)
+logs/
+memory/dreaming/
+memory/.dreams/
+stock/market_status.json
