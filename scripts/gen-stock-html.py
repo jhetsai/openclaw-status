@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import urllib.request, json, os, subprocess, re
+import urllib.request, json, os, subprocess, re, boto3
 from datetime import datetime
 from html.parser import HTMLParser
 
@@ -95,6 +95,30 @@ us_prices = us_data.get("prices", {})
 with open(US_STOCKS) as f:
     us_stocks_data = json.load(f)
 
+# 讀取美股配息歷史（div_history.json）
+# 2020-2025: 原始資料為 TWD
+# 2026: 原始資料為 USD（用戶提供，已扣30%預扣稅）
+us_div_2026 = 0
+us_div_2026_twd = 0  # 2026 美股實收（轉換為 TWD）
+div_hist_path = os.path.join(WORKSPACE, 'us_stock/div_history.json')
+if os.path.exists(div_hist_path):
+    with open(div_hist_path) as f:
+        div_hist = json.load(f)
+    for sym_data in div_hist.get('by_stock', {}).values():
+        v = sym_data.get('years', {}).get('2026', 0)
+        if isinstance(v, dict):
+            amt = v.get('amt', 0)
+            currency = v.get('currency', 'TWD')
+        else:
+            amt = v
+            currency = 'TWD'
+        
+        if currency == 'USD':
+            us_div_2026 += amt  # 保持 USD 原值
+            us_div_2026_twd += amt * 31.569  # 轉換為 TWD
+        else:
+            us_div_2026_twd += amt
+
 # 動態抓配息
 div_confirmed, div_pending, div_confirmed_rows, div_pending_rows = fetch_tw_dividends(tw_stocks)
 
@@ -105,8 +129,8 @@ for r in sorted(div_confirmed_rows, key=lambda x: x['payout']):
 PENDING_DETAIL_HTML = ""
 for r in sorted(div_pending_rows, key=lambda x: x['payout']):
     PENDING_DETAIL_HTML += f"<tr><td>{r['code']}</td><td>{r['period']}</td><td>{r['cash']}</td><td>{r['shares']}</td><td>{r['amount']:,.0f}</td><td>{r['ex_date']}</td><td>{r['payout']}</td></tr>\n"
-CONFIRMED_DETAIL_BLOCK = f"""<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 已入帳明細（{len(div_confirmed_rows)}筆）</summary><table style="font-size:12px"><tr><th>代</th><th>期</th><th>現人</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>{CONFIRMED_DETAIL_HTML}</table></details>"""
-PENDING_DETAIL_BLOCK = f"""<details style="margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 待發放明細（{len(div_pending_rows)}筆）</summary><table style="font-size:12px"><tr><th>代</th><th>期</th><th>現人</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>{PENDING_DETAIL_HTML}</table></details>"""
+CONFIRMED_DETAIL_BLOCK = f"""<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 已入帳明細（{len(div_confirmed_rows)}筆）</summary><table style="font-size:12px"><tr><th>代</th><th>期</th><th>股利</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>{CONFIRMED_DETAIL_HTML}</table></details>"""
+PENDING_DETAIL_BLOCK = f"""<details style="margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 待發放明細（{len(div_pending_rows)}筆）</summary><table style="font-size:12px"><tr><th>代</th><th>期</th><th>股利</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>{PENDING_DETAIL_HTML}</table></details>"""
 
 # Load upcoming ex-dividend dates
 upcoming_div = []
@@ -212,6 +236,16 @@ def fetch_prev_close(symbol):
 
 USD_TWD = 31.569
 FX_COST_RATE = 28.5
+
+# Load dynamic exchange rate from exchange_rate.json (臺灣銀行即期匯率本行買入)
+_EXCH_FILE = os.path.join(WORKSPACE, 'exchange_rate.json')
+if os.path.exists(_EXCH_FILE):
+    try:
+        with open(_EXCH_FILE) as f:
+            _d = json.load(f)
+            USD_TWD = float(_d.get('USD_TWD', 31.569))
+    except:
+        pass  # use default 31.569
 
 # ─── TW ───
 tw_total_cost = sum(s.get("total_cost", s["shares"] * s["cost"]) for s in tw_stocks)
@@ -434,7 +468,7 @@ HTML = f"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>持股總覽｜蝦助</title>
+<title>持股總覽</title>
 {STYLE}
 </head>
 <body>
@@ -514,8 +548,8 @@ HTML = f"""<!DOCTYPE html>
 <tr><th>項目</th><th>金額</th><th>說明</th></tr>
 <tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold">+{div_confirmed:,.0f} 元</td><td>入帳日在2026年內（Yahoo動態）</td></tr>
 <tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+{div_pending:,.0f} 元</td><td>已除息尚未入帳（Yahoo動態）</td></tr>
-<tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+USD 111.87</td><td>≈ TWD 3,573（已扣30%預扣稅）</td></tr>
-<tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32">≈ 56,794 元</td><td>台股+美股</td></tr>
+<tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+TWD {us_div_2026_twd:,.0f}</td><td>已扣30%預扣稅｜資料來源：用戶提供</td></tr>
+<tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32">≈ {div_confirmed + div_pending + us_div_2026_twd:,.0f} 元</td><td>台股+美股</td></tr>
 <tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold">{total_with_fx_sign}{total_with_fx:,.0f} 元</td><td>市值增值+美股匯差（成本匯率 28.5）</td></tr>
 </table>
 {CONFIRMED_DETAIL_BLOCK}
@@ -548,3 +582,100 @@ s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r
 with open(OUT_HTML, 'rb') as f:
     s3.put_object(Bucket='shared-files', Key='stock/index.html', Body=f.read(), ContentType='text/html')
 print("R2 stock/index.html uploaded")
+
+# DISABLED: This function overwrites assets/index.html with a broken version
+# Commenting out call to prevent it from destroying the working dashboard HTML
+# update_assets_dividend_tables()
+
+# ===== Update assets/index.html with static dividend tables =====
+def update_assets_dividend_tables():
+    """Update assets/index.html with static dividend data from R2"""
+    try:
+        import boto3
+        s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+            aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
+            aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
+        
+        # Download dividend_data.json
+        s3.download_file('shared-files', 'assets/dividend_data.json', '/tmp/dj_gen.json')
+        with open('/tmp/dj_gen.json') as f:
+            dj = json.load(f)
+        
+        # Download current assets/index.html
+        s3.download_file('shared-files', 'assets/index.html', '/tmp/assets_index.html')
+        with open('/tmp/assets_index.html') as f:
+            html = f.read()
+        
+        tw_conf = dj['tw']['confirmed']['rows']
+        tw_pend = dj['tw']['pending']['rows']
+        us_conf = dj['us']['confirmed']['rows']
+        us_pend = dj['us']['pending']['rows']
+        
+        def make_tbody(rows, cols):
+            if not rows: return ''
+            html = ''
+            for r in rows:
+                html += '<tr>'
+                for col in cols:
+                    v = r.get(col.lower(), r.get(col, ''))
+                    if isinstance(v, float):
+                        if 'amount' in col.lower() or 'total' in col.lower(): v = f'{v:,.0f}'
+                        else: v = str(v)
+                    elif isinstance(v, int):
+                        if 'shares' in col.lower(): v = f'{v:,}'
+                    html += f'<td>{v}</td>'
+                html += '</tr>'
+            return html
+        
+        # Build static HTML for each tbody
+        tw_conf_tbody = make_tbody(tw_conf, ['代號','股利','股數','金額','除息日','入帳日'])
+        tw_pend_tbody = make_tbody(tw_pend, ['代號','股利','股數','金額','除息日','入帳日'])
+        us_conf_tbody = make_tbody(us_conf, ['代號','日期','股利','股數','金額(USD)'])
+        us_pend_tbody = make_tbody(us_pend, ['代號','日期','股利','股數','金額(USD)'])
+        
+        # Replace dynamic fetch block with static HTML
+        # Replace div-confirmed-table
+        html = re.sub(r'<tbody id="div-confirmed-table"></tbody>', tw_conf_tbody, html)
+        # Replace div-pending-table
+        html = re.sub(r'<tbody id="div-pending-table"></tbody>', tw_pend_tbody, html)
+        # Replace us-div-confirmed-table
+        html = re.sub(r'<tbody id="us-div-confirmed-table"></tbody>', us_conf_tbody, html)
+        # Replace us-div-pending-table
+        html = re.sub(r'<tbody id="us-div-pending-table"></tbody>', us_pend_tbody, html)
+        
+        # Remove the dynamic fetch block (lines that fetch dividend_data.json)
+        # and the renderTwDivInfo call
+        fetch_pattern = r'// .*?fetch\(\'/assets/dividend_data\.json\'\)\.then\(r=>r\.json\(\)\)\.then\(d=>\{.*?\}\)\.catch\(e=>\{\}\);\s*'
+        html = re.sub(fetch_pattern, '', html, flags=re.DOTALL)
+        
+        # Remove renderTwDivInfo call
+        html = re.sub(r'// TW 殖利率（動態來自 dividend_data\.json）\s*renderTwDivInfo\(d\);\s*', '', html)
+
+        # === Update 歷年股息收入 arrays (2026 entry) ===
+        tw_2026_total = sum(r['amount'] for r in dj['tw']['confirmed']['rows']) + sum(r['amount'] for r in dj['tw']['pending']['rows'])
+        us_conf_rows = dj['us']['confirmed']['rows']
+        us_2026_aapl = sum(r['total'] for r in us_conf_rows if r['code'] == 'AAPL')
+        us_2026_msft = sum(r['total'] for r in us_conf_rows if r['code'] == 'MSFT')
+        us_2026_bnd = sum(r['total'] for r in us_conf_rows if r['code'] == 'BND')
+        us_2026_total = us_2026_aapl + us_2026_msft + us_2026_bnd
+
+        # Replace 2026 entry in dividends array (TW annual)
+        html = re.sub(
+            r"\{year:2026,amt:\\d+\}",
+            f"{{year:2026,amt:{tw_2026_total}}}",
+            html
+        )
+        # Replace 2026 entry in usDividends array
+        html = re.sub(
+            r"\{year:2026, aapl:[0-9.]+, msft:[0-9.]+, bnd:[0-9.]+, arkk:0, total:[0-9.]+\}",
+            f"{{year:2026, aapl:{us_2026_aapl:.2f}, msft:{us_2026_msft:.2f}, bnd:{us_2026_bnd:.2f}, arkk:0, total:{us_2026_total:.2f}}}",
+            html
+        )
+        
+        # Upload updated assets/index.html
+        s3.put_object(Bucket='shared-files', Key='assets/index.html', Body=html.encode('utf-8'), ContentType='text/html')
+        print("assets/index.html updated with static dividend tables")
+    except Exception as e:
+        print(f"Warning: could not update assets/index.html: {e}")
+
+# DISABLED: update_assets_dividend_tables() - overwrites assets/index.html with broken version

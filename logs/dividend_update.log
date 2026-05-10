@@ -7,3 +7,108 @@
 完成：assets/dividend_data.json 已更新
   台股合計：53,220（已）+ 26,466（待）
   美股合計：$132.49（已）+ $0.00（待）
+[2026-05-04 06:00] 開始更新配息資料...
+  台股：已入帳 14 筆，53,220 元
+  台股：待發放 5 筆，26,466 元
+  美股：已入帳 6 筆，$131.49（~4,151 TWD）
+  美股：待發放 0 筆，$0.00
+  index.html 2026 年已更新（台股=79,686，美股=4,151 TWD）
+
+完成：assets/dividend_data.json 已更新
+  台股合計：53,220（已）+ 26,466（待）
+  美股合計：$131.49（已）+ $0.00（待）
+[2026-05-05 06:00] 開始更新配息資料...
+  台股：已入帳 15 筆，53,625 元
+  台股：待發放 4 筆，26,061 元
+  美股：已入帳 6 筆，$131.49（~4,151 TWD）
+  美股：待發放 0 筆，$0.00
+  index.html 2026 年已更新（台股=79,686，美股=4,151 TWD）
+
+完成：assets/dividend_data.json 已更新
+  台股合計：53,625（已）+ 26,061（待）
+  美股合計：$131.49（已）+ $0.00（待）
+[2026-05-05 14:34] 開始更新配息資料...
+  台股：已入帳 15 筆，53,625 元
+  台股：待發放 4 筆，26,061 元
+  美股：已入帳 6 筆，$131.49（~4,151 TWD）
+  美股：待發放 0 筆，$0.00
+Traceback (most recent call last):
+  File "/home/jhe/.local/lib/python3.12/site-packages/boto3/s3/transfer.py", line 452, in upload_file
+    future.result()
+  File "/home/jhe/.local/lib/python3.12/site-packages/s3transfer/futures.py", line 111, in result
+    return self._coordinator.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/s3transfer/futures.py", line 287, in result
+    raise self._exception
+  File "/home/jhe/.local/lib/python3.12/site-packages/s3transfer/tasks.py", line 142, in __call__
+    return self._execute_main(kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/s3transfer/tasks.py", line 165, in _execute_main
+    return_value = self._main(**kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/s3transfer/upload.py", line 796, in _main
+    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)
+  File "/home/jhe/.local/lib/python3.12/site-packages/botocore/client.py", line 602, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/botocore/context.py", line 123, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/botocore/client.py", line 1078, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.exceptions.ClientError: An error occurred () when calling the PutObject operation: 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jhe/.openclaw/workspace/scripts/update_dividend_data.py", line 215, in <module>
+    s3.upload_file('/tmp/dividend_data.json', 'shared-files', 'assets/dividend_data.json')
+  File "/home/jhe/.local/lib/python3.12/site-packages/botocore/context.py", line 123, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/boto3/s3/inject.py", line 175, in upload_file
+    return transfer.upload_file(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jhe/.local/lib/python3.12/site-packages/boto3/s3/transfer.py", line 458, in upload_file
+    raise S3UploadFailedError(
+boto3.exceptions.S3UploadFailedError: Failed to upload /tmp/dividend_data.json to shared-files/assets/dividend_data.json: An error occurred () when calling the PutObject operation: 
+[2026-05-06 06:00] 開始更新配息資料...
+  台股：已入帳 15 筆，53,625 元
+  台股：待發放 5 筆，48,561 元
+  美股：已入帳 6 筆，$131.49（~4,146 TWD）
+  美股：待發放 0 筆，$0.00
+  index.html 2026 年已更新（台股=102,186，美股=4,146 TWD）
+
+完成：assets/dividend_data.json 已更新
+  台股合計：53,625（已）+ 48,561（待）
+  美股合計：$131.49（已）+ $0.00（待）
+[2026-05-08 06:00] 開始更新配息資料...
+  台股：已入帳 15 筆，53,625 元
+  台股：待發放 5 筆，48,561 元
+  美股：已入帳 6 筆，$131.49（~4,146 TWD）
+  美股：待發放 0 筆，$0.00
+  index.html 2026 年已更新（台股=102,186，美股=4,146 TWD）
+
+完成：assets/dividend_data.json 已更新
+  台股合計：53,625（已）+ 48,561（待）
+  美股合計：$131.49（已）+ $0.00（待）
+[2026-05-09 06:00] 開始更新配息資料...
+  台股：已入帳 15 筆，53,625 元
+  台股：待發放 5 筆，48,561 元
+  美股：已入帳 6 筆，$131.49（~4,126 TWD）
+  美股：待發放 0 筆，$0.00
+  index.html 2026 年已更新（台股=102,186，美股=4,126 TWD）
+
+完成：assets/dividend_data.json 已更新
+  台股合計：53,625（已）+ 48,561（待）
+  美股合計：$131.49（已）+ $0.00（待）
+[2026-05-10 06:00] 開始更新配息資料...
+  台股：已入帳 15 筆，53,625 元
+  台股：待發放 5 筆，48,561 元
+  美股：已入帳 6 筆，$131.49（~4,126 TWD）
+  美股：待發放 0 筆，$0.00
+  index.html 2026 年已更新（台股=102,186，美股=4,126 TWD）
+
+完成：assets/dividend_data.json 已更新
+  台股合計：53,625（已）+ 48,561（待）
+  美股合計：$131.49（已）+ $0.00（待）

@@ -41,7 +41,13 @@ def generate_report():
         us_prices = json.load(f)
     
     exchange_rate = 31.935
-    
+    # Load dynamic exchange rate (臺灣銀行即期匯率本行買入)
+    _exch = '/home/jhe/.openclaw/workspace/exchange_rate.json'
+    if os.path.exists(_exch):
+        with open(_exch) as f:
+            _d = json.load(f)
+            exchange_rate = float(_d.get('USD_TWD', 31.935))
+
     now = datetime.now()
     date_str = now.strftime("%Y/%m/%d")
     time_str = now.strftime("%H:%M")

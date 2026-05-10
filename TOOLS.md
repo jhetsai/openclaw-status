@@ -39,15 +39,11 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 Add whatever helps you do your job. This is your cheat sheet.
 
-## API Keys
-
-| 服務 | Key | 用途 |
-|------|-----|------|
-| Finnhub | `FINNHUB_KEY_REDACTED` | 美股即時報價+prev_close（60 calls/min） |
-| WeatherAPI.com | `4788832168bf44e281351235262404` | 天氣預報（100K calls/月） |
-| CWA 氣象局 | `CWA_API_KEY_REDACTED` | 台灣測站觀測 |
-| Leonardo.ai | `77f7624b-d07f-4ed2-b666-e4b3a6f9a465` | AI 生圖 |
-| Telegram Bot | `TELEGRAM_BOT_TOKEN_REDACTED` | 發訊息 |
+## Safety Gate
+- 腳本：`/home/jhe/.openclaw/workspace/scripts/safety_gate.py`
+- 用途：高風險動作（刪除、系統變更、對外發送）前自動分類並請求確認
+- 等級：LOW（直接執行）/ MEDIUM（執行並通知）/ HIGH（需確認）/ CRITICAL（需完整說明+批准）
+- 集成方式：`from safety_gate import classify_action, get_confirmation_message`
 
 ## 已啟用服務
 

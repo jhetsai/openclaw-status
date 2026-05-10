@@ -1660,3 +1660,1004 @@ HTML baked OK (2026-05-03 23:00:01)
 Backup saved: openclaw-status/backups/2026-05-03_230007_index.html
 R2 OK
 [2026-05-03 23:00:08] 完成（僅 R2）
+[2026-05-04 00:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.4°C 5.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 00:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_000013_index.html
+R2 OK
+[2026-05-04 00:00:14] 完成（僅 R2）
+[2026-05-04 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.1°C 2.2km/h
+[SolarModel] UV=0.0 cloud=50% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_010005_index.html
+R2 OK
+[2026-05-04 01:00:05] 完成（僅 R2）
+[2026-05-04 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.6°C 7.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_020004_index.html
+R2 OK
+[2026-05-04 02:00:05] 完成（僅 R2）
+[2026-05-04 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.3°C 4.3km/h
+[SolarModel] UV=0.0 cloud=50% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 03:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_030005_index.html
+R2 OK
+[2026-05-04 03:00:06] 完成（僅 R2）
+[2026-05-04 04:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.0°C 5.4km/h
+[SolarModel] UV=0.0 cloud=50% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 04:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_040005_index.html
+R2 OK
+[2026-05-04 04:00:06] 完成（僅 R2）
+[2026-05-04 05:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.9°C 7.2km/h
+[SolarModel] UV=0.0 cloud=50% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 05:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_050005_index.html
+R2 OK
+[2026-05-04 05:00:06] 完成（僅 R2）
+[2026-05-04 06:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.3°C 9.7km/h
+[SolarModel] UV=0.0 cloud=50% angle=0.86 => 0W (0%)
+HTML baked OK (2026-05-04 06:00:02)
+Backup saved: openclaw-status/backups/2026-05-04_060010_index.html
+R2 OK
+[2026-05-04 06:00:11] 完成（僅 R2）
+[2026-05-04 07:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.5°C 12.2km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.88 => 1W (1%)
+HTML baked OK (2026-05-04 07:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_070006_index.html
+R2 OK
+[2026-05-04 07:00:06] 完成（僅 R2）
+[2026-05-04 08:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.8°C 9.0km/h
+[SolarModel] UV=0.6 cloud=75% angle=0.90 => 5W (6%)
+HTML baked OK (2026-05-04 08:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_080006_index.html
+R2 OK
+[2026-05-04 08:00:07] 完成（僅 R2）
+[2026-05-04 09:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.2°C 10.4km/h
+[SolarModel] UV=2.2 cloud=52% angle=0.92 => 25W (30%)
+HTML baked OK (2026-05-04 09:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_090011_index.html
+R2 OK
+[2026-05-04 09:00:12] 完成（僅 R2）
+[2026-05-04 10:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.2°C 13.0km/h
+[SolarModel] UV=6.1 cloud=75% angle=0.94 => 57W (67%)
+HTML baked OK (2026-05-04 10:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_100007_index.html
+R2 OK
+[2026-05-04 10:00:09] 完成（僅 R2）
+[2026-05-04 11:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.8°C 11.9km/h
+[SolarModel] UV=9.7 cloud=75% angle=0.95 => 85W (100%)
+HTML baked OK (2026-05-04 11:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_110009_index.html
+R2 OK
+[2026-05-04 11:00:09] 完成（僅 R2）
+[2026-05-04 12:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.8°C 13.3km/h
+[SolarModel] UV=10.4 cloud=75% angle=0.96 => 85W (100%)
+HTML baked OK (2026-05-04 12:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_120017_index.html
+R2 OK
+[2026-05-04 12:00:18] 完成（僅 R2）
+[2026-05-04 13:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.4°C 15.8km/h
+[SolarModel] UV=10.4 cloud=75% angle=0.96 => 85W (100%)
+HTML baked OK (2026-05-04 13:00:02)
+Backup saved: openclaw-status/backups/2026-05-04_130006_index.html
+R2 OK
+[2026-05-04 13:00:06] 完成（僅 R2）
+[2026-05-04 14:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.7°C 12.2km/h
+[SolarModel] UV=8.4 cloud=75% angle=0.94 => 79W (93%)
+HTML baked OK (2026-05-04 14:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_140004_index.html
+R2 OK
+[2026-05-04 14:00:05] 完成（僅 R2）
+[2026-05-04 15:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.2°C 10.4km/h
+[SolarModel] UV=2.9 cloud=75% angle=0.93 => 27W (32%)
+HTML baked OK (2026-05-04 15:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_150014_index.html
+R2 OK
+[2026-05-04 15:00:14] 完成（僅 R2）
+[2026-05-04 16:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 27.0°C 11.2km/h
+[SolarModel] UV=1.2 cloud=75% angle=0.91 => 11W (13%)
+HTML baked OK (2026-05-04 16:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_160004_index.html
+R2 OK
+[2026-05-04 16:00:05] 完成（僅 R2）
+[2026-05-04 17:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.7°C 10.4km/h
+[SolarModel] UV=0.4 cloud=75% angle=0.89 => 4W (4%)
+HTML baked OK (2026-05-04 17:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_170007_index.html
+R2 OK
+[2026-05-04 17:00:07] 完成（僅 R2）
+[2026-05-04 18:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.7°C 13.0km/h
+[SolarModel] UV=0.4 cloud=75% angle=0.87 => 3W (4%)
+HTML baked OK (2026-05-04 18:00:02)
+Backup saved: openclaw-status/backups/2026-05-04_180014_index.html
+R2 OK
+[2026-05-04 18:00:15] 完成（僅 R2）
+[2026-05-04 19:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.0°C 13.0km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 19:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_190006_index.html
+R2 OK
+[2026-05-04 19:00:07] 完成（僅 R2）
+[2026-05-04 20:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.8°C 13.3km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 20:00:02)
+Backup saved: openclaw-status/backups/2026-05-04_200006_index.html
+R2 OK
+[2026-05-04 20:00:07] 完成（僅 R2）
+[2026-05-04 21:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.1°C 7.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 21:00:02)
+Backup saved: openclaw-status/backups/2026-05-04_210012_index.html
+R2 OK
+[2026-05-04 21:00:13] 完成（僅 R2）
+[2026-05-04 22:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.6°C 4.7km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 22:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_220004_index.html
+R2 OK
+[2026-05-04 22:00:05] 完成（僅 R2）
+[2026-05-04 23:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.3°C 6.1km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-04 23:00:01)
+Backup saved: openclaw-status/backups/2026-05-04_230005_index.html
+R2 OK
+[2026-05-04 23:00:06] 完成（僅 R2）
+[2026-05-05 00:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.9°C 4.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 00:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_000009_index.html
+R2 OK
+[2026-05-05 00:00:10] 完成（僅 R2）
+[2026-05-05 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.6°C 9.7km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_010005_index.html
+R2 OK
+[2026-05-05 01:00:06] 完成（僅 R2）
+[2026-05-05 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.2°C 4.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_020008_index.html
+R2 OK
+[2026-05-05 02:00:09] 完成（僅 R2）
+[2026-05-05 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.0°C 4.7km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 03:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_030007_index.html
+R2 OK
+[2026-05-05 03:00:08] 完成（僅 R2）
+[2026-05-05 04:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.3°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 04:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_040005_index.html
+R2 OK
+[2026-05-05 04:00:05] 完成（僅 R2）
+[2026-05-05 05:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.2°C 1.1km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 05:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_050004_index.html
+R2 OK
+[2026-05-05 05:00:05] 完成（僅 R2）
+[2026-05-05 06:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.0°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.86 => 0W (0%)
+HTML baked OK (2026-05-05 06:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_060009_index.html
+R2 OK
+[2026-05-05 06:00:10] 完成（僅 R2）
+[2026-05-05 07:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.1°C 1.8km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.88 => 1W (1%)
+HTML baked OK (2026-05-05 07:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_070005_index.html
+R2 OK
+[2026-05-05 07:00:06] 完成（僅 R2）
+[2026-05-05 08:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.1°C 4.3km/h
+[SolarModel] UV=0.9 cloud=75% angle=0.90 => 8W (10%)
+HTML baked OK (2026-05-05 08:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_080007_index.html
+R2 OK
+[2026-05-05 08:00:08] 完成（僅 R2）
+[2026-05-05 09:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.4°C 6.8km/h
+[SolarModel] UV=0.9 cloud=75% angle=0.92 => 8W (10%)
+HTML baked OK (2026-05-05 09:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_090011_index.html
+R2 OK
+[2026-05-05 09:00:12] 完成（僅 R2）
+[2026-05-05 10:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.2°C 5.8km/h
+[SolarModel] UV=4.4 cloud=75% angle=0.94 => 41W (49%)
+HTML baked OK (2026-05-05 10:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_100010_index.html
+R2 OK
+[2026-05-05 10:00:11] 完成（僅 R2）
+[2026-05-05 11:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.0°C 3.2km/h
+[SolarModel] UV=6.2 cloud=75% angle=0.95 => 59W (69%)
+HTML baked OK (2026-05-05 11:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_110005_index.html
+R2 OK
+[2026-05-05 11:00:06] 完成（僅 R2）
+[2026-05-05 12:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.3°C 2.9km/h
+[SolarModel] UV=2.5 cloud=75% angle=0.96 => 24W (28%)
+HTML baked OK (2026-05-05 12:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_120017_index.html
+R2 OK
+[2026-05-05 12:00:17] 完成（僅 R2）
+[2026-05-05 13:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.3°C 4.3km/h
+[SolarModel] UV=1.4 cloud=75% angle=0.96 => 13W (16%)
+HTML baked OK (2026-05-05 13:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_130006_index.html
+R2 OK
+[2026-05-05 13:00:07] 完成（僅 R2）
+[2026-05-05 14:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.0°C 5.4km/h
+[SolarModel] UV=1.6 cloud=75% angle=0.94 => 15W (18%)
+HTML baked OK (2026-05-05 14:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_140013_index.html
+R2 OK
+[2026-05-05 14:00:14] 完成（僅 R2）
+[2026-05-05 15:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.4°C 9.0km/h
+[SolarModel] UV=2.1 cloud=75% angle=0.93 => 19W (23%)
+HTML baked OK (2026-05-05 15:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_150015_index.html
+R2 OK
+[2026-05-05 15:00:16] 完成（僅 R2）
+[2026-05-05 16:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.7°C 6.5km/h
+[SolarModel] UV=0.7 cloud=75% angle=0.91 => 6W (8%)
+HTML baked OK (2026-05-05 16:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_160010_index.html
+R2 OK
+[2026-05-05 16:00:11] 完成（僅 R2）
+[2026-05-05 17:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.4°C 7.6km/h
+[SolarModel] UV=0.7 cloud=75% angle=0.89 => 6W (7%)
+HTML baked OK (2026-05-05 17:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_170007_index.html
+R2 OK
+[2026-05-05 17:00:07] 完成（僅 R2）
+[2026-05-05 18:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.6°C 7.6km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.87 => 1W (1%)
+HTML baked OK (2026-05-05 18:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_180016_index.html
+R2 OK
+[2026-05-05 18:00:18] 完成（僅 R2）
+[2026-05-05 19:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.6°C 4.0km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 19:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_190005_index.html
+R2 OK
+[2026-05-05 19:00:06] 完成（僅 R2）
+[2026-05-05 20:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.4°C 4.7km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 20:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_200005_index.html
+R2 OK
+[2026-05-05 20:00:06] 完成（僅 R2）
+[2026-05-05 21:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.6°C 5.8km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 21:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_210014_index.html
+R2 OK
+[2026-05-05 21:00:15] 完成（僅 R2）
+[2026-05-05 22:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.8°C 3.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 22:00:01)
+Backup saved: openclaw-status/backups/2026-05-05_220006_index.html
+R2 OK
+[2026-05-05 22:00:06] 完成（僅 R2）
+[2026-05-05 23:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.7°C 9.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-05 23:00:02)
+Backup saved: openclaw-status/backups/2026-05-05_230007_index.html
+R2 OK
+[2026-05-05 23:00:08] 完成（僅 R2）
+[2026-05-06 00:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.9°C 5.8km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 00:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_000011_index.html
+R2 OK
+[2026-05-06 00:00:12] 完成（僅 R2）
+[2026-05-06 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.0°C 2.9km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_010006_index.html
+R2 OK
+[2026-05-06 01:00:07] 完成（僅 R2）
+[2026-05-06 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.9°C 4.3km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_020004_index.html
+R2 OK
+[2026-05-06 02:00:05] 完成（僅 R2）
+[2026-05-06 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.8°C 8.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 03:00:02)
+Backup saved: openclaw-status/backups/2026-05-06_030008_index.html
+R2 OK
+[2026-05-06 03:00:08] 完成（僅 R2）
+[2026-05-06 04:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.0°C 5.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 04:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_040004_index.html
+R2 OK
+[2026-05-06 04:00:05] 完成（僅 R2）
+[2026-05-06 05:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.9°C 4.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 05:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_050004_index.html
+R2 OK
+[2026-05-06 05:00:05] 完成（僅 R2）
+[2026-05-06 06:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.8°C 8.6km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.86 => 1W (1%)
+HTML baked OK (2026-05-06 06:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_060005_index.html
+R2 OK
+[2026-05-06 06:00:06] 完成（僅 R2）
+[2026-05-06 07:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 20.8°C 7.2km/h
+[SolarModel] UV=0.5 cloud=75% angle=0.88 => 4W (5%)
+HTML baked OK (2026-05-06 07:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_070005_index.html
+R2 OK
+[2026-05-06 07:00:06] 完成（僅 R2）
+[2026-05-06 08:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.2°C 6.1km/h
+[SolarModel] UV=2.3 cloud=75% angle=0.90 => 21W (24%)
+HTML baked OK (2026-05-06 08:00:02)
+Backup saved: openclaw-status/backups/2026-05-06_080005_index.html
+R2 OK
+[2026-05-06 08:00:05] 完成（僅 R2）
+[2026-05-06 09:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.9°C 5.4km/h
+[SolarModel] UV=4.8 cloud=26% angle=0.92 => 68W (80%)
+HTML baked OK (2026-05-06 09:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_090005_index.html
+R2 OK
+[2026-05-06 09:00:06] 完成（僅 R2）
+[2026-05-06 10:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.8°C 7.9km/h
+[SolarModel] UV=7.6 cloud=75% angle=0.94 => 71W (84%)
+HTML baked OK (2026-05-06 10:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_100004_index.html
+R2 OK
+[2026-05-06 10:00:05] 完成（僅 R2）
+[2026-05-06 11:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.2°C 4.0km/h
+[SolarModel] UV=9.9 cloud=75% angle=0.95 => 85W (100%)
+HTML baked OK (2026-05-06 11:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_110005_index.html
+R2 OK
+[2026-05-06 11:00:06] 完成（僅 R2）
+[2026-05-06 12:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.9°C 5.8km/h
+[SolarModel] UV=10.9 cloud=75% angle=0.96 => 85W (100%)
+HTML baked OK (2026-05-06 12:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_120011_index.html
+R2 OK
+[2026-05-06 12:00:12] 完成（僅 R2）
+[2026-05-06 13:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 27.7°C 7.9km/h
+[SolarModel] UV=10.0 cloud=75% angle=0.96 => 85W (100%)
+HTML baked OK (2026-05-06 13:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_130004_index.html
+R2 OK
+[2026-05-06 13:00:04] 完成（僅 R2）
+[2026-05-06 14:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 27.0°C 7.9km/h
+[SolarModel] UV=10.0 cloud=50% angle=0.94 => 85W (100%)
+HTML baked OK (2026-05-06 14:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_140004_index.html
+R2 OK
+[2026-05-06 14:00:05] 完成（僅 R2）
+[2026-05-06 15:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.6°C 9.7km/h
+[SolarModel] UV=5.0 cloud=50% angle=0.93 => 59W (69%)
+HTML baked OK (2026-05-06 15:00:02)
+Backup saved: openclaw-status/backups/2026-05-06_150017_index.html
+R2 OK
+[2026-05-06 15:00:18] 完成（僅 R2）
+[2026-05-06 16:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.5°C 9.0km/h
+[SolarModel] UV=5.0 cloud=50% angle=0.91 => 58W (68%)
+HTML baked OK (2026-05-06 16:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_160005_index.html
+R2 OK
+[2026-05-06 16:00:06] 完成（僅 R2）
+[2026-05-06 17:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.2°C 9.0km/h
+[SolarModel] UV=2.5 cloud=50% angle=0.89 => 28W (33%)
+HTML baked OK (2026-05-06 17:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_170004_index.html
+R2 OK
+[2026-05-06 17:00:05] 完成（僅 R2）
+[2026-05-06 18:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.8°C 7.9km/h
+[SolarModel] UV=0.1 cloud=50% angle=0.87 => 1W (1%)
+HTML baked OK (2026-05-06 18:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_180013_index.html
+R2 OK
+[2026-05-06 18:00:14] 完成（僅 R2）
+[2026-05-06 19:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.1°C 6.8km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 19:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_190005_index.html
+R2 OK
+[2026-05-06 19:00:06] 完成（僅 R2）
+[2026-05-06 20:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.3°C 7.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 20:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_200005_index.html
+R2 OK
+[2026-05-06 20:00:05] 完成（僅 R2）
+[2026-05-06 21:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.2°C 5.4km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 21:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_210009_index.html
+R2 OK
+[2026-05-06 21:00:10] 完成（僅 R2）
+[2026-05-06 22:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.1°C 3.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 22:00:02)
+Backup saved: openclaw-status/backups/2026-05-06_220005_index.html
+R2 OK
+[2026-05-06 22:00:06] 完成（僅 R2）
+[2026-05-06 23:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.1°C 1.4km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-06 23:00:01)
+Backup saved: openclaw-status/backups/2026-05-06_230004_index.html
+R2 OK
+[2026-05-06 23:00:05] 完成（僅 R2）
+[2026-05-07 00:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.0°C 2.5km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 00:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_000008_index.html
+R2 OK
+[2026-05-07 00:00:09] 完成（僅 R2）
+[2026-05-07 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.8°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_010004_index.html
+R2 OK
+[2026-05-07 01:00:05] 完成（僅 R2）
+[2026-05-07 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.5°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_020005_index.html
+R2 OK
+[2026-05-07 02:00:06] 完成（僅 R2）
+[2026-05-07 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.7°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 03:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_030006_index.html
+R2 OK
+[2026-05-07 03:00:06] 完成（僅 R2）
+[2026-05-07 04:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.5°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 04:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_040004_index.html
+R2 OK
+[2026-05-07 04:00:05] 完成（僅 R2）
+[2026-05-07 05:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.4°C 0.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 05:00:02)
+Backup saved: openclaw-status/backups/2026-05-07_050004_index.html
+R2 OK
+[2026-05-07 05:00:05] 完成（僅 R2）
+[2026-05-07 17:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 29.0°C 10.4km/h
+[SolarModel] UV=2.3 cloud=25% angle=0.89 => 32W (37%)
+HTML baked OK (2026-05-07 17:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_170004_index.html
+R2 OK
+[2026-05-07 17:00:05] 完成（僅 R2）
+[2026-05-07 18:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 28.1°C 7.6km/h
+[SolarModel] UV=0.8 cloud=50% angle=0.87 => 9W (10%)
+HTML baked OK (2026-05-07 18:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_180012_index.html
+R2 OK
+[2026-05-07 18:00:13] 完成（僅 R2）
+[2026-05-07 19:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.6°C 4.7km/h
+[SolarModel] UV=0.0 cloud=50% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 19:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_190005_index.html
+R2 OK
+[2026-05-07 19:00:06] 完成（僅 R2）
+[2026-05-07 20:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.5°C 6.5km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 20:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_200004_index.html
+R2 OK
+[2026-05-07 20:00:05] 完成（僅 R2）
+[2026-05-07 21:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.3°C 2.9km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 21:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_210008_index.html
+R2 OK
+[2026-05-07 21:00:09] 完成（僅 R2）
+[2026-05-07 22:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.1°C 3.6km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 22:00:01)
+Backup saved: openclaw-status/backups/2026-05-07_220004_index.html
+R2 OK
+[2026-05-07 22:00:05] 完成（僅 R2）
+[2026-05-07 23:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.6°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-07 23:00:02)
+Backup saved: openclaw-status/backups/2026-05-07_230006_index.html
+R2 OK
+[2026-05-07 23:00:06] 完成（僅 R2）
+[2026-05-08 00:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.7°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 00:00:02)
+Backup saved: openclaw-status/backups/2026-05-08_000009_index.html
+R2 OK
+[2026-05-08 00:00:10] 完成（僅 R2）
+[2026-05-08 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.3°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_010004_index.html
+R2 OK
+[2026-05-08 01:00:05] 完成（僅 R2）
+[2026-05-08 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.5°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_020004_index.html
+R2 OK
+[2026-05-08 02:00:05] 完成（僅 R2）
+[2026-05-08 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.4°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 03:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_030007_index.html
+R2 OK
+[2026-05-08 03:00:08] 完成（僅 R2）
+[2026-05-08 04:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.1°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 04:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_040005_index.html
+R2 OK
+[2026-05-08 04:00:06] 完成（僅 R2）
+[2026-05-08 05:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.3°C 0.0km/h
+[SolarModel] UV=0.0 cloud=25% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 05:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_050004_index.html
+R2 OK
+[2026-05-08 05:00:04] 完成（僅 R2）
+[2026-05-08 06:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.1°C 1.8km/h
+[SolarModel] UV=0.1 cloud=25% angle=0.86 => 1W (2%)
+HTML baked OK (2026-05-08 06:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_060005_index.html
+R2 OK
+[2026-05-08 06:00:06] 完成（僅 R2）
+[2026-05-08 07:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.2°C 1.8km/h
+[SolarModel] UV=0.1 cloud=50% angle=0.88 => 1W (1%)
+HTML baked OK (2026-05-08 07:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_070005_index.html
+R2 OK
+[2026-05-08 07:00:06] 完成（僅 R2）
+[2026-05-08 08:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.2°C 4.0km/h
+[SolarModel] UV=2.4 cloud=50% angle=0.90 => 28W (32%)
+HTML baked OK (2026-05-08 08:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_080004_index.html
+R2 OK
+[2026-05-08 08:00:05] 完成（僅 R2）
+[2026-05-08 09:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.6°C 9.7km/h
+[SolarModel] UV=2.4 cloud=70% angle=0.92 => 23W (27%)
+HTML baked OK (2026-05-08 09:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_090012_index.html
+R2 OK
+[2026-05-08 09:00:12] 完成（僅 R2）
+[2026-05-08 10:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 28.5°C 6.5km/h
+[SolarModel] UV=4.9 cloud=75% angle=0.94 => 46W (54%)
+HTML baked OK (2026-05-08 10:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_100005_index.html
+R2 OK
+[2026-05-08 10:00:06] 完成（僅 R2）
+[2026-05-08 11:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 28.3°C 7.6km/h
+[SolarModel] UV=9.4 cloud=75% angle=0.95 => 85W (100%)
+HTML baked OK (2026-05-08 11:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_110005_index.html
+R2 OK
+[2026-05-08 11:00:06] 完成（僅 R2）
+[2026-05-08 12:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 28.9°C 7.2km/h
+[SolarModel] UV=10.3 cloud=75% angle=0.96 => 85W (100%)
+HTML baked OK (2026-05-08 12:00:02)
+Backup saved: openclaw-status/backups/2026-05-08_120020_index.html
+R2 OK
+[2026-05-08 12:00:21] 完成（僅 R2）
+[2026-05-08 13:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 29.4°C 6.8km/h
+[SolarModel] UV=10.3 cloud=75% angle=0.96 => 85W (100%)
+HTML baked OK (2026-05-08 13:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_130004_index.html
+R2 OK
+[2026-05-08 13:00:05] 完成（僅 R2）
+[2026-05-08 14:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 29.7°C 10.8km/h
+[SolarModel] UV=8.4 cloud=75% angle=0.94 => 79W (93%)
+HTML baked OK (2026-05-08 14:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_140012_index.html
+R2 OK
+[2026-05-08 14:00:13] 完成（僅 R2）
+[2026-05-08 15:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 29.2°C 11.2km/h
+[SolarModel] UV=3.3 cloud=75% angle=0.93 => 31W (36%)
+HTML baked OK (2026-05-08 15:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_150012_index.html
+R2 OK
+[2026-05-08 15:00:13] 完成（僅 R2）
+[2026-05-08 16:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 28.3°C 9.4km/h
+[SolarModel] UV=1.9 cloud=75% angle=0.91 => 17W (20%)
+HTML baked OK (2026-05-08 16:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_160005_index.html
+R2 OK
+[2026-05-08 16:00:06] 完成（僅 R2）
+[2026-05-08 17:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 27.2°C 10.4km/h
+[SolarModel] UV=0.6 cloud=75% angle=0.89 => 5W (6%)
+HTML baked OK (2026-05-08 17:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_170003_index.html
+R2 OK
+[2026-05-08 17:00:04] 完成（僅 R2）
+[2026-05-08 18:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.4°C 11.5km/h
+[SolarModel] UV=0.6 cloud=75% angle=0.87 => 5W (6%)
+HTML baked OK (2026-05-08 18:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_180014_index.html
+R2 OK
+[2026-05-08 18:00:15] 完成（僅 R2）
+[2026-05-08 19:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.4°C 13.0km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 19:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_190007_index.html
+R2 OK
+[2026-05-08 19:00:07] 完成（僅 R2）
+[2026-05-08 20:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.7°C 14.4km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 20:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_200006_index.html
+R2 OK
+[2026-05-08 20:00:07] 完成（僅 R2）
+[2026-05-08 21:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.0°C 12.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 21:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_210007_index.html
+R2 OK
+[2026-05-08 21:00:08] 完成（僅 R2）
+[2026-05-08 22:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.4°C 11.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 22:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_220006_index.html
+R2 OK
+[2026-05-08 22:00:07] 完成（僅 R2）
+[2026-05-08 23:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.0°C 10.1km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-08 23:00:01)
+Backup saved: openclaw-status/backups/2026-05-08_230005_index.html
+R2 OK
+[2026-05-08 23:00:06] 完成（僅 R2）
+[2026-05-09 00:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.7°C 9.4km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 00:00:02)
+Backup saved: openclaw-status/backups/2026-05-09_000008_index.html
+R2 OK
+[2026-05-09 00:00:09] 完成（僅 R2）
+[2026-05-09 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.4°C 10.1km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_010010_index.html
+R2 OK
+[2026-05-09 01:00:11] 完成（僅 R2）
+[2026-05-09 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.2°C 11.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_020004_index.html
+R2 OK
+[2026-05-09 02:00:05] 完成（僅 R2）
+[2026-05-09 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.0°C 11.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 03:00:02)
+Backup saved: openclaw-status/backups/2026-05-09_030006_index.html
+R2 OK
+[2026-05-09 03:00:07] 完成（僅 R2）
+[2026-05-09 04:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.7°C 9.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 04:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_040005_index.html
+R2 OK
+[2026-05-09 04:00:06] 完成（僅 R2）
+[2026-05-09 05:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.9°C 9.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 05:00:02)
+Backup saved: openclaw-status/backups/2026-05-09_050005_index.html
+R2 OK
+[2026-05-09 05:00:05] 完成（僅 R2）
+[2026-05-09 06:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.7°C 13.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.86 => 0W (0%)
+HTML baked OK (2026-05-09 06:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_060006_index.html
+R2 OK
+[2026-05-09 06:00:07] 完成（僅 R2）
+[2026-05-09 07:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 21.8°C 13.7km/h
+[SolarModel] UV=0.5 cloud=75% angle=0.88 => 4W (5%)
+HTML baked OK (2026-05-09 07:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_070004_index.html
+R2 OK
+[2026-05-09 07:00:05] 完成（僅 R2）
+[2026-05-09 08:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.2°C 15.8km/h
+[SolarModel] UV=0.5 cloud=75% angle=0.90 => 5W (5%)
+HTML baked OK (2026-05-09 08:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_080004_index.html
+R2 OK
+[2026-05-09 08:00:05] 完成（僅 R2）
+[2026-05-09 09:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.2°C 13.7km/h
+[SolarModel] UV=1.8 cloud=66% angle=0.92 => 18W (21%)
+HTML baked OK (2026-05-09 09:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_090008_index.html
+R2 OK
+[2026-05-09 09:00:09] 完成（僅 R2）
+[2026-05-09 10:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.5°C 9.7km/h
+[SolarModel] UV=2.8 cloud=75% angle=0.94 => 26W (31%)
+HTML baked OK (2026-05-09 10:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_100003_index.html
+R2 OK
+[2026-05-09 10:00:04] 完成（僅 R2）
+[2026-05-09 11:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.1°C 11.2km/h
+[SolarModel] UV=6.5 cloud=75% angle=0.95 => 62W (73%)
+HTML baked OK (2026-05-09 11:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_110004_index.html
+R2 OK
+[2026-05-09 11:00:05] 完成（僅 R2）
+[2026-05-09 12:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.2°C 13.0km/h
+[SolarModel] UV=5.2 cloud=75% angle=0.96 => 50W (59%)
+HTML baked OK (2026-05-09 12:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_120019_index.html
+R2 OK
+[2026-05-09 12:00:20] 完成（僅 R2）
+[2026-05-09 13:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.6°C 7.9km/h
+[SolarModel] UV=5.2 cloud=75% angle=0.96 => 50W (59%)
+HTML baked OK (2026-05-09 13:00:02)
+Backup saved: openclaw-status/backups/2026-05-09_130005_index.html
+R2 OK
+[2026-05-09 13:00:06] 完成（僅 R2）
+[2026-05-09 14:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 26.1°C 13.7km/h
+[SolarModel] UV=7.0 cloud=75% angle=0.94 => 66W (78%)
+HTML baked OK (2026-05-09 14:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_140006_index.html
+R2 OK
+[2026-05-09 14:00:06] 完成（僅 R2）
+[2026-05-09 15:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.5°C 13.3km/h
+[SolarModel] UV=1.7 cloud=75% angle=0.93 => 16W (19%)
+HTML baked OK (2026-05-09 15:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_150016_index.html
+R2 OK
+[2026-05-09 15:00:17] 完成（僅 R2）
+[2026-05-09 16:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.5°C 16.6km/h
+[SolarModel] UV=0.4 cloud=75% angle=0.91 => 4W (4%)
+HTML baked OK (2026-05-09 16:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_160005_index.html
+R2 OK
+[2026-05-09 16:00:06] 完成（僅 R2）
+[2026-05-09 17:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.6°C 15.5km/h
+[SolarModel] UV=0.4 cloud=75% angle=0.89 => 4W (4%)
+HTML baked OK (2026-05-09 17:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_170006_index.html
+R2 OK
+[2026-05-09 17:00:07] 完成（僅 R2）
+[2026-05-09 18:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 24.4°C 9.4km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.87 => 1W (1%)
+HTML baked OK (2026-05-09 18:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_180018_index.html
+R2 OK
+[2026-05-09 18:00:19] 完成（僅 R2）
+[2026-05-09 19:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.7°C 10.8km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 19:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_190006_index.html
+R2 OK
+[2026-05-09 19:00:07] 完成（僅 R2）
+[2026-05-09 20:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.2°C 11.9km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 20:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_200005_index.html
+R2 OK
+[2026-05-09 20:00:06] 完成（僅 R2）
+[2026-05-09 21:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.1°C 7.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 21:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_210010_index.html
+R2 OK
+[2026-05-09 21:00:11] 完成（僅 R2）
+[2026-05-09 22:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.1°C 4.7km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 22:00:01)
+Backup saved: openclaw-status/backups/2026-05-09_220005_index.html
+R2 OK
+[2026-05-09 22:00:06] 完成（僅 R2）
+[2026-05-09 23:00:02] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.5°C 7.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-09 23:00:02)
+Backup saved: openclaw-status/backups/2026-05-09_230006_index.html
+R2 OK
+[2026-05-09 23:00:07] 完成（僅 R2）
+[2026-05-10 00:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.6°C 3.6km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-10 00:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_000009_index.html
+R2 OK
+[2026-05-10 00:00:10] 完成（僅 R2）
+[2026-05-10 01:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.7°C 5.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-10 01:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_010006_index.html
+R2 OK
+[2026-05-10 01:00:07] 完成（僅 R2）
+[2026-05-10 02:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.5°C 6.1km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-10 02:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_020005_index.html
+R2 OK
+[2026-05-10 02:00:05] 完成（僅 R2）
+[2026-05-10 03:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.3°C 4.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-10 03:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_030006_index.html
+R2 OK
+[2026-05-10 03:00:06] 完成（僅 R2）
+[2026-05-10 04:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.4°C 2.2km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-10 04:00:02)
+Backup saved: openclaw-status/backups/2026-05-10_040005_index.html
+R2 OK
+[2026-05-10 04:00:05] 完成（僅 R2）
+[2026-05-10 05:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.4°C 5.0km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.00 => 0W (0%)
+HTML baked OK (2026-05-10 05:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_050006_index.html
+R2 OK
+[2026-05-10 05:00:06] 完成（僅 R2）
+[2026-05-10 06:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.3°C 2.5km/h
+[SolarModel] UV=0.0 cloud=75% angle=0.86 => 0W (0%)
+HTML baked OK (2026-05-10 06:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_060009_index.html
+R2 OK
+[2026-05-10 06:00:10] 完成（僅 R2）
+[2026-05-10 07:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 22.3°C 4.0km/h
+[SolarModel] UV=0.1 cloud=75% angle=0.88 => 1W (1%)
+HTML baked OK (2026-05-10 07:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_070005_index.html
+R2 OK
+[2026-05-10 07:00:06] 完成（僅 R2）
+[2026-05-10 08:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 23.7°C 9.4km/h
+[SolarModel] UV=0.6 cloud=75% angle=0.90 => 5W (6%)
+HTML baked OK (2026-05-10 08:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_080006_index.html
+R2 OK
+[2026-05-10 08:00:07] 完成（僅 R2）
+[2026-05-10 09:00:01] Bake 系統狀態頁面...
+CWA Weather OK: 雲林東勢 25.1°C 5.0km/h
+[SolarModel] UV=2.6 cloud=49% angle=0.92 => 31W (36%)
+HTML baked OK (2026-05-10 09:00:01)
+Backup saved: openclaw-status/backups/2026-05-10_090010_index.html
+R2 OK
+[2026-05-10 09:00:11] 完成（僅 R2）

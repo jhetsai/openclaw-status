@@ -120,16 +120,35 @@ def get_tw_annual_dividends(dividend_data=None):
     return result
 
 # ===== US Historical Dividends (from static data) =====
-def get_us_dividend_annual():
-    """美股歷年配息：從 div_history.json 讀取真實銀行記錄（已扣30%預扣，TWD）"""
+def get_us_dividend_annual(fx_rate=31.569):
+    """美股歷年配息：從 div_history.json 讀取真實銀行記錄
+    - 2020-2025: 原始資料為 TWD，直接使用
+    - 2026: 原始資料為 USD，需乘以匯率轉換為 TWD
+    """
     hist_path = os.path.join(WORKSPACE, 'us_stock', 'div_history.json')
     with open(hist_path) as f:
         div_hist = json.load(f)
-    return [{'year': d['year'], 'total': d['total'],
-             'aapl': div_hist['by_stock'].get('AAPL',{}).get('years',{}).get(d['year'],0),
-             'msft': div_hist['by_stock'].get('MSFT',{}).get('years',{}).get(d['year'],0),
-             'bnd': div_hist['by_stock'].get('BND',{}).get('years',{}).get(d['year'],0)}
-            for d in div_hist['annual']]
+    
+    result = []
+    for d in div_hist['annual']:
+        year = d['year']
+        total = d['total']
+        currency = d.get('currency', 'TWD')
+        
+        # 2026 年的資料是 USD，需要轉換
+        if currency == 'USD' or (year == '2026' and 'currency' not in d):
+            # 確認是 2026 且為 USD（根據新的 currency_note）
+            if year == '2026':
+                total = round(total * fx_rate, 2)
+        
+        result.append({
+            'year': year,
+            'total': total,
+            'currency': 'TWD',  # 輸出時統一為 TWD（2026已轉換）
+            'original_currency': currency  # 保留原始幣別供圖表參考
+        })
+    
+    return result
 
 
 
@@ -206,7 +225,7 @@ def main():
     tw_annual = get_tw_annual_dividends(tw_div)
 
     # 5. US annual history
-    us_annual = get_us_dividend_annual()
+    us_annual = get_us_dividend_annual(fx['USD_TWD'])
 
     # 6. Download dividend_data.json from R2 for div_info
     import boto3
@@ -252,10 +271,51 @@ def main():
 
     us_years = [d['year'] for d in us_hist['annual']]
     us_datasets = []
+    # 取得匯率用於 2026 USD -> TWD 轉換
+    usd_to_twd = fx['USD_TWD']
     for i, sym in enumerate(['AAPL','MSFT','BND']):
         yr_data = us_hist['by_stock'].get(sym, {}).get('years', {})
-        data = [round(yr_data.get(yr, 0), 2) for yr in us_years]
+        # 檢查 2026 是否為 USD（根據 currency_note 或新版結構）
+        data = []
+        for yr in us_years:
+            val = yr_data.get(yr, 0)
+            # 如果是 2026 年且值很小（約 < 1000），很可能是 USD
+            if yr == '2026' and isinstance(val, (int, float)) and val < 1000:
+                val = round(val * usd_to_twd, 2)  # USD -> TWD 轉換
+            elif isinstance(val, dict):
+                # 新結構：{'amt': xx, 'currency': 'USD/TWD'}
+                currency = val.get('currency', 'TWD')
+                if currency == 'USD':
+                    val = round(val['amt'] * usd_to_twd, 2)
+                else:
+                    val = val['amt']
+            data.append(round(val, 2))
         us_datasets.append({'label': sym, 'data': data, 'backgroundColor': us_colors[i]})
+
+    # Pre-compute summary fields (stock-only, no cash)
+    ORIG_USD_RATE = 28.4481
+    US_BASE_COST = 105*145.02 + 116*73.21 + 55*263.51
+    usCostAtBase = US_BASE_COST * ORIG_USD_RATE
+    twCost = sum(s['totalCost'] for s in tw_stocks)
+    stockCost = twCost + usCostAtBase
+    twMktval = sum(s['mktval'] for s in tw_stocks)
+    usMktval = sum(s.get('mktvalTwd', 0) for s in us_stocks)
+    stockMktval = twMktval + usMktval
+    # 台股 2026 已入帳+待發放（實際數字）
+    tw_confirmed = tw_div.get('confirmed', {}).get('total', 0)
+    tw_pending = tw_div.get('pending', {}).get('total', 0)
+    tw_annual_2026 = tw_confirmed + tw_pending
+    
+    # 美股 2026 實際配息（從 div_history.json，取已轉換的 TWD 值）
+    us_div_2026_twd = 0
+    for entry in us_annual:
+        if entry.get('year') == '2026':
+            us_div_2026_twd = entry.get('total', 0)
+            break
+    
+    annualDiv = round(tw_annual_2026 + us_div_2026_twd)
+    yieldCost = f"{(annualDiv / stockCost * 100):.2f}%" if stockCost > 0 else "0%"
+    yieldCur = f"{(annualDiv / stockMktval * 100):.2f}%" if stockMktval > 0 else "0%"
 
     portfolio = {
         'updated': datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -275,6 +335,13 @@ def main():
         'div_history': {
             'tw': {'years': tw_years, 'datasets': tw_datasets},
             'us': {'years': us_years, 'datasets': us_datasets}
+        },
+        'summary': {
+            'stockCost': round(stockCost),
+            'stockMktval': round(stockMktval),
+            'annualDiv': round(annualDiv),
+            'yieldCost': yieldCost,
+            'yieldCur': yieldCur
         }
     }
 

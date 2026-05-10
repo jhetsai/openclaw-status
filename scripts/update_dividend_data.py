@@ -4,6 +4,19 @@
 """
 import json, subprocess, re, datetime, boto3, os
 from html.parser import HTMLParser
+# Load dynamic exchange rate (臺灣銀行即期匯率本行買入)
+WORKSPACE = '/home/jhe/.openclaw/workspace'
+_EXCH = os.path.join(WORKSPACE, 'exchange_rate.json')
+if os.path.exists(_EXCH):
+    try:
+        with open(_EXCH) as f:
+            _d = json.load(f)
+            USD_TWD = float(_d.get('USD_TWD', 31.569))
+    except:
+        USD_TWD = 31.569
+else:
+    USD_TWD = 31.569
+
 
 class DivParser(HTMLParser):
     def __init__(self):
@@ -74,11 +87,11 @@ bnd_historical_shares = {
     '2026-04-01': 115,
     '2026-05-01': 116,
 }
-# 年化配息率（每股股利 x 頻率）
+# 每期每股配息（來自 Yahoo Finance events/div）
 us_div_info = {
-    'AAPL': {'div': 1.030, 'freq': '季配', 'per_year': 4},
-    'MSFT': {'div': 3.400, 'freq': '季配', 'per_year': 4},
-    'BND':  {'div': 3.091, 'freq': '月配', 'per_year': 12},
+    'AAPL': {'div': 0.26, 'freq': '季配', 'per_year': 4},
+    'MSFT': {'div': 0.91, 'freq': '季配', 'per_year': 4},
+    'BND':  {'div': 0.242, 'freq': '月配', 'per_year': 12},
 }
 confirmed_us, pending_us = [], []
 today_ts = int(datetime.datetime.now().timestamp())
@@ -110,14 +123,21 @@ for sym, shares in us_shares_now.items():
 
 conf_usd = sum(r['total'] for r in confirmed_us)
 pend_usd = sum(r['total'] for r in pending_us)
-print(f"  美股：已入帳 {len(confirmed_us)} 筆，${conf_usd:.2f}（~{round(conf_usd*31.569):,.0f} TWD）")
+print(f"  美股：已入帳 {len(confirmed_us)} 筆，${conf_usd:.2f}（~{round(conf_usd*USD_TWD):,.0f} TWD）")
 print(f"  美股：待發放 {len(pending_us)} 筆，${pend_usd:.2f}")
 
-# === 美股年化配息資訊（寫入 div_info）===
+# === 美股年化配息資訊（從 confirmed_us 取最新一筆 per_share）===
 us_div_info_computed = {}
-for sym, info in us_div_info.items():
-    ann = round(info['div'] * info['per_year'], 3)
-    us_div_info_computed[sym] = {'div': info['div'], 'freq': info['freq'], 'ann_div': ann}
+by_code_us = {}
+for r in confirmed_us:
+    by_code_us.setdefault(r['code'], []).append(r)
+for sym, recs in by_code_us.items():
+    latest = sorted(recs, key=lambda x: x['date'], reverse=True)[0]
+    div = latest['per_share']  # 最近一期每股配息（已是正確值）
+    freq = us_div_info.get(sym, {}).get('freq', '季配')
+    per_year = us_div_info.get(sym, {}).get('per_year', 4)
+    ann = round(div * per_year, 3)
+    us_div_info_computed[sym] = {'div': div, 'freq': freq, 'ann_div': ann}
 
 # === 歷年股息收入（美股）===
 us_annual = [
@@ -152,34 +172,28 @@ tw_annual = [
 tw2026_amt = sum(r['amount'] for r in confirmed_tw if r['payout'].startswith('2026'))
 tw_annual.append({'year': 2026, 'amt': tw2026_amt})
 
-# === 台股年化配息資訊（從 tw_dividend_detail.json）===
+# === 台股年化配息資訊（從 confirmed_tw / pending_tw，取最新一筆）===
 tw_div_info_computed = {}
-try:
-    with open('/home/jhe/.openclaw/workspace/taiwan_stock/tw_dividend_detail.json') as f:
-        twdd = json.load(f)
-    for code, records in twdd.get('stocks', {}).items():
-        # 取最新一筆（已除息的最近期）
-        latest = sorted(records, key=lambda x: x['payout_date'], reverse=True)[0] if records else None
-        if latest:
-            period = latest['period']
-            cash = latest['cash_dividend']
-            # 推估頻率
-            if 'Q' in period:
-                freq = '季配'
-                per_year = 4
-            elif 'H' in period:
-                freq = '半年配'
-                per_year = 2
-            elif 'M' in period:
-                freq = '月配'
-                per_year = 12
-            else:
-                freq = '年配'
-                per_year = 1
-            ann = round(cash * per_year, 3)
-            tw_div_info_computed[code] = {'div': cash, 'freq': freq, 'ann_div': ann}
-except:
-    pass
+all_tw = confirmed_tw + pending_tw
+for code in set(r['code'] for r in all_tw):
+    rows = [r for r in all_tw if r['code'] == code]
+    latest = sorted(rows, key=lambda x: x['payout'], reverse=True)[0]
+    cash = latest['cash']  # 每股股利（已是正確單位）
+    period = latest['period']
+    if 'Q' in period:
+        freq = '季配'
+        per_year = 4
+    elif 'H' in period:
+        freq = '半年配'
+        per_year = 2
+    elif 'M' in period:
+        freq = '月配'
+        per_year = 12
+    else:
+        freq = '年配'
+        per_year = 1
+    ann = round(cash * per_year, 3)
+    tw_div_info_computed[code] = {'div': cash, 'freq': freq, 'ann_div': ann}
 
 # === 合併所有資料 ===
 div_data = {
@@ -191,8 +205,8 @@ div_data = {
         'div_info': tw_div_info_computed,
     },
     'us': {
-        'confirmed': {'total_usd': round(conf_usd, 2), 'total_twd': round(conf_usd * 31.569, 0), 'rows': confirmed_us},
-        'pending': {'total_usd': round(pend_usd, 2), 'total_twd': round(pend_usd * 31.569, 0), 'rows': pending_us},
+        'confirmed': {'total_usd': round(conf_usd, 2), 'total_twd': round(conf_usd * USD_TWD, 0), 'rows': confirmed_us},
+        'pending': {'total_usd': round(pend_usd, 2), 'total_twd': round(pend_usd * USD_TWD, 0), 'rows': pending_us},
         'annual': us_annual,
         'div_info': us_div_info_computed,
     }
@@ -220,7 +234,7 @@ with open('/tmp/index_r2.html') as f:
     html = f.read()
 
 tw2026 = sum(r['amount'] for r in confirmed_tw) + sum(r['amount'] for r in pending_tw)
-us2026_twd = round((conf_usd + pend_usd) * 31.569)
+us2026_twd = round((conf_usd + pend_usd) * USD_TWD)
 
 import re
 html = re.sub(
@@ -228,12 +242,13 @@ html = re.sub(
     f'{{year:2026,amt:{tw2026}}}',
     html
 )
-aapl2026 = round(sum(r['gross'] for r in confirmed_us if r['code']=='AAPL'))
-msft2026 = round(sum(r['gross'] for r in confirmed_us if r['code']=='MSFT'))
-bnd2026 = round(sum(r['gross'] for r in confirmed_us if r['code']=='BND'))
+us2026_net = round(sum(r['total'] for r in confirmed_us) + sum(r['total'] for r in pending_us), 2)
+aapl2026_net = round(sum(r['total'] for r in confirmed_us if r['code']=='AAPL'), 2)
+msft2026_net = round(sum(r['total'] for r in confirmed_us if r['code']=='MSFT'), 2)
+bnd2026_net = round(sum(r['total'] for r in confirmed_us if r['code']=='BND'), 2)
 html = re.sub(
-    r'\{year:2026, aapl:[\d.]+, msft:[\d.]+, bnd:[\d.]+, total:[\d.]+\}',
-    f'{{year:2026, aapl:{aapl2026}, msft:{msft2026}, bnd:{bnd2026}, total:{us2026_twd}}}',
+    r'\{year:2026, aapl:[0-9.]+, msft:[0-9.]+, bnd:[0-9.]+, arkk:0, total:[0-9.]+\}',
+    f'{{year:2026, aapl:{aapl2026_net}, msft:{msft2026_net}, bnd:{bnd2026_net}, arkk:0, total:{us2026_net}}}',
     html
 )
 

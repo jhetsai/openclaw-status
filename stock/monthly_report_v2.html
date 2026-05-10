@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0f1629; color: #e8ecf5; font-family: 'Segoe UI', 'PingFang TC', system-ui, sans-serif; padding: 20px; }
+.wrapper { background: linear-gradient(145deg, #0f1629, #162040); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.header { text-align: center; padding-bottom: 15px; border-bottom: 1px solid #1e3a5f; margin-bottom: 15px; }
+.header h1 { font-size: 1.2rem; background: linear-gradient(135deg, #00f0ff, #0080ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 1px; }
+.header .sub { color: #7a8ba8; font-size: 0.72rem; margin-top: 4px; }
+.summary { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 15px 0; }
+.s-card { background: #1a2d4a; border-radius: 10px; padding: 10px 14px; text-align: center; min-width: 90px; border: 1px solid #2a4a6a; }
+.s-card .num { font-size: 1.1rem; font-weight: 700; }
+.s-card .lbl { font-size: 0.62rem; color: #7a8ba8; margin-top: 2px; }
+.s-card .tag { font-size: 0.58rem; padding: 1px 5px; border-radius: 3px; margin-top: 3px; display: inline-block; }
+.pos { color: #4dff91; } .neg { color: #ff5d7d; } .mid { color: #ffc940; }
+table { width: 100%; border-collapse: collapse; font-size: 0.68rem; }
+th { background: #1a2d4a; color: #00d8ff; padding: 6px 5px; text-align: center; font-weight: 600; }
+td { padding: 5px 4px; text-align: center; border-bottom: 1px solid #111d2e; }
+.ln { text-align: left; font-weight: 600; color: #a8c4e8; }
+.tot { background: #162844; font-weight: 700; }
+.tot td { color: #00f0ff; border-top: 2px solid #00d8ff; padding: 7px 5px; }
+.footer { text-align: center; color: #4a5f7a; font-size: 0.62rem; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="header">
+<h1>2026 各月份帳上獲利</h1>
+<div class="sub">基準：2025/12/31 收盤價｜截至 2026/05/07</div>
+</div>
+<div class="summary">
+<div class="s-card"><div class="num pos">+68,806</div><div class="lbl">1月</div><div class="tag" style="background:#1a3d2a;color:#4dff91">MVP 00692 +65K</div></div>
+<div class="s-card"><div class="num pos">+129,947</div><div class="lbl">2月</div><div class="tag" style="background:#1a3d2a;color:#4dff91">MVP 00692 +71K</div></div>
+<div class="s-card"><div class="num neg">-360,953</div><div class="lbl">3月</div><div class="tag" style="background:#3d1a1a;color:#ff5d7d">全軍覆沒</div></div>
+<div class="s-card"><div class="num pos">+613,895</div><div class="lbl">4月</div><div class="tag" style="background:#1a3d2a;color:#4dff91">最佳月份</div></div>
+<div class="s-card"><div class="num pos">+344,182</div><div class="lbl">5月(至今)</div><div class="tag" style="background:#1a3d2a;color:#4dff91">持續上漲</div></div>
+</div>
+<table>
+<thead>
+<tr><th>股票</th><th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月(至今)</th></tr>
+</thead>
+<tbody>
+<tr><td class="ln">0056</td><td class="pos">+5,100</td><td class="pos">+16,260</td><td class="neg">-18,960</td><td class="pos">+22,620</td><td class="pos">+22,920</td></tr>
+<tr><td class="ln">00692</td><td class="pos">+65,481</td><td class="pos">+71,525</td><td class="neg">-73,540</td><td class="pos">+153,628</td><td class="pos">+62,459</td></tr>
+<tr><td class="ln">00712</td><td class="pos">+16,530</td><td class="neg">-14,210</td><td class="neg">-19,430</td><td class="pos">+15,370</td><td>—</td></tr>
+<tr><td class="ln">00713</td><td class="pos">+3,880</td><td class="pos">+13,967</td><td class="neg">-17,330</td><td class="pos">+11,381</td><td class="pos">+7,501</td></tr>
+<tr><td class="ln">00717</td><td class="pos">+900</td><td class="neg">-240</td><td class="neg">-1,920</td><td class="pos">+1,260</td><td class="pos">+300</td></tr>
+<tr><td class="ln">00878</td><td class="pos">+31,350</td><td class="pos">+26,505</td><td class="neg">-55,005</td><td class="pos">+102,030</td><td class="pos">+71,250</td></tr>
+<tr><td class="ln">00891</td><td class="pos">+63,720</td><td class="pos">+32,940</td><td class="neg">-38,880</td><td class="pos">+140,040</td><td class="pos">+61,020</td></tr>
+<tr><td class="ln">00940</td><td class="pos">+3,960</td><td class="pos">+2,790</td><td class="neg">-5,580</td><td class="pos">+8,550</td><td class="pos">+5,940</td></tr>
+<tr><td class="ln">009802</td><td class="pos">+6,133</td><td class="pos">+7,923</td><td class="neg">-9,986</td><td class="pos">+20,840</td><td class="pos">+11,125</td></tr>
+<tr><td class="ln">1101</td><td class="pos">+17,597</td><td>—</td><td class="neg">-18,697</td><td class="pos">+8,248</td><td class="pos">+5,499</td></tr>
+<tr><td class="ln">2886</td><td class="neg">-12,797</td><td class="pos">+18,662</td><td class="neg">-22,394</td><td class="pos">+6,932</td><td class="pos">+5,865</td></tr>
+<tr><td class="ln">AAPL</td><td class="neg">-41,036</td><td class="pos">+15,579</td><td class="neg">-34,440</td><td class="pos">+58,207</td><td class="pos">+63,544</td></tr>
+<tr><td class="ln">MSFT</td><td class="neg">-92,597</td><td class="neg">-65,198</td><td class="neg">-39,188</td><td class="pos">+65,302</td><td class="pos">+26,374</td></tr>
+<tr><td class="ln">BND</td><td class="pos">+586</td><td class="pos">+3,442</td><td class="neg">-5,603</td><td class="neg">-513</td><td class="pos">+385</td></tr>
+<tr class="tot"><td class="ln">月度合計</td><td class="pos">+68,806</td><td class="pos">+129,947</td><td class="neg">-360,953</td><td class="pos">+613,895</td><td class="pos">+344,182</td></tr>
+</tbody>
+</table>
+<div class="footer">帳上累計至05/07：+797,028 元｜含股息：+899,214 元</div>
+</div>
+</body>
+</html>

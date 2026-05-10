@@ -52,6 +52,19 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
+## 市場資料查詢紀律（2026-05-05 新增）
+
+**市值排名、股價、即時報價、殖利率、數據統計等量化問題**，必須：
+1. 先透過 API 或網路查詢真實數據（Yahoo Finance / Finnhub）
+2. **禁止**用「記憶」或「印象」直接回答
+3. 若查詢失敗或資料有疑慮，明確告知使用者資料來源限制
+
+## 回答事實類問題的基本原則
+
+**所有事實性問題（股價、數字、日期、比例、排名等）**，都必須先驗證再回答。不要用「記憶中」或「印象裡」直接回覆。如果沒有查詢工具，就直接說「我需要查一下」。
+
+> 2026-05-05 教訓：用印象回答市值前十名，導致錯誤。未來所有量化問題，一律先查後答。
+
 ## External vs Internal
 
 **Safe to do freely:**

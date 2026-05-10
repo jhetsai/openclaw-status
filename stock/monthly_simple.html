@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<style>
+body { background: #fff; color: #222; font-family: Arial, sans-serif; padding: 20px; font-size: 13px; }
+h1 { font-size: 16px; margin-bottom: 3px; }
+.sub { color: #888; font-size: 11px; margin-bottom: 15px; }
+table { border-collapse: collapse; width: 100%; }
+th { background: #f0f0f0; padding: 6px 8px; text-align: center; font-size: 12px; border: 1px solid #ddd; }
+td { padding: 5px 8px; text-align: center; border: 1px solid #ddd; font-size: 12px; }
+.name { text-align: left; font-weight: bold; }
+.tot td { background: #f0f0f0; font-weight: bold; border: 2px solid #ccc; }
+.pos { color: #1a7f1a; }
+.neg { color: #c00; }
+.card-row { display: flex; gap: 10px; margin: 15px 0; }
+.card { border: 1px solid #ddd; padding: 8px 14px; border-radius: 4px; text-align: center; }
+.card .v { font-size: 16px; font-weight: bold; }
+.card .l { font-size: 10px; color: #888; }
+</style>
+</head>
+<body>
+<h1>2026 各月份帳上獲利</h1>
+<div class="sub">基準：2025/12/31 收盤價｜截至 2026/05/07</div>
+<div class="card-row">
+<div class="card"><div class="v pos">+68,806</div><div class="l">1月</div></div>
+<div class="card"><div class="v pos">+129,947</div><div class="l">2月</div></div>
+<div class="card"><div class="v neg">-360,953</div><div class="l">3月</div></div>
+<div class="card"><div class="v pos">+613,895</div><div class="l">4月</div></div>
+<div class="card"><div class="v pos">+344,182</div><div class="l">5月(至今)</div></div>
+</div>
+<table>
+<tr><th>股票</th><th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th></tr>
+<tr><td class="name">0056</td><td class="pos">+5,100</td><td class="pos">+16,260</td><td class="neg">-18,960</td><td class="pos">+22,620</td><td class="pos">+22,920</td></tr>
+<tr><td class="name">00692</td><td class="pos">+65,481</td><td class="pos">+71,525</td><td class="neg">-73,540</td><td class="pos">+153,628</td><td class="pos">+62,459</td></tr>
+<tr><td class="name">00712</td><td class="pos">+16,530</td><td class="neg">-14,210</td><td class="neg">-19,430</td><td class="pos">+15,370</td><td>—</td></tr>
+<tr><td class="name">00713</td><td class="pos">+3,880</td><td class="pos">+13,967</td><td class="neg">-17,330</td><td class="pos">+11,381</td><td class="pos">+7,501</td></tr>
+<tr><td class="name">00717</td><td class="pos">+900</td><td class="neg">-240</td><td class="neg">-1,920</td><td class="pos">+1,260</td><td class="pos">+300</td></tr>
+<tr><td class="name">00878</td><td class="pos">+31,350</td><td class="pos">+26,505</td><td class="neg">-55,005</td><td class="pos">+102,030</td><td class="pos">+71,250</td></tr>
+<tr><td class="name">00891</td><td class="pos">+63,720</td><td class="pos">+32,940</td><td class="neg">-38,880</td><td class="pos">+140,040</td><td class="pos">+61,020</td></tr>
+<tr><td class="name">00940</td><td class="pos">+3,960</td><td class="pos">+2,790</td><td class="neg">-5,580</td><td class="pos">+8,550</td><td class="pos">+5,940</td></tr>
+<tr><td class="name">009802</td><td class="pos">+6,133</td><td class="pos">+7,923</td><td class="neg">-9,986</td><td class="pos">+20,840</td><td class="pos">+11,125</td></tr>
+<tr><td class="name">1101</td><td class="pos">+17,597</td><td>—</td><td class="neg">-18,697</td><td class="pos">+8,248</td><td class="pos">+5,499</td></tr>
+<tr><td class="name">2886</td><td class="neg">-12,797</td><td class="pos">+18,662</td><td class="neg">-22,394</td><td class="pos">+6,932</td><td class="pos">+5,865</td></tr>
+<tr><td class="name">AAPL</td><td class="neg">-41,036</td><td class="pos">+15,579</td><td class="neg">-34,440</td><td class="pos">+58,207</td><td class="pos">+63,544</td></tr>
+<tr><td class="name">MSFT</td><td class="neg">-92,597</td><td class="neg">-65,198</td><td class="neg">-39,188</td><td class="pos">+65,302</td><td class="pos">+26,374</td></tr>
+<tr><td class="name">BND</td><td class="pos">+586</td><td class="pos">+3,442</td><td class="neg">-5,603</td><td class="neg">-513</td><td class="pos">+385</td></tr>
+<tr class="tot"><td class="name">月度合計</td><td class="pos">+68,806</td><td class="pos">+129,947</td><td class="neg">-360,953</td><td class="pos">+613,895</td><td class="pos">+344,182</td></tr>
+</table>
+<div style="margin-top:12px;color:#888;font-size:11px">累計：+797,028 元｜含股息：+899,214 元</div>
+</body>
+</html>

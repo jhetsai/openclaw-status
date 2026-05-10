@@ -1,0 +1,102 @@
+{
+  "updated": "2026-05-08",
+  "source": "User-provided XLSX (Dividend sheet, net of 30% withholding)",
+  "currency_note": {
+    "2020-2025": "TWD (用戶提供之原始資料)",
+    "2026": "USD (用戶提供，已扣30%預扣稅)"
+  },
+  "annual": [
+    {
+      "year": "2020",
+      "total": 37.26,
+      "currency": "TWD"
+    },
+    {
+      "year": "2021",
+      "total": 2220.99,
+      "currency": "TWD"
+    },
+    {
+      "year": "2022",
+      "total": 5599.17,
+      "currency": "TWD"
+    },
+    {
+      "year": "2023",
+      "total": 10413.41,
+      "currency": "TWD"
+    },
+    {
+      "year": "2024",
+      "total": 11820.08,
+      "currency": "TWD"
+    },
+    {
+      "year": "2025",
+      "total": 13763.85,
+      "currency": "TWD"
+    },
+    {
+      "year": "2026",
+      "total": 131.49,
+      "currency": "USD"
+    }
+  ],
+  "by_stock": {
+    "AAPL": {
+      "total": 9618.2,
+      "currency": "mixed",
+      "currency_detail": {
+        "2020-2025": "TWD",
+        "2026": "USD 19.11"
+      },
+      "years": {
+        "2021": {"amt": 783.06, "currency": "TWD"},
+        "2022": {"amt": 1924.17, "currency": "TWD"},
+        "2023": {"amt": 2204.56, "currency": "TWD"},
+        "2024": {"amt": 2297.07, "currency": "TWD"},
+        "2025": {"amt": 2390.23, "currency": "TWD"},
+        "2026": {"amt": 19.11, "currency": "USD"}
+      }
+    },
+    "ARKK": {
+      "total": 197.66,
+      "currency": "TWD",
+      "years": {
+        "2022": {"amt": 197.66, "currency": "TWD"}
+      }
+    },
+    "BND": {
+      "total": 18523.75,
+      "currency": "mixed",
+      "currency_detail": {
+        "2020-2025": "TWD",
+        "2026": "USD 77.35 (1-4月月配)"
+      },
+      "years": {
+        "2022": {"amt": 608.76, "currency": "TWD"},
+        "2023": {"amt": 4817.39, "currency": "TWD"},
+        "2024": {"amt": 5779.48, "currency": "TWD"},
+        "2025": {"amt": 7240.77, "currency": "TWD"},
+        "2026": {"amt": 77.35, "currency": "USD"}
+      }
+    },
+    "MSFT": {
+      "total": 15646.64,
+      "currency": "mixed",
+      "currency_detail": {
+        "2020-2025": "TWD",
+        "2026": "USD 35.03"
+      },
+      "years": {
+        "2020": {"amt": 37.26, "currency": "TWD"},
+        "2021": {"amt": 1437.93, "currency": "TWD"},
+        "2022": {"amt": 2868.58, "currency": "TWD"},
+        "2023": {"amt": 3391.46, "currency": "TWD"},
+        "2024": {"amt": 3743.53, "currency": "TWD"},
+        "2025": {"amt": 4132.85, "currency": "TWD"},
+        "2026": {"amt": 35.03, "currency": "USD"}
+      }
+    }
+  }
+}

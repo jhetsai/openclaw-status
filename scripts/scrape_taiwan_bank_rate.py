@@ -18,51 +18,48 @@ def fetch_rates():
     with urllib.request.urlopen(req, timeout=10) as resp:
         html = resp.read().decode('utf-8')
 
-    # Extract USD and JPY 即期匯率 本行買入
-    # Pattern: currency name followed by 買入 value in the spot section
-    # The HTML has multiple tables; we look for the row in the 即期 section
-    
-    # Find the rate table - USD and JPY appear as rows
-    # We need: 美金 (USD) -> 即期 -> 本行買入
-    # And: 日圓 (JPY) -> 即期 -> 本行買入
-    
-    # The page structure: for each currency there are cells with:
-    # 現金匯率 本行買入/本行賣出
-    # 即期匯率 本行買入/本行賣出
-    
-    # Extract using regex - find USD and JPY sections
     rates = {}
-    
-    # USD: find 美金 (USD) section, then extract 即期 本行買入 (2nd column in spot section)
-    # The pattern for USD: 31.53 (即期買入) is in the 4th data cell after currency name
-    # USD cells order: 現金買 現金賣 即期買 即期賣
-    # USD row structure: <td>...美金...USD...</td><td>31.205</td><td>31.875</td><td>31.53</td><td>31.68</td>
-    
-    usd_match = re.search(r'美金.*?USD.*?<td[^>]*>([\d.]+)</td><td[^>]*>([\d.]+)</td><td[^>]*>([\d.]+)</td><td[^>]*>([\d.]+)</td>', html, re.DOTALL)
-    if usd_match:
-        # 即期買入 = 3rd value (index 2)
-        rates['USD_TWD'] = float(usd_match.group(3))
-    
-    jpy_match = re.search(r'日圓.*?JPY.*?<td[^>]*>([\d.]+)</td><td[^>]*>([\d.]+)</td><td[^>]*>([\d.]+)</td><td[^>]*>([\d.]+)</td>', html, re.DOTALL)
-    if jpy_match:
-        rates['JPY_TWD'] = float(jpy_match.group(3))
-    
+
+    # USD section: find 美金, then extract 即期 本行買入
+    # HTML structure: data-table="本行即期買入" followed by the rate value
+    usd_pos = html.find('美金')
+    if usd_pos >= 0:
+        usd_chunk = html[usd_pos:usd_pos+2000]
+        spot_buy = re.search(r'本行即期買入[^<]*<[^>]*>([\d.]+)', usd_chunk)
+        if spot_buy:
+            rates['USD_TWD'] = float(spot_buy.group(1))
+
+    # JPY section: find 日圓, then extract 即期 本行買入
+    jpy_pos = html.find('日圓')
+    if jpy_pos >= 0:
+        jpy_chunk = html[jpy_pos:jpy_pos+2000]
+        spot_buy_jpy = re.search(r'本行即期買入[^<]*<[^>]*>([\d.]+)', jpy_chunk)
+        if spot_buy_jpy:
+            rates['JPY_TWD'] = float(spot_buy_jpy.group(1))
+
     return rates
 
 if __name__ == '__main__':
     rates = fetch_rates()
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Fallback to last known values if fetch fails
     data = {
-        'USD_TWD': rates.get('USD_TWD', 31.53),
-        'JPY_TWD': rates.get('JPY_TWD', 0.198),
+        'USD_TWD': rates.get('USD_TWD', 31.375),
+        'JPY_TWD': rates.get('JPY_TWD', 0.1984),
         'updated': now
     }
     print(f"Fetched: USD={data['USD_TWD']}, JPY={data['JPY_TWD']}, at {now}")
-    
-    # Write to exchange_rate.json
+
+    # Write to BOTH locations so all scripts read the same file
+    # 1. assets/ (for R2 static hosting)
     with open('/home/jhe/.openclaw/workspace/assets/exchange_rate.json', 'w') as f:
         json.dump(data, f, indent=2)
-    
+
+    # 2. workspace root (for gen_portfolio_data.py and other scripts)
+    with open('/home/jhe/.openclaw/workspace/exchange_rate.json', 'w') as f:
+        json.dump(data, f, indent=2)
+
     # Upload to R2
     import boto3
     client = boto3.client(
