@@ -1,1 +1,0 @@
-0 */3 * * * cd /home/jhe/.openclaw/workspace && python3 scripts/fetch_tw_dividend_detail.py >> logs/cron-stock.log 2>&1
