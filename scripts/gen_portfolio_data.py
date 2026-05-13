@@ -206,6 +206,21 @@ def main():
     tw_stocks = load_taiwan_stocks()
     us_stocks = load_us_stocks()
 
+    # 2b. Fill prev_price from us_prices.json (correct source, not us_stocks.json)
+    US_PRICES_FILE = os.path.join(WORKSPACE, 'us_stock', 'us_prices.json')
+    if os.path.exists(US_PRICES_FILE):
+        with open(US_PRICES_FILE) as f:
+            us_price_data = json.load(f)
+        us_prev_map = us_price_data.get('prev', {})  # {'AAPL': 292.68, 'MSFT': 412.66, ...}
+        print(f"    US prev from us_prices.json: {us_prev_map}")
+        for s in us_stocks:
+            sym = s.get('symbol', '')
+            s['prev_price'] = us_prev_map.get(sym, s.get('price'))
+    else:
+        print("    Warning: us_prices.json not found, using fallback prev")
+        for s in us_stocks:
+            s['prev_price'] = s.get('prev', s.get('price'))
+
     # 3. Use dividend_data.json from R2 (no Yahoo fetch needed)
     import boto3
     with open(os.path.expanduser('~/.api_keys')) as f:

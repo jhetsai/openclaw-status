@@ -87,57 +87,92 @@ bnd_historical_shares = {
     '2026-04-01': 115,
     '2026-05-01': 116,
 }
-# 每期每股配息（來自 Yahoo Finance events/div）
-us_div_info = {
-    'AAPL': {'div': 0.26, 'freq': '季配', 'per_year': 4},
-    'MSFT': {'div': 0.91, 'freq': '季配', 'per_year': 4},
-    'BND':  {'div': 0.242, 'freq': '月配', 'per_year': 12},
+# 每期每股配息（來自 Nasdaq API）
+us_shares_now = {'AAPL': 105, 'MSFT': 55, 'BND': 116}
+bnd_shares_by_month = {
+    '2026-02': 113, '2026-03': 114, '2026-04': 115, '2026-05': 116,
 }
 confirmed_us, pending_us = [], []
-today_ts = int(datetime.datetime.now().timestamp())
+today_str = datetime.datetime.now().strftime('%Y-%m-%d')
 
 for sym, shares in us_shares_now.items():
-    url = f'https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=1y&interval=1d&events=div'
-    r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url], capture_output=True, text=True, timeout=12)
     try:
+        assetclass = 'ETF' if sym == 'BND' else 'STOCKS'
+        url = f'https://api.nasdaq.com/api/quote/{sym}/dividends?assetclass={assetclass}&limit=20'
+        r = subprocess.run(
+            ['curl', '-s', '--max-time', '10', url,
+             '-H', 'User-Agent: Mozilla/5.0',
+             '-H', 'Accept: application/json',
+             '-H', 'Origin: https://www.nasdaq.com',
+             '-H', 'Referer: https://www.nasdaq.com/market-activity/' + ('etf' if sym == 'BND' else 'stocks') + '/' + sym.lower() + '/dividend-history'],
+            capture_output=True, text=True, timeout=12
+        )
         data = json.loads(r.stdout)
-        result = data['chart']['result'][0]
-        events = result.get('events', {})
-        if 'dividends' in events:
-            for date_str, info in events['dividends'].items():
-                ts = int(date_str)
-                dt = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
-                if not dt.startswith('2026'):
-                    continue
-                amt = info.get('amount', 0)
-                effective_shares = bnd_historical_shares.get(dt, shares)
-                gross = round(amt * effective_shares, 3)
-                net = round(gross * 0.7, 3)
-                row = {'code': sym, 'date': dt, 'per_share': amt, 'shares': effective_shares, 'gross': gross, 'total': net, 'withheld_30pct': True}
-                if ts < today_ts:
-                    confirmed_us.append(row)
-                else:
-                    pending_us.append(row)
-    except:
-        pass
+        rows = data['data']['dividends']['rows']
+        for row_data in rows:
+            ex_date = row_data['exOrEffDate']
+            payment_date = row_data['paymentDate']
+            amount_str = row_data['amount'].replace('$', '').strip()
+            per_share = float(amount_str)
+            pay_dt = datetime.datetime.strptime(payment_date, '%m/%d/%Y').strftime('%Y-%m-%d')
+            # BND 月配需看該筆的月份決定股數
+            if sym == 'BND':
+                pay_month = pay_dt[:7]
+                eff_shares = bnd_shares_by_month.get(pay_month, shares)
+            else:
+                eff_shares = shares
+            gross = round(per_share * eff_shares, 3)
+            net = round(gross * 0.7, 3)
+            row = {
+                'code': sym,
+                'date': pay_dt,
+                'per_share': per_share,
+                'shares': eff_shares,
+                'gross': gross,
+                'total': net,
+                'withheld_30pct': True
+            }
+            # 只取 2026 年的記錄
+            if not pay_dt.startswith('2026'):
+                continue
+            if pay_dt < today_str:
+                confirmed_us.append(row)
+            else:
+                pending_us.append(row)
+    except Exception as e:
+        print(f"    {sym} Nasdaq API error: {e}")
+    except Exception as e:
+        print(f"    {sym} Nasdaq API error: {e}")
 
 conf_usd = sum(r['total'] for r in confirmed_us)
 pend_usd = sum(r['total'] for r in pending_us)
-print(f"  美股：已入帳 {len(confirmed_us)} 筆，${conf_usd:.2f}（~{round(conf_usd*USD_TWD):,.0f} TWD）")
+print(f"  美股：已除息 {len(confirmed_us)} 筆，${conf_usd:.2f}（~{round(conf_usd*USD_TWD):,.0f} TWD）")
 print(f"  美股：待發放 {len(pending_us)} 筆，${pend_usd:.2f}")
 
-# === 美股年化配息資訊（從 confirmed_us 取最新一筆 per_share）===
+# === 美股年化配息資訊（從 Nasdaq API 取 annualizedDividend）===
 us_div_info_computed = {}
-by_code_us = {}
-for r in confirmed_us:
-    by_code_us.setdefault(r['code'], []).append(r)
-for sym, recs in by_code_us.items():
-    latest = sorted(recs, key=lambda x: x['date'], reverse=True)[0]
-    div = latest['per_share']  # 最近一期每股配息（已是正確值）
-    freq = us_div_info.get(sym, {}).get('freq', '季配')
-    per_year = us_div_info.get(sym, {}).get('per_year', 4)
-    ann = round(div * per_year, 3)
-    us_div_info_computed[sym] = {'div': div, 'freq': freq, 'ann_div': ann}
+for sym in us_shares_now.keys():
+    try:
+        assetclass = 'ETF' if sym == 'BND' else 'STOCKS'
+        url = f'https://api.nasdaq.com/api/quote/{sym}/dividends?assetclass={assetclass}&limit=3'
+        r2 = subprocess.run(
+            ['curl', '-s', '--max-time', '10', url,
+             '-H', 'User-Agent: Mozilla/5.0',
+             '-H', 'Accept: application/json',
+             '-H', 'Origin: https://www.nasdaq.com',
+             '-H', 'Referer: https://www.nasdaq.com/market-activity/' + ('etf' if sym == 'BND' else 'stocks') + '/' + sym.lower() + '/dividend-history'],
+            capture_output=True, text=True, timeout=12
+        )
+        data = json.loads(r2.stdout)
+        ann_div = float(data['data'].get('annualizedDividend', 0))
+        first_row = data['data']['dividends']['rows'][0]
+        per_share = float(first_row['amount'].replace('$', ''))
+        freq = '月配' if sym == 'BND' else '季配'
+        us_div_info_computed[sym] = {
+            'div': per_share, 'freq': freq, 'ann_div': ann_div
+        }
+    except Exception as e:
+        print(f"    {sym} div_info error: {e}")
 
 # === 歷年股息收入（美股）===
 us_annual = [
@@ -257,6 +292,45 @@ with open('/tmp/index_r2.html', 'w') as f:
 s3.upload_file('/tmp/index_r2.html', 'shared-files', 'assets/index.html')
 
 print(f'  index.html 2026 年已更新（台股={tw2026:,}，美股={us2026_twd:,} TWD）')
+
+# === 台股配息入帳通知 ===
+prev_confirmed_total = 0
+try:
+    s3.download_file('shared-files', 'assets/dividend_data.json', '/tmp/prev_dividend_data.json')
+    with open('/tmp/prev_dividend_data.json') as f:
+        prev = json.load(f)
+    prev_confirmed_total = prev['tw']['confirmed']['total']
+except:
+    pass
+
+new_total = sum(r['amount'] for r in confirmed_tw)
+if new_total > prev_confirmed_total:
+    diff = new_total - prev_confirmed_total
+    # 找出新增的 rows
+    prev_codes = {r['code'] for r in prev.get('tw', {}).get('confirmed', {}).get('rows', [])}
+    new_rows = [r for r in confirmed_tw if r['code'] not in prev_codes]
+    if new_rows:
+        # 發 Telegram 通知
+        with open(os.path.expanduser('~/.api_keys')) as f:
+            for line in f:
+                if '=' in line and not line.startswith('#'):
+                    k, v = line.strip().split('=', 1)
+                    if k == 'TELEGRAM_BOT_TOKEN':
+                        bot_token = v.strip()
+        if bot_token:
+            lines = ['📥 台股配息入帳通知']
+            for r in new_rows:
+                lines.append(f"• {r['code']} {r['payout']} ${r['amount']:,.0f}")
+            lines.append(f'━━━━━━━━━━━━━━━━━━')
+            lines.append(f'新增合計：${diff:,.0f}')
+            text = '\n'.join(lines)
+            subprocess.run(
+                ['curl', '-s', '-X', 'POST',
+                 f'https://api.telegram.org/bot{bot_token}/sendMessage',
+                 '-d', 'chat_id=1181571031', '-d', f'text={text}', '-d', 'parse_mode=HTML'],
+                capture_output=True
+            )
+            print(f'  → 已發送台股入帳通知：${diff:,.0f}')
 
 print(f"\n完成：assets/dividend_data.json 已更新")
 print(f"  台股合計：{sum(r['amount'] for r in confirmed_tw):,.0f}（已）+ {sum(r['amount'] for r in pending_tw):,.0f}（待）")

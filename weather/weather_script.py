@@ -5,7 +5,7 @@ import os
 
 # === 風速警示設定 ===
 WIND_ALERT_THRESHOLD = 30  # km/h，超過此值發出警示
-TELEGRAM_BOT_TOKEN = "8793435853:AAH-NCvhnOE99ENoi4sobWSNW6zEmEurrbU"
+TELEGRAM_BOT_TOKEN = "8793435853:AAHF2snG1sYEpno-O0uvvRyPL52cqdxER8A"
 TELEGRAM_CHAT_ID = "1181571031"
 
 def send_telegram_alert(message):

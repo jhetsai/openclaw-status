@@ -1,49 +1,47 @@
 #!/usr/bin/env python3
 """
-Taiwan Bank (臺灣銀行) exchange rate scraper
-Fetches 即期匯率 本行買入 rates for USD and JPY
+Exchange rate scraper via Yahoo Finance
+Fetches USD/TWD and JPY/TWD rates in real-time
 Updates exchange_rate.json for the asset page
 """
 import urllib.request
 import json
-import re
 from datetime import datetime
 
-URL = "https://rate.bot.com.tw/xrt?Lang=zh-TW"
-
 def fetch_rates():
-    req = urllib.request.Request(URL, headers={
-        'User-Agent': 'Mozilla/5.0 (compatible; Python scraper)'
-    })
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        html = resp.read().decode('utf-8')
+    # Yahoo Finance currency pairs
+    usd_twd_url = 'https://query1.finance.yahoo.com/v8/finance/chart/USDTWD=X?interval=1d&range=1d'
+    jpy_twd_url = 'https://query1.finance.yahoo.com/v8/finance/chart/JPYTWD=X?interval=1d&range=1d'
 
-    rates = {}
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
-    # USD section: find 美金, then extract 即期 本行買入
-    # HTML structure: data-table="本行即期買入" followed by the rate value
-    usd_pos = html.find('美金')
-    if usd_pos >= 0:
-        usd_chunk = html[usd_pos:usd_pos+2000]
-        spot_buy = re.search(r'本行即期買入[^<]*<[^>]*>([\d.]+)', usd_chunk)
-        if spot_buy:
-            rates['USD_TWD'] = float(spot_buy.group(1))
+    try:
+        req1 = urllib.request.Request(usd_twd_url, headers=headers)
+        with urllib.request.urlopen(req1, timeout=10) as resp:
+            data1 = json.loads(resp.read())
+        usd_twd = data1['chart']['result'][0]['meta']['regularMarketPrice']
+    except Exception as e:
+        print(f'USD/TWD fetch failed: {e}')
+        usd_twd = None
 
-    # JPY section: find 日圓, then extract 即期 本行買入
-    jpy_pos = html.find('日圓')
-    if jpy_pos >= 0:
-        jpy_chunk = html[jpy_pos:jpy_pos+2000]
-        spot_buy_jpy = re.search(r'本行即期買入[^<]*<[^>]*>([\d.]+)', jpy_chunk)
-        if spot_buy_jpy:
-            rates['JPY_TWD'] = float(spot_buy_jpy.group(1))
+    try:
+        req2 = urllib.request.Request(jpy_twd_url, headers=headers)
+        with urllib.request.urlopen(req2, timeout=10) as resp:
+            data2 = json.loads(resp.read())
+        jpy_twd = data2['chart']['result'][0]['meta']['regularMarketPrice']
+    except Exception as e:
+        print(f'JPY/TWD fetch failed: {e}')
+        jpy_twd = None
 
-    return rates
+    return {
+        'USD_TWD': round(usd_twd, 4) if usd_twd else None,
+        'JPY_TWD': round(jpy_twd, 4) if jpy_twd else None
+    }
 
 if __name__ == '__main__':
     rates = fetch_rates()
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # Fallback to last known values if fetch fails
     data = {
         'USD_TWD': rates.get('USD_TWD', 31.375),
         'JPY_TWD': rates.get('JPY_TWD', 0.1984),
