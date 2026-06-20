@@ -111,20 +111,42 @@ def fetch_tw_dividends(tw_stocks, year_target='2026'):
 
 # ===== Taiwan Historical Dividends by Year (2020-2026) =====
 def get_tw_annual_dividends(dividend_data=None):
-    """台股歷年配息：從 div_history.json 讀取真實銀行記錄（2020-2026）"""
+    """台股歷年配息：
+    - 2020-2025: 從 taiwan_stock/div_history.json 讀取（歷史資料）
+    - 2026: 從 dividend_data.json 讀取（confirmed + pending）
+    """
+    # 讀取歷史資料（2020-2025）
     hist_path = os.path.join(WORKSPACE, 'taiwan_stock', 'div_history.json')
     with open(hist_path) as f:
         div_hist = json.load(f)
-    return [{'year': d['year'], 'amt': d['total']} for d in div_hist['annual']]
+    
+    result = []
+    for d in div_hist['annual']:
+        year = d['year']
+        if year == '2026':
+            continue  # 2026 單獨處理
+        result.append({'year': year, 'amt': d['total']})
+    
+    # 2026 年：從 dividend_data.json 讀取（confirmed + pending）
+    div_path = os.path.join(WORKSPACE, 'assets', 'dividend_data.json')
+    with open(div_path) as f:
+        div_data = json.load(f)
+    
+    tw_conf = div_data.get('tw', {}).get('confirmed', {}).get('total', 0)
+    tw_pend = div_data.get('tw', {}).get('pending', {}).get('total', 0)
+    result.append({'year': '2026', 'amt': tw_conf + tw_pend})
+    
+    return result
 
     return result
 
 # ===== US Historical Dividends (from static data) =====
 def get_us_dividend_annual(fx_rate=31.569):
-    """美股歷年配息：從 div_history.json 讀取真實銀行記錄
-    - 2020-2025: 原始資料為 TWD，直接使用
-    - 2026: 原始資料為 USD，需乘以匯率轉換為 TWD
+    """美股歷年配息：
+    - 2020-2025: 從 div_history.json 讀取（歷史 TWD 資料）
+    - 2026: 從 dividend_data.json 讀取（confirmed + pending），轉換為 TWD
     """
+    # 讀取歷史資料（2020-2025）
     hist_path = os.path.join(WORKSPACE, 'us_stock', 'div_history.json')
     with open(hist_path) as f:
         div_hist = json.load(f)
@@ -132,21 +154,36 @@ def get_us_dividend_annual(fx_rate=31.569):
     result = []
     for d in div_hist['annual']:
         year = d['year']
-        total = d['total']
-        currency = d.get('currency', 'TWD')
-        
-        # 2026 年的資料是 USD，需要轉換
-        if currency == 'USD' or (year == '2026' and 'currency' not in d):
-            # 確認是 2026 且為 USD（根據新的 currency_note）
-            if year == '2026':
-                total = round(total * fx_rate, 2)
-        
+        if year == '2026':
+            continue  # 2026 單獨處理
         result.append({
             'year': year,
-            'total': total,
-            'currency': 'TWD',  # 輸出時統一為 TWD（2026已轉換）
-            'original_currency': currency  # 保留原始幣別供圖表參考
+            'total': d['total'],
+            'currency': 'TWD',
+            'original_currency': 'TWD'
         })
+    
+    # 2026 年：從 dividend_data.json 讀取（confirmed + pending）
+    div_path = os.path.join(WORKSPACE, 'assets', 'dividend_data.json')
+    with open(div_path) as f:
+        div_data = json.load(f)
+    
+    us_conf = div_data.get('us', {}).get('confirmed', {})
+    us_pend = div_data.get('us', {}).get('pending', {})
+    
+    usd_total = 0
+    for r in us_conf.get('rows', []):
+        usd_total += r.get('total', 0)
+    for r in us_pend.get('rows', []):
+        usd_total += r.get('total', 0)
+    
+    twd_2026 = round(usd_total * fx_rate, 2)
+    result.append({
+        'year': '2026',
+        'total': twd_2026,
+        'currency': 'TWD',
+        'original_currency': 'USD'
+    })
     
     return result
 
@@ -332,9 +369,22 @@ def main():
     yieldCost = f"{(annualDiv / stockCost * 100):.2f}%" if stockCost > 0 else "0%"
     yieldCur = f"{(annualDiv / stockMktval * 100):.2f}%" if stockMktval > 0 else "0%"
 
+    # 載入現有 portfolio_data.json，保留 usd_cash 和 jpy_cash
+    existing_cash = {'usd_cash': None, 'jpy_cash': None}
+    if os.path.exists(OUT_FILE):
+        try:
+            with open(OUT_FILE, 'r') as f:
+                existing = json.load(f)
+                existing_cash['usd_cash'] = existing.get('usd_cash')
+                existing_cash['jpy_cash'] = existing.get('jpy_cash')
+        except:
+            pass
+
     portfolio = {
         'updated': datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
         'fx': fx,
+        'usd_cash': existing_cash['usd_cash'] if existing_cash['usd_cash'] else {'cash_usd': 0, 'total_invested_usd': 0, 'invested_for美股_usd': 0, 'original_rate': 28.4481},
+        'jpy_cash': existing_cash['jpy_cash'] if existing_cash['jpy_cash'] else {'cash_jpy': 0, 'total_invested_jpy': 0, 'withdrawn_jpy': 0, 'original_rate': 0.2365},
         'stocks': {
             'tw': tw_stocks,
             'us': us_stocks

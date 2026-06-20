@@ -1,49 +1,124 @@
 #!/usr/bin/env python3
 """
-更新 assets/dividend_data.json（台股+美股配息資料）
+台股除息資料抓取 - 重寫版 (2026-06-05)
+使用 Yahoo Finance 內嵌 JSON 結構化資料
+- 支援個股 (1101, 2886) 與 ETF (0056, 00692 等)
+- 輸出格式與舊版完全一致，確保前端頁面不破版
 """
-import json, subprocess, re, datetime, boto3, os
+import json, re, subprocess, datetime, os
 from html.parser import HTMLParser
-# Load dynamic exchange rate (臺灣銀行即期匯率本行買入)
-WORKSPACE = '/home/jhe/.openclaw/workspace'
-_EXCH = os.path.join(WORKSPACE, 'exchange_rate.json')
-if os.path.exists(_EXCH):
+
+# === R2 上傳功能 ===
+def upload_to_r2(key, file_path, content_type='application/json'):
+    """上傳檔案到 Cloudflare R2"""
     try:
-        with open(_EXCH) as f:
-            _d = json.load(f)
-            USD_TWD = float(_d.get('USD_TWD', 31.569))
-    except:
-        USD_TWD = 31.569
-else:
-    USD_TWD = 31.569
+        import boto3
+        keys = {}
+        key_file = os.path.expanduser('~/.api_keys')
+        if os.path.exists(key_file):
+            with open(key_file) as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith('R2_ACCESS_KEY='):
+                        keys['R2_ACCESS_KEY'] = line.split('=', 1)[1].strip()
+                    elif line.startswith('R2_SECRET_KEY='):
+                        keys['R2_SECRET_KEY'] = line.split('=', 1)[1].strip()
+        s3 = boto3.client(
+            's3',
+            endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+            aws_access_key_id=keys.get('R2_ACCESS_KEY', os.environ.get('R2_ACCESS_KEY')),
+            aws_secret_access_key=keys.get('R2_SECRET_KEY', os.environ.get('R2_SECRET_KEY'))
+        )
+        s3.upload_file(file_path, 'shared-files', key, ExtraArgs={'ContentType': content_type})
+        url = f"https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/{key}"
+        print(f"  ✅ R2 上傳成功: {url}")
+        return True
+    except Exception as e:
+        print(f"  ⚠️ R2 上傳失敗: {e}")
+        return False
 
-
+# === 共用 HTML 解析器（保留舊版以防備援）===
 class DivParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.texts = []
-    def handle_data(self, data):
-        d = data.strip()
-        if d:
-            self.texts.append(d)
+    def handle_data(self, d):
+        if d.strip():
+            self.texts.append(d.strip())
 
-print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}] 開始更新配息資料...")
-
-# === 台股 ===
-TW_JSON = "/home/jhe/.openclaw/workspace/taiwan_stock/taiwan_stocks.json"
-with open(TW_JSON) as f:
-    tw_stocks = [s for s in json.load(f) if "shares" in s]
-shares_map_tw = {s['symbol']: s['shares'] for s in tw_stocks}
-today = datetime.datetime.now().strftime('%Y/%m/%d')
-
-confirmed_tw, pending_tw = [], []
-for code in shares_map_tw:
+# === 新方法：JSON 內嵌解析 ===
+def fetch_dividends_json(code):
+    """從 Yahoo 抓取配息資料，用 JSON 內嵌結構解析
+    回傳 list of dict: [{exDate, cash, payDate}, ...]"""
     url = f'https://tw.stock.yahoo.com/quote/{code}.TW/dividend'
     try:
-        r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url], capture_output=True, text=True, timeout=12)
+        r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
+                           capture_output=True, text=True, timeout=12)
         html = r.stdout
     except:
-        continue
+        return []
+    
+    dividends = []
+    # 找 {"exDate":"...","year":"...","period":"...","symbol":"<code>",...
+    pattern = re.compile(r'\{"exDate":"[^"]+","year":"[^"]+","period":"[^"]*","symbol":"' + code + r'",')
+    
+    for m in pattern.finditer(html):
+        start = m.start()
+        # 平衡大括號解析
+        depth = 0
+        in_str = False
+        escape = False
+        end = start
+        for i in range(start, min(start + 2500, len(html))):
+            c = html[i]
+            if escape:
+                escape = False
+                continue
+            if c == '\\':
+                escape = True
+                continue
+            if c == '"' and not escape:
+                in_str = not in_str
+                continue
+            if in_str:
+                continue
+            if c == '{':
+                depth += 1
+            elif c == '}':
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+        
+        try:
+            d = json.loads(html[start:end])
+            ex = d.get('exDate', '')
+            cash_obj = d.get('exDividend', {})
+            cash = cash_obj.get('cash', '0') if cash_obj else '0'
+            pay = cash_obj.get('cashPayDate', '') if cash_obj else ''
+            if ex and cash and float(cash) > 0:
+                dividends.append({
+                    'exDate': ex[:10].replace('-', '/'),
+                    'cash': float(cash),
+                    'payDate': pay[:10].replace('-', '/') if pay else ''
+                })
+        except:
+            pass
+    
+    return dividends
+
+# === 備援方法：舊版 HTML 解析（給無法用新方法抓的股）===
+def fetch_dividends_html_legacy(code):
+    """舊版 regex 解析，抓 ETF 等有 Q1-Q4 標籤的"""
+    url = f'https://tw.stock.yahoo.com/quote/{code}.TW/dividend'
+    try:
+        r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
+                           capture_output=True, text=True, timeout=12)
+        html = r.stdout
+    except:
+        return []
+    
+    dividends = []
     for m in re.finditer(r'>(\d{4}Q[1-4])</div>|>(\d{4}M\d{1,2})</div>', html):
         period = m.group(1) or m.group(2)
         start = m.start()
@@ -66,272 +141,200 @@ for code in shares_map_tw:
                 dates.append(t)
         if not (cash and len(dates) >= 2):
             continue
-        ex_date, payout_date = dates[0], dates[1]
-        if payout_date.split('/')[0] != '2026':
-            continue
-        sh = shares_map_tw[code]
-        row = {'code': code, 'period': period, 'cash': cash, 'shares': sh, 'amount': round(sh * cash), 'ex_date': ex_date, 'payout': payout_date}
-        if payout_date < today:
-            confirmed_tw.append(row)
+        dividends.append({
+            'exDate': dates[0],
+            'cash': cash,
+            'payDate': dates[1]
+        })
+    return dividends
+
+
+def main():
+    # === 讀取持股清單 ===
+    TW_JSON = "/home/jhe/.openclaw/workspace/taiwan_stock/taiwan_stocks.json"
+    with open(TW_JSON) as f:
+        tw_stocks = [s for s in json.load(f) if "shares" in s]
+    shares_map_tw = {s['symbol']: s['shares'] for s in tw_stocks}
+    name_map_tw = {s['symbol']: s['name'] for s in tw_stocks}
+    today = datetime.datetime.now().strftime('%Y/%m/%d')
+    
+    confirmed_tw, pending_tw = [], []
+    
+    print("=== 抓取台股除息資料 ===")
+    for code in shares_map_tw:
+        print(f"  抓 {code} ({name_map_tw.get(code, '?')}) ...", end=' ')
+        
+        # 先用新方法
+        divs = fetch_dividends_json(code)
+        # 如果新方法沒抓到，fallback 到舊方法
+        if not divs:
+            divs = fetch_dividends_html_legacy(code)
+            print(f"[舊方法] {len(divs)} 筆")
         else:
-            pending_tw.append(row)
-
-print(f"  台股：已入帳 {len(confirmed_tw)} 筆，{sum(r['amount'] for r in confirmed_tw):,.0f} 元")
-print(f"  台股：待發放 {len(pending_tw)} 筆，{sum(r['amount'] for r in pending_tw):,.0f} 元")
-
-# === 美股 ===
-us_shares_now = {'AAPL': 105, 'MSFT': 55, 'BND': 116}
-bnd_historical_shares = {
-    '2026-02-02': 113,
-    '2026-03-02': 114,
-    '2026-04-01': 115,
-    '2026-05-01': 116,
-}
-# 每期每股配息（來自 Nasdaq API）
-us_shares_now = {'AAPL': 105, 'MSFT': 55, 'BND': 116}
-bnd_shares_by_month = {
-    '2026-02': 113, '2026-03': 114, '2026-04': 115, '2026-05': 116,
-}
-confirmed_us, pending_us = [], []
-today_str = datetime.datetime.now().strftime('%Y-%m-%d')
-
-for sym, shares in us_shares_now.items():
-    try:
-        assetclass = 'ETF' if sym == 'BND' else 'STOCKS'
-        url = f'https://api.nasdaq.com/api/quote/{sym}/dividends?assetclass={assetclass}&limit=20'
-        r = subprocess.run(
-            ['curl', '-s', '--max-time', '10', url,
-             '-H', 'User-Agent: Mozilla/5.0',
-             '-H', 'Accept: application/json',
-             '-H', 'Origin: https://www.nasdaq.com',
-             '-H', 'Referer: https://www.nasdaq.com/market-activity/' + ('etf' if sym == 'BND' else 'stocks') + '/' + sym.lower() + '/dividend-history'],
-            capture_output=True, text=True, timeout=12
-        )
-        data = json.loads(r.stdout)
-        rows = data['data']['dividends']['rows']
-        for row_data in rows:
-            ex_date = row_data['exOrEffDate']
-            payment_date = row_data['paymentDate']
-            amount_str = row_data['amount'].replace('$', '').strip()
-            per_share = float(amount_str)
-            pay_dt = datetime.datetime.strptime(payment_date, '%m/%d/%Y').strftime('%Y-%m-%d')
-            # BND 月配需看該筆的月份決定股數
-            if sym == 'BND':
-                pay_month = pay_dt[:7]
-                eff_shares = bnd_shares_by_month.get(pay_month, shares)
-            else:
-                eff_shares = shares
-            gross = round(per_share * eff_shares, 3)
-            net = round(gross * 0.7, 3)
-            row = {
-                'code': sym,
-                'date': pay_dt,
-                'per_share': per_share,
-                'shares': eff_shares,
-                'gross': gross,
-                'total': net,
-                'withheld_30pct': True
-            }
-            # 只取 2026 年的記錄
-            if not pay_dt.startswith('2026'):
+            print(f"[新方法] {len(divs)} 筆")
+        
+        sh = shares_map_tw[code]
+        for d in divs:
+            ex_date = d['exDate']
+            pay_date = d['payDate']
+            cash = d['cash']
+            # 只保留 2026 年的配息
+            if not (ex_date.startswith('2026/') or pay_date.startswith('2026/')):
                 continue
-            if pay_dt < today_str:
-                confirmed_us.append(row)
+            amt = round(sh * cash)
+            row = {
+                'code': code,
+                'period': '2026',  # 簡化期間標籤
+                'cash': cash,
+                'shares': sh,
+                'amount': amt,
+                'ex_date': ex_date,
+                'payout': pay_date,
+            }
+            if pay_date < today:
+                confirmed_tw.append(row)
             else:
-                pending_us.append(row)
-    except Exception as e:
-        print(f"    {sym} Nasdaq API error: {e}")
-    except Exception as e:
-        print(f"    {sym} Nasdaq API error: {e}")
+                pending_tw.append(row)
+    
+    # === 載入現有的 dividend_data.json 保留其他欄位 ===
+    OUT = "/home/jhe/.openclaw/workspace/assets/dividend_data.json"
+    with open(OUT) as f:
+        data = json.load(f)
+    
+    # === 更新 tw.confirmed / tw.pending（依 payout 入帳日 由新到舊 排序）===
+    def _sort_by_payout(rows):
+        """依 payout (入帳日) 由大到小排序"""
+        return sorted(rows, key=lambda r: r.get('payout', ''), reverse=True)
 
-conf_usd = sum(r['total'] for r in confirmed_us)
-pend_usd = sum(r['total'] for r in pending_us)
-print(f"  美股：已除息 {len(confirmed_us)} 筆，${conf_usd:.2f}（~{round(conf_usd*USD_TWD):,.0f} TWD）")
-print(f"  美股：待發放 {len(pending_us)} 筆，${pend_usd:.2f}")
+    confirmed_tw = _sort_by_payout(confirmed_tw)
+    pending_tw = _sort_by_payout(pending_tw)
 
-# === 美股年化配息資訊（從 Nasdaq API 取 annualizedDividend）===
-us_div_info_computed = {}
-for sym in us_shares_now.keys():
-    try:
-        assetclass = 'ETF' if sym == 'BND' else 'STOCKS'
-        url = f'https://api.nasdaq.com/api/quote/{sym}/dividends?assetclass={assetclass}&limit=3'
-        r2 = subprocess.run(
-            ['curl', '-s', '--max-time', '10', url,
-             '-H', 'User-Agent: Mozilla/5.0',
-             '-H', 'Accept: application/json',
-             '-H', 'Origin: https://www.nasdaq.com',
-             '-H', 'Referer: https://www.nasdaq.com/market-activity/' + ('etf' if sym == 'BND' else 'stocks') + '/' + sym.lower() + '/dividend-history'],
-            capture_output=True, text=True, timeout=12
-        )
-        data = json.loads(r2.stdout)
-        ann_div = float(data['data'].get('annualizedDividend', 0))
-        first_row = data['data']['dividends']['rows'][0]
-        per_share = float(first_row['amount'].replace('$', ''))
-        freq = '月配' if sym == 'BND' else '季配'
-        us_div_info_computed[sym] = {
-            'div': per_share, 'freq': freq, 'ann_div': ann_div
-        }
-    except Exception as e:
-        print(f"    {sym} div_info error: {e}")
-
-# === 歷年股息收入（美股）===
-us_annual = [
-    {'year':2020, 'aapl':0, 'msft':37.18, 'bnd':0, 'total':37.18},
-    {'year':2021, 'aapl':781.32, 'msft':1434.74, 'bnd':0, 'total':2216.06},
-    {'year':2022, 'aapl':1919.91, 'msft':2862.23, 'bnd':607.42, 'total':5389.56},
-    {'year':2023, 'aapl':2199.68, 'msft':3383.95, 'bnd':4806.72, 'total':10390.35},
-    {'year':2024, 'aapl':2291.99, 'msft':3735.23, 'bnd':5766.68, 'total':11793.90},
-    {'year':2025, 'aapl':2384.93, 'msft':4123.69, 'bnd':7224.73, 'total':13733.34},
-]
-# 2026年美股實收（從 confirmed_us 計算）
-us2026 = {'aapl':0, 'msft':0, 'bnd':0, 'total':0}
-for r in confirmed_us:
-    key = r['code'].lower()
-    if key in us2026:
-        us2026[key] += r['gross']
-us2026['total'] = sum(us2026.values())
-us_annual.append({'year':2026, **us2026})
-
-# === 台股歷年股息收入 ===
-tw_annual = [
-    {'year':2020,'amt':4190},
-    {'year':2021,'amt':66708},
-    {'year':2022,'amt':94486},
-    {'year':2023,'amt':117027},
-    {'year':2024,'amt':183829},
-    {'year':2025,'amt':200917},
-]
-
-# === 合併 ===
-# === 台股歷年股息收入（從 confirmed_tw 累計2026年）===
-tw2026_amt = sum(r['amount'] for r in confirmed_tw if r['payout'].startswith('2026'))
-tw_annual.append({'year': 2026, 'amt': tw2026_amt})
-
-# === 台股年化配息資訊（從 confirmed_tw / pending_tw，取最新一筆）===
-tw_div_info_computed = {}
-all_tw = confirmed_tw + pending_tw
-for code in set(r['code'] for r in all_tw):
-    rows = [r for r in all_tw if r['code'] == code]
-    latest = sorted(rows, key=lambda x: x['payout'], reverse=True)[0]
-    cash = latest['cash']  # 每股股利（已是正確單位）
-    period = latest['period']
-    if 'Q' in period:
-        freq = '季配'
-        per_year = 4
-    elif 'H' in period:
-        freq = '半年配'
-        per_year = 2
-    elif 'M' in period:
-        freq = '月配'
-        per_year = 12
-    else:
-        freq = '年配'
-        per_year = 1
-    ann = round(cash * per_year, 3)
-    tw_div_info_computed[code] = {'div': cash, 'freq': freq, 'ann_div': ann}
-
-# === 合併所有資料 ===
-div_data = {
-    'updated': today,
-    'tw': {
-        'confirmed': {'total': sum(r['amount'] for r in confirmed_tw), 'rows': sorted(confirmed_tw, key=lambda x: x['payout'])},
-        'pending': {'total': sum(r['amount'] for r in pending_tw), 'rows': sorted(pending_tw, key=lambda x: x['payout'])},
-        'annual': tw_annual,
-        'div_info': tw_div_info_computed,
-    },
-    'us': {
-        'confirmed': {'total_usd': round(conf_usd, 2), 'total_twd': round(conf_usd * USD_TWD, 0), 'rows': confirmed_us},
-        'pending': {'total_usd': round(pend_usd, 2), 'total_twd': round(pend_usd * USD_TWD, 0), 'rows': pending_us},
-        'annual': us_annual,
-        'div_info': us_div_info_computed,
+    data['tw']['confirmed'] = {
+        'total': sum(r['amount'] for r in confirmed_tw),
+        'rows': confirmed_tw
     }
-}
+    data['tw']['pending'] = {
+        'total': sum(r['amount'] for r in pending_tw),
+        'rows': pending_tw
+    }
+    
+    # === 補上 stationeryName 與其他前端需要的欄位 ===
+    for r in confirmed_tw + pending_tw:
+        r['stationeryName'] = name_map_tw.get(r['code'], r['code'])
+    
+    # === 更新 div_info ===
+    # 正確的頻率判定：用 2025 年配息次數（避免 2026 還在進行中）
+    if 'div_info' not in data['tw']:
+        data['tw']['div_info'] = {}
 
-# === 上傳 R2 ===
-with open(os.path.expanduser("~/.api_keys")) as f:
-    for line in f:
-        if line.strip() and not line.startswith("#") and "=" in line:
-            k, v = line.strip().split("=", 1)
-            os.environ[k.strip()] = v.strip()
+    # 先建立 freq 對照表（用 2024+2025+2026 累計配息資料判定頻率）
+    # 2026-06-06 修正：舊版只看 2025 一年，新基金（如 009802 2024-09 上市）會誤判
+    freq_map = {}
+    for code in shares_map_tw:
+        divs = fetch_dividends_json(code)
+        if not divs:
+            divs = fetch_dividends_html_legacy(code)
+        
+        # 1. 計算 2024-2026 三年配息次數
+        cnt_2024 = sum(1 for d in divs if d['exDate'].startswith('2024'))
+        cnt_2025 = sum(1 for d in divs if d['exDate'].startswith('2025'))
+        cnt_2026 = sum(1 for d in divs if d['exDate'].startswith('2026'))
+        total_recent = cnt_2024 + cnt_2025 + cnt_2026
+        
+        # 2. 計算 2024-2026 出現配息的不同「月-of-year」數（只取月分，不取年）
+        #    半年配：總是 7月+11月（跨年重複）→ 2 個不同月
+        #    季配：1/4/7/10 或 3/6/9/12 等 4 個不同月
+        #    月配：1..12 共 12 個不同月
+        #    新季配基金（還在累積中）：可能只有 3 個不同月
+        unique_months_of_year = set()
+        for d in divs:
+            ex = d['exDate']
+            # 解析月份（exDate 格式可能是 YYYY/MM/DD 或 YYYY-MM-DD 或 YYYY/M/D）
+            m = None
+            for fmt in ('%Y/%m/%d', '%Y-%m-%d', '%Y/%d/%m'):
+                try:
+                    dt = datetime.datetime.strptime(ex, fmt)
+                    m = dt.month
+                    break
+                except ValueError:
+                    continue
+            if m is None:
+                # 退而求其次用 split
+                parts = re.split(r'[-/]', ex)
+                if len(parts) >= 2 and parts[0] in ['2024', '2025', '2026']:
+                    try:
+                        m = int(parts[1])
+                    except ValueError:
+                        continue
+            if m is not None and d['exDate'][:4] in ['2024', '2025', '2026']:
+                unique_months_of_year.add(m)
+        umo_count = len(unique_months_of_year)
+        
+        # 3. 檢查 period 欄位是否有 Q1-Q4 標籤（確認是否季配）
+        periods = set()
+        for d in divs:
+            p = d.get('period', '')
+            if p and any(q in p for q in ['Q1', 'Q2', 'Q3', 'Q4']):
+                periods.add(p)
+        has_q_pattern = len(periods) >= 3  # 有 Q1, Q2, Q3, Q4 中至少 3 個
+        
+        # 4. 推斷頻率（關鍵是 umo_count：月-of-year 唯一數）
+        if cnt_2025 >= 11:
+            # 2025 滿 12 個月 → 月配
+            freq_map[code] = '月配'
+        elif umo_count >= 4 or has_q_pattern:
+            # 4 個以上不同月-of-year → 季配（明確）
+            freq_map[code] = '季配'
+        elif umo_count == 3 and total_recent >= 3:
+            # 3 個不同月（可能新季配基金還沒累積到 4 個）→ 預設 季配
+            freq_map[code] = '季配'
+        elif umo_count == 2:
+            # 2 個不同月（跨年重複）→ 半年配
+            freq_map[code] = '半年配'
+        elif umo_count == 1 and total_recent >= 2:
+            # 1 個不同月（跨年重複）→ 年配
+            freq_map[code] = '年配'
+        elif umo_count == 1:
+            # 只有 1 筆資料 → 預設 年配
+            freq_map[code] = '年配'
+        else:
+            # 沒有資料 → 預設 年配
+            freq_map[code] = '年配'
 
-s3 = boto3.client('s3',
-    endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
-    aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
-    aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))
+    # 對有 2026 紀錄的股，用最新一筆配息 + 正確的 freq 覆寫 div_info
+    for r in pending_tw + confirmed_tw:
+        code = r['code']
+        cash = r['cash']
+        freq = freq_map.get(code, '年配')
+        if freq == '月配':
+            ann = round(cash * 12, 4)
+        elif freq == '季配':
+            ann = round(cash * 4, 4)
+        elif freq == '半年配':
+            ann = round(cash * 2, 4)
+        else:
+            ann = cash
+        data['tw']['div_info'][code] = {
+            'div': cash,
+            'freq': freq,
+            'ann_div': ann
+        }
+    
+    # === 更新時間戳 ===
+    data['updated'] = datetime.datetime.now().strftime('%Y/%m/%d %H:%M (新方法自動抓取)')
+    
+    # === 寫回 ===
+    with open(OUT, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    print(f"\n=== 完成 ===")
+    print(f"  confirmed: {len(confirmed_tw)} 筆, total NT$ {data['tw']['confirmed']['total']:,}")
+    print(f"  pending: {len(pending_tw)} 筆, total NT$ {data['tw']['pending']['total']:,}")
 
-with open('/tmp/dividend_data.json', 'w') as f:
-    json.dump(div_data, f, ensure_ascii=False, indent=2)
-s3.upload_file('/tmp/dividend_data.json', 'shared-files', 'assets/dividend_data.json')
+    # === 上傳 dividend_data.json 到 R2 ===
+    print(f"\n=== 上傳 R2 ===")
+    upload_to_r2('assets/dividend_data.json', OUT, 'application/json')
 
-# === 更新 index.html 中的 2026 年動態數值（燒進靜態檔）===
-s3.download_file('shared-files', 'assets/index.html', '/tmp/index_r2.html')
-with open('/tmp/index_r2.html') as f:
-    html = f.read()
 
-tw2026 = sum(r['amount'] for r in confirmed_tw) + sum(r['amount'] for r in pending_tw)
-us2026_twd = round((conf_usd + pend_usd) * USD_TWD)
-
-import re
-html = re.sub(
-    r'\{year:2026,amt:\d+\}',
-    f'{{year:2026,amt:{tw2026}}}',
-    html
-)
-us2026_net = round(sum(r['total'] for r in confirmed_us) + sum(r['total'] for r in pending_us), 2)
-aapl2026_net = round(sum(r['total'] for r in confirmed_us if r['code']=='AAPL'), 2)
-msft2026_net = round(sum(r['total'] for r in confirmed_us if r['code']=='MSFT'), 2)
-bnd2026_net = round(sum(r['total'] for r in confirmed_us if r['code']=='BND'), 2)
-html = re.sub(
-    r'\{year:2026, aapl:[0-9.]+, msft:[0-9.]+, bnd:[0-9.]+, arkk:0, total:[0-9.]+\}',
-    f'{{year:2026, aapl:{aapl2026_net}, msft:{msft2026_net}, bnd:{bnd2026_net}, arkk:0, total:{us2026_net}}}',
-    html
-)
-
-with open('/tmp/index_r2.html', 'w') as f:
-    f.write(html)
-s3.upload_file('/tmp/index_r2.html', 'shared-files', 'assets/index.html')
-
-print(f'  index.html 2026 年已更新（台股={tw2026:,}，美股={us2026_twd:,} TWD）')
-
-# === 台股配息入帳通知 ===
-prev_confirmed_total = 0
-try:
-    s3.download_file('shared-files', 'assets/dividend_data.json', '/tmp/prev_dividend_data.json')
-    with open('/tmp/prev_dividend_data.json') as f:
-        prev = json.load(f)
-    prev_confirmed_total = prev['tw']['confirmed']['total']
-except:
-    pass
-
-new_total = sum(r['amount'] for r in confirmed_tw)
-if new_total > prev_confirmed_total:
-    diff = new_total - prev_confirmed_total
-    # 找出新增的 rows
-    prev_codes = {r['code'] for r in prev.get('tw', {}).get('confirmed', {}).get('rows', [])}
-    new_rows = [r for r in confirmed_tw if r['code'] not in prev_codes]
-    if new_rows:
-        # 發 Telegram 通知
-        with open(os.path.expanduser('~/.api_keys')) as f:
-            for line in f:
-                if '=' in line and not line.startswith('#'):
-                    k, v = line.strip().split('=', 1)
-                    if k == 'TELEGRAM_BOT_TOKEN':
-                        bot_token = v.strip()
-        if bot_token:
-            lines = ['📥 台股配息入帳通知']
-            for r in new_rows:
-                lines.append(f"• {r['code']} {r['payout']} ${r['amount']:,.0f}")
-            lines.append(f'━━━━━━━━━━━━━━━━━━')
-            lines.append(f'新增合計：${diff:,.0f}')
-            text = '\n'.join(lines)
-            subprocess.run(
-                ['curl', '-s', '-X', 'POST',
-                 f'https://api.telegram.org/bot{bot_token}/sendMessage',
-                 '-d', 'chat_id=1181571031', '-d', f'text={text}', '-d', 'parse_mode=HTML'],
-                capture_output=True
-            )
-            print(f'  → 已發送台股入帳通知：${diff:,.0f}')
-
-print(f"\n完成：assets/dividend_data.json 已更新")
-print(f"  台股合計：{sum(r['amount'] for r in confirmed_tw):,.0f}（已）+ {sum(r['amount'] for r in pending_tw):,.0f}（待）")
-print(f"  美股合計：${conf_usd:.2f}（已）+ ${pend_usd:.2f}（待）")
+if __name__ == "__main__":
+    main()

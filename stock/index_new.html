@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>持股總覽</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;min-height:100vh;padding:10px}
+.header{text-align:center;margin-bottom:16px}
+.header h1{color:#1a1a2e;font-size:20px;margin-bottom:4px}
+.header p{color:#666;font-size:12px}
+.card{background:white;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.kpi-row{display:flex;gap:10px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.kpi-box{flex:0 0 auto;background:#2196F3;color:white;padding:10px 14px;border-radius:10px;text-align:center;min-width:100px}
+.kpi-box .label{font-size:10px;opacity:0.9}
+.kpi-box .value{font-size:19px;font-weight:bold;margin:4px 0}
+.kpi-box .sub{font-size:9px;opacity:0.85}
+.kpi-box.orange{background:#E65100}
+.section-title{color:#333;font-size:14px;font-weight:bold;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #2196F3;cursor:pointer;user-select:none;display:block}
+.section-title:hover{opacity:0.8}
+.section-title::after{content:' ▼';font-size:10px;color:#888}
+.card.collapsed>table,.card.collapsed>div.kpi-row,.card.collapsed>p{display:none}
+.card.collapsed>.section-title{border-bottom:none;margin-bottom:0;padding-bottom:4px}
+.card.collapsed>.section-title::after{content:' ▶';font-size:10px;color:#888}
+.mob-table{display:table}
+.desk-table{display:none}
+table{width:100%;border-collapse:collapse;font-size:11px;table-layout:auto}
+th,td{padding:5px 3px;text-align:center;border-bottom:1px solid #eee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+th{background:#1a1a2e;color:white;font-size:9px}
+.up{color:#4CAF50;font-weight:bold}
+.down{color:#F44336;font-weight:bold}
+.footer{text-align:center;color:#999;font-size:10px;margin-top:16px}
+details{margin-top:8px}
+summary{cursor:pointer;font-size:12px;color:#888}
+.sub-table{font-size:11px;margin-top:6px}
+.sub-table th{font-size:9px;padding:4px 3px}
+.sub-table td{padding:4px 3px}
+@media(min-width:768px){
+body{padding:20px}
+.header{margin-bottom:24px}
+.header h1{font-size:24px}
+.header p{font-size:13px}
+.card{padding:20px;margin-bottom:16px}
+.kpi-row{gap:80px;margin:15px 0}
+.kpi-box{padding:14px 22px;min-width:145px}
+.kpi-box .label{font-size:12px}
+.kpi-box .value{font-size:26px}
+.kpi-box .sub{font-size:11px}
+.section-title{font-size:15px;margin-bottom:12px;padding-bottom:8px}
+.mob-table{display:none}
+.desk-table{display:table}
+table{font-size:12px}
+th,td{padding:9px 7px}
+.footer{font-size:11px;margin-top:20px}
+.sub-table{font-size:12px}
+.sub-table th{font-size:10px;padding:6px 4px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>📊 持股總覽</h1>
+<p id="update-time">載入中...</p>
+</div>
+
+<!-- KPI -->
+<div class="card">
+<div class="kpi-row">
+<div class="kpi-box">
+<div class="label">總市值</div>
+<div class="value" id="kpi-mv">--</div>
+<div class="sub">TWD</div>
+</div>
+<div class="kpi-box">
+<div class="label">總成本</div>
+<div class="value" id="kpi-cost">--</div>
+<div class="sub">TWD</div>
+</div>
+<div class="kpi-box orange">
+<div class="label">累計報酬</div>
+<div class="value" id="kpi-gain">--</div>
+<div class="sub" id="kpi-gainpct">--</div>
+</div>
+<div class="kpi-box" style="background:#1565C0">
+<div class="label">台股當日</div>
+<div class="value" id="kpi-twday">--</div>
+<div class="sub">TWD</div>
+</div>
+<div class="kpi-box" style="background:#E65100">
+<div class="label">美股當日</div>
+<div class="value" id="kpi-usday">--</div>
+<div class="sub">TWD</div>
+</div>
+</div>
+</div>
+
+<!-- 台股 -->
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📈 台股（<span id="tw-count">--</span> 檔）</h3>
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>股</th><th>現價</th><th>漲%</th><th>累計</th></tr>
+<tbody id="tw-mob"></tbody>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>股數</th><th>成本均價</th><th>昨收</th><th>現價</th><th>當日</th><th>漲%</th><th>累計</th></tr>
+<tbody id="tw-desk"></tbody>
+</table>
+</div>
+
+<!-- 美股 -->
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">💵 美股（<span id="us-count">--</span> 檔）</h3>
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>股</th><th>現價</th><th>漲%</th><th>累計</th></tr>
+<tbody id="us-mob"></tbody>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>股數</th><th>成本均價</th><th>昨收</th><th>現價</th><th>當日</th><th>漲%</th><th>累計</th></tr>
+<tbody id="us-desk"></tbody>
+</table>
+</div>
+
+<!-- 期貨/指數參考 -->
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📊 期貨 / 指數參考</h3>
+<table class="mob-table">
+<tr><th>名稱</th><th>現價</th><th>漲%</th></tr>
+<tbody id="ref-mob"></tbody>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>昨收</th><th>現價</th><th>漲%</th></tr>
+<tbody id="ref-desk"></tbody>
+</table>
+</div>
+
+<!-- 配息總覽 -->
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">💰 2026年配息總覽</h3>
+<table>
+<tr><th>項目</th><th>金額</th><th>說明</th></tr>
+<tr><td>台股已入帳</td><td style="color:#4CAF50;font-weight:bold" id="div-tw-confirmed">--</td><td>入帳日在2026年內</td></tr>
+<tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold" id="div-tw-pending">--</td><td>已除息尚未入帳</td></tr>
+<tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold" id="div-us-confirmed">--</td><td>已扣30%預扣稅</td></tr>
+<tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32" id="div-total">--</td><td>台股+美股</td></tr>
+<tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold" id="div-grand-total">--</td><td>市值增值+美股匯差</td></tr>
+</table>
+<div id="div-details"></div>
+</div>
+
+<!-- 近期除息預告 -->
+<div class="card collapsed">
+<h3 class="section-title" onclick="this.parentElement.classList.toggle('collapsed')">📅 近期除息預告</h3>
+<table class="mob-table">
+<tr><th>代</th><th>名</th><th>除息日</th><th>股利</th></tr>
+<tbody id="upcoming-mob"></tbody>
+</table>
+<table class="desk-table">
+<tr><th>代號</th><th>名稱</th><th>除息日</th><th>現金股利</th><th>說明</th></tr>
+<tbody id="upcoming-desk"></tbody>
+</table>
+</div>
+
+<div class="footer" id="footer">📊 持股總覽｜蝦助出品</div>
+
+<script>
+const R2_BASE = 'https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev';
+
+async function fetchJSON(path) {
+    try {
+        const r = await fetch(R2_BASE + '/' + path);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return await r.json();
+    } catch(e) {
+        console.error('fetch failed:', path, e);
+        return null;
+    }
+}
+
+function sign(n) { return n >= 0 ? '+' : ''; }
+function dc(n) { return n >= 0 ? 'up' : 'down'; }
+function gcolor(g) { return g >= 0 ? '#FFD700' : '#FF6B6B'; }
+
+// 格式化日期
+function fmtDate(dateStr) {
+    // 接受 1130519 或 2026/05/19 格式
+    if (!dateStr) return '--';
+    if (dateStr.length === 7 && /^\d{7}$/.test(dateStr)) {
+        // 民國年格式：1130519 → 113/05/19
+        const y = dateStr.slice(0, 3);
+        const m = dateStr.slice(3, 5);
+        const d = dateStr.slice(5, 7);
+        return `${y}/${m}/${d}`;
+    }
+    return dateStr;
+}
+
+function renderTwStocks(tw) {
+    document.getElementById('tw-count').textContent = tw.length;
+    let m = '', d = '';
+    tw.forEach(s => {
+        const cur = s.price, prev = s.prev_price, shares = s.shares;
+        const costAvg = s.cost;
+        const dayVal = (cur - prev) * shares;
+        const gain = s.gain;
+        const gc = gcolor(gain);
+        const ds = (cur >= prev) ? '+' : '';
+        const dayPct = prev > 0 ? ((cur - prev) / prev * 100) : 0;
+
+        m += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares.toLocaleString()}</td><td>$${cur.toFixed(2)}</td><td class="${dc(cur - prev)}">${ds}${dayPct.toFixed(2)}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+        d += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares.toLocaleString()}</td><td>$${costAvg.toFixed(2)}</td><td>$${prev.toFixed(2)}</td><td>$${cur.toFixed(2)}</td><td class="${dc(dayVal)}">${sign(dayVal)}${Math.round(dayVal).toLocaleString()}</td><td class="${dc(cur - prev)}">${ds}${dayPct.toFixed(2)}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+    });
+    document.getElementById('tw-mob').innerHTML = m;
+    document.getElementById('tw-desk').innerHTML = d;
+}
+
+function renderUsStocks(us) {
+    document.getElementById('us-count').textContent = us.length;
+    let m = '', d = '';
+    us.forEach(s => {
+        const cur = s.price, prev = s.prev, shares = s.shares;
+        const costAvg = s.cost;
+        const dayVal = s.day_val_twd || 0;
+        const gain = s.gain;
+        const dayPct = prev > 0 ? ((cur - prev) / prev * 100) : 0;
+        const gc = gcolor(gain);
+        const ds = (cur >= prev) ? '+' : '';
+
+        m += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares}</td><td>$${cur}</td><td class="${dc(cur - prev)}">${ds}${dayPct.toFixed(2)}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+        d += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares}</td><td>$${costAvg}</td><td>$${prev}</td><td>$${cur}</td><td class="${dc(dayVal)}">${sign(dayVal)}${Math.round(dayVal).toLocaleString()}</td><td class="${dc(cur - prev)}">${ds}${dayPct.toFixed(2)}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+    });
+    document.getElementById('us-mob').innerHTML = m;
+    document.getElementById('us-desk').innerHTML = d;
+}
+
+function renderFutures(prices, prev) {
+    const refMap = [
+        { sym: 'TAIEX',  disp: '^TWII', name: '台灣加權指數' },
+        { sym: 'WTX',    disp: 'WTX&',  name: '台指期(近一)' },
+        { sym: 'SP500',  disp: 'SPY',   name: 'S&P 500' },
+        { sym: 'NAS100', disp: 'QQQ',   name: 'Nasdaq 100' },
+        { sym: 'DOW',    disp: 'DIA',   name: '道瓊' },
+        { sym: 'VIX',    disp: 'VIXY',  name: 'VIX恐慌指數' },
+        { sym: 'TNX',    disp: 'TLT',   name: '10年公債殖利率' },
+        { sym: 'GOLD',   disp: 'GLD',   name: '黃金' },
+        { sym: 'OIL',    disp: 'USO',   name: '原油' },
+        { sym: 'FNMR',   disp: '^FNMR', name: 'NAREIT Mortgage' },
+    ];
+    let m = '', d = '';
+    refMap.forEach(({ sym, disp, name }) => {
+        const cur = prices[sym];
+        const p = prev[sym] || cur;
+        if (cur === undefined) return;
+        const ds = (cur >= p) ? '+' : '';
+        const dayPct = p > 0 ? ((cur - p) / p * 100) : 0;
+        const dcClass = dc(cur - p);
+        m += `<tr><td>${disp}</td><td>$${typeof cur === 'number' ? cur.toFixed(2) : cur}</td><td class="${dcClass}">${ds}${dayPct.toFixed(2)}%</td></tr>`;
+        d += `<tr><td>${disp}</td><td>${name}</td><td>$${typeof p === 'number' ? p.toFixed(2) : p}</td><td>$${typeof cur === 'number' ? cur.toFixed(2) : cur}</td><td class="${dcClass}">${ds}${dayPct.toFixed(2)}%</td></tr>`;
+    });
+    document.getElementById('ref-mob').innerHTML = m;
+    document.getElementById('ref-desk').innerHTML = d;
+}
+
+function renderDividends(div, fx) {
+    const twConf = div?.tw?.confirmed?.total || 0;
+    const twPend = div?.tw?.pending?.total || 0;
+    const usConfUsd = (div?.us?.confirmed?.total_usd || 0) + (div?.us?.pending?.total_usd || 0);
+    const usConfTwd = Math.round(usConfUsd * fx);
+
+    document.getElementById('div-tw-confirmed').textContent = '+' + twConf.toLocaleString() + ' 元';
+    document.getElementById('div-tw-pending').textContent = '+' + twPend.toLocaleString() + ' 元';
+    document.getElementById('div-us-confirmed').textContent = '+TWD ' + usConfTwd.toLocaleString();
+    document.getElementById('div-total').textContent = '≈ ' + (twConf + twPend + usConfTwd).toLocaleString() + ' 元';
+
+    // 已入帳明細
+    const twRows = div?.tw?.confirmed?.rows || [];
+    const twPendRows = div?.tw?.pending?.rows || [];
+    if (twRows.length > 0 || twPendRows.length > 0) {
+        let html = '';
+        if (twRows.length > 0) {
+            html += `<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 已入帳明細（${twRows.length}筆）</summary>`;
+            html += `<table class="sub-table"><tr><th>代</th><th>期</th><th>股利</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>`;
+            twRows.forEach(r => {
+                html += `<tr><td>${r.code}</td><td>${r.period}</td><td>${r.cash}</td><td>${r.shares.toLocaleString()}</td><td>${r.amount.toLocaleString()}</td><td>${r.ex_date}</td><td>${r.payout || '--' || '--'}</td></tr>`;
+            });
+            html += `</table></details>`;
+        }
+        if (twPendRows.length > 0) {
+            html += `<details style="margin-top:6px"><summary style="cursor:pointer;font-size:12px;color:#888">▶ 待發放明細（${twPendRows.length}筆）</summary>`;
+            html += `<table class="sub-table"><tr><th>代</th><th>期</th><th>股利</th><th>股數</th><th>金額</th><th>除息</th><th>入帳</th></tr>`;
+            twPendRows.forEach(r => {
+                html += `<tr><td>${r.code}</td><td>${r.period}</td><td>${r.cash}</td><td>${r.shares.toLocaleString()}</td><td>${r.amount.toLocaleString()}</td><td>${r.ex_date}</td><td>${r.payout || '--' || '--'}</td></tr>`;
+            });
+            html += `</table></details>`;
+        }
+        document.getElementById('div-details').innerHTML = html;
+    }
+}
+
+function renderUpcoming(twse) {
+    const items = twse?.upcoming_div || [];
+    let m = '', d = '';
+    if (items.length === 0) {
+        m = '<tr><td colspan="3" style="color:#999">無近期除息資料</td></tr>';
+        d = '<tr><td colspan="5" style="color:#999">無近期除息資料</td></tr>';
+    } else {
+        items.forEach(item => {
+            const name = item.Name || item.name || item.symbol || '';
+            const code = item.Code || item.code || '';
+            const cashDiv = item.CashDividend || item.cash_dividend || '--';
+            const exDate = fmtDate(item.ExdividendDate || item.ex_date || item.Date || '');
+            const note = cashDiv !== '--' ? '現金股利' : '股票股利';
+
+            m += `<tr><td>${code}</td><td>${name}</td><td>${exDate}</td><td>${cashDiv}</td></tr>`;
+            d += `<tr><td>${code}</td><td>${name}</td><td>${exDate}</td><td>${cashDiv}</td><td>${note}</td></tr>`;
+        });
+    }
+    document.getElementById('upcoming-mob').innerHTML = m;
+    document.getElementById('upcoming-desk').innerHTML = d;
+}
+
+async function init() {
+    const [pf, div, ref, twse] = await Promise.all([
+        fetchJSON('assets/portfolio_data.json'),
+        fetchJSON('assets/dividend_data.json'),
+        fetchJSON('us_stock/us_prices.json'),
+        fetchJSON('taiwan_stock/twse_data.json')
+    ]);
+
+    if (!pf) {
+        document.getElementById('update-time').textContent = '⚠️ 無法載入，請檢查網路';
+        return;
+    }
+
+    const fx = pf.fx?.USD_TWD || 31.569;
+    const sum = pf.summary || {};
+
+    // KPI
+    document.getElementById('kpi-mv').textContent = (sum.stockMktval || 0).toLocaleString();
+    document.getElementById('kpi-cost').textContent = (sum.stockCost || 0).toLocaleString();
+    const gain = (sum.stockMktval || 0) - (sum.stockCost || 0);
+    const gainPct = sum.stockCost > 0 ? (gain / sum.stockCost * 100) : 0;
+    document.getElementById('kpi-gain').textContent = sign(gain) + gain.toLocaleString();
+    document.getElementById('kpi-gainpct').textContent = sign(gainPct) + gainPct.toFixed(1) + '%';
+
+    // 台股當日：用 (price - prev_price) * shares
+    const twDay = (pf.stocks?.tw || []).reduce((sum, s) => {
+        return sum + (s.price - s.prev_price) * s.shares;
+    }, 0);
+    // 美股當日：用 (price - prev_price) * shares * fx
+    const usDay = (pf.stocks?.us || []).reduce((sum, s) => {
+        return sum + (s.price - s.prev_price) * s.shares * fx;
+    }, 0);
+    document.getElementById('kpi-twday').textContent = sign(twDay) + Math.round(twDay).toLocaleString();
+    document.getElementById('kpi-usday').textContent = sign(usDay) + Math.round(usDay).toLocaleString();
+
+    // Update time
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    document.getElementById('update-time').textContent = `最後更新：${dateStr} | USD/TWD：${fx.toFixed(3)}`;
+    document.getElementById('footer').textContent = `📊 持股總覽｜蝦助出品｜${dateStr}`;
+
+    if (pf.stocks?.tw) renderTwStocks(pf.stocks.tw);
+    if (pf.stocks?.us) renderUsStocks(pf.stocks.us);
+
+    // 期貨/指數
+    if (ref?.prices) {
+        renderFutures(ref.prices, ref.prev || {});
+    }
+
+    // 配息（含明細）
+    if (div) renderDividends(div, fx);
+
+    // 除息預告
+    if (twse) renderUpcoming(twse);
+
+    // 總累計
+    const totalGain = (sum.stockMktval || 0) - (sum.stockCost || 0);
+    document.getElementById('div-grand-total').textContent = sign(totalGain) + totalGain.toLocaleString() + ' 元';
+}
+
+init();
+</script>
+</body>
+</html>

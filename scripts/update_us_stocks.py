@@ -5,6 +5,7 @@ from datetime import datetime
 with open('/home/jhe/.openclaw/workspace/us_stock/us_prices.json') as f:
     prices_data = json.load(f)
 prices = prices_data.get('prices', {})
+us_prev = prices_data.get('prev', {})
 
 # 讀取 us_stocks.json (有持股明細)
 with open('/home/jhe/.openclaw/workspace/us_stock/us_stocks.json') as f:
@@ -15,6 +16,8 @@ for s in stocks:
     sym = s.get('symbol', '')
     if sym in prices:
         s['price'] = prices[sym]
+    if sym in us_prev:
+        s['prev'] = us_prev[sym]
 
 # 加入 update_time
 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>台電用電分析</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Microsoft JhengHei",sans-serif;background:#f0f4f8;min-height:100vh;padding:10px;font-size:14px}
+.container{max-width:1000px;margin:0 auto}
+.info{background:#1565C0;color:white;padding:15px 20px;border-radius:12px;margin-bottom:15px}
+.info h1{font-size:20px;margin-bottom:6px}
+.info p{font-size:13px;opacity:0.9}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px}
+.c{background:white;padding:15px;border-radius:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+.cT{font-size:11px;color:#888;margin-bottom:4px}
+.cV{font-size:22px;font-weight:bold;color:#1565C0}
+.cV.g{color:#2E7D32}
+.cV.o{color:#F57C00}
+.sel{margin-bottom:15px;display:flex;gap:10px;flex-wrap:wrap}
+select{padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:white;flex:1;min-width:150px}
+.meter-info{background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+.mi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mi-item{padding:10px 12px;background:#f8f9fa;border-radius:6px}
+.mi-label{font-size:10px;color:#888;margin-bottom:3px}
+.mi-value{font-weight:bold;color:#333;font-size:13px}
+.box{background:white;border-radius:12px;padding:18px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+.tt{font-size:15px;font-weight:bold;color:#333;margin-bottom:15px;padding-bottom:10px;border-bottom:2px solid #eee}
+svg{width:100%;height:auto;display:block;background:#fafafa;border-radius:6px}
+.ft{font-size:10px;fill:#888}
+.fv{font-size:12px;fill:#333;font-weight:bold;text-anchor:middle}
+table{width:100%;border-collapse:collapse;font-size:12px;background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+th{background:#1565C0;color:white;padding:10px 8px;text-align:left;font-size:11px}
+td{padding:10px 8px;border-bottom:1px solid #eee}
+tr:hover{background:#f8f9fa}
+footer{text-align:center;padding:20px;color:#999;font-size:12px}
+@media(min-width:769px){
+body{padding:20px;font-size:15px}
+.cards{grid-template-columns:repeat(4,1fr);gap:12px}
+.cV{font-size:26px}
+.mi{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="info">
+<h1>⚡ 台電用電分析</h1>
+<p>水林鄉用戶 | 資料來源：PostgreSQL</p>
+</div>
+
+<div class="cards">
+<div class="c"><div class="cT">總用電</div><div class="cV" id="tk">25,350 度</div></div>
+<div class="c"><div class="cT">總電費</div><div class="cV o" id="tc">$48,391</div></div>
+<div class="c"><div class="cT">平均電價</div><div class="cV g" id="ap">$1.91/度</div></div>
+<div class="c"><div class="cT">資料期數</div><div class="cV">10 期</div></div>
+</div>
+
+<div class="sel">
+<select id="s3" onchange="render()">
+<option value="y">依年度</option>
+<option value="q">依期別(每2月)</option>
+<option value="p">指定期別各電號</option>
+</select>
+<select id="s1" onchange="render()">
+<option value="all">全部電號總計</option>
+<option value="19-51-2353-20-8">電號1：西井段2568地號</option>
+<option value="19-51-2646-35-8">電號2：灣西段301地號</option>
+<option value="19-51-2651-10-7">電號3：正義西路61號</option>
+<option value="19-51-2651-14-1">電號3-1：正義西路61號一樓</option>
+<option value="19-51-2651-16-3">電號3-2：正義西路61號二樓</option>
+<option value="19-51-2724-00-2">電號4：灣西段1136地號</option>
+<option value="19-51-2729-75-7">電號5：灣西段1132地號</option>
+<option value="19-51-2729-97-3">電號6：灣西段1583地號</option>
+<option value="19-51-2730-19-1">電號7：灣西段1158地號</option>
+<option value="19-51-2731-56-8">電號8：灣東村913地號</option>
+<option value="19-51-2829-15-5">電號9：正義西路61-1號【營業用】</option>
+<option value="19-51-2829-16-6">電號10：正義西路61-1號二樓</option>
+<option value="19-60-5558-05-4">電號11：灣西段594地號</option>
+<option value="19-60-5651-20-7">電號12：灣西段1584地號</option>
+</select>
+<select id="s2" onchange="render()" style="display:none">
+<option value="11311">113年11月</option>
+<option value="11401">114年1月</option>
+<option value="11403">114年3月</option>
+<option value="11405">114年5月</option>
+<option value="11407">114年7月</option>
+<option value="11409">114年9月</option>
+<option value="11411">114年11月</option>
+<option value="11501">115年1月</option>
+<option value="11503">115年3月</option>
+<option value="11505">115年5月</option>
+</select>
+</div>
+
+<div class="meter-info" id="mi">
+<div class="mi">
+<div class="mi-item"><div class="mi-label">電號</div><div class="mi-value" id="mi1">全部電號</div></div>
+<div class="mi-item"><div class="mi-label">用電型態</div><div class="mi-value" id="mi2">住宅/非營業用</div></div>
+<div class="mi-item"><div class="mi-label">地址</div><div class="mi-value" id="mi3">水林鄉多處</div></div>
+<div class="mi-item"><div class="mi-label">饋線</div><div class="mi-value" id="mi4">XG31 / XR22</div></div>
+</div>
+</div>
+
+<div class="box" id="chartBox">
+<div class="tt" id="chartTitle">📊 用電量（度）</div>
+<svg id="ck" viewBox="0 0 500 200"></svg>
+</div>
+
+<div class="box" id="chartBox2">
+<div class="tt">💰 電費（元）</div>
+<svg id="cc" viewBox="0 0 500 200"></svg>
+</div>
+
+<div class="box" id="meterBox" style="display:none">
+<div class="tt" id="meterTitle">📋 指定期別各電號用電</div>
+<table id="meterTable"><thead id="meterTh"></thead><tbody id="meterTb"></tbody></table>
+</div>
+
+<div class="box" id="detailBox">
+<div class="tt">📋 明細資料</div>
+<table><thead id="th"></thead><tbody id="tb"></tbody></table>
+</div>
+
+<footer>台電e-Bill | 蝦助 🦐 | 最後更新：2026/06/01 22:14</footer>
+</div>
+
+<script>
+var M={"19-51-2353-20-8": {"t": "住宅", "a": "水林鄉西井段2568地號", "f": "XG31"}, "19-51-2646-35-8": {"t": "住宅", "a": "雲縣水林鄉灣西段301地號", "f": "XG31"}, "19-51-2651-10-7": {"t": "住宅", "a": "水林鄉灣西村正義西路61號", "f": "XG31"}, "19-51-2651-14-1": {"t": "住宅", "a": "水林鄉灣西村正義西路61號一樓", "f": "XG31"}, "19-51-2651-16-3": {"t": "住宅", "a": "水林鄉灣西村正義西路61號二樓", "f": "XG31"}, "19-51-2724-00-2": {"t": "住宅", "a": "雲縣水林鄉灣西村灣西段1136地號", "f": "XG31"}, "19-51-2729-75-7": {"t": "住宅", "a": "雲林縣水林鄉灣西村灣西段1132地號", "f": "XG31"}, "19-51-2729-97-3": {"t": "住宅", "a": "雲林縣水林鄉灣西村灣西段1583地號", "f": "XG31"}, "19-51-2730-19-1": {"t": "住宅", "a": "水林鄉灣西段1158地號", "f": "XG31"}, "19-51-2731-56-8": {"t": "住宅", "a": "雲林縣水林鄉灣東村913地號", "f": "XG31"}, "19-51-2829-15-5": {"t": "營業用", "a": "雲縣水林鄉正義西路61-1號", "f": "XG31"}, "19-51-2829-16-6": {"t": "住宅", "a": "雲縣水林鄉正義西路61-1號二樓", "f": "XG31"}, "19-60-5558-05-4": {"t": "住宅", "a": "雲縣水林鄉灣西村灣西段594號", "f": "XR22"}, "19-60-5651-20-7": {"t": "住宅", "a": "水林鄉灣西段1584地號", "f": "XR22"}};
+var D=[{"a": "19-51-2353-20-8", "p": "11311", "y": 2024, "k": 225, "c": 368}, {"a": "19-51-2353-20-8", "p": "11401", "y": 2025, "k": 124, "c": 197}, {"a": "19-51-2353-20-8", "p": "11403", "y": 2025, "k": 134, "c": 215}, {"a": "19-51-2353-20-8", "p": "11405", "y": 2025, "k": 104, "c": 165}, {"a": "19-51-2353-20-8", "p": "11407", "y": 2025, "k": 53, "c": 78}, {"a": "19-51-2353-20-8", "p": "11409", "y": 2025, "k": 368, "c": 707}, {"a": "19-51-2353-20-8", "p": "11411", "y": 2025, "k": 160, "c": 271}, {"a": "19-51-2353-20-8", "p": "11501", "y": 2026, "k": 133, "c": 227}, {"a": "19-51-2353-20-8", "p": "11503", "y": 2026, "k": 97, "c": 190}, {"a": "19-51-2353-20-8", "p": "11505", "y": 2026, "k": 57, "c": 190}, {"a": "19-51-2646-35-8", "p": "11311", "y": 2024, "k": 97, "c": 153}, {"a": "19-51-2646-35-8", "p": "11401", "y": 2025, "k": 84, "c": 130}, {"a": "19-51-2646-35-8", "p": "11403", "y": 2025, "k": 65, "c": 99}, {"a": "19-51-2646-35-8", "p": "11405", "y": 2025, "k": 105, "c": 166}, {"a": "19-51-2646-35-8", "p": "11407", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2646-35-8", "p": "11409", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2646-35-8", "p": "11411", "y": 2025, "k": 128, "c": 215}, {"a": "19-51-2646-35-8", "p": "11501", "y": 2026, "k": 58, "c": 190}, {"a": "19-51-2646-35-8", "p": "11503", "y": 2026, "k": 95, "c": 190}, {"a": "19-51-2646-35-8", "p": "11505", "y": 2026, "k": 78, "c": 190}, {"a": "19-51-2651-10-7", "p": "11311", "y": 2024, "k": 731, "c": 1546}, {"a": "19-51-2651-10-7", "p": "11401", "y": 2025, "k": 433, "c": 809}, {"a": "19-51-2651-10-7", "p": "11403", "y": 2025, "k": 455, "c": 858}, {"a": "19-51-2651-10-7", "p": "11405", "y": 2025, "k": 572, "c": 1110}, {"a": "19-51-2651-10-7", "p": "11407", "y": 2025, "k": 796, "c": 1794}, {"a": "19-51-2651-10-7", "p": "11409", "y": 2025, "k": 885, "c": 2171}, {"a": "19-51-2651-10-7", "p": "11411", "y": 2025, "k": 748, "c": 1581}, {"a": "19-51-2651-10-7", "p": "11501", "y": 2026, "k": 429, "c": 760}, {"a": "19-51-2651-10-7", "p": "11503", "y": 2026, "k": 404, "c": 770}, {"a": "19-51-2651-10-7", "p": "11505", "y": 2026, "k": 521, "c": 1016}, {"a": "19-51-2651-14-1", "p": "11311", "y": 2024, "k": 393, "c": 732}, {"a": "19-51-2651-14-1", "p": "11401", "y": 2025, "k": 303, "c": 528}, {"a": "19-51-2651-14-1", "p": "11403", "y": 2025, "k": 311, "c": 547}, {"a": "19-51-2651-14-1", "p": "11405", "y": 2025, "k": 362, "c": 657}, {"a": "19-51-2651-14-1", "p": "11407", "y": 2025, "k": 434, "c": 856}, {"a": "19-51-2651-14-1", "p": "11409", "y": 2025, "k": 474, "c": 967}, {"a": "19-51-2651-14-1", "p": "11411", "y": 2025, "k": 491, "c": 990}, {"a": "19-51-2651-14-1", "p": "11501", "y": 2026, "k": 352, "c": 670}, {"a": "19-51-2651-14-1", "p": "11503", "y": 2026, "k": 330, "c": 621}, {"a": "19-51-2651-14-1", "p": "11505", "y": 2026, "k": 333, "c": 606}, {"a": "19-51-2651-16-3", "p": "11311", "y": 2024, "k": 112, "c": 94}, {"a": "19-51-2651-16-3", "p": "11401", "y": 2025, "k": 64, "c": 96}, {"a": "19-51-2651-16-3", "p": "11403", "y": 2025, "k": 95, "c": 150}, {"a": "19-51-2651-16-3", "p": "11405", "y": 2025, "k": 87, "c": 136}, {"a": "19-51-2651-16-3", "p": "11407", "y": 2025, "k": 216, "c": 353}, {"a": "19-51-2651-16-3", "p": "11409", "y": 2025, "k": 286, "c": 506}, {"a": "19-51-2651-16-3", "p": "11411", "y": 2025, "k": 174, "c": 296}, {"a": "19-51-2651-16-3", "p": "11501", "y": 2026, "k": 77, "c": 190}, {"a": "19-51-2651-16-3", "p": "11503", "y": 2026, "k": 101, "c": 190}, {"a": "19-51-2651-16-3", "p": "11505", "y": 2026, "k": 77, "c": 183}, {"a": "19-51-2724-00-2", "p": "11311", "y": 2024, "k": 218, "c": 356}, {"a": "19-51-2724-00-2", "p": "11401", "y": 2025, "k": 130, "c": 207}, {"a": "19-51-2724-00-2", "p": "11403", "y": 2025, "k": 154, "c": 249}, {"a": "19-51-2724-00-2", "p": "11405", "y": 2025, "k": 178, "c": 289}, {"a": "19-51-2724-00-2", "p": "11407", "y": 2025, "k": 85, "c": 133}, {"a": "19-51-2724-00-2", "p": "11409", "y": 2025, "k": 136, "c": 218}, {"a": "19-51-2724-00-2", "p": "11411", "y": 2025, "k": 136, "c": 229}, {"a": "19-51-2724-00-2", "p": "11501", "y": 2026, "k": 227, "c": 566}, {"a": "19-51-2724-00-2", "p": "11503", "y": 2026, "k": 211, "c": 366}, {"a": "19-51-2724-00-2", "p": "11505", "y": 2026, "k": 138, "c": 236}, {"a": "19-51-2729-75-7", "p": "11311", "y": 2024, "k": 139, "c": 224}, {"a": "19-51-2729-75-7", "p": "11401", "y": 2025, "k": 127, "c": 202}, {"a": "19-51-2729-75-7", "p": "11403", "y": 2025, "k": 93, "c": 146}, {"a": "19-51-2729-75-7", "p": "11405", "y": 2025, "k": 198, "c": 323}, {"a": "19-51-2729-75-7", "p": "11407", "y": 2025, "k": 96, "c": 151}, {"a": "19-51-2729-75-7", "p": "11409", "y": 2025, "k": 183, "c": 297}, {"a": "19-51-2729-75-7", "p": "11411", "y": 2025, "k": 212, "c": 363}, {"a": "19-51-2729-75-7", "p": "11501", "y": 2026, "k": 343, "c": 650}, {"a": "19-51-2729-75-7", "p": "11503", "y": 2026, "k": 157, "c": 269}, {"a": "19-51-2729-75-7", "p": "11505", "y": 2026, "k": 178, "c": 307}, {"a": "19-51-2729-97-3", "p": "11311", "y": 2024, "k": 159, "c": 257}, {"a": "19-51-2729-97-3", "p": "11401", "y": 2025, "k": 157, "c": 253}, {"a": "19-51-2729-97-3", "p": "11403", "y": 2025, "k": 102, "c": 161}, {"a": "19-51-2729-97-3", "p": "11405", "y": 2025, "k": 166, "c": 269}, {"a": "19-51-2729-97-3", "p": "11407", "y": 2025, "k": 67, "c": 103}, {"a": "19-51-2729-97-3", "p": "11409", "y": 2025, "k": 115, "c": 183}, {"a": "19-51-2729-97-3", "p": "11411", "y": 2025, "k": 75, "c": 190}, {"a": "19-51-2729-97-3", "p": "11501", "y": 2026, "k": 179, "c": 309}, {"a": "19-51-2729-97-3", "p": "11503", "y": 2026, "k": 179, "c": 309}, {"a": "19-51-2729-97-3", "p": "11505", "y": 2026, "k": 132, "c": 225}, {"a": "19-51-2730-19-1", "p": "11311", "y": 2024, "k": 40, "c": 57}, {"a": "19-51-2730-19-1", "p": "11401", "y": 2025, "k": 40, "c": 56}, {"a": "19-51-2730-19-1", "p": "11403", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2730-19-1", "p": "11405", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2730-19-1", "p": "11407", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2730-19-1", "p": "11409", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2730-19-1", "p": "11411", "y": 2025, "k": 40, "c": 190}, {"a": "19-51-2730-19-1", "p": "11501", "y": 2026, "k": 40, "c": 190}, {"a": "19-51-2730-19-1", "p": "11503", "y": 2026, "k": 40, "c": 190}, {"a": "19-51-2730-19-1", "p": "11505", "y": 2026, "k": 40, "c": 190}, {"a": "19-51-2731-56-8", "p": "11311", "y": 2024, "k": 40, "c": 57}, {"a": "19-51-2731-56-8", "p": "11401", "y": 2025, "k": 40, "c": 56}, {"a": "19-51-2731-56-8", "p": "11403", "y": 2025, "k": 60, "c": 91}, {"a": "19-51-2731-56-8", "p": "11405", "y": 2025, "k": 47, "c": 69}, {"a": "19-51-2731-56-8", "p": "11407", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2731-56-8", "p": "11409", "y": 2025, "k": 40, "c": 57}, {"a": "19-51-2731-56-8", "p": "11411", "y": 2025, "k": 40, "c": 190}, {"a": "19-51-2731-56-8", "p": "11501", "y": 2026, "k": 40, "c": 190}, {"a": "19-51-2731-56-8", "p": "11503", "y": 2026, "k": 60, "c": 190}, {"a": "19-51-2731-56-8", "p": "11505", "y": 2026, "k": 40, "c": 190}, {"a": "19-51-2829-15-5", "p": "11311", "y": 2024, "k": 157, "c": 344}, {"a": "19-51-2829-15-5", "p": "11401", "y": 2025, "k": 91, "c": 187}, {"a": "19-51-2829-15-5", "p": "11403", "y": 2025, "k": 92, "c": 191}, {"a": "19-51-2829-15-5", "p": "11405", "y": 2025, "k": 135, "c": 284}, {"a": "19-51-2829-15-5", "p": "11407", "y": 2025, "k": 175, "c": 430}, {"a": "19-51-2829-15-5", "p": "11409", "y": 2025, "k": 200, "c": 512}, {"a": "19-51-2829-15-5", "p": "11411", "y": 2025, "k": 200, "c": 512}, {"a": "19-51-2829-15-5", "p": "11501", "y": 2026, "k": 78, "c": 190}, {"a": "19-51-2829-15-5", "p": "11503", "y": 2026, "k": 81, "c": 190}, {"a": "19-51-2829-15-5", "p": "11505", "y": 2026, "k": 131, "c": 289}, {"a": "19-51-2829-16-6", "p": "11311", "y": 2024, "k": 299, "c": 524}, {"a": "19-51-2829-16-6", "p": "11401", "y": 2025, "k": 487, "c": 926}, {"a": "19-51-2829-16-6", "p": "11403", "y": 2025, "k": 589, "c": 1147}, {"a": "19-51-2829-16-6", "p": "11405", "y": 2025, "k": 367, "c": 668}, {"a": "19-51-2829-16-6", "p": "11407", "y": 2025, "k": 233, "c": 381}, {"a": "19-51-2829-16-6", "p": "11409", "y": 2025, "k": 290, "c": 432}, {"a": "19-51-2829-16-6", "p": "11411", "y": 2025, "k": 290, "c": 432}, {"a": "19-51-2829-16-6", "p": "11501", "y": 2026, "k": 347, "c": 559}, {"a": "19-51-2829-16-6", "p": "11503", "y": 2026, "k": 427, "c": 759}, {"a": "19-51-2829-16-6", "p": "11505", "y": 2026, "k": 234, "c": 323}, {"a": "19-60-5558-05-4", "p": "11311", "y": 2024, "k": 48, "c": 71}, {"a": "19-60-5558-05-4", "p": "11401", "y": 2025, "k": 62, "c": 94}, {"a": "19-60-5558-05-4", "p": "11403", "y": 2025, "k": 40, "c": 57}, {"a": "19-60-5558-05-4", "p": "11405", "y": 2025, "k": 40, "c": 57}, {"a": "19-60-5558-05-4", "p": "11407", "y": 2025, "k": 40, "c": 57}, {"a": "19-60-5558-05-4", "p": "11409", "y": 2025, "k": 40, "c": 57}, {"a": "19-60-5558-05-4", "p": "11411", "y": 2025, "k": 40, "c": 57}, {"a": "19-60-5558-05-4", "p": "11501", "y": 2026, "k": 41, "c": 190}, {"a": "19-60-5558-05-4", "p": "11503", "y": 2026, "k": 44, "c": 190}, {"a": "19-60-5558-05-4", "p": "11505", "y": 2026, "k": 40, "c": 190}, {"a": "19-60-5651-20-7", "p": "11311", "y": 2024, "k": 151, "c": 244}, {"a": "19-60-5651-20-7", "p": "11401", "y": 2025, "k": 151, "c": 243}, {"a": "19-60-5651-20-7", "p": "11403", "y": 2025, "k": 69, "c": 106}, {"a": "19-60-5651-20-7", "p": "11405", "y": 2025, "k": 147, "c": 237}, {"a": "19-60-5651-20-7", "p": "11407", "y": 2025, "k": 78, "c": 121}, {"a": "19-60-5651-20-7", "p": "11409", "y": 2025, "k": 90, "c": 141}, {"a": "19-60-5651-20-7", "p": "11411", "y": 2025, "k": 90, "c": 141}, {"a": "19-60-5651-20-7", "p": "11501", "y": 2026, "k": 147, "c": 252}, {"a": "19-60-5651-20-7", "p": "11503", "y": 2026, "k": 140, "c": 239}, {"a": "19-60-5651-20-7", "p": "11505", "y": 2026, "k": 141, "c": 241}];
+var S1=document.getElementById('s1'),S2=document.getElementById('s2'),S3=document.getElementById('s3');
+S2.style.display='none';
+S3.addEventListener('change',function(){
+ if(S3.value!=='p'){S1.value='all';}
+ S2.style.display=S3.value==='p'?'inline-block':'none';
+ render();
+});
+function p(v){return v||'-'}
+function n(v){return v!=null?v.toLocaleString():'-'}
+function g(d,k){return d.filter(x=>x.a===k)}
+function gp(d,p){return d.filter(x=>x.p===p)}
+function render(){
+ var m=S1.value,t=S3.value,p=S2.value,tk=0,tc=0,data=D;
+ if(m!=='all')data=g(D,m);
+ if(t==='p' && p){data=gp(D,p);}
+ var periods=[...new Set(data.map(x=>x.p))].sort();
+ if(t==='y'){
+ var byY={};
+ data.forEach(x=>{byY[x.y]=(byY[x.y]||{k:0,c:0});byY[x.y].k+=x.k;byY[x.y].c+=x.c});
+ periods=[...new Set(data.map(x=>x.y))].sort();
+ var yData=periods.map(y=>({p:y,k:byY[y].k,c:byY[y].c}));
+ tk=yData.reduce((s,x)=>s+x.k,0);tc=yData.reduce((s,x)=>s+x.c,0);
+ document.getElementById('chartTitle').textContent='📊 年度用電量（度）';
+ draw('ck',yData.map(x=>x.p+'年'),yData.map(x=>x.k),yData.map(x=>x.c));
+ draw('cc',yData.map(x=>x.p+'年'),yData.map(x=>x.c),yData.map(x=>x.k));
+ document.getElementById('th').innerHTML='<tr><th>年度</th><th>用電(度)</th><th>電費(元)</th><th>單價(元/度)</th></tr>';
+ document.getElementById('tb').innerHTML=periods.map(y=>{var row=byY[y];return'<tr><td>'+y+'年</td><td>'+n(row.k)+'</td><td>$'+n(row.c)+'</td><td>$'+(row.c/row.k).toFixed(2)+'</td></tr>'}).join('');
+ document.getElementById('s1').style.display='inline-block';
+ document.getElementById('chartBox').style.display='block';
+ document.getElementById('chartBox2').style.display='block';
+ document.getElementById('detailBox').style.display='block';
+ document.getElementById('meterBox').style.display='none';
+ }
+ else if(t==='p'){
+ var allAccounts=Object.keys(M);
+ var byA={};
+ data.forEach(x=>{byA[x.a]=(byA[x.a]||{k:0,c:0});byA[x.a].k+=x.k;byA[x.a].c+=x.c});
+ tk=Object.values(byA).reduce((s,x)=>s+x.k,0);tc=Object.values(byA).reduce((s,x)=>s+x.c,0);
+ document.getElementById('s1').style.display='none';
+ document.getElementById('chartBox').style.display='none';
+ document.getElementById('chartBox2').style.display='none';
+ document.getElementById('th').innerHTML='';
+ document.getElementById('tb').innerHTML='';
+ document.getElementById('detailBox').style.display='none';
+ document.getElementById('meterBox').style.display='block';
+ document.getElementById('mi').style.display='none';
+ document.getElementById('meterTh').innerHTML='<tr><th>電號</th><th>用電(度)</th><th>電費(元)</th><th>單價</th></tr>';
+ document.getElementById('meterTb').innerHTML=allAccounts.map(a=>{
+ var row=byA[a]||{k:0,c:0};
+ var unit=row.k>0?'$'+((row.c/row.k)).toFixed(2):'-';
+ return'<tr><td>'+(M[a]?.a||a)+'</td><td>'+n(row.k)+'</td><td>'+(row.c>0?'$'+n(row.c):'-')+'</td><td>'+unit+'</td></tr>'
+ }).join('');
+ }
+ else {
+ var byP={};
+ data.forEach(x=>{byP[x.p]=(byP[x.p]||{k:0,c:0});byP[x.p].k+=x.k;byP[x.p].c+=x.c});
+ tk=Object.values(byP).reduce((s,x)=>s+x.k,0);tc=Object.values(byP).reduce((s,x)=>s+x.c,0);
+ var pLabels={'11311':'113年11月','11401':'114年1月','11403':'114年3月','11405':'114年5月','11407':'114年7月','11409':'114年9月','11411':'114年11月','11501':'115年1月','11503':'115年3月','11505':'115年5月'};
+ var pData=periods.map(period=>({p:pLabels[period]||period,k:byP[period].k,c:byP[period].c}));
+ document.getElementById('chartTitle').textContent='📊 用電量（度）';
+ draw('ck',pData.map(x=>x.p),pData.map(x=>x.k),pData.map(x=>x.c));
+ draw('cc',pData.map(x=>x.p),pData.map(x=>x.c),pData.map(x=>x.k));
+ document.getElementById('th').innerHTML='<tr><th>期別</th><th>用電(度)</th><th>電費(元)</th><th>單價(元/度)</th></tr>';
+ document.getElementById('tb').innerHTML=periods.map(period=>{var row=byP[period];return'<tr><td>'+(pLabels[period]||period)+'</td><td>'+n(row.k)+'</td><td>$'+n(row.c)+'</td><td>$'+(row.c/row.k).toFixed(2)+'</td></tr>'}).join('');
+ document.getElementById('s1').style.display='inline-block';
+ document.getElementById('chartBox').style.display='block';
+ document.getElementById('chartBox2').style.display='block';
+ document.getElementById('detailBox').style.display='block';
+ document.getElementById('meterBox').style.display='none';
+ }
+ document.getElementById('tk').textContent=n(tk)+' 度';
+ document.getElementById('tc').textContent='$'+n(tc);
+ document.getElementById('ap').textContent='$'+(tc/tk).toFixed(2)+'/度';
+ if(m!=='all'&&M[m]){
+ document.getElementById('mi1').textContent=m;
+ document.getElementById('mi2').textContent=M[m].t;
+ document.getElementById('mi3').textContent=M[m].a;
+ document.getElementById('mi4').textContent=M[m].f;
+ } else {
+ document.getElementById('mi1').textContent='全部電號';
+ document.getElementById('mi2').textContent='住宅/非營業用';
+ document.getElementById('mi3').textContent='水林鄉多處';
+ document.getElementById('mi4').textContent='XG31 / XR22';
+ }
+}
+function draw(id,labels,kwh,cost){
+ var svg=document.getElementById(id),W=500,H=200,m={t:20,r:20,b:40,l:40},iW=W-m.l-m.r,iH=H-m.t-m.b,maxK=Math.max(...kwh),maxC=Math.max(...cost);
+ var xS=labels.length>1?iW/(labels.length-1):iW;
+ svg.innerHTML='';
+ var g=document.createElementNS('http://www.w3.org/2000/svg','g');
+ g.setAttribute('transform','translate('+m.l+','+m.t+')');
+ for(var i=0;i<=4;i++){
+ var y=iH/4*i;
+ var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+ line.setAttribute('x1',0);line.setAttribute('y1',y);line.setAttribute('x2',iW);line.setAttribute('y2',y);
+ line.setAttribute('stroke','#eee');line.setAttribute('stroke-width','1');
+ g.appendChild(line);
+ }
+ kwh.forEach((v,i)=>{
+ var bh=v/maxK*iH,bx=i*xS,bw=Math.max(xS*0.35,12);
+ var rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+ rect.setAttribute('x',bx-bw/2);rect.setAttribute('y',iH-bh);rect.setAttribute('width',bw);rect.setAttribute('height',bh);
+ rect.setAttribute('fill',id==='cc'?'#F57C00':'#1565C0');rect.setAttribute('rx','3');
+ g.appendChild(rect);
+ var txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+ txt.setAttribute('x',bx);txt.setAttribute('y',iH-bh-5);
+ txt.setAttribute('class','fv');txt.textContent=n(v);
+ g.appendChild(txt);
+ });
+ labels.forEach((l,i)=>{
+ var txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+ txt.setAttribute('x',i*xS);txt.setAttribute('y',iH+15);
+ txt.setAttribute('class','ft');txt.textContent=l;
+ txt.setAttribute('text-anchor','middle');
+ g.appendChild(txt);
+ });
+ svg.appendChild(g);
+}
+render();
+</script>
+</body>
+</html>

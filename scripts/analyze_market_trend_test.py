@@ -1,0 +1,311 @@
+#!/usr/bin/env python3
+"""
+台股盤勢分析腳本 - 兩階段發送
+Phase 1: 抓數據 → 立即發送報告（無 AI 解讀）
+Phase 2: AI 盤勢解讀 → 單獨發送（詳細版，無字數限制）
+"""
+import psycopg2, urllib.request, json, subprocess, sys
+from datetime import datetime
+
+PG = {
+    'host': '127.0.0.1', 'port': 5432,
+    'dbname': 'openclaw', 'user': 'jhe',
+    'password': 'openclaw_secure_pass_2026',
+}
+TOKEN   = "8793435853:AAHF2snG1sYEpno-O0uvvRyPL52cqdxER8A"
+CHAT_ID = "1181571031"
+
+def send_tg(msg):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = {'chat_id': CHAT_ID, 'text': msg, 'parse_mode': 'Markdown', 'disable_web_page_preview': True}
+    req = urllib.request.Request(url, data=json.dumps(data).encode(),
+                                  headers={'Content-Type': 'application/json'})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            print(f"TG OK: {r.status}")
+    except Exception as e:
+        print(f"TG失敗: {e}")
+
+def get_report():
+    conn = psycopg2.connect(**PG)
+    cur = conn.cursor()
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    cur.execute("""
+        SELECT symbol, name, price, chg_pct, volume
+        FROM stock_volume_snapshots
+        WHERE snapshot_time::date = %s
+        AND snapshot_time = (SELECT MAX(snapshot_time) FROM stock_volume_snapshots WHERE snapshot_time::date = %s)
+        ORDER BY rank
+    """, (today, today))
+    latest = {r[0]: r for r in cur.fetchall()}
+
+    cur.execute("""
+        SELECT symbol, name, price, chg_pct, volume
+        FROM stock_volume_snapshots
+        WHERE snapshot_time::date = %s
+        AND snapshot_time = (SELECT MIN(snapshot_time) FROM stock_volume_snapshots WHERE snapshot_time::date = %s)
+        ORDER BY rank
+    """, (today, today))
+    first = {r[0]: r for r in cur.fetchall()}
+
+    cur.execute(""" SELECT COUNT(DISTINCT snapshot_time) FROM stock_volume_snapshots WHERE snapshot_time::date = %s """, (today,))
+    snap_count = cur.fetchone()[0]
+
+    cur.close()
+    conn.close()
+    return {'today': today, 'latest': latest, 'first': first, 'snap_count': snap_count}
+
+def fetch_market_overview():
+    """取得市場概況數據：加權指數、美股等"""
+    overview = {}
+    
+    # 台灣加權指數
+    try:
+        url = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETWII?interval=1d&range=2d"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+            result = data['chart']['result'][0]
+            quote = result['indicators']['quote'][0]
+            closes = [c for c in quote['close'] if c is not None]
+            if len(closes) >= 2:
+                curr, prev = closes[-1], closes[-2]
+                chg = curr - prev
+                chg_pct = (chg / prev) * 100
+                overview['TWII'] = {'price': curr, 'change': chg, 'change_pct': chg_pct}
+    except Exception as e:
+        overview['TWII'] = {'error': str(e)}
+    
+    # 美股三大指數
+    us_indices = {'DJI': '^DJI', 'IXIC': '^IXIC', 'GSPC': '^GSPC'}
+    for name, symbol in us_indices.items():
+        try:
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=2d"
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=10) as r:
+                data = json.loads(r.read())
+                result = data['chart']['result'][0]
+                quote = result['indicators']['quote'][0]
+                closes = [c for c in quote['close'] if c is not None]
+                if len(closes) >= 2:
+                    curr, prev = closes[-1], closes[-2]
+                    chg = curr - prev
+                    chg_pct = (chg / prev) * 100
+                    overview[name] = {'price': curr, 'change': chg, 'change_pct': chg_pct}
+        except Exception as e:
+            overview[name] = {'error': str(e)}
+    
+    return overview
+
+def build_minimax_prompt(d, overview):
+    """生成給 MiniMax 的prompt（詳細版，無字數限制）"""
+    latest = d['latest']
+    first = d['first']
+    today = d['today']
+
+    # 市場概況
+    overview_lines = []
+    if 'TWII' in overview and 'price' in overview['TWII']:
+        twii = overview['TWII']
+        overview_lines.append(f"加權指數: {twii['price']:.2f} {twii['change']:+.2f} ({twii['change_pct']:+.2f}%)")
+    for name in ['DJI', 'IXIC', 'GSPC']:
+        if name in overview and 'price' in overview[name]:
+            idx = overview[name]
+            overview_lines.append(f"{name}: {idx['price']:.2f} {idx['change']:+.2f} ({idx['change_pct']:+.2f}%)")
+
+    # 收集主要數據
+    signals = {'2330': '台積電', '2303': '聯電', '2454': '聯發科',
+               '2409': '友達', '3481': '群創', '1802': '台玻', '2002': '中鋼'}
+    signal_lines = []
+    for sym, name in signals.items():
+        if sym in latest:
+            _, _, price, chg, vol = latest[sym]
+            arrow = "漲" if chg > 0 else ("跌" if chg < 0 else "平")
+            signal_lines.append(f"{name}({sym}): {arrow} {chg:+.2f}%")
+
+    rising = sorted(latest.items(), key=lambda x: x[1][3], reverse=True)[:5]
+    falling = sorted(latest.items(), key=lambda x: x[1][3])[:5]
+
+    # 成交量突增
+    surging = []
+    for sym, data in latest.items():
+        if sym in first:
+            vol_now = data[4]
+            vol_first = first[sym][4]
+            chg_vol = (vol_now - vol_first) / vol_first * 100 if vol_first > 0 else 0
+            if chg_vol >= 10:
+                surging.append((sym, data[1], chg_vol, vol_now, data[3]))
+    surging.sort(key=lambda x: x[2], reverse=True)
+    surging_top10 = surging[:10]
+
+    top20 = sorted(latest.items(), key=lambda x: x[1][4], reverse=True)[:20]
+
+    prompt = f"""你是台股分析師。今天是 {today}。請根據以下數據，撰寫一份詳細的盤勢分析報告。
+
+【市場概況】
+{chr(10).join(overview_lines)}
+
+【加權指標股走勢】
+{chr(10).join(signal_lines)}
+
+【今日漲幅 Top5】
+{chr(10).join(f"{n}({s}) +{c:.2f}%" for s,(m,n,p,c,v) in rising)}
+
+【今日跌幅 Top5】
+{chr(10).join(f"{n}({s}) {c:.2f}%" for s,(m,n,p,c,v) in falling)}
+
+【成交量放大 +10% Top10】
+{chr(10).join(f"{name}({sym}) +{vc:.0f}% ({vol//10000:.0f}萬張) {cp:+.2f}%" for sym, name, vc, vol, cp in surging_top10)}
+
+【成交量 Top20】
+{chr(10).join(f"{n} {c:+.2f}% {v//10000:.0f}萬張" for s,(m,n,p,c,v) in top20)}
+
+請用繁體中文，結構包含：
+1. 今日市場概況與特徵
+2. 強勢族群分析（那些股票漲？為什麼？）
+3. 弱勢族群分析（那些股票跌？原因？）
+4. 資金流向觀察（哪些族群吸金？）
+5. 後市觀察重點與操作建議
+
+盡量詳細分析，不用限制字數。"""
+    return prompt
+
+def call_minimax_commentary(prompt):
+    """呼叫 MiniMax API 生成盤勢解讀（使用 OpenClaw 設定）"""
+    import os, json
+    models_file = os.path.expanduser('/home/jhe/.openclaw/agents/main/agent/models.json')
+    api_key = None
+    if os.path.exists(models_file):
+        try:
+            with open(models_file) as f:
+                d = json.load(f)
+            prov = d.get('providers', {}).get('minimax', {})
+            api_key = prov.get('apiKey')
+        except: pass
+    if not api_key:
+        return None
+
+    body = {
+        "model": "MiniMax-M2.7",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 2000,
+        "temperature": 0.3,
+        "stream": False
+    }
+    data = json.dumps(body).encode()
+    req = urllib.request.Request(
+        "https://api.minimax.io/anthropic/v1/messages",
+        data=data,
+        headers={"Content-Type": "application/json", "x-api-key": api_key, "Authorization": f"Bearer {api_key}"},
+        method="POST"
+    )
+    try:
+        print("About to call API...", flush=True); import time; time.sleep(1); print("Done sleeping", flush=True); raise Exception("TEST HANG")
+            resp = json.loads(r.read())
+            texts = []
+            for block in resp.get('content', []):
+                if block.get('type') == 'text':
+                    texts.append(block['text'])
+            return ''.join(texts) if texts else None
+    except Exception as e:
+        print(f"MiniMax API failed: {e}")
+        return None
+
+def format_report(d, overview, first):
+    """格式化報告（不含 AI 解讀）"""
+    latest = d['latest']
+    today = d['today']
+
+    lines = [
+        f"📊 台股盤勢分析  {today}",
+        f"共 {d['snap_count']} 筆快照",
+        ""
+    ]
+
+    # 市場概況（新加入）
+    lines.append("【市場概況】")
+    if 'TWII' in overview and 'price' in overview['TWII']:
+        twii = overview['TWII']
+        lines.append(f"  加權指數: {twii['price']:.2f} {twii['change']:+.2f} ({twii['change_pct']:+.2f}%)")
+    for name in ['DJI', 'IXIC', 'GSPC']:
+        if name in overview and 'price' in overview[name]:
+            idx = overview[name]
+            lines.append(f"  {name}: {idx['price']:.2f} {idx['change']:+.2f} ({idx['change_pct']:+.2f}%)")
+    lines.append("")
+
+    # 加權指標股
+    signals = {'2330': '台積電', '2303': '聯電', '2454': '聯發科',
+               '2409': '友達', '3481': '群創', '1802': '台玻', '2002': '中鋼'}
+    marker = []
+    for sym, name in signals.items():
+        if sym in latest:
+            _, _, price, chg, vol = latest[sym]
+            arrow = "📈" if chg > 0 else ("📉" if chg < 0 else "➖")
+            marker.append(f"{arrow} {name}({sym}) {chg:+.2f}% ({vol//10000:.1f}萬張)")
+    lines += ["【加權指標股走勢】"] + ["  " + m for m in marker] if marker else []
+
+    # Top5漲
+    rising = sorted(latest.items(), key=lambda x: x[1][3], reverse=True)[:5]
+    lines += ["", "【今日漲幅 Top5】"]
+    for sym, (_, name, price, chg, vol) in rising:
+        lines.append(f"  📈 {name}({sym}) *{chg:+.2f}%* $ {price} ({vol//10000:.1f}萬張)")
+
+    # Top5跌
+    falling = sorted(latest.items(), key=lambda x: x[1][3])[:5]
+    lines += ["", "【今日跌幅 Top5】"]
+    for sym, (_, name, price, chg, vol) in falling:
+        lines.append(f"  📉 {name}({sym}) *{chg:+.2f}%* $ {price} ({vol//10000:.1f}萬張)")
+
+    # 成交量突增
+    surging = []
+    for sym, data in latest.items():
+        if sym in first:
+            vol_now = data[4]
+            vol_first = first[sym][4]
+            chg_vol = (vol_now - vol_first) / vol_first * 100 if vol_first > 0 else 0
+            if chg_vol >= 10:
+                surging.append((sym, data[1], chg_vol, vol_now, data[3]))
+    surging.sort(key=lambda x: x[2], reverse=True)
+    lines += ["", "【成交量放大 +10% Top10】"]
+    for sym, name, vc, vol, cp in surging[:10]:
+        lines.append(f"  🚀 {name}({sym}) *+{vc:.0f}%* ({vol//10000:.1f}萬張) {cp:+.2f}%")
+
+    # Top20成交量
+    top20 = sorted(latest.items(), key=lambda x: x[1][4], reverse=True)[:20]
+    lines += ["", "【成交量排行 Top20】"]
+    for i, (sym, (_, name, price, chg, vol)) in enumerate(top20, 1):
+        arrow = "📈" if chg > 0 else ("📉" if chg < 0 else "➖")
+        lines.append(f"`{i:2d}.` {arrow} {sym} {name} *{chg:+.2f}%* {vol//10000:.1f}萬張")
+
+    return "\n".join(lines)
+
+if __name__ == '__main__':
+    print(f"[{datetime.now().strftime('%H:%M')}] 分析盤勢...")
+    d = get_report()
+    if not d['latest']:
+        print("無資料")
+    else:
+        # 取得市場概況
+        overview = fetch_market_overview()
+        
+        # ===== Phase 1: 立即發送數據報告 =====
+        report = format_report(d, overview, d['first'])
+        print("Phase 1: 發送數據報告...")
+        send_tg(report)
+        print("Phase 1 完成")
+
+        # ===== Phase 2: AI 盤勢解讀 =====
+        print("Phase 2: 生成 AI 盤勢解讀...")
+        prompt = build_minimax_prompt(d, overview)
+        commentary = call_minimax_commentary(prompt)
+
+        if commentary:
+            ai_msg = f"📝 AI 盤勢詳細解讀\n{commentary}"
+            print(f"[AI解讀] {commentary[:100]}...")
+            send_tg(ai_msg)
+            print("Phase 2 完成")
+        else:
+            print("Phase 2: AI 解讀失敗")
+
+        print("分析完成")

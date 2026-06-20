@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>釜山 5天4夜攻略 2026｜炎夏避暑版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #F8F6F1; color: #333; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 32px rgba(255,107,107,0.3);
+        }
+        .header-left { flex: 1; }
+        .header h1 { font-size: 36px; font-weight: 900; color: white; margin-bottom: 8px; }
+        .header h1 .emoji { font-size: 42px; }
+        .header-subtitle { font-size: 18px; color: rgba(255,255,255,0.9); font-weight: 500; }
+        .header-highlights { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .highlight-tag { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 12px; color: white; display: flex; align-items: center; gap: 5px; }
+        .heat-badge { background: linear-gradient(135deg, #FF4500, #FF6347) !important; }
+        .mascot { font-size: 100px; }
+
+        /* ===== HEAT WARNING ===== */
+        .heat-warning {
+            background: linear-gradient(135deg, #FFF3CD, #FFEAA7);
+            border: 2px solid #FFD93D;
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .heat-warning .icon { font-size: 40px; }
+        .heat-warning .content { flex: 1; }
+        .heat-warning h3 { font-size: 16px; color: #856404; margin-bottom: 6px; }
+        .heat-warning p { font-size: 13px; color: #856404; line-height: 1.5; }
+        .heat-tips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .heat-tip { background: #FFF; padding: 4px 10px; border-radius: 8px; font-size: 11px; color: #E17055; font-weight: 500; }
+
+        /* ===== DAY CARDS ===== */
+        .day-section { margin-bottom: 16px; }
+        .day-header { display: flex; align-items: center; margin-bottom: 10px; }
+        .day-badge { font-size: 16px; font-weight: 700; color: white; padding: 6px 16px; border-radius: 20px; margin-right: 10px; }
+        .day-title { font-size: 14px; font-weight: 700; color: #555; }
+        .day-time-hint { background: #FFF3CD; padding: 3px 8px; border-radius: 8px; font-size: 11px; color: #856404; margin-left: 8px; }
+
+        .day1 .day-badge { background: linear-gradient(135deg, #FFB5BA, #FF8A9B); }
+        .day2 .day-badge { background: linear-gradient(135deg, #FFB347, #FF9500); }
+        .day3 .day-badge { background: linear-gradient(135deg, #90EE90, #6BD96B); }
+        .day4 .day-badge { background: linear-gradient(135deg, #87CEEB, #5DADE2); }
+        .day5 .day-badge { background: linear-gradient(135deg, #DDA0DD, #C39BD3); }
+
+        .timeline { display: flex; gap: 10px; overflow-x: auto; padding: 8px 5px; }
+        .timeline-item { flex: 0 0 auto; min-width: 150px; background: white; border-radius: 14px; padding: 14px; border: 1px solid #E8E8E8; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: relative; }
+        .timeline-item::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #AAA; font-weight: bold; }
+        .timeline-item:last-child::after { display: none; }
+
+        .timeline-icon { font-size: 24px; margin-bottom: 6px; }
+        .timeline-time { font-size: 10px; color: #999; margin-bottom: 3px; font-weight: 500; }
+        .timeline-place { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 3px; }
+        .timeline-detail { font-size: 11px; color: #777; line-height: 1.4; }
+        .timeline-note { background: #E8F5E9; border-radius: 6px; padding: 5px 8px; font-size: 10px; color: #2E7D32; margin-top: 6px; border-left: 3px solid #4CAF50; }
+        .timeline-note.heat { background: #FFF3E0; color: #E65100; border-left-color: #FF9800; }
+        .timeline-transport { display: flex; align-items: center; gap: 3px; font-size: 10px; color: #888; margin-top: 5px; }
+        .indoor-tag { background: linear-gradient(135deg, #E3F2FD, #BBDEFB); padding: 2px 6px; border-radius: 6px; font-size: 9px; color: #1565C0; font-weight: 500; margin-left: 4px; }
+        .outdoor-tag { background: linear-gradient(135deg, #FFEBEE, #FFCDD2); padding: 2px 6px; border-radius: 6px; font-size: 9px; color: #C62828; font-weight: 500; margin-left: 4px; }
+
+        /* ===== TIME BLOCKS ===== */
+        .time-block { background: linear-gradient(135deg, #FAFAFA, #F0F0F0); border-radius: 10px; padding: 8px 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .time-block .time-icon { font-size: 18px; }
+        .time-block .time-label { font-size: 12px; font-weight: 700; color: #333; }
+        .time-block .time-desc { font-size: 11px; color: #666; }
+        .time-block.morning { border-left: 4px solid #4CAF50; }
+        .time-block.midday { border-left: 4px solid #FF5722; }
+        .time-block.evening { border-left: 4px solid #2196F3; }
+
+        /* ===== BOTTOM INFO ===== */
+        .bottom-info { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 20px; }
+        .info-card { background: white; border-radius: 14px; padding: 16px; border: 1px solid #E8E8E8; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .info-card-title { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .info-card-title .icon { font-size: 20px; }
+        .info-list { list-style: none; }
+        .info-list li { font-size: 12px; color: #555; padding: 5px 0; border-bottom: 1px dashed #EEE; display: flex; align-items: center; gap: 6px; }
+        .info-list li:last-child { border-bottom: none; }
+        .info-list li::before { content: '✓'; color: #6BD96B; font-weight: bold; font-size: 10px; }
+
+        .busan-pass-tag { display: inline-block; background: linear-gradient(135deg, #E8D5F5, #D4B8E8); padding: 2px 6px; border-radius: 8px; font-size: 9px; color: #7B4FA3; margin-left: 4px; }
+
+        /* ===== BUDGET ===== */
+        .budget-section { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 16px; padding: 18px 28px; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; color: white; }
+        .budget-title { font-size: 18px; font-weight: 700; }
+        .budget-amount { font-size: 28px; font-weight: 900; }
+        .budget-breakdown { display: flex; gap: 24px; }
+        .budget-item { text-align: center; }
+        .budget-item-label { font-size: 11px; opacity: 0.8; }
+        .budget-item-value { font-size: 14px; font-weight: 700; }
+
+        /* ===== FOOTER ===== */
+        .footer { text-align: center; margin-top: 20px; padding: 16px; color: #999; font-size: 12px; }
+        .footer-mascot { font-size: 28px; margin-bottom: 6px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .bottom-info { grid-template-columns: repeat(2, 1fr); }
+            .header { flex-direction: column; text-align: center; }
+            .mascot { display: none; }
+            .heat-warning { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 600px) {
+            .bottom-info { grid-template-columns: 1fr; }
+            .timeline { flex-direction: column; }
+            .timeline-item::after { display: none; }
+            .budget-section { flex-direction: column; gap: 12px; text-align: center; }
+            .budget-breakdown { justify-content: center; flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <h1><span class="emoji">🏯</span> 釜山 5天4夜攻略 2026</h1>
+                <div class="header-subtitle">8月14日～8月18日｜東橫INN 釜山站｜炎夏避暑版</div>
+                <div class="header-highlights">
+                    <span class="highlight-tag heat-badge">🌡️ 8月炎熱對策</span>
+                    <span class="highlight-tag">✅ 慶州世界文化遺產</span>
+                    <span class="highlight-tag">✅ 海岸列車+Spa Land</span>
+                    <span class="highlight-tag">✅ 全程住同一間飯店</span>
+                </div>
+            </div>
+            <div class="mascot">🧳</div>
+        </div>
+
+        <!-- HEAT WARNING -->
+        <div class="heat-warning">
+            <div class="icon">⚠️</div>
+            <div class="content">
+                <h3>🌡️ 8月釜山生存指南｜體感溫度可達 38°C</h3>
+                <p>釜山8月悶熱潮濕，白天戶外活動容易中暑。行程已優化：早出門、中午室內、傍晚戶外。</p>
+            </div>
+            <div class="heat-tips">
+                <span class="heat-tip">💧 隨身補水</span>
+                <span class="heat-tip">🌀 涼感毛巾</span>
+                <span class="heat-tip">🧴 防曬乳</span>
+                <span class="heat-tip">🧢 遮陽帽</span>
+                <span class="heat-tip">❄️ 室內優先</span>
+            </div>
+        </div>
+
+        <!-- DAY 1 -->
+        <div class="day-section day1">
+            <div class="day-header">
+                <span class="day-badge">Day 1</span>
+                <span class="day-title">🛬 抵達日｜8月14日（五）</span>
+                <span class="day-time-hint">建議：室內為主</span>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">✈️</div>
+                    <div class="timeline-time">16:00</div>
+                    <div class="timeline-place">台中起飛 <span class="outdoor-tag">晚班機</span></div>
+                    <div class="timeline-detail">出發 → 高鐵 → 機場</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🏨</div>
+                    <div class="timeline-time">19:20</div>
+                    <div class="timeline-place">抵達釜山</div>
+                    <div class="timeline-detail">輕軌+地鐵 → 東橫INN</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🍖</div>
+                    <div class="timeline-time">20:30</div>
+                    <div class="timeline-place">西面市場晚餐 <span class="indoor-tag">有空調</span></div>
+                    <div class="timeline-detail">烤五花肉、橋村炸雞</div>
+                    <div class="timeline-note">第一天輕鬆逛，早點休息</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 2 -->
+        <div class="day-section day2">
+            <div class="day-header">
+                <span class="day-badge">Day 2</span>
+                <span class="day-title">🎨 影島 + 南浦洞｜8月15日（六）</span>
+                <span class="day-time-hint">建議：室內優先</span>
+            </div>
+            <div class="time-block morning">
+                <span class="time-icon">🌅</span>
+                <div>
+                    <span class="time-label">早出門｜08:00-12:00</span>
+                    <div class="time-desc">戶外行程趁早，避免烈日</div>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">🎨</div>
+                    <div class="timeline-time">08:30</div>
+                    <div class="timeline-place">Arte Museum <span class="indoor-tag">涼爽</span></div>
+                    <div class="timeline-detail">沉浸式數位藝術<span class="busan-pass-tag">Pass</span></div>
+                    <div class="timeline-note">有空調，涼爽舒適 ✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🌉</div>
+                    <div class="timeline-time">10:00</div>
+                    <div class="timeline-place">影島天空步道 <span class="outdoor-tag">戶外</span></div>
+                    <div class="timeline-detail">趁早去，不會太熱</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🦐</div>
+                    <div class="timeline-time">12:00</div>
+                    <div class="timeline-place">札嘎其市場 <span class="indoor-tag">有空調</span></div>
+                    <div class="timeline-detail">帝王蟹、海膽、活章魚！</div>
+                    <div class="timeline-note heat">中午時間！室內吹冷氣吃海鮮 ✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🎬</div>
+                    <div class="timeline-time">14:00</div>
+                    <div class="timeline-place">BIFF 廣場 <span class="indoor-tag">室內</span></div>
+                    <div class="timeline-detail">堅果糖、黑糖餅</div>
+                    <div class="timeline-detail">商場吹冷氣</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🗼</div>
+                    <div class="timeline-time">16:00</div>
+                    <div class="timeline-place">釜山塔 <span class="outdoor-tag">傍晚</span></div>
+                    <div class="timeline-detail">龍頭山公園纜車上山</div>
+                    <div class="timeline-note">16:00過後較涼爽 ✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🌃</div>
+                    <div class="timeline-time">18:30</div>
+                    <div class="timeline-place">龍頭山夜景</div>
+                    <div class="timeline-detail">釜山塔賞夜景</div>
+                    <div class="timeline-transport">🚇 回西面</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 3 -->
+        <div class="day-section day3">
+            <div class="day-header">
+                <span class="day-badge">Day 3</span>
+                <span class="day-title">🎢 海雲台線｜8月16日（日）</span>
+                <span class="day-time-hint">建議：早出門 + Spa避暑</span>
+            </div>
+            <div class="time-block morning">
+                <span class="time-icon">🌅</span>
+                <div>
+                    <span class="time-label">早出門｜08:00-11:00</span>
+                    <div class="time-desc">趁太陽還沒太烈，先玩戶外</div>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">🎿</div>
+                    <div class="timeline-time">08:30</div>
+                    <div class="timeline-place">Skyline Luge <span class="outdoor-tag">建議早到</span></div>
+                    <div class="timeline-detail">斜坡滑車<span class="busan-pass-tag">Pass</span></div>
+                    <div class="timeline-note heat">8:30前到！避開排隊曬太陽 ⚠️</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🏙️</div>
+                    <div class="timeline-time">10:00</div>
+                    <div class="timeline-place">X the Sky <span class="indoor-tag">涼爽</span></div>
+                    <div class="timeline-detail">49樓高空觀景<span class="busan-pass-tag">Pass</span></div>
+                    <div class="timeline-note">有空調，涼爽 ✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🥘</div>
+                    <div class="timeline-time">11:30</div>
+                    <div class="timeline-place">海雲台市場午餐 <span class="indoor-tag">有空調</span></div>
+                    <div class="timeline-detail">魚糕串、紅豆刨冰</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🚂</div>
+                    <div class="timeline-time">13:00</div>
+                    <div class="timeline-place">海岸列車 <span class="outdoor-tag">下午</span></div>
+                    <div class="timeline-detail">膠囊小火車<span class="busan-pass-tag">Pass</span></div>
+                    <div class="timeline-note heat">下午可能曬，建議傍晚16:30</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">♨️</div>
+                    <div class="timeline-time">15:30</div>
+                    <div class="timeline-place">Spa Land <span class="indoor-tag">避暑</span></div>
+                    <div class="timeline-detail">汗蒸幕+冷氣<span class="busan-pass-tag">Pass</span></div>
+                    <div class="timeline-note">最佳避暑選擇！有冷氣 ✅✅✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🌅</div>
+                    <div class="timeline-time">18:30</div>
+                    <div class="timeline-place">廣安里海灘 <span class="outdoor-tag">傍晚</span></div>
+                    <div class="timeline-detail">賞廣安大橋夕陽</div>
+                    <div class="timeline-note">18:30後陽光不烈，舒服 ✅</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 4 -->
+        <div class="day-section day4">
+            <div class="day-header">
+                <span class="day-badge">Day 4</span>
+                <span class="day-title">🏯 慶州古城一日遊｜8月17日（一）</span>
+                <span class="day-time-hint">⚠️ 最熱一天｜多補水</span>
+            </div>
+            <div class="time-block morning">
+                <span class="time-icon">🌅</span>
+                <div>
+                    <span class="time-label">早起出發｜07:30</span>
+                    <div class="time-desc">KTX 早班車，避免炎熱</div>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">🚄</div>
+                    <div class="timeline-time">07:30</div>
+                    <div class="timeline-place">KTX 釜山站出發</div>
+                    <div class="timeline-detail">→ 新慶州（40分）</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🚌</div>
+                    <div class="timeline-time">08:30</div>
+                    <div class="timeline-place">公車 → 佛國寺</div>
+                    <div class="timeline-detail">建議坐靠窗有空調</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🏯</div>
+                    <div class="timeline-time">09:30</div>
+                    <div class="timeline-place">佛國寺 <span class="outdoor-tag">戶外</span></div>
+                    <div class="timeline-detail">世界文化遺產</div>
+                    <div class="timeline-note heat">早上涼爽，抓緊時間逛 ⚠️</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">⭐</div>
+                    <div class="timeline-time">11:30</div>
+                    <div class="timeline-place">瞻星台</div>
+                    <div class="timeline-detail">亞洲最古老天文台</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🏘️</div>
+                    <div class="timeline-time">12:30</div>
+                    <div class="timeline-place">暴門午餐 <span class="indoor-tag">有空調</span></div>
+                    <div class="timeline-detail">傳統韓屋村</div>
+                    <div class="timeline-note">室內休息，補充體力 ✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🌿</div>
+                    <div class="timeline-time">14:30</div>
+                    <div class="timeline-place">大陵苑 <span class="outdoor-tag">戶外</span></div>
+                    <div class="timeline-detail">古蹟公園走走</div>
+                    <div class="timeline-note heat">14:30後很熱，建議速逛速離</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🚄</div>
+                    <div class="timeline-time">16:00</div>
+                    <div class="timeline-place">KTX 回釜山</div>
+                    <div class="timeline-detail">→ 抵達 16:40</div>
+                    <div class="timeline-note">在車上吹冷氣休息</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🛒</div>
+                    <div class="timeline-time">17:30</div>
+                    <div class="timeline-place">西面購物 <span class="indoor-tag">有空調</span></div>
+                    <div class="timeline-detail">Olive Young / 超市</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 5 -->
+        <div class="day-section day5">
+            <div class="day-header">
+                <span class="day-badge">Day 5</span>
+                <span class="day-title">✈️ 返家日｜8月18日（二）</span>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">🛍️</div>
+                    <div class="timeline-time">08:00</div>
+                    <div class="timeline-place">西面最後巡禮</div>
+                    <div class="timeline-detail">超市/伴手禮</div>
+                    <div class="timeline-transport">室內有空調 ✅</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🚕</div>
+                    <div class="timeline-time">11:00</div>
+                    <div class="timeline-place">前往金海機場</div>
+                    <div class="timeline-detail">約40分</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">🛫</div>
+                    <div class="timeline-time">13:35</div>
+                    <div class="timeline-place">起飛回台灣</div>
+                    <div class="timeline-detail">Bye 釜山 👋</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUDGET -->
+        <div class="budget-section">
+            <div>
+                <div class="budget-title">💰 總預算</div>
+                <div class="budget-amount">約 NT$29,300</div>
+            </div>
+            <div class="budget-breakdown">
+                <div class="budget-item">
+                    <div class="budget-item-label">機票</div>
+                    <div class="budget-item-value">~NT$10,000</div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-item-label">住宿(4晚)</div>
+                    <div class="budget-item-value">~NT$8,000</div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-item-label">餐食</div>
+                    <div class="budget-item-value">~NT$8,000</div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-item-label">交通+Pass</div>
+                    <div class="budget-item-value">~NT$3,300</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM INFO -->
+        <div class="bottom-info">
+            <div class="info-card">
+                <div class="info-card-title"><span class="icon">🚇</span> 交通方式</div>
+                <ul class="info-list">
+                    <li>地鐵 + 公車（地鐵 2 號線）</li>
+                    <li>T-money 卡（可儲值）</li>
+                    <li>KTX 往慶州（約 ₩25,000）</li>
+                    <li>計程車（Uber/Kakao T）</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title"><span class="icon">🎫</span> 釜山 Pass 景點</div>
+                <ul class="info-list">
+                    <li>Arte Museum（影島）</li>
+                    <li>Busan X the Sky（49F）</li>
+                    <li>Skyline Luge（海雲台）</li>
+                    <li>Spa Land（Centum City）</li>
+                    <li>海岸列車</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title"><span class="icon">🍖</span> 必吃美食</div>
+                <ul class="info-list">
+                    <li>烤五花肉（西面市場）</li>
+                    <li>橋村炸雞</li>
+                    <li>海鮮湯麵</li>
+                    <li>黑糖餅、堅果糖</li>
+                    <li>魚糕串（路邊攤）</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title"><span class="icon">🎒</span> 防暑配備</div>
+                <ul class="info-list">
+                    <li>💧 隨身水壺（便利超商補水）</li>
+                    <li>🌀 涼感毛巾</li>
+                    <li>🧴 防曬乳 SPF50+</li>
+                    <li>🧢 遮陽帽（雙手空出）</li>
+                    <li>🧴 蘆薈膠（曬後舒緩）</li>
+                    <li>❄️ 小型摺疊扇</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-mascot">🦐</div>
+            <div>釜山 5天4夜攻略 2026｜東橫INN 釜山站｜8月14日-18日｜炎夏避暑版</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+#!/usr/bin/env python3
+"""Bake system API + CWA weather into the status HTML page."""
+import sys, json, re, os, subprocess
+from datetime import datetime
+
+html_path = sys.argv[1]
+api_path = sys.argv[2]
+
+TS = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+with open(html_path) as f:
+    c = f.read()
+
+# Fetch weather from CWA (Taiwan weather bureau)
+# Use 箔子寮 station (nearest to 水林)
+CWA_API = os.environ.get('CWA_API_KEY', '')
+CWA_URL = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization={CWA_API}'
+
+try:
+    import urllib.request
+    with urllib.request.urlopen(CWA_URL, timeout=20) as resp:
+        w = json.loads(resp.read())
+
+    # Find nearest station to 水林
+    # Prefer stations in order (first match wins)
+    target_names = ['四湖', '水林', '北港', '口湖工作站', '箔子寮', '元長']
+    st = None
+    for preferred in target_names:
+        for s in (w.get('records', {}).get('Station') or []):
+            sn = s.get('StationName', '')
+            if isinstance(sn, dict):
+                sn_str = sn.get('Zh_tw', '') or sn.get('En', '')
+            else:
+                sn_str = str(sn)
+            # Exact match only (avoids matching "清水林道" when searching "水林")
+            if sn_str == preferred:
+                elem = s.get('WeatherElement', {})
+                t = elem.get('AirTemperature', '?')
+                ws = elem.get('WindSpeed', '?')
+                # Skip stations with -99 (no data)
+                if t in ['-99', '-'] or ws in ['-99', '-']:
+                    continue
+                st = s
+                break
+        if st:
+            break
+
+    if st:
+        elem = st.get('WeatherElement', {})
+        temp = elem.get('AirTemperature', '?')
+        wind = elem.get('WindSpeed', '?')
+        weather = elem.get('Weather', '?')
+        station = st.get('StationName', '?')
+        
+        # Convert m/s to km/h
+        if wind not in ['?', '-99', '-']:
+            try:
+                wind_kmh = float(wind) * 3.6
+                wind = f"{wind_kmh:.1f}"
+            except:
+                pass
+
+        print(f"CWA Weather OK: {station} {temp}°C {wind}km/h")
+    else:
+        temp = wind = '?'
+        weather = '?'
+        station = '水林'
+        print("CWA: No nearby station found")
+except Exception as e:
+    temp = wind = '?'
+    weather = '晴'
+    station = '水林'
+    print(f"CWA fetch failed: {e}")
+
+# Weather description: CWA fallback
+wx_map_cwa = {
+    '晴': '晴', '晴(CI)': '晴', '少雲': '多雲', '多雲': '多雲', '陰': '陰',
+    '陰有雨': '雨', '陰有雷雨': '雷雨', '雨': '雨', '雷雨': '雷雨',
+    '霧': '霧', '雪': '雪', '有霧': '霧', '毛毛雨': '毛毛雨', '陣雨': '雨', '雷暴': '雷雨'
+}
+wtxt = wx_map_cwa.get(weather, '晴' if weather and weather not in ['?', '-99'] else '晴')
+
+# Compute solar efficiency from weather
+# 2026-06-04 修正：上限改為 200W（用戶系統為 200W+100W，
+#                       200W 板有裂痕 + 100W 板老化，
+#                       實測有效上限約 200W）
+PANEL_EFFECTIVE_W = 200
+wx_eff_map = {
+    '晴': (f'{PANEL_EFFECTIVE_W}W (100%)', '#2e7d32'),
+    '少雲': (f'{int(PANEL_EFFECTIVE_W*0.77)}W (77%)', '#f57c00'),
+    '多雲': (f'{int(PANEL_EFFECTIVE_W*0.58)}W (58%)', '#f57c00'),
+    '陰': (f'{int(PANEL_EFFECTIVE_W*0.38)}W (38%)', '#f57c00'),
+    '霧': (f'{int(PANEL_EFFECTIVE_W*0.27)}W (27%)', '#f57c00'),
+    '雨': (f'{int(PANEL_EFFECTIVE_W*0.06)}W (6%)', '#c62828'),
+    '雷雨': (f'{int(PANEL_EFFECTIVE_W*0.06)}W (6%)', '#c62828'),
+    '雪': (f'{int(PANEL_EFFECTIVE_W*0.06)}W (6%)', '#c62828'),
+}
+eff_val = None
+# Get UV and cloud from WeatherAPI for model-based estimate
+try:
+    wapi_url = 'https://api.weatherapi.com/v1/current.json?key=' + os.environ.get('WEATHER_API_KEY', '') + '&q=23.71,120.29&aqi=no'
+    with urllib.request.urlopen(wapi_url, timeout=10) as wr:
+        wd = json.loads(wr.read())
+    uv_val = wd['current']['uv']
+    cloud_val = wd['current'].get('cloud', 75)
+    wapi_cond = wd['current']['condition']['text']
+    # Time factor
+    import math
+    now_h = datetime.now().hour + datetime.now().minute/60
+    # Solar angle model: noon at 75°, sunrise/sunset 0°
+    if now_h < 5.5 or now_h > 18.5:
+        solar_angle = 0
+    else:
+        noon_angle = 75  # max angle at noon for this lat/season
+        hour_from_noon = abs(now_h - 12.2)
+        solar_angle = max(0, noon_angle - hour_from_noon * 2.5)
+    angle_factor = math.sin(math.radians(solar_angle))
+    # Cloud factor (2026-06-04 修正：原本 0.6 倍數低估了陰雨天的衰減)
+    # 實際經驗：雲量 > 70% 時穿透率驟降
+    if cloud_val < 30:
+        cloud_factor = 1.0
+    elif cloud_val < 70:
+        cloud_factor = 0.85 - (cloud_val - 30) * 0.01  # 30% 雲→0.85, 70% 雲→0.55
+    else:
+        cloud_factor = 0.55 - (cloud_val - 70) * 0.005  # 70% 雲→0.55, 100% 雲→0.40
+    # 雨天加成衰減（從 WeatherAPI condition 判斷）
+    wapi_cond_lower = wapi_cond.lower()
+    if 'thunder' in wapi_cond_lower or 'storm' in wapi_cond_lower:
+        cloud_factor *= 0.15  # 雷雨：再砍 85%
+        print(f'[SolarModel] 雷雨加強衰減: cloud_factor={cloud_factor:.2f}')
+    elif any(kw in wapi_cond_lower for kw in ['rain', 'shower', 'drizzle', 'sleet']):
+        cloud_factor *= 0.35  # 一般雨：再砍 65%
+        print(f'[SolarModel] 雨天加強衰減: cloud_factor={cloud_factor:.2f}')
+    # Model: UV * 44W * cloud_factor * solar_angle_factor
+    # (校正係數沿用: 18.2→44, 實測144W@UV5驗證)
+    eff_w = uv_val * 44 * cloud_factor * angle_factor
+    eff_w = min(eff_w, PANEL_EFFECTIVE_W)  # 上限為實際有效峰值 200W
+    eff_pct = eff_w / PANEL_EFFECTIVE_W * 100
+    eff_val = f'{eff_w:.0f}W ({eff_pct:.0f}%)'
+    eff_color = '#2e7d32' if eff_w > 100 else '#f57c00' if eff_w > 30 else '#c62828'
+    print(f'[SolarModel] UV={uv_val} cloud={cloud_val}% angle={angle_factor:.2f} cloud_factor={cloud_factor:.2f} => {eff_val}')
+    # Override weather description with WeatherAPI full text
+    wapi_cond_val = wd['current']['condition']['text']
+    wx_map_en = {
+        'Sunny': '晴', 'Clear': '晴', 'Partly cloudy': '局部多雲',
+        'Cloudy': '多雲', 'Overcast': '陰', 'Mist': '霧',
+        'Fog': '霧', 'Light rain': '小雨', 'Heavy rain': '大雨',
+        'Patchy rain possible': '局部陣雨', 'Light rain shower': '小陣雨',
+        'Moderate rain': '中雨', 'Thunderstorm': '雷雨', 'Snow': '雪'
+    }
+    wtxt = wx_map_en.get(wapi_cond_val, wtxt)  # WeatherAPI first, fallback to CWA
+except Exception as e:
+    print(f'[SolarModel] Failed: {e}')
+
+# Fallback: weather-based
+if not eff_val:
+    eff_val, eff_color = wx_eff_map.get(wtxt, ('4W (2%)', '#c62828'))
+
+def rpl(label, new_val):
+    global c
+    pattern = r'(<div class="label">' + re.escape(label) + r'</div><div class="value"[^>]*>)[^<]*'
+    c = re.sub(pattern, lambda m: m.group(1) + new_val, c)
+
+# Windy GFS 降雨資料
+windy_rain = '-'
+windy_rain_warn = '-'
+try:
+    WINDY_KEY = os.environ.get('WINDY_KEY', 'GE3zinKzDO2ZmqNRZGfk0CsoVv5iwjPO')
+    body = {
+        'lat': 23.6052, 'lon': 120.2386, 'model': 'gfs',
+        'parameters': ['precip'], 'levels': ['surface'], 'key': WINDY_KEY
+    }
+    req = urllib.request.Request('https://api.windy.com/api/point-forecast/v2',
+        data=json.dumps(body).encode(),
+        headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(req, timeout=10) as r:
+        wi = json.loads(r.read())
+    rainy = wi['past3hprecip-surface'][0] / 3  # 3h→1h
+    windy_rain = f'{rainy:.3f}mm/h'
+    # 降雨警示：Windy < 0.05mm/h AND WeatherAPI > 70% → 矛盾參考 Windy
+    if rainy < 0.05:
+        windy_rain_warn = '不太會下雨'
+    elif rainy >= 0.5:
+        windy_rain_warn = '有雨'
+    print(f'[Windy] rain={windy_rain} warn={windy_rain_warn}')
+except Exception as e:
+    print(f'[Windy] FAIL: {e}')
+
+rpl('四湖測站', f'{station} {wtxt}')
+rpl('氣溫', f'{temp}°C' if temp != '?' else '?°C')
+rpl('風速', f'{wind} km/h' if wind != '?' else '? km/h')
+rpl('今日天氣', wtxt)
+rpl('發電效率', f'{eff_val}')
+rpl('Windy 雨量', windy_rain)
+
+# Bake system info
+with open(api_path) as f:
+    d = json.load(f)
+
+rpl('已開機', d.get('uptime', '-') or '-')
+mem_used = round(float(d.get('memUsed', 0)), 1)
+mem_tot = round(float(d.get('memTotal', 0)), 1)
+rpl('記憶體', f"{mem_used} / {mem_tot} GB")
+rpl('CPU 使用率', f"{round(float(d.get('cpuPercent', 0)), 1)}%")
+
+# Bake current model from openclaw.json (避免下次升級還要手動改)
+try:
+    cfg_path = os.path.expanduser('~/.openclaw/openclaw.json')
+    with open(cfg_path) as cf:
+        cfg = json.load(cf)
+    model_id = cfg.get('agents', {}).get('defaults', {}).get('model', {}).get('primary', 'MiniMax M3')
+    # MiniMax-M3 → MiniMax M3
+    model_name = model_id.split('/')[-1].replace('-', ' ')
+    rpl('目前模型', model_name)
+    # 同步 API 服務表中的模型列（<td>MiniMax M2.7</td> → <td>MiniMax M3</td>）
+    c = re.sub(
+        r'(<tr><td>)MiniMax M[0-9.]+(\.[0-9]+)?(</td><td>AI 模型</td><td>Starter</td></tr>)',
+        r'\g<1>' + model_name + r'\g<3>',
+        c
+    )
+    print(f'[Model] {model_name}')
+except Exception as e:
+    print(f'[Model] FAIL: {e}')
+
+# Bake Node.js version (避免 Node 升級後狀態頁過時)
+try:
+    node_result = subprocess.run(['node', '-v'], capture_output=True, text=True, timeout=5)
+    node_v = node_result.stdout.strip() or node_result.stderr.strip()
+    if node_v:
+        rpl('Node.js 版本', node_v)
+        print(f'[Node] {node_v}')
+except Exception as e:
+    print(f'[Node] FAIL: {e}')
+
+# Fetch disk usage (root and workspace) - must be before the substitution
+disk_root = '-'
+disk_workspace = '-'
+try:
+    import subprocess
+    result_root = subprocess.run(['df', '-h', '/'], capture_output=True, text=True, timeout=5)
+    lines_root = result_root.stdout.strip().split('\n')
+    if len(lines_root) >= 2:
+        parts = lines_root[1].split()
+        if len(parts) >= 5:
+            disk_root = f'{parts[2]} / {parts[1]}'
+    result_ws = subprocess.run(['df', '-h', '/home/jhe/.openclaw/workspace'], capture_output=True, text=True, timeout=5)
+    lines_ws = result_ws.stdout.strip().split('\n')
+    if len(lines_ws) >= 2:
+        parts = lines_ws[1].split()
+        if len(parts) >= 5:
+            disk_workspace = f'{parts[2]} / {parts[1]}'
+    print(f'[Disk] root={disk_root} workspace={disk_workspace}')
+
+# Since root and workspace are on same partition, use just one value
+except Exception as e:
+    print(f'[Disk] FAIL: {e}')
+
+# Disk usage: replace Gateway status label and value
+c = re.sub(
+    r'<div class="label">Gateway 狀態</div><div class="value[^>]*>.*?</div>',
+    f'<div class="label">磁碟（系統 / 工作區）</div><div class="value">{disk_root} / {disk_workspace}</div>',
+    c,
+    flags=re.DOTALL
+)
+
+# Bake Brave Search usage
+brave_file = os.path.expanduser("~/.openclaw/brave_search_usage.json")
+if os.path.exists(brave_file):
+    with open(brave_file) as f:
+        b = json.load(f)
+    cost = b.get("cost", 0)
+    limit = b.get("cost_limit", 5.0)
+    display = f"${cost:.2f} / ${limit:.0f}"
+    c = re.sub(r'(<tr><td>Brave Search</td><td>網路搜尋</td><td>)[^<]*(</td></tr>)',
+               r'\g<1>' + display + r'\g<2>', c)
+
+# Bake OpenRouter usage
+or_key = os.environ.get('OPENROUTER_API_KEY', '')
+# Fallback: read directly from ~/.api_keys if not in env
+if not or_key:
+    api_keys_file = os.path.expanduser('~/.api_keys')
+    if os.path.exists(api_keys_file):
+        with open(api_keys_file) as f:
+            for line in f:
+                if line.startswith('OPENROUTER_API_KEY='):
+                    or_key = line.split('=', 1)[1].strip()
+                    break
+
+or_usage = None
+or_limit = None
+
+if or_key:
+    try:
+        req = urllib.request.Request('https://openrouter.ai/api/v1/auth/key',
+            headers={'Authorization': f'Bearer {or_key}'})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            or_data = json.loads(r.read())
+        or_usage = or_data['data']['usage']
+        or_limit = or_data['data']['limit']
+        print(f'[OpenRouter] usage=${or_usage:.6f} limit=${or_limit}')
+    except Exception as e:
+        print(f'[OpenRouter] FAIL: {e}')
+if or_usage is not None:
+    # Remove any existing OpenRouter row first (avoid duplicates on re-run)
+    c = re.sub(r'\n?<tr><td>OpenRouter</td><td>API 服務平台</td><td>[^<]*</td></tr>', '', c)
+    if or_limit:
+        or_display = f'${or_usage:.2f} / ${or_limit:.0f}'
+    else:
+        or_display = f'${or_usage:.2f}'
+    or_row = f'<tr><td>OpenRouter</td><td>API 服務平台</td><td>{or_display}</td></tr>'
+    # Insert after the row that contains OpenRouter's target anchor
+    c = re.sub(r'(<tr><td>Brave Search</td><td>網路搜尋</td><td>[^<]*</td></tr>)',
+               r'\1\n' + or_row, c)
+
+# Bake timestamps & labels
+c = c.replace("📡 最後刷新時間", "📡 版本最後上傳時間")
+c = re.sub(r"var ts = '[^']*';", f"var ts = '{TS}';", c)
+
+# Remove footer
+c = re.sub(r'<div class="footer">.*?</div>', '', c, flags=re.DOTALL)
+
+with open(html_path, 'w') as f:
+    f.write(c)
+print(f"HTML baked OK ({TS})")

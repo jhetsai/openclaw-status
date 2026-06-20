@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>持股總覽 - 診斷版</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;min-height:100vh;padding:10px}
+.header{text-align:center;margin-bottom:16px}
+.header h1{color:#1a1a2e;font-size:20px;margin-bottom:4px}
+.card{background:white;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.log{padding:10px;background:#1a1a2e;color:#0f0;font-family:monospace;font-size:11px;white-space:pre-wrap;max-height:300px;overflow-y:auto}
+.log .err{color:#f55}
+.log .ok{color:#4f4}
+</style>
+</head>
+<body>
+<div class="header"><h1>📊 持股總覽｜診斷版</h1></div>
+<div class="card"><div class="log" id="log">初始化中...</div></div>
+
+<script>
+const R2_BASE = 'https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev';
+const log = document.getElementById('log');
+
+function println(msg, type) {
+    const span = document.createElement('div');
+    span.textContent = msg;
+    if (type === 'err') span.className = 'err';
+    else if (type === 'ok') span.className = 'ok';
+    log.appendChild(span);
+    console.log(msg);
+}
+
+async function fetchJSON(path) {
+    try {
+        println('fetch: ' + path);
+        const r = await fetch(R2_BASE + '/' + path);
+        println('  HTTP ' + r.status + ' ' + r.statusText);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const d = await r.json();
+        println('  OK - keys: ' + Object.keys(d).join(', '), 'ok');
+        return d;
+    } catch(e) {
+        println('  ❌ ' + e.message, 'err');
+        return null;
+    }
+}
+
+function sign(n) { return n >= 0 ? '+' : ''; }
+function dc(n) { return n >= 0 ? 'up' : 'down'; }
+function gcolor(g) { return g >= 0 ? '#FFD700' : '#FF6B6B'; }
+
+function renderTwStocks(tw) {
+    println('renderTwStocks called with ' + tw.length + ' stocks');
+    try {
+        document.getElementById('tw-count').textContent = tw.length;
+        let m = '', d = '';
+        tw.forEach(s => {
+            const cur = s.price, prev = s.prev_price, shares = s.shares;
+            const costAvg = s.cost;
+            const dayVal = (cur - prev) * shares;
+            const gain = s.gain;
+            const gc = gcolor(gain);
+            const ds = (cur >= prev) ? '+' : '';
+            m += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares.toLocaleString()}</td><td>$${cur.toFixed(2)}</td><td class="${dc(cur - prev)}">${ds}${((cur - prev) / prev * 100).toFixed(2)}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+            d += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares.toLocaleString()}</td><td>$${costAvg.toFixed(2)}</td><td>$${prev.toFixed(2)}</td><td>$${cur.toFixed(2)}</td><td class="${dc(dayVal)}">${sign(dayVal)}${Math.round(dayVal).toLocaleString()}</td><td class="${dc(cur - prev)}">${ds}${((cur - prev) / prev * 100).toFixed(2)}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+        });
+        document.getElementById('tw-mob').innerHTML = m;
+        document.getElementById('tw-desk').innerHTML = d;
+        println('renderTwStocks OK', 'ok');
+    } catch(e) {
+        println('renderTwStocks ERROR: ' + e.message, 'err');
+    }
+}
+
+function renderUsStocks(us) {
+    println('renderUsStocks called with ' + us.length + ' stocks');
+    try {
+        document.getElementById('us-count').textContent = us.length;
+        let m = '', d = '';
+        us.forEach(s => {
+            const cur = s.price, prev = s.prev, shares = s.shares;
+            const costAvg = s.cost;
+            const gain = s.gain;
+            const dayPct = ((cur - prev) / prev * 100).toFixed(2);
+            const gc = gcolor(gain);
+            const ds = (cur >= prev) ? '+' : '';
+            m += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares}</td><td>$${cur}</td><td class="${dc(cur - prev)}">${ds}${dayPct}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+            d += `<tr><td>${s.symbol}</td><td>${s.name}</td><td>${shares}</td><td>$${costAvg}</td><td>$${prev}</td><td>$${cur}</td><td class="${dc(cur - prev)}">${ds}${dayPct}%</td><td class="${dc(cur - prev)}">${ds}${dayPct}%</td><td style="color:${gc};font-weight:bold">${sign(gain)}${gain.toLocaleString()}</td></tr>`;
+        });
+        document.getElementById('us-mob').innerHTML = m;
+        document.getElementById('us-desk').innerHTML = d;
+        println('renderUsStocks OK', 'ok');
+    } catch(e) {
+        println('renderUsStocks ERROR: ' + e.message, 'err');
+    }
+}
+
+function renderDividends(div, fx) {
+    println('renderDividends called');
+    try {
+        const twConf = div?.tw?.confirmed?.total || 0;
+        const twPend = div?.tw?.pending?.total || 0;
+        const usConfUsd = div?.us?.confirmed?.total_usd || 0;
+        const usConfTwd = Math.round(usConfUsd * fx);
+        document.getElementById('div-tw-confirmed').textContent = '+' + twConf.toLocaleString() + ' 元';
+        document.getElementById('div-tw-pending').textContent = '+' + twPend.toLocaleString() + ' 元';
+        document.getElementById('div-us-confirmed').textContent = '+TWD ' + usConfTwd.toLocaleString();
+        document.getElementById('div-total').textContent = '≈ ' + (twConf + twPend + usConfTwd).toLocaleString() + ' 元';
+        println('renderDividends OK: TW_conf=' + twConf + ' TW_pend=' + twPend + ' US_conf=' + usConfTwd, 'ok');
+    } catch(e) {
+        println('renderDividends ERROR: ' + e.message, 'err');
+    }
+}
+
+async function init() {
+    println('init() 開始');
+    try {
+        const [pf, div] = await Promise.all([
+            fetchJSON('assets/portfolio_data.json'),
+            fetchJSON('assets/dividend_data.json')
+        ]);
+
+        if (!pf) {
+            println('pf is null', 'err');
+            return;
+        }
+        println('pf.stocks.tw: ' + (pf.stocks?.tw?.length || 0) + ' items');
+        println('pf.stocks.us: ' + (pf.stocks?.us?.length || 0) + ' items');
+
+        const fx = pf.fx?.USD_TWD || 31.569;
+        println('fx: ' + fx);
+        println('summary.stockMktval: ' + (pf.summary?.stockMktval || 'N/A'));
+        println('summary.stockCost: ' + (pf.summary?.stockCost || 'N/A'));
+
+        // KPI
+        try {
+            const mv = pf.summary?.stockMktval || 0;
+            const cost = pf.summary?.stockCost || 0;
+            const gain = mv - cost;
+            const gainPct = cost > 0 ? (gain / cost * 100) : 0;
+            document.getElementById('kpi-mv').textContent = mv.toLocaleString();
+            document.getElementById('kpi-cost').textContent = cost.toLocaleString();
+            document.getElementById('kpi-gain').textContent = sign(gain) + gain.toLocaleString();
+            document.getElementById('kpi-gainpct').textContent = sign(gainPct) + gainPct.toFixed(1) + '%';
+            println('KPI 寫入成功: mv=' + mv, 'ok');
+        } catch(e) {
+            println('KPI ERROR: ' + e.message, 'err');
+        }
+
+        // Stocks
+        if (pf.stocks?.tw) renderTwStocks(pf.stocks.tw);
+        else println('pf.stocks.tw is empty/undefined', 'err');
+
+        if (pf.stocks?.us) renderUsStocks(pf.stocks.us);
+        else println('pf.stocks.us is empty/undefined', 'err');
+
+        // Dividends
+        if (div) renderDividends(div, fx);
+        else println('div is null', 'err');
+
+        println('init() 完成', 'ok');
+    } catch(e) {
+        println('init() ERROR: ' + e.message, 'err');
+        println(e.stack || '');
+    }
+}
+
+init();
+</script>
+</body>
+</html>

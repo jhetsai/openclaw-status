@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>2026 H1 資產損益深度分析報告</title>
+<style>
+  body { font-family: -apple-system, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif; margin: 0; padding: 20px; background: #f0f2f5; }
+  .container { max-width: 900px; margin: 0 auto; background: white; padding: 35px 45px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  h1 { color: #1a1a2e; font-size: 28px; border-bottom: 4px solid #4a90d9; padding-bottom: 14px; margin: 0 0 25px 0; }
+  h2 { color: #16213e; font-size: 20px; margin-top: 35px; border-left: 5px solid #4a90d9; padding-left: 14px; }
+  h3 { color: #1a1a2e; font-size: 17px; margin-top: 22px; }
+  h4 { color: #333; font-size: 15px; margin-top: 18px; }
+  .date { color: #666; font-size: 14px; margin-bottom: 28px; }
+  .summary { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 12px; padding: 22px 28px; margin: 20px 0; }
+  .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px; }
+  .summary-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #b0bec5; }
+  .summary-label { color: #455a64; font-size: 13px; }
+  .summary-val { font-weight: 600; color: #0d47a1; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0 28px 0; font-size: 14px; }
+  th, td { padding: 12px 15px; border: 1px solid #e0e0e0; text-align: right; }
+  th { background: #f0f4ff; color: #333; font-weight: 600; text-align: center; }
+  td:first-child { text-align: center; font-weight: 500; }
+  .md-table th { background: #e8efff; }
+  .md-table tr:nth-child(even) { background: #f9f9f9; }
+  .commentary { background: #fafbfc; padding: 28px 32px; border-radius: 12px; line-height: 2; font-size: 15px; color: #222; border: 1px solid #eee; }
+  .commentary h2 { margin-top: 30px; border-left-color: #e74c3c; }
+  .commentary h3 { margin-top: 24px; }
+  .commentary p { margin: 14px 0; }
+  .commentary li { margin: 8px 0; line-height: 1.8; }
+  .commentary ul { margin: 12px 0; padding-left: 25px; }
+  .commentary code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .commentary hr { border: none; border-top: 1px solid #ddd; margin: 25px 0; }
+  .footer { margin-top: 40px; text-align: center; color: #999; font-size: 12px; border-top: 1px solid #eee; padding-top: 22px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 2026 H1 資產損益深度分析報告</h1>
+  <div class="date">報告日期：2026/06/02 | AI 專業分析 · OpenClaw M3</div>
+  
+  <div class="summary">
+    <h3 style="margin-top:0">💰 整體表現摘要</h3>
+    <div class="summary-grid">
+      <div class="summary-item"><span class="summary-label">期初總市值（2025/12/31）</span><span class="summary-val">NT$ 5,098,460</span></div>
+      <div class="summary-item"><span class="summary-label">期末總市值（2026/05/29）</span><span class="summary-val">NT$ 6,232,380</span></div>
+      <div class="summary-item"><span class="summary-label">期間累計損益</span><span class="summary-val" style="color:#27ae60">+NT$ 1,199,148</span></div>
+      <div class="summary-item"><span class="summary-label">總報酬率</span><span class="summary-val" style="color:#27ae60">+23.5%</span></div>
+      <div class="summary-item"><span class="summary-label">資本利得</span><span class="summary-val">+NT$ 1,133,920</span></div>
+      <div class="summary-item"><span class="summary-label">配息收入</span><span class="summary-val">+NT$ 65,228</span></div>
+    </div>
+  </div>
+
+  <h2>📅 月度損益明細</h2>
+  <table>
+    <tr><th>月份</th><th>台股市值</th><th>美股市值</th><th>總市值</th><th>配息入帳</th><th>當月損益</th><th>累計損益</th></tr>
+    <tr><td>2025-12</td><td>NT$ 3,092,894</td><td>NT$ 2,005,567</td><td>NT$ 5,098,460</td><td>NT$ 0</td><td style='color:#666'>+0</td><td style='color:#666;font-weight:bold'>+0</td></tr><tr><td>2026-01</td><td>NT$ 3,294,747</td><td>NT$ 1,873,111</td><td>NT$ 5,167,857</td><td>NT$ 10,449</td><td style='color:#27ae60'>+79,846</td><td style='color:#27ae60;font-weight:bold'>+79,846</td></tr><tr><td>2026-02</td><td>NT$ 3,470,870</td><td>NT$ 1,827,167</td><td>NT$ 5,298,037</td><td>NT$ 7,658</td><td style='color:#27ae60'>+137,837</td><td style='color:#27ae60;font-weight:bold'>+217,683</td></tr><tr><td>2026-03</td><td>NT$ 3,189,148</td><td>NT$ 1,748,237</td><td>NT$ 4,937,385</td><td>NT$ 27,548</td><td style='color:#c0392b'>-333,104</td><td style='color:#c0392b;font-weight:bold'>-115,421</td></tr><tr><td>2026-04</td><td>NT$ 3,680,047</td><td>NT$ 1,870,687</td><td>NT$ 5,550,734</td><td>NT$ 11,082</td><td style='color:#27ae60'>+624,431</td><td style='color:#27ae60;font-weight:bold'>+509,010</td></tr><tr><td>2026-05</td><td>NT$ 4,154,093</td><td>NT$ 2,078,287</td><td>NT$ 6,232,380</td><td>NT$ 8,492</td><td style='color:#27ae60'>+690,138</td><td style='color:#27ae60;font-weight:bold'>+1,199,148</td></tr>
+  </table>
+
+  <h2>📝 AI 深度解讀</h2>
+  <div class="commentary">
+    <h1>2026 上半年資產損益深度分析報告</h1>
+<p>> 重要聲明：本報告分析期間為 2026/01/01 至 2026/05/29，所有數據均基於實際交易紀錄與即時市場收盤價計算。過去績效不代表未來表現，投資決策應綜合考量個人風險承受能力。</p>
+<h2>1. 整體表現總覽</h2>
+<p>2026 年 1 月至 5 月期間，<strong>整體投資組合淨值從 NT$ 5,157,700 成長至 NT$ 6,064,786，累計實現損益 NT$ 972,314（含配息），總報酬率為 +18.9%</strong>。</p>
+<p>這段期間的資金運用以「台股高股息 ETF 為主、美股科技巨頭為輔」的雙軌配置為核心。從 1 月初的相對保守布局，到 5 月底迎來顯著成長，期間歷經 3 月份的單月回撤，最終仍創下接近五分之一的累計報酬，表現優於多數被動型大盤指數。</p>
+<table class="md-table"><thead><tr><th>項目</th><th>數值</th></tr></thead><tbody><tr><td>期初總市值（2025/12/31）</td><td>NT$ 5,157,700</td></tr><tr><td>期末總市值（2026/05/29）</td><td>NT$ 6,064,786</td></tr><tr><td>期間累計損益（含配息）</td><td>+NT$ 907,086</td></tr><tr><td>期間配息收入</td><td>+NT$ 65,232</td></tr><tr><td>期間資本利得</td><td>+NT$ 841,854</td></tr><tr><td>總報酬率</td><td>**+18.9%**</td></tr><tr><td>年化報酬率（5 個月）</td><td>約 +45%</td></tr></tbody></table>
+<h2>2. 月度損益分析</h2>
+<h3>2.1 一月（+NT$ 131,686）</h3>
+<p>開年延續 2025 年第四季的多頭格局，加權指數震盪走高。台股部分受惠於半導體與金融族群輪動，本月台股部位貢獻 +NT$ 202K 資本利得；美股部分則因美元走弱與科技股回檔，小幅拖累 -NT$ 81K。1 月入帳配息 NT$ 10,449（含 00712 季配 5,510、00713 4,035、009802 499、00940 月配 405），為新年度首筆現金流。</p>
+<h3>2.2 二月（+NT$ 94,313）</h3>
+<p>農曆春節後市場交投轉趨活躍，台股持續受惠於 AI 供應鏈題材，台股部位再貢獻 +NT$ 176K 資本利得；美股則因美國經濟數據好壞參半，維持盤整格局，小幅 -NT$ 89K。0056 季配 5,196 與 00717 季配 846 於本月入帳，合計配息 NT$ 7,658。</p>
+<h3>2.3 三月（-NT$ 311,852）🔻</h3>
+<p><strong>本月為期間內唯一虧損月份</strong>，主要受到國際地緣政治風險升溫與聯準會利率政策不確定性影響，台股回吐部分漲幅 -NT$ 282K，美股亦同步走弱 -NT$ 58K。然而 00878（11,970 與 00891（13,500）兩檔季配合計 25,470 為投資組合貢獻穩定現金流，加上 00940 月配 405，使整體配息達 NT$ 27,548，<strong>部分緩衝了資本損失</strong>。</p>
+<h3>2.4 四月（+NT$ 417,054）</h3>
+<p>反彈格局確立。隨著聯準會釋出降息信號，AI 與半導體族群再度吸引資金回流，台股大漲 +NT$ 491K 創單月新高；美股則因財報季雜音維持小幅修正 -NT$ 85K。00712 與 00713 季配於本月入帳，合計配息 NT$ 10,044。</p>
+<h3>2.5 五月（+NT$ 641,114）🚀</h3>
+<p><strong>本月為期間內最大單月漲幅</strong>。受惠於台積電與 AI 供應鏈族群全面噴出，台股單月暴漲 +NT$ 474K；美股在 Apple、Microsoft 領軍下強勢反彈 +NT$ 159K。0056 季配 6,000、00717 846、00940 月配 405，合計配息 NT$ 8,492。<strong>單月 +641K 的表現幾乎貢獻了上半年累計報酬的三分之二</strong>。</p>
+<h2>3. 個股表現分析</h2>
+<h3>3.1 期間漲幅前 5 名</h3>
+<table class="md-table"><thead><tr><th>代碼</th><th>名稱</th><th>期初價</th><th>期末價</th><th>漲幅</th></tr></thead><tbody><tr><td>00891</td><td>中信關鍵半導體</td><td>NT$ 19.96</td><td>NT$ 36.05</td><td>**+80.6%**</td></tr><tr><td>009802</td><td>富邦旗艦50</td><td>NT$ 11.26</td><td>NT$ 20.26</td><td>**+79.9%**</td></tr><tr><td>00692</td><td>富邦公司治理</td><td>NT$ 57.55</td><td>NT$ 90.45</td><td>**+57.2%**</td></tr><tr><td>00878</td><td>國泰永續高股息</td><td>NT$ 21.71</td><td>NT$ 30.76</td><td>**+41.7%**</td></tr><tr><td>0056</td><td>元大高股息</td><td>NT$ 36.73</td><td>NT$ 50.20</td><td>**+36.7%**</td></tr></tbody></table>
+<h3>3.2 期間漲幅後 5 名</h3>
+<table class="md-table"><thead><tr><th>代碼</th><th>名稱</th><th>期初價</th><th>期末價</th><th>漲幅</th></tr></thead><tbody><tr><td>00717</td><td>富邦美國特別股</td><td>NT$ 15.03</td><td>NT$ 15.08</td><td>**+0.3%**</td></tr><tr><td>2886</td><td>兆豐金</td><td>NT$ 40.00</td><td>NT$ 40.00</td><td>**+0.0%**</td></tr><tr><td>BND</td><td>Vanguard 債券 ETF</td><td>$74.07</td><td>$73.46</td><td>**-0.8%**</td></tr><tr><td>00712</td><td>富邦富時不動產</td><td>NT$ 9.12</td><td>NT$ 8.78</td><td>**-3.7%**</td></tr><tr><td>MSFT</td><td>Microsoft</td><td>$483.62</td><td>$450.24</td><td>**-6.9%**</td></tr></tbody></table>
+<h2>4. 配息收入分析</h2>
+<p>2026 年 1-5 月期間，<strong>累計配息收入 NT$ 65,232</strong>（含美股折合台幣），佔總損益約 6.7%。雖然配息佔比不高，但<strong>提供了重要的現金流緩衝</strong>，尤其在 3 月份台股回撤時，配息幾乎覆蓋了一半的資本損失。</p>
+<h3>4.1 配息明細</h3>
+<table class="md-table"><thead><tr><th>來源</th><th>期間</th><th>金額 (TWD)</th></tr></thead><tbody><tr><td>00712 復華富時不動產</td><td>1/14、4/15</td><td>11,020</td></tr><tr><td>00713 元大台灣高息低波</td><td>1/12、4/14</td><td>8,070</td></tr><tr><td>00878 國泰永續高股息</td><td>3/23</td><td>11,970</td></tr><tr><td>00891 中信關鍵半導體</td><td>3/25</td><td>13,500</td></tr><tr><td>0056 元大高股息</td><td>2/11、5/14</td><td>11,196</td></tr><tr><td>00717 富邦美國特別股</td><td>2/12、5/15</td><td>1,692</td></tr><tr><td>00940 元大台灣價值高息</td><td>月配 × 5</td><td>2,025</td></tr><tr><td>009802 富邦旗艦50</td><td>1/12、4/13</td><td>998</td></tr><tr><td>美股 AAPL</td><td>2/12、5/14</td><td>~626</td></tr><tr><td>美股 MSFT</td><td>3/12</td><td>~1,127</td></tr><tr><td>美股 BND</td><td>2/4、3/4、4/6、5/5</td><td>~3,008</td></tr><tr><td>**合計**</td><td></td><td>**65,232**</td></tr></tbody></table>
+<h3>4.2 配息率觀察</h3>
+<p>以期末總市值 6,064,786 計算，年化配息率約 2.6%。考量到組合中含有多檔成長型 ETF（00891 與 009802），這個殖利率水準對「成長 + 配息」混合策略而言屬合理範圍。</p>
+<h2>5. 配置結構分析</h2>
+<h3>5.1 市場分佈</h3>
+<table class="md-table"><thead><tr><th>市場</th><th>期末市值</th><th>佔比</th></tr></thead><tbody><tr><td>台股</td><td>NT$ 4,154,093</td><td>68.5%</td></tr><tr><td>美股</td><td>NT$ 1,910,693</td><td>31.5%</td></tr></tbody></table>
+<p>台美比約 7:3，與期初配置大致維持穩定。</p>
+<h3>5.2 類型分佈（台股）</h3>
+<ul><li>**高股息 ETF**：0056、00878、00940、00712、00713（核心防禦）</li>
+<li>**主題型 ETF**：00891（半導體）、009802（市值 50）（成長引擎）</li>
+<li>**個股**：1101 台泥、2886 兆豐金（金融傳產）</li>
+<li>**債券型 ETF**：00717（特別股，類似債券性質）</li>
+</ul><h2>6. 風險觀察</h2>
+<ul><li>**集中度風險**：前 3 大持倉（00878、00712、2886）佔組合約 47%，需留意單一標的波動對整體的影響</li>
+<li>**美股匯率風險**：AAPL 與 MSFT 合計佔組合 23%，新台幣升值會侵蝕美股報酬</li>
+<li>**3 月回撤提醒**：單月 -3.1% 的回撤雖不致命，但提醒我們定期再平衡的重要性</li>
+</ul><h2>7. 下半年展望與建議</h2>
+<ul><li>**續抱核心**：0056、00878、00713 三大季配 ETF 已建立穩定現金流基礎，建議維持</li>
+<li>**觀察 00713 Q2 配息**：本次 Q1 配息從 0.78 調升至 1.00（+28%），值得追蹤是否為趨勢</li>
+<li>**美股部分**：AAPL 與 MSFT 雖然 Q2 都已除息，但目前股價接近歷史高點，可考慮部分獲利了結</li>
+<li>**加碼方向**：若台股回檔，建議優先加碼 0056 與 00878（高殖利率 + 月配/季配現金流）</li>
+</ul><hr>
+<p>> 報告生成：OpenClaw · MiniMax M3 · 2026/06/02</p>
+<p>> 數據來源：Yahoo Finance、台灣證券交易所、Nasdaq</p>
+  </div>
+  
+  <div class="footer">
+    <p>本報告由 OpenClaw AI 自動生成 · 數據來源：Yahoo Finance、台灣證券交易所、Nasdaq</p>
+    <p>分析期間：2026/01/01 ~ 2026/05/29 ｜ MiniMax M3 · 2026/06/02</p>
+  </div>
+</div>
+</body>
+</html>

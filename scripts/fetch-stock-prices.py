@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """fetch-stock-prices.py - 抓台股+美股最新股價，更新 JSON"""
-import json, urllib.request, urllib.error, os, subprocess
+import json, urllib.request, urllib.error, os, subprocess, re
 from datetime import datetime, timedelta
 
 WORKSPACE = "/home/jhe/.openclaw/workspace"
@@ -94,21 +94,23 @@ def fetch_yahoo_quote(symbol):
             continue
     return None, None
 
-def fetch_taiwan_futures(symbol):
-    """Fetch Taiwan futures (WTX&, WTXP&) from Yahoo Taiwan page"""
-    url = f"https://tw.stock.yahoo.com/future/{symbol}"
+def fetch_taiwan_page(symbol):
+    """Fetch price + prev from Yahoo Taiwan page (all ref indices)"""
+    url = f"https://tw.stock.yahoo.com/quote/{symbol}"
     try:
         result = subprocess.run(
             ['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
             capture_output=True, text=True, timeout=12
         )
         if result.returncode == 0 and result.stdout.strip():
-            import re
             html = result.stdout
-            m = re.search(r'"price"\s*:\s*\{\s*"raw"\s*:\s*"?([0-9.]+)', html)
-            if m:
-                return float(m.group(1))
-        return None
+            m_price = re.search(r'"price"\s*:\s*\{\s*"raw"\s*:\s*"?([0-9.]+)', html)
+            price = float(m_price.group(1)) if m_price else None
+            m_prev = re.search(r'"previousClose"\s*:\s*"?([0-9.]+)', html)
+            prev = float(m_prev.group(1)) if m_prev else None
+            if price:
+                return price, prev
+        return None, None
     except Exception as e:
         print(f"  Warning: {symbol} error: {e}")
         return None
@@ -305,12 +307,13 @@ us_prev = {}
 for item in US_STOCKS:
     sym = item["symbol"]
     code = item["code"]
-    # WTX& and WTXP& need special handling via Taiwan page
-    if sym in ("WTX&", "WTXP&"):
-        p = fetch_taiwan_futures(sym)
-        if p:
-            us_prices[code] = p
-            print(f"  {code}: {p} (Taiwan futures)")
+    if item.get("ref_only"):
+        price, prev = fetch_taiwan_page(sym)
+        if price:
+            us_prices[code] = price
+            if prev:
+                us_prev[code] = prev
+            print(f"  {code}: {price} / {prev} (Taiwan Yahoo ref)")
         else:
             print(f"  {code}: failed")
     else:

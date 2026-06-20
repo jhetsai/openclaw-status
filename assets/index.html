@@ -192,25 +192,25 @@ canvas { max-width:100%; }
       <div class="fx-grid">
         <div class="fx-card">
           <h4>💵 美元 USD（純現金）</h4>
-          <div class="fx-row"><span class="fx-label">投入(USD)</span><span class="fx-val">$41,498</span></div>
-          <div class="fx-row"><span class="fx-label">已提領+投入美股</span><span class="fx-val neg">-$46,967</span></div>
-          <div class="fx-row"><span class="fx-label">現金結餘</span><span class="fx-val">$14,609.00</span></div>
-          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val">28.4481</span></div>
-          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-usd-rate">31.375</span></div>
-          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val">458,357</span></div>
-          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val pos">+42,759</span></div>
-          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val pos">+10.3%</span></div>
+          <div class="fx-row"><span class="fx-label">投入(USD)</span><span class="fx-val" id="fx-usd-invested">—</span></div>
+          <div class="fx-row"><span class="fx-label">已提領+投入美股</span><span class="fx-val neg" id="fx-usd-withdrawn">—</span></div>
+          <div class="fx-row"><span class="fx-label">現金結餘</span><span class="fx-val" id="fx-usd-balance">—</span></div>
+          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val" id="fx-usd-orig-rate">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-usd-rate">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val" id="fx-usd-mktval">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val" id="fx-usd-fxgain">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val" id="fx-usd-fxpct">—</span></div>
         </div>
         <div class="fx-card">
           <h4>💴 日圓 JPY</h4>
-          <div class="fx-row"><span class="fx-label">投入(JPY)</span><span class="fx-val">¥1,731,671</span></div>
-          <div class="fx-row"><span class="fx-label">已提領</span><span class="fx-val neg">¥1,119,880</span></div>
-          <div class="fx-row"><span class="fx-label">結餘</span><span class="fx-val">¥611,791</span></div>
-          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val">0.2365</span></div>
-          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-jpy-rate">0.1984</span></div>
-          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val">121,379</span></div>
-          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val neg">-23,309</span></div>
-          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val neg">-16.1%</span></div>
+          <div class="fx-row"><span class="fx-label">投入(JPY)</span><span class="fx-val" id="fx-jpy-invested">—</span></div>
+          <div class="fx-row"><span class="fx-label">已提領</span><span class="fx-val neg" id="fx-jpy-withdrawn">—</span></div>
+          <div class="fx-row"><span class="fx-label">結餘</span><span class="fx-val" id="fx-jpy-balance">—</span></div>
+          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val" id="fx-jpy-orig-rate">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-jpy-rate">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val" id="fx-jpy-mktval">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val" id="fx-jpy-fxgain">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val" id="fx-jpy-fxpct">—</span></div>
         </div>
       </div>
     </div>
@@ -261,25 +261,25 @@ canvas { max-width:100%; }
       <div class="fx-grid">
         <div class="fx-card">
           <h4>💵 美元 USD（純現金）</h4>
-          <div class="fx-row"><span class="fx-label">投入(USD)</span><span class="fx-val">$41,498</span></div>
-          <div class="fx-row"><span class="fx-label">已提領+投入美股</span><span class="fx-val neg">-$46,967</span></div>
-          <div class="fx-row"><span class="fx-label">現金結餘</span><span class="fx-val">$14,609.00</span></div>
-          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val">28.4481</span></div>
-          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-usd-rate-2">31.375</span></div>
-          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val">458,357</span></div>
-          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val pos">+42,759</span></div>
-          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val pos">+10.3%</span></div>
+          <div class="fx-row"><span class="fx-label">投入(USD)</span><span class="fx-val" id="fx-usd-invested2">—</span></div>
+          <div class="fx-row"><span class="fx-label">已提領+投入美股</span><span class="fx-val neg" id="fx-usd-withdrawn2">—</span></div>
+          <div class="fx-row"><span class="fx-label">現金結餘</span><span class="fx-val" id="fx-usd-balance2">—</span></div>
+          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val" id="fx-usd-orig-rate2">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-usd-rate2">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val" id="fx-usd-mktval2">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val" id="fx-usd-fxgain2">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val" id="fx-usd-fxpct2">—</span></div>
         </div>
         <div class="fx-card">
           <h4>💴 日圓 JPY</h4>
-          <div class="fx-row"><span class="fx-label">投入(JPY)</span><span class="fx-val">¥1,731,671</span></div>
-          <div class="fx-row"><span class="fx-label">已提領</span><span class="fx-val neg">¥1,119,880</span></div>
-          <div class="fx-row"><span class="fx-label">結餘</span><span class="fx-val">¥611,791</span></div>
-          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val">0.2365</span></div>
-          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-jpy-rate-2">0.1984</span></div>
-          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val">121,379</span></div>
-          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val neg">-23,309</span></div>
-          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val neg">-16.1%</span></div>
+          <div class="fx-row"><span class="fx-label">投入(JPY)</span><span class="fx-val" id="fx-jpy-invested2">—</span></div>
+          <div class="fx-row"><span class="fx-label">已提領</span><span class="fx-val neg" id="fx-jpy-withdrawn2">—</span></div>
+          <div class="fx-row"><span class="fx-label">結餘</span><span class="fx-val" id="fx-jpy-balance2">—</span></div>
+          <div class="fx-row"><span class="fx-label">當初匯率</span><span class="fx-val" id="fx-jpy-orig-rate2">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在匯率</span><span class="fx-val" id="fx-jpy-rate2">—</span></div>
+          <div class="fx-row"><span class="fx-label">現在價值</span><span class="fx-val" id="fx-jpy-mktval2">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差增益</span><span class="fx-val" id="fx-jpy-fxgain2">—</span></div>
+          <div class="fx-row"><span class="fx-label">匯差報酬率</span><span class="fx-val" id="fx-jpy-fxpct2">—</span></div>
         </div>
         <div class="fx-card">
           <h4>💵 USD 提領記錄</h4>
@@ -545,17 +545,96 @@ const twMktval = twStocks.reduce((a,s)=>a+s.mktval,0);
 const twCost = twStocks.reduce((a,s)=>a+s.totalCost,0);
 const usMktval = usStocks.reduce((a,s)=>a+s.mktvalTwd,0);
 // Correct US cost: stocks at original rate (28.4481), not current rate
-const usCostBase = 105*145.02 + 116*73.21 + 55*263.51; // USD cost basis
+const usCostBase = 105*145.02 + 117*73.22 + 55*263.51; // USD cost basis
 const usCostTwdAtBase = usCostBase * 28.4481; // at original exchange rate
-const usdCashUsd = 14609.00; // USD cash in USD
-const usdOriginalRate = 28.4481; // original USD/TWD rate when acquired
-const jpyCashJpy = 611791; // JPY cash in JPY  
-const jpyOriginalRate = 0.204; // original JPY/TWD rate when acquired
+// USD cash from portfolio_data.json (usd_cash section)
+const usdCashUsd = portfolio.usd_cash?.cash_usd || 14629.00;
+const usdOriginalRate = portfolio.usd_cash?.original_rate || 28.4481;
+// JPY cash from portfolio_data.json (jpy_cash section)
+const jpyCashJpy = portfolio.jpy_cash?.cash_jpy || 611791;
+const jpyOriginalRate = portfolio.jpy_cash?.original_rate || 0.204;
 const usdCashCost = usdCashUsd * usdOriginalRate; // USD cash cost at original rate
 const jpyCashCost = jpyCashJpy * jpyOriginalRate; // JPY cash cost at original rate
 // Dynamic FX mktval using current EXCH_RATE (loaded async) and JPY_RATE
 let usdMktval = usdCashUsd * EXCH_RATE;
 let jpyMktval = jpyCashJpy * JPY_RATE;
+
+// ===== UPDATE FX DISPLAY FROM JSON DATA =====
+// USD cash section
+const usdInvested = portfolio.usd_cash?.total_invested_usd || 0;
+const usdWithdrawn = portfolio.usd_cash?.invested_for美股_usd || 0;
+const usdBalance = portfolio.usd_cash?.cash_usd || 0;
+const usdOrigRate = portfolio.usd_cash?.original_rate || 28.4481;
+const usdFxGain = usdCashUsd * EXCH_RATE - usdCashCost;
+const usdFxPct = usdCashCost > 0 ? (usdFxGain / usdCashCost * 100) : 0;
+const el = (id) => document.getElementById(id);
+if(el('fx-usd-invested')) el('fx-usd-invested').textContent = '$'+usdInvested.toLocaleString('en',{minimumFractionDigits:2});
+if(el('fx-usd-withdrawn')) el('fx-usd-withdrawn').textContent = '$'+Math.abs(usdWithdrawn).toLocaleString('en',{minimumFractionDigits:2});
+if(el('fx-usd-balance')) el('fx-usd-balance').textContent = '$'+usdBalance.toLocaleString('en',{minimumFractionDigits:2});
+if(el('fx-usd-orig-rate')) el('fx-usd-orig-rate').textContent = usdOrigRate.toFixed(4);
+if(el('fx-usd-rate')) el('fx-usd-rate').textContent = EXCH_RATE.toFixed(3);
+if(el('fx-usd-rate2')) el('fx-usd-rate2').textContent = EXCH_RATE.toFixed(3);
+if(el('fx-usd-mktval')) el('fx-usd-mktval').textContent = Math.round(usdMktval).toLocaleString();
+if(el('fx-usd-fxgain')) {
+  el('fx-usd-fxgain').textContent = (usdFxGain>=0?'+':'')+Math.round(usdFxGain).toLocaleString();
+  el('fx-usd-fxgain').className = 'fx-val '+(usdFxGain>=0?'pos':'neg');
+}
+if(el('fx-usd-fxpct')) {
+  el('fx-usd-fxpct').textContent = (usdFxPct>=0?'+':'')+usdFxPct.toFixed(1)+'%';
+  el('fx-usd-fxpct').className = 'fx-val '+(usdFxPct>=0?'pos':'neg');
+}
+// Second USD block
+if(el('fx-usd-invested2')) el('fx-usd-invested2').textContent = '$'+usdInvested.toLocaleString('en',{minimumFractionDigits:2});
+if(el('fx-usd-withdrawn2')) el('fx-usd-withdrawn2').textContent = '$'+Math.abs(usdWithdrawn).toLocaleString('en',{minimumFractionDigits:2});
+if(el('fx-usd-balance2')) el('fx-usd-balance2').textContent = '$'+usdBalance.toLocaleString('en',{minimumFractionDigits:2});
+if(el('fx-usd-orig-rate2')) el('fx-usd-orig-rate2').textContent = usdOrigRate.toFixed(4);
+if(el('fx-usd-rate2')) el('fx-usd-rate2').textContent = EXCH_RATE.toFixed(3);
+if(el('fx-usd-mktval2')) el('fx-usd-mktval2').textContent = Math.round(usdMktval).toLocaleString();
+if(el('fx-usd-fxgain2')) {
+  el('fx-usd-fxgain2').textContent = (usdFxGain>=0?'+':'')+Math.round(usdFxGain).toLocaleString();
+  el('fx-usd-fxgain2').className = 'fx-val '+(usdFxGain>=0?'pos':'neg');
+}
+if(el('fx-usd-fxpct2')) {
+  el('fx-usd-fxpct2').textContent = (usdFxPct>=0?'+':'')+usdFxPct.toFixed(1)+'%';
+  el('fx-usd-fxpct2').className = 'fx-val '+(usdFxPct>=0?'pos':'neg');
+}
+// JPY cash section
+const jpyInvested = portfolio.jpy_cash?.total_invested_jpy || 0;
+const jpyWithdrawn = portfolio.jpy_cash?.withdrawn_jpy || 0;
+const jpyBalance = portfolio.jpy_cash?.cash_jpy || 0;
+const jpyOrigRate = portfolio.jpy_cash?.original_rate || 0.204;
+const jpyFxGain = jpyCashJpy * JPY_RATE - jpyCashCost;
+const jpyFxPct = jpyCashCost > 0 ? (jpyFxGain / jpyCashCost * 100) : 0;
+if(el('fx-jpy-invested')) el('fx-jpy-invested').textContent = '¥'+jpyInvested.toLocaleString();
+if(el('fx-jpy-withdrawn')) el('fx-jpy-withdrawn').textContent = '¥'+Math.abs(jpyWithdrawn).toLocaleString();
+if(el('fx-jpy-balance')) el('fx-jpy-balance').textContent = '¥'+jpyBalance.toLocaleString();
+if(el('fx-jpy-orig-rate')) el('fx-jpy-orig-rate').textContent = jpyOrigRate.toFixed(4);
+if(el('fx-jpy-rate')) el('fx-jpy-rate').textContent = JPY_RATE.toFixed(4);
+if(el('fx-jpy-mktval')) el('fx-jpy-mktval').textContent = Math.round(jpyMktval).toLocaleString();
+if(el('fx-jpy-fxgain')) {
+  el('fx-jpy-fxgain').textContent = (jpyFxGain>=0?'+':'')+Math.round(jpyFxGain).toLocaleString();
+  el('fx-jpy-fxgain').className = 'fx-val '+(jpyFxGain>=0?'pos':'neg');
+}
+if(el('fx-jpy-fxpct')) {
+  el('fx-jpy-fxpct').textContent = (jpyFxPct>=0?'+':'')+jpyFxPct.toFixed(1)+'%';
+  el('fx-jpy-fxpct').className = 'fx-val '+(jpyFxPct>=0?'pos':'neg');
+}
+if(el('fx-jpy-invested2')) el('fx-jpy-invested2').textContent = '¥'+jpyInvested.toLocaleString();
+if(el('fx-jpy-withdrawn2')) el('fx-jpy-withdrawn2').textContent = '¥'+Math.abs(jpyWithdrawn).toLocaleString();
+if(el('fx-jpy-balance2')) el('fx-jpy-balance2').textContent = '¥'+jpyBalance.toLocaleString();
+if(el('fx-jpy-orig-rate2')) el('fx-jpy-orig-rate2').textContent = jpyOrigRate.toFixed(4);
+if(el('fx-jpy-rate2')) el('fx-jpy-rate2').textContent = JPY_RATE.toFixed(4);
+if(el('fx-jpy-mktval2')) el('fx-jpy-mktval2').textContent = Math.round(jpyMktval).toLocaleString();
+if(el('fx-jpy-fxgain2')) {
+  el('fx-jpy-fxgain2').textContent = (jpyFxGain>=0?'+':'')+Math.round(jpyFxGain).toLocaleString();
+  el('fx-jpy-fxgain2').className = 'fx-val '+(jpyFxGain>=0?'pos':'neg');
+}
+if(el('fx-jpy-fxpct2')) {
+  el('fx-jpy-fxpct2').textContent = (jpyFxPct>=0?'+':'')+jpyFxPct.toFixed(1)+'%';
+  el('fx-jpy-fxpct2').className = 'fx-val '+(jpyFxPct>=0?'pos':'neg');
+}
+// ===== END FX DISPLAY =====
+
 const totalCostAll = twCost + usCostTwdAtBase + usdCashCost + jpyCashCost;
 const totalMktvalAll = twMktval + usMktval + usdMktval + jpyMktval;
 const totalGainAll = totalMktvalAll - totalCostAll;
@@ -624,7 +703,7 @@ new Chart(allocCtx, {
     responsive:true,
     animation:{duration:1200},
     plugins:{legend:{position:'right'},tooltip:{callbacks:{
-      label:ctx=>ctx.label+': '+Math.round(ctx.raw/1000).toLocaleString()+'K ('+Math.round(ctx.raw/6168079*100)+'%)'
+      label:ctx=>ctx.label+': '+Math.round(ctx.raw/1000).toLocaleString()+'K ('+Math.round(ctx.raw/totalMktvalAll*100)+'%)'
     }},
     }
   }
@@ -939,30 +1018,38 @@ document.getElementById('div-table').innerHTML = dividends.map((d,i)=>{
     document.getElementById('portfolio-yield-cur-val').textContent = sum.yieldCur || '0%';
     document.getElementById('portfolio-mktval-val').textContent = '市值 ' + Math.round((sum.stockMktval||0)/10000) + '萬';
 
-    // TW 已入帳
+    // TW 已入帳 – 依入帳日期 (payout) 新到舊排序
     if(d.tw && d.tw.confirmed && d.tw.confirmed.rows){
-      document.getElementById('div-confirmed-table').innerHTML = d.tw.confirmed.rows.map(r=>
+      const sortedTWConfirmed = [...d.tw.confirmed.rows]
+        .sort((a, b) => new Date(b.payout).getTime() - new Date(a.payout).getTime());
+      document.getElementById('div-confirmed-table').innerHTML = sortedTWConfirmed.map(r=>
         '<tr><td>'+r.code+'</td><td>'+r.cash+'</td><td>'+r.shares.toLocaleString()+'</td><td>'+r.amount.toLocaleString()+'</td><td>'+r.ex_date+'</td><td>'+r.payout+'</td></tr>'
       ).join('');
     }
-    // TW 待發放
+    // TW 待發放 – 依入帳日期 (payout) 遠到近排序
     if(d.tw && d.tw.pending && d.tw.pending.rows){
-      document.getElementById('div-pending-table').innerHTML = d.tw.pending.rows.map(r=>
+      const sortedTWPending = [...d.tw.pending.rows]
+        .sort((a, b) => {
+          const diff = new Date(a.payout).getTime() - new Date(b.payout).getTime();
+          if (diff !== 0) return diff;
+          return b.amount - a.amount; // 若入帳日相同，金額較大者排前
+        });
+      document.getElementById('div-pending-table').innerHTML = sortedTWPending.map(r=>
         '<tr><td>'+r.code+'</td><td>'+r.cash+'</td><td>'+r.shares.toLocaleString()+'</td><td>'+r.amount.toLocaleString()+'</td><td>'+r.ex_date+'</td><td>'+r.payout+'</td></tr>'
       ).join('');
     }
-    // US 已入帳
-    if(d.us && d.us.confirmed && d.us.confirmed.rows){
-      document.getElementById('us-div-confirmed-table').innerHTML = d.us.confirmed.rows.map(r=>
-        '<tr><td>'+r.code+'</td><td>'+r.date+'</td><td>$'+r.per_share+'</td><td>'+r.shares+'</td><td>$'+r.total.toFixed(2)+'</td></tr>'
-      ).join('');
-    }
-    // US 待發放
-    if(d.us && d.us.pending && d.us.pending.rows){
-      document.getElementById('us-div-pending-table').innerHTML = d.us.pending.rows.map(r=>
-        '<tr><td>'+r.code+'</td><td>'+r.date+'</td><td>$'+r.per_share+'</td><td>'+r.shares+'</td><td>$'+r.total.toFixed(2)+'</td></tr>'
-      ).join('');
-    }
+    // US 已入帳 – 依入帳日期 (date) 新到舊排序
+    const sortedUsConfirmed = [...d.us.confirmed.rows]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    document.getElementById('us-div-confirmed-table').innerHTML = sortedUsConfirmed.map(r=>
+      '<tr><td>'+r.code+'</td><td>'+r.date+'</td><td>$'+r.per_share+'</td><td>'+r.shares+'</td><td>$'+r.total.toFixed(2)+'</td></tr>'
+    ).join('');
+    // US 待發放 – 依入帳日期 (date) 近到遠排序
+    const sortedUsPending = [...d.us.pending.rows]
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    document.getElementById('us-div-pending-table').innerHTML = sortedUsPending.map(r=>
+      '<tr><td>'+r.code+'</td><td>'+r.date+'</td><td>$'+r.per_share+'</td><td>'+r.shares+'</td><td>$'+r.total.toFixed(2)+'</td></tr>'
+    ).join('');
     // 更新配息來源圖表
     updateDivSrcChart(d);
     updateUsDivSrcChart(d);

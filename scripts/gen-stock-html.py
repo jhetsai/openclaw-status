@@ -95,32 +95,50 @@ us_prices = us_data.get("prices", {})
 with open(US_STOCKS) as f:
     us_stocks_data = json.load(f)
 
-# 讀取美股配息歷史（div_history.json）
-# 2020-2025: 原始資料為 TWD
-# 2026: 原始資料為 USD（用戶提供，已扣30%預扣稅）
-us_div_2026 = 0
-us_div_2026_twd = 0  # 2026 美股實收（轉換為 TWD）
-div_hist_path = os.path.join(WORKSPACE, 'us_stock/div_history.json')
-if os.path.exists(div_hist_path):
-    with open(div_hist_path) as f:
-        div_hist = json.load(f)
-    for sym_data in div_hist.get('by_stock', {}).values():
-        v = sym_data.get('years', {}).get('2026', 0)
-        if isinstance(v, dict):
-            amt = v.get('amt', 0)
-            currency = v.get('currency', 'TWD')
-        else:
-            amt = v
-            currency = 'TWD'
-        
-        if currency == 'USD':
-            us_div_2026 += amt  # 保持 USD 原值
-            us_div_2026_twd += amt * 31.569  # 轉換為 TWD
-        else:
-            us_div_2026_twd += amt
+# Load exchange rate for USD->TWD conversion
+_EXCH_FILE = os.path.join(WORKSPACE, 'exchange_rate.json')
+_USD_TWD = 31.569
+if os.path.exists(_EXCH_FILE):
+    try:
+        with open(_EXCH_FILE) as f:
+            _d = json.load(f)
+            _USD_TWD = float(_d.get('USD_TWD', 31.569))
+    except:
+        pass
 
-# 動態抓配息
-div_confirmed, div_pending, div_confirmed_rows, div_pending_rows = fetch_tw_dividends(tw_stocks)
+# === Read dividend data from R2 (not from Yahoo dynamic scraping) ===
+# Download latest dividend_data.json from R2
+try:
+    import boto3 as _boto3
+    _keys = {}
+    with open(os.path.expanduser('~/.api_keys')) as _f:
+        for _l in _f:
+            if '=' in _l and not _l.startswith('#'):
+                _kv = _l.strip().split('=', 1)
+                _keys[_kv[0]] = _kv[1]
+    _s3 = _boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+        aws_access_key_id=_keys.get('R2_ACCESS_KEY'),
+        aws_secret_access_key=_keys.get('R2_SECRET_KEY'))
+    _s3.download_file('shared-files', 'assets/dividend_data.json', '/tmp/gen_dj.json')
+    with open('/tmp/gen_dj.json') as _f:
+        _dj = json.load(_f)
+    _tw_conf_rows = _dj['tw']['confirmed']['rows']
+    _tw_pend_rows = _dj['tw']['pending']['rows']
+    div_confirmed = sum(r['amount'] for r in _tw_conf_rows)
+    div_pending = sum(r['amount'] for r in _tw_pend_rows)
+    div_confirmed_rows = _tw_conf_rows
+    div_pending_rows = _tw_pend_rows
+except Exception as _e:
+    print(f"Warning: could not fetch dividend_data.json from R2: {_e}")
+    div_confirmed, div_pending = 0, 0
+    div_confirmed_rows, div_pending_rows = [], []
+# === Read US dividend from R2 (after USD_TWD is defined) ===
+us_conf_rows = _dj['us']['confirmed']['rows']
+us_pend_rows = _dj['us']['pending']['rows']
+us_confirmed_usd = sum(r['total'] for r in us_conf_rows)
+us_pending_usd = sum(r.get('total', r.get('net', 0)) for r in us_pend_rows)
+us_div_2026_usd = us_confirmed_usd + us_pending_usd
+us_div_2026_twd = round(us_div_2026_usd * _USD_TWD)
 
 # 配息明細HTML（預設隱藏）
 CONFIRMED_DETAIL_HTML = ""
@@ -143,6 +161,35 @@ if os.path.exists(TWSE_DATA_FILE):
         d for d in twse_data.get("upcoming_div", [])
         if d.get("Date", "") >= today_roc
     ]
+    # === Fallback: 補上 TWSE 沒公告但 dividend_data.json 有的未來除息 ===
+    # 例：TWSE 還沒放 00713 Q1，但 Yahoo (dividend_data.json) 已經有資料
+    existing_codes = {d.get("Code") for d in upcoming_div}
+    if _tw_pend_rows:
+        tw_stocks_by_code = {s['symbol']: s.get('name', '') for s in tw_stocks}
+        today_ad = datetime.now().strftime('%Y/%m/%d')
+        for r in _tw_pend_rows:
+            code = r.get('code')
+            ex_date = r.get('ex_date', '')  # YYYY/MM/DD
+            if not ex_date or ex_date < today_ad:
+                continue
+            if code in existing_codes:
+                continue
+            # Convert YYYY/MM/DD → ROC YYYMMDD
+            try:
+                y, m, d = ex_date.split('/')
+                roc_date = f"{int(y)-1911:03d}{int(m):02d}{int(d):02d}"
+            except Exception:
+                continue
+            cash = r.get('cash', '')
+            upcoming_div.append({
+                'Date': roc_date,
+                'Code': code,
+                'Name': tw_stocks_by_code.get(code, code),
+                'CashDividend': str(cash) if cash else '-'
+            })
+            existing_codes.add(code)
+            print(f"  [fallback] 補上 {code} {ex_date} (TWSE 缺，從 dividend_data.json 補)")
+        upcoming_div.sort(key=lambda x: x.get('Date', ''))
     if upcoming_div:
         # Load manual dividend overrides
         manual_div_file = os.path.join(WORKSPACE, "taiwan_stock/manual_dividend.json")
@@ -293,12 +340,13 @@ for s in tw_stocks:
     )
 
 # ─── US ───
-us_info = [("AAPL","蘋果",105,145.02),("MSFT","微軟",55,263.51),("BND","債ETF",116,73.2156)]
+USD_TWD_COST = 28.4481  # 歷史匯率（美股成本計算用）
 us_cost_twd = 0; us_mv_twd = 0; us_day_twd = 0; us_cost_twd_285 = 0; us_mv_usd = 0
 us_mob = ""; us_desk = ""
 
 SYMBOL_ALIAS = {"^FNMR": "FNMR", "WTX&": "WTX", "WTXP&": "WTXP", "IX0126.TW": "TX"}
-for sym, name, shares, cost in us_info:
+for s in us_stocks_data:
+    sym = s["symbol"]; name = s["name"]; shares = s["shares"]; cost = s["cost"]
     alias = SYMBOL_ALIAS.get(sym, sym.lstrip('^'))
     price = us_prices.get(sym, us_prices.get(alias, us_prices.get(sym.split('.')[0], 0)))
     prev = us_data.get('prev', {}).get(sym) or next((s['prev'] for s in us_stocks_data if s['symbol'] == sym), price)
@@ -330,9 +378,9 @@ for sym, name, shares, cost in us_info:
         f"<td style='color:{gcolor};font-weight:bold'>{gs}{gain_twd:,.0f}</td>"
         f"</tr>"
     )
-    us_cost_twd += cost_tot_usd * USD_TWD
+    us_cost_twd += cost_tot_usd * USD_TWD_COST
     us_mv_twd += mv_usd * USD_TWD
-    us_cost_twd_285 += cost_tot_usd * FX_COST_RATE
+    us_cost_twd_285 += cost_tot_usd * USD_TWD_COST
     us_mv_usd += mv_usd
     us_day_twd += day_twd
 
@@ -392,7 +440,7 @@ for sym, name, shares, cost in ref_info:
 total_mv = tw_total_mv + us_mv_twd
 total_cost = tw_total_cost + us_cost_twd
 total_gain = total_mv - total_cost
-us_fx_gain = (USD_TWD - FX_COST_RATE) * us_mv_usd
+us_fx_gain = (USD_TWD - USD_TWD_COST) * us_mv_usd
 total_with_fx = total_gain + us_fx_gain
 total_pct = total_gain / total_cost * 100
 total_day = tw_day + us_day_twd
@@ -550,7 +598,7 @@ HTML = f"""<!DOCTYPE html>
 <tr><td>台股待發放</td><td style="color:#FF9800;font-weight:bold">+{div_pending:,.0f} 元</td><td>已除息尚未入帳（Yahoo動態）</td></tr>
 <tr><td>美股實收</td><td style="color:#4CAF50;font-weight:bold">+TWD {us_div_2026_twd:,.0f}</td><td>已扣30%預扣稅｜資料來源：用戶提供</td></tr>
 <tr style="background:#f5f5f5;font-weight:bold"><td>合計實收</td><td style="color:#2e7d32">≈ {div_confirmed + div_pending + us_div_2026_twd:,.0f} 元</td><td>台股+美股</td></tr>
-<tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold">{total_with_fx_sign}{total_with_fx:,.0f} 元</td><td>市值增值+美股匯差（成本匯率 28.5）</td></tr>
+<tr style="background:#fff9e6"><td>總累計</td><td style="color:#FFD700;font-weight:bold">{total_with_fx_sign}{total_with_fx:,.0f} 元</td><td>市值增值+美股匯差（成本匯率 28.4481）</td></tr>
 </table>
 {CONFIRMED_DETAIL_BLOCK}
 {PENDING_DETAIL_BLOCK}

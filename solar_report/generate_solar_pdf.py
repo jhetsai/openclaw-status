@@ -25,8 +25,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # 使用者系統參數
 # ============================================================
 USER_SYSTEM = {
-    'panel_watt': 200,           # 面板瓦數 (W)
-    'panel_count': 1,             # 面板數量
+    'panel_watt': 200,           # 面板瓦數 (W) - 2026/05/17 新增100W
+    'panel_count': 1,             # 面板數量（200W + 100W）
     'battery_model': 'NP40-12B', # 湯淺電池
     'battery_count': 3,           # 電池數量（並聯）
     'battery_voltage': 12,       # 每顆電壓 (V)
@@ -79,7 +79,7 @@ def create_system_architecture():
                                      boxstyle="round,pad=0.05",
                                      facecolor='#1E3A5F', edgecolor='#0D1F33', lw=2)
     ax.add_patch(panel)
-    ax.text(4.25, 7.25, '🔋 太陽能板\n200W', fontsize=11, ha='center', va='center', color='white')
+    ax.text(4.25, 7.25, '🔋 太陽能板\n300W\n(200W+100W)', fontsize=10, ha='center', va='center', color='white')
     ax.text(4.25, 6.2, 'Solar Panel', fontsize=9, ha='center', color='white')
 
     # 箭頭：太陽 → 太陽能板
@@ -349,7 +349,7 @@ def create_annual_analysis():
     
     # 月別發電量
     months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-    monthly_gen = [280, 320, 380, 420, 480, 520, 560, 540, 460, 400, 340, 290]  # Wh/day 平均
+    monthly_gen = [280, 320, 380, 420, 480, 520, 560, 540, 460, 400, 340, 290]  # Wh/day 平均 (200W)
     
     # 月別電費節省
     monthly_savings = [g * USER_SYSTEM['electricity_rate'] / 1000 for g in monthly_gen]
@@ -408,7 +408,7 @@ def create_efficiency_flow():
         {'name': '面板發電\nPanel Output', 'value': '200W', 'y': 9, 'color': '#FF9800'},
         {'name': '線材損耗\nWire Loss (2%)', 'value': '196W', 'y': 7.5, 'color': '#F44336'},
         {'name': 'MPPT 轉換\nMPPT Conversion (95%)', 'value': '186W', 'y': 6, 'color': '#2196F3'},
-        {'name': '充電損耗\nCharging Loss (10%)', 'value': '167W', 'y': 4.5, 'color': '#9C27B0'},
+        {'name': '充電損耗\nCharging Loss (10%)', 'value': '167Wh', 'y': 4.5, 'color': '#9C27B0'},
         {'name': '實際可用\nUsable Energy', 'value': '167Wh', 'y': 3, 'color': '#4CAF50'},
     ]
     
@@ -429,7 +429,12 @@ def create_efficiency_flow():
                        arrowprops=dict(arrowstyle='->', color='gray', lw=2))
             
             # 損耗標籤
-            loss = float(steps[i]['value'].replace('W','')) - float(steps[i+1]['value'].replace('W','').replace('Wh',''))
+            import re
+            def parse_val(s):
+                return float(re.sub(r'[^0-9.]', '', s))
+            current_val = parse_val(steps[i]['value'])
+            next_val = parse_val(steps[i+1]['value'])
+            loss = current_val - next_val
             if loss > 0:
                 ax.text(6.5, (step['y'] + steps[i+1]['y'])/2 + 0.5,
                         f'-{loss}W', fontsize=9, color='#F44336', fontweight='bold')

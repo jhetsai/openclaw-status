@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0f1629; color: #e8ecf5; font-family: 'Segoe UI', 'PingFang TC', system-ui, sans-serif; padding: 15px 20px; }
+.wrapper { background: linear-gradient(145deg, #0f1629, #162040); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.header { text-align: center; padding-bottom: 12px; border-bottom: 1px solid #1e3a5f; margin-bottom: 12px; }
+.header h1 { font-size: 1.15rem; background: linear-gradient(135deg, #00f0ff, #0080ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 1px; }
+.header .sub { color: #7a8ba8; font-size: 0.68rem; margin-top: 4px; }
+.kpi-row { display: flex; gap: 8px; justify-content: center; margin: 12px 0; flex-wrap: wrap; }
+.kpi { background: #1a2d4a; border-radius: 10px; padding: 8px 14px; text-align: center; border: 1px solid #2a4a6a; min-width: 110px; }
+.kpi .label { font-size: 0.58rem; color: #7a8ba8; }
+.kpi .value { font-size: 1rem; font-weight: 700; color: #4dff91; }
+.kpi .sub { font-size: 0.55rem; color: #7a8ba8; }
+.kpi.orange .value { color: #ffc940; }
+.kpi.blue .value { color: #00d8ff; }
+.pos { color: #4dff91; } .neg { color: #ff5d7d; }
+table { width: 100%; border-collapse: collapse; font-size: 0.6rem; margin-bottom: 10px; }
+th { background: #1a2d4a; color: #00d8ff; padding: 5px 3px; text-align: center; font-weight: 600; }
+td { padding: 3px 3px; text-align: center; border-bottom: 1px solid #111d2e; }
+.ln { text-align: left; font-weight: 600; color: #a8c4e8; }
+.tot td { color: #00f0ff; border-top: 2px solid #00d8ff; font-weight: 700; background: #162844; }
+.ytd { color: #ffd700; font-weight: 700; }
+.section { margin-bottom: 12px; }
+.section-title { color: #00d8ff; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; border-left: 3px solid #00d8ff; padding-left: 6px; }
+.div-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.div-card { background: #1a2d4a; border-radius: 6px; padding: 6px 10px; border: 1px solid #2a4a6a; }
+.div-card .top { font-size: 0.65rem; color: #7a8ba8; }
+.div-card .val { font-size: 0.85rem; font-weight: 700; }
+.pending { border-color: #3d2a1a; }
+.pending .val { color: #ffc940; }
+.footer { text-align: center; color: #4a5f7a; font-size: 0.55rem; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="header">
+<h1>2026 投資總月報</h1>
+<div class="sub">基準：2025/12/31 收盤價｜截至 2026/05/25｜USD/TWD 31.327</div>
+</div>
+
+<div class="kpi-row">
+<div class="kpi"><div class="label">帳上增量</div><div class="value pos">+957,502</div><div class="sub">+18.8%</div></div>
+<div class="kpi orange"><div class="label">配息已入帳</div><div class="value">+65,212</div><div class="sub">台+美股</div></div>
+<div class="kpi orange"><div class="label">配息待入帳</div><div class="value">+42,813</div><div class="sub">6月入帳</div></div>
+<div class="kpi blue"><div class="label">增值+配息總計</div><div class="value">+1,065,527</div><div class="sub">今年度</div></div>
+</div>
+
+<div class="section">
+<div class="section-title">📈 各月帳上增量（當月 vs 上月底）</div>
+<table>
+<thead><tr><th>股票</th><th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th><th>今年度</th></tr></thead>
+<tbody>
+<tr><td class="ln">0056</td><td class="pos">+5.1K</td><td class="pos">+16.3K</td><td class="neg">-19.0K</td><td class="pos">+22.6K</td><td class="pos">+44.7K</td><td class="pos ytd">+69.7K</td></tr>
+<tr><td class="ln">00692</td><td class="pos">+65.5K</td><td class="pos">+71.5K</td><td class="neg">-73.5K</td><td class="pos">+153.6K</td><td class="pos">+85.6K</td><td class="pos ytd">+302.7K</td></tr>
+<tr><td class="ln">00712</td><td class="pos">+16.5K</td><td class="neg">-14.2K</td><td class="neg">-19.4K</td><td class="pos">+15.4K</td><td class="neg">-9.0K</td><td class="neg ytd">-10.7K</td></tr>
+<tr><td class="ln">00713</td><td class="pos">+3.9K</td><td class="pos">+14.0K</td><td class="neg">-17.3K</td><td class="pos">+11.4K</td><td class="pos">+16.6K</td><td class="pos ytd">+28.5K</td></tr>
+<tr><td class="ln">00717</td><td class="pos">+0.9K</td><td class="neg">-0.2K</td><td class="neg">-1.9K</td><td class="pos">+1.3K</td><td class="neg">-0.5K</td><td class="neg ytd">-0.5K</td></tr>
+<tr><td class="ln">00878</td><td class="pos">+31.4K</td><td class="pos">+26.5K</td><td class="neg">-55.0K</td><td class="pos">+102.0K</td><td class="pos">+116.6K</td><td class="pos ytd">+221.4K</td></tr>
+<tr><td class="ln">00891</td><td class="pos">+63.7K</td><td class="pos">+32.9K</td><td class="neg">-38.9K</td><td class="pos">+140.0K</td><td class="pos">+74.5K</td><td class="pos ytd">+272.3K</td></tr>
+<tr><td class="ln">00940</td><td class="pos">+4.0K</td><td class="pos">+2.8K</td><td class="neg">-5.6K</td><td class="pos">+8.6K</td><td class="pos">+12.5K</td><td class="pos ytd">+22.2K</td></tr>
+<tr><td class="ln">009802</td><td class="pos">+6.1K</td><td class="pos">+7.9K</td><td class="neg">-10.0K</td><td class="pos">+20.8K</td><td class="pos">+20.6K</td><td class="pos ytd">+45.5K</td></tr>
+<tr><td class="ln">1101</td><td class="pos">+17.6K</td><td class="pos">0</td><td class="neg">-18.7K</td><td class="pos">+8.2K</td><td class="neg">-1.1K</td><td class="pos ytd">+6.0K</td></tr>
+<tr><td class="ln">2886</td><td class="neg">-12.8K</td><td class="pos">+18.7K</td><td class="neg">-22.4K</td><td class="pos">+6.9K</td><td class="pos">+4.3K</td><td class="neg ytd">-5.3K</td></tr>
+<tr><td class="ln">AAPL</td><td class="neg">-40.7K</td><td class="pos">+15.5K</td><td class="neg">-34.2K</td><td class="pos">+57.8K</td><td class="pos">+123.3K</td><td class="pos ytd">+121.6K</td></tr>
+<tr><td class="ln">MSFT</td><td class="neg">-91.9K</td><td class="neg">-64.7K</td><td class="neg">-38.9K</td><td class="pos">+64.8K</td><td class="pos">+18.6K</td><td class="neg ytd">-112.1K</td></tr>
+<tr><td class="ln">BND</td><td class="pos">+0.6K</td><td class="pos">+3.4K</td><td class="neg">-5.6K</td><td class="neg">-0.5K</td><td class="neg">-1.8K</td><td class="neg ytd">-3.9K</td></tr>
+<tr class="tot"><td class="ln">月度合計</td><td class="pos">+69.8K</td><td class="pos">+130.3K</td><td class="neg">-360.3K</td><td class="pos">+613.0K</td><td class="pos">+504.8K</td><td class="pos ytd">+957.5K</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<div class="section-title">💰 2026配息（已入帳+待入帳）</div>
+<div class="div-row">
+<div class="div-card"><div class="top">台股已入帳</div><div class="val pos">+60,471</div></div>
+<div class="div-card"><div class="top">美股實收(TWD)</div><div class="val pos">+4,741</div></div>
+<div class="div-card pending"><div class="top">台股待入(6月)</div><div class="val">+41,715</div></div>
+<div class="div-card pending"><div class="top">美股待入(6月)</div><div class="val">+1,098</div></div>
+<div class="div-card"><div class="top">合計</div><div class="val" style="color:#ffd700">+108,025</div></div>
+</div>
+</div>
+
+<div class="footer">📊 持股總覽｜蝦助出品｜2026/05/25</div>
+</div>
+</body>
+</html>

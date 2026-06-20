@@ -1,0 +1,549 @@
+#!/usr/bin/env python3
+"""
+台股盤勢分析腳本 - 兩階段發送
+Phase 1: 抓數據 → 立即發送文字報告
+Phase 2: AI 盤勢解讀 → 發送 PDF 報告（Markdown 自動轉 HTML）
+"""
+import psycopg2, urllib.request, json, subprocess, sys, os, re
+from datetime import datetime
+
+PG = {
+    'host': '127.0.0.1', 'port': 5432,
+    'dbname': 'openclaw', 'user': 'jhe',
+    'password': 'openclaw_secure_pass_2026',
+}
+TOKEN   = "8793435853:AAHF2snG1sYEpno-O0uvvRyPL52cqdxER8A"
+CHAT_ID = "1181571031"
+PDF_DIR = "/home/jhe/.openclaw/workspace/taiwan_stock"
+
+def send_tg(msg):
+    url = "https://api.telegram.org/bot" + TOKEN + "/sendMessage"
+    data = {'chat_id': CHAT_ID, 'text': msg, 'parse_mode': 'Markdown', 'disable_web_page_preview': True}
+    req = urllib.request.Request(url, data=json.dumps(data).encode(),
+                                  headers={'Content-Type': 'application/json'})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            print("TG OK: " + str(r.status))
+    except Exception as e:
+        print("TG失敗: " + str(e))
+
+def send_pdf(pdf_path, caption=""):
+    """發送 PDF 到 Telegram"""
+    caption_arg = '-F "caption=' + caption + '"' if caption else ''
+    cmd = 'curl -s -X POST https://api.telegram.org/bot' + TOKEN + '/sendDocument ' + caption_arg + ' -F "chat_id=' + CHAT_ID + '" -F "document=@' + pdf_path + '"'
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
+    try:
+        resp = json.loads(result.stdout)
+        print("TG PDF OK" if resp.get('ok') else "TG PDF error: " + str(resp))
+    except:
+        print("TG PDF response: " + result.stdout[:200])
+
+def md_to_html(text):
+    """將 Markdown 轉換為 HTML（完整版）"""
+    html_lines = []
+    
+    lines = text.split('\n')
+    in_table = False
+    table_buf = []
+    
+    for line in lines:
+        line = line.rstrip()
+        
+        # ===== 表格處理 =====
+        if line.strip().startswith('|'):
+            # 檢查是否為分隔行
+            if re.match(r'^\|[\s\-:|]+\|$', line.strip()):
+                continue  # 跳過分隔行
+            table_buf.append(line)
+            in_table = True
+            continue
+        else:
+            if in_table and table_buf:
+                # 轉換表格
+                headers = [h.strip() for h in table_buf[0].strip('|').split('|')]
+                data_rows = []
+                for row in table_buf[2 if len(table_buf) > 2 and re.match(r'^\|[\s\-:|]+\|$', table_buf[1].strip()) else 1:]:
+                    cells = [c.strip() for c in row.strip('|').split('|')]
+                    data_rows.append('<tr>' + ''.join('<td>' + c + '</td>' for c in cells) + '</tr>')
+                html_lines.append('<table class="md-table"><thead><tr>' + ''.join('<th>' + h + '</th>' for h in headers) + '</tr></thead><tbody>' + ''.join(data_rows) + '</tbody></table>')
+                table_buf = []
+                in_table = False
+            elif line.strip() == '':
+                continue
+        
+        # ===== 標題 =====
+        m = re.match(r'^(#{1,4})\s+(.+)$', line)
+        if m:
+            level = len(m.group(1))
+            html_lines.append('<h' + str(level) + '>' + m.group(2) + '</h' + str(level) + '>')
+            continue
+        
+        # ===== 分隔線 =====
+        if re.match(r'^[-*_]{3,}$', line.strip()):
+            html_lines.append('<hr>')
+            continue
+        
+        # ===== 清單 =====
+        m = re.match(r'^[\-\*]\s+(.+)$', line)
+        if m:
+            html_lines.append('<li>' + m.group(1) + '</li>')
+            continue
+        m = re.match(r'^\d+\.\s+(.+)$', line)
+        if m:
+            html_lines.append('<li>' + m.group(1) + '</li>')
+            continue
+        
+        # ===== 粗體/斜體 =====
+        processed = line
+        processed = re.sub(r'\*\*\*(.+?)\*\*\*', r'<strong><em>\1</em></strong>', processed)
+        processed = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', processed)
+        processed = re.sub(r'\*(.+?)\*', r'<em>\1</em>', processed)
+        processed = re.sub(r'`([^`]+)`', r'<code>\1</code>', processed)
+        
+        if processed.strip():
+            html_lines.append('<p>' + processed + '</p>')
+    
+    # 合併連續的 <li> 為 <ul>
+    result = '\n'.join(html_lines)
+    result = re.sub(r'(<li>.*?</li>\n?)+', lambda m: '<ul>' + m.group(0) + '</ul>', result)
+    return result
+
+def get_report():
+    conn = psycopg2.connect(**PG)
+    cur = conn.cursor()
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    cur.execute("""
+        SELECT symbol, name, price, chg_pct, volume
+        FROM stock_volume_snapshots
+        WHERE snapshot_time::date = %s
+        AND snapshot_time = (SELECT MAX(snapshot_time) FROM stock_volume_snapshots WHERE snapshot_time::date = %s)
+        ORDER BY rank
+    """, (today, today))
+    latest = {r[0]: r for r in cur.fetchall()}
+
+    cur.execute("""
+        SELECT symbol, name, price, chg_pct, volume
+        FROM stock_volume_snapshots
+        WHERE snapshot_time::date = %s
+        AND snapshot_time = (SELECT MIN(snapshot_time) FROM stock_volume_snapshots WHERE snapshot_time::date = %s)
+        ORDER BY rank
+    """, (today, today))
+    first = {r[0]: r for r in cur.fetchall()}
+
+    cur.execute(""" SELECT COUNT(DISTINCT snapshot_time) FROM stock_volume_snapshots WHERE snapshot_time::date = %s """, (today,))
+    snap_count = cur.fetchone()[0]
+
+    cur.close()
+    conn.close()
+    return {'today': today, 'latest': latest, 'first': first, 'snap_count': snap_count}
+
+def fetch_market_overview():
+    """取得市場概況數據"""
+    overview = {}
+    
+    try:
+        url = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETWII?interval=1d&range=2d"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+            result = data['chart']['result'][0]
+            quote = result['indicators']['quote'][0]
+            closes = [c for c in quote['close'] if c is not None]
+            if len(closes) >= 2:
+                curr, prev = closes[-1], closes[-2]
+                chg = curr - prev
+                chg_pct = (chg / prev) * 100
+                overview['TWII'] = {'price': curr, 'change': chg, 'change_pct': chg_pct}
+    except Exception as e:
+        overview['TWII'] = {'error': str(e)}
+    
+    us_indices = {'DJI': '^DJI', 'IXIC': '^IXIC', 'GSPC': '^GSPC'}
+    for name, symbol in us_indices.items():
+        try:
+            url = "https://query1.finance.yahoo.com/v8/finance/chart/" + symbol + "?interval=1d&range=2d"
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=10) as r:
+                data = json.loads(r.read())
+                result = data['chart']['result'][0]
+                quote = result['indicators']['quote'][0]
+                closes = [c for c in quote['close'] if c is not None]
+                if len(closes) >= 2:
+                    curr, prev = closes[-1], closes[-2]
+                    chg = curr - prev
+                    chg_pct = (chg / prev) * 100
+                    overview[name] = {'price': curr, 'change': chg, 'change_pct': chg_pct}
+        except Exception as e:
+            overview[name] = {'error': str(e)}
+    
+    return overview
+
+def build_minimax_prompt(d, overview):
+    """生成給 MiniMax 的prompt"""
+    from datetime import datetime
+    latest = d['latest']
+    first = d['first']
+    today = d['today']
+    
+    # 直接用 Python 算星期幾，避免 AI 自己推算錯誤
+    weekday_map = {0: '週一', 1: '週二', 2: '週三', 3: '週四', 4: '週五', 5: '週六', 6: '週日'}
+    weekday_str = weekday_map[datetime.strptime(today, '%Y-%m-%d').weekday()]
+
+    overview_lines = []
+    if 'TWII' in overview and 'price' in overview['TWII']:
+        twii = overview['TWII']
+        overview_lines.append("加權指數: " + "{:.2f} {:.2f} ({:.2f}%)".format(twii['price'], twii['change'], twii['change_pct']))
+    for name in ['DJI', 'IXIC', 'GSPC']:
+        if name in overview and 'price' in overview[name]:
+            idx = overview[name]
+            overview_lines.append(name + ": " + "{:.2f} {:.2f} ({:.2f}%)".format(idx['price'], idx['change'], idx['change_pct']))
+
+    signals = {'2330': '台積電', '2303': '聯電', '2454': '聯發科',
+               '2409': '友達', '3481': '群創', '1802': '台玻', '2002': '中鋼'}
+    signal_lines = []
+    for sym, name in signals.items():
+        if sym in latest:
+            _, _, price, chg, vol = latest[sym]
+            arrow = "漲" if chg > 0 else ("跌" if chg < 0 else "平")
+            signal_lines.append(name + "(" + sym + "): " + arrow + " {:.2f}%".format(chg))
+
+    rising = sorted(latest.items(), key=lambda x: x[1][3], reverse=True)[:5]
+    falling = sorted(latest.items(), key=lambda x: x[1][3])[:5]
+
+    surging = []
+    for sym, data in latest.items():
+        if sym in first:
+            vol_now = data[4]
+            vol_first = first[sym][4]
+            chg_vol = (vol_now - vol_first) / vol_first * 100 if vol_first > 0 else 0
+            if chg_vol >= 10:
+                surging.append((sym, data[1], chg_vol, vol_now, data[3]))
+    surging.sort(key=lambda x: x[2], reverse=True)
+    surging_top10 = surging[:10]
+
+    top20 = sorted(latest.items(), key=lambda x: x[1][4], reverse=True)[:20]
+
+    prompt = """你是台股專業分析師。今天是 """ + today + """（""" + weekday_str + """）。請根據以下數據，撰寫一份極為詳細的盤勢深度分析報告。
+
+【市場概況】
+""" + "\n".join(overview_lines) + """
+
+【加權指標股走勢】
+""" + "\n".join(signal_lines) + """
+
+【今日漲幅 Top5】
+""" + "\n".join([n + "(" + s + ") +{:.2f}%".format(c) for s,(m,n,p,c,v) in rising]) + """
+
+【今日跌幅 Top5】
+""" + "\n".join([n + "(" + s + ") {:.2f}%".format(c) for s,(m,n,p,c,v) in falling]) + """
+
+【成交量放大 +10% Top10】
+""" + "\n".join([name + "(" + sym + ") +{:.0f}% (" + str(vol//10000) + "萬張) {:.2f}%".format(vc, cp) for sym, name, vc, vol, cp in surging_top10]) + """
+
+【成交量 Top20】
+""" + "\n".join([n + " {:.2f}% " + str(v//10000) + "萬張" for s,(m,n,p,c,v) in top20]) + """
+
+請用繁體中文，撰寫一份專業、詳盡的盤勢分析報告，結構包含：
+
+1. 【今日市場總覽】宏觀描述：今日盤勢特徵、成交量變化、整體市場情緒
+2. 【加權指數分析】加權指數的漲跌原因、壓力區/支撐區、與美股連動關係
+3. 【強勢族群深度分析】漲幅前5名的股票：各自的上漲原因、所在產業趨勢、背後資金邏輯
+4. 【弱勢族群風險提示】跌幅前5名的股票：下跌原因、是短線獲利了結還是基本面轉弱、是否為系統性風險
+5. 【成交量異常族群】成交量放大+10%以上的股票：這些股票的資金流向、可能是主力進出的訊號
+6. 【族群輪動觀察】哪些族群漲？哪些跌？資金是往價值型還是成長型流動？
+7. 【後市觀察重點】未來1-3天可能影響盤勢的關鍵因素
+8. 【操作建議】針對不同投資風格（短線/波段/長抱）的建議
+
+請盡量詳細、深入分析。不用限制字數，越詳細越好。"""
+    return prompt
+
+def call_minimax_commentary(prompt):
+    """呼叫 MiniMax API 生成盤勢解讀"""
+    import os
+    models_file = os.path.expanduser('/home/jhe/.openclaw/agents/main/agent/models.json')
+    api_key = None
+    if os.path.exists(models_file):
+        try:
+            with open(models_file) as f:
+                d = json.load(f)
+            prov = d.get('providers', {}).get('minimax', {})
+            api_key = prov.get('apiKey')
+        except: pass
+    if not api_key:
+        return None
+
+    body = {
+        # 【2026-06-02 決策】退回 M2.7
+        # 原因：M3 API 連線 (https://api.minimax.io/anthropic/v1/messages)
+        #       對長 prompt + 長回應 (>8K tokens) 會 180s timeout。
+        #       M2.7 踨 OpenRouter free route 穩定且快速。
+        # 未來如果 M3 API 連線問題解決，請改回 MiniMax-M3。
+        "model": "MiniMax-M2.7",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 16000,
+        "temperature": 0.3,
+        "stream": False
+    }
+    data = json.dumps(body).encode()
+    req = urllib.request.Request(
+        "https://api.minimax.io/anthropic/v1/messages",
+        data=data,
+        headers={"Content-Type": "application/json", "x-api-key": api_key, "Authorization": "***" + api_key},
+        method="POST"
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            resp = json.loads(r.read())
+            texts = []
+            for block in resp.get('content', []):
+                if block.get('type') == 'text':
+                    texts.append(block['text'])
+            content = ''.join(texts) if texts else None
+            # 去重複：如果內容裡有重複句，去除
+            if content:
+                content = dedup_repeats(content)
+            return content
+    except Exception as e:
+        print("MiniMax API failed: " + str(e))
+        return None
+
+def dedup_repeats(text):
+    """去除重複的句子（避免 AI 重複死循環）"""
+    import re
+    # 拆成句子（以 。！？ 為界）
+    sentences = re.split(r'([。！？\n])', text)
+    # 重組：標點跟著句子
+    chunks = []
+    i = 0
+    while i < len(sentences):
+        s = sentences[i]
+        if i + 1 < len(sentences):
+            s = s + sentences[i+1]
+            i += 2
+        else:
+            i += 1
+        if s.strip():
+            chunks.append(s)
+    # 去重：連續出現 2 次以上的相同句只留 1 次
+    deduped = []
+    last = ''
+    repeat_count = 0
+    for c in chunks:
+        c_strip = c.strip() if c else ''
+        last_strip = last.strip() if last else ''
+        if c_strip == last_strip and c_strip:
+            repeat_count += 1
+            if repeat_count >= 1:  # 只保留第一次
+                continue
+        else:
+            repeat_count = 0
+        deduped.append(c)
+        last = c
+    return ''.join(deduped)
+
+def format_report(d, overview):
+    """格式化文字報告（Phase 1 用）"""
+    latest = d['latest']
+    today = d['today']
+
+    lines = [
+        "📊 台股盤勢分析  " + today,
+        "共 " + str(d['snap_count']) + " 筆快照",
+        ""
+    ]
+
+    lines.append("【市場概況】")
+    if 'TWII' in overview and 'price' in overview['TWII']:
+        twii = overview['TWII']
+        lines.append("  加權指數: " + "{:.2f} {:.2f} ({:.2f}%)".format(twii['price'], twii['change'], twii['change_pct']))
+    for name in ['DJI', 'IXIC', 'GSPC']:
+        if name in overview and 'price' in overview[name]:
+            idx = overview[name]
+            lines.append("  " + name + ": " + "{:.2f} {:.2f} ({:.2f}%)".format(idx['price'], idx['change'], idx['change_pct']))
+    lines.append("")
+
+    signals = {'2330': '台積電', '2303': '聯電', '2454': '聯發科',
+               '2409': '友達', '3481': '群創', '1802': '台玻', '2002': '中鋼'}
+    marker = []
+    for sym, name in signals.items():
+        if sym in latest:
+            _, _, price, chg, vol = latest[sym]
+            arrow = "📈" if chg > 0 else ("📉" if chg < 0 else "➖")
+            marker.append(arrow + " " + name + "(" + sym + ") " + "{:.2f}% (".format(chg) + str(vol//10000) + "萬張)")
+    lines += ["【加權指標股走勢】"] + ["  " + m for m in marker] if marker else []
+
+    rising = sorted(latest.items(), key=lambda x: x[1][3], reverse=True)[:5]
+    lines += ["", "【今日漲幅 Top5】"]
+    for sym, (_, name, price, chg, vol) in rising:
+        lines.append("  📈 " + name + "(" + sym + ") *" + "{:.2f}%* $ " + str(price) + " (" + str(vol//10000) + "萬張)")
+
+    falling = sorted(latest.items(), key=lambda x: x[1][3])[:5]
+    lines += ["", "【今日跌幅 Top5】"]
+    for sym, (_, name, price, chg, vol) in falling:
+        lines.append("  📉 " + name + "(" + sym + ") *" + "{:.2f}%* $ " + str(price) + " (" + str(vol//10000) + "萬張)")
+
+    surging = []
+    for sym, data in latest.items():
+        if sym in d['first']:
+            vol_now = data[4]
+            vol_first = d['first'][sym][4]
+            chg_vol = (vol_now - vol_first) / vol_first * 100 if vol_first > 0 else 0
+            if chg_vol >= 10:
+                surging.append((sym, data[1], chg_vol, vol_now, data[3]))
+    surging.sort(key=lambda x: x[2], reverse=True)
+    lines += ["", "【成交量放大 +10% Top10】"]
+    for sym, name, vc, vol, cp in surging[:10]:
+        lines.append("  🚀 " + name + "(" + sym + ") *" + "+{:.0f}%* (".format(vc) + str(vol//10000) + "萬張) " + "{:.2f}%".format(cp))
+
+    top20 = sorted(latest.items(), key=lambda x: x[1][4], reverse=True)[:20]
+    lines += ["", "【成交量排行 Top20】"]
+    for i, (sym, (_, name, price, chg, vol)) in enumerate(top20, 1):
+        arrow = "📈" if chg > 0 else ("📉" if chg < 0 else "➖")
+        lines.append("`" + "{:2d}".format(i) + ".` " + arrow + " " + sym + " " + name + " *" + "{:.2f}%* ".format(chg) + str(vol//10000) + "萬張")
+
+    return "\n".join(lines)
+
+def build_html_report(d, overview, commentary):
+    """建立 HTML 報告"""
+    today = d['today']
+    
+    # 市場概況 HTML
+    market_rows = ""
+    if 'TWII' in overview and 'price' in overview['TWII']:
+        twii = overview['TWII']
+        color = '#c0392b' if twii['change'] < 0 else '#27ae60'
+        market_rows += "<tr><th>加權指數</th><td>" + "{:.2f}".format(twii['price']) + "</td><td style='color:" + color + "'>" + "{:+.2f} ({:+.2f}%)".format(twii['change'], twii['change_pct']) + "</td></tr>"
+    for name in ['DJI', 'IXIC', 'GSPC']:
+        if name in overview and 'price' in overview[name]:
+            idx = overview[name]
+            color = '#c0392b' if idx['change'] < 0 else '#27ae60'
+            market_rows += "<tr><th>" + name + "</th><td>" + "{:.2f}".format(idx['price']) + "</td><td style='color:" + color + "'>" + "{:+.2f} ({:+.2f}%)".format(idx['change'], idx['change_pct']) + "</td></tr>"
+    
+    # Markdown → HTML
+    commentary_html = md_to_html(commentary)
+    
+    html = """<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>台股盤勢分析 """ + today + """</title>
+<style>
+  body { font-family: -apple-system, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif; margin: 0; padding: 20px; background: #f0f2f5; }
+  .container { max-width: 900px; margin: 0 auto; background: white; padding: 35px 45px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  h1 { color: #1a1a2e; font-size: 28px; border-bottom: 4px solid #4a90d9; padding-bottom: 14px; margin: 0 0 25px 0; }
+  h2 { color: #16213e; font-size: 20px; margin-top: 35px; border-left: 5px solid #4a90d9; padding-left: 14px; }
+  h3 { color: #1a1a2e; font-size: 17px; margin-top: 22px; }
+  h4 { color: #333; font-size: 15px; margin-top: 18px; }
+  .date { color: #666; font-size: 14px; margin-bottom: 28px; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0 28px 0; font-size: 14px; }
+  th, td { padding: 12px 15px; border: 1px solid #e0e0e0; text-align: left; }
+  th { background: #f0f4ff; color: #333; font-weight: 600; }
+  .md-table th { background: #e8efff; }
+  .md-table tr:nth-child(even) { background: #f9f9f9; }
+  .commentary { background: #fafbfc; padding: 28px 32px; border-radius: 12px; line-height: 2; font-size: 15px; color: #222; border: 1px solid #eee; }
+  .commentary h2 { margin-top: 30px; border-left-color: #e74c3c; }
+  .commentary h3 { margin-top: 24px; }
+  .commentary p { margin: 14px 0; }
+  .commentary li { margin: 8px 0; line-height: 1.8; }
+  .commentary ul { margin: 12px 0; padding-left: 25px; }
+  .commentary code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .commentary hr { border: none; border-top: 1px solid #ddd; margin: 25px 0; }
+  .footer { margin-top: 40px; text-align: center; color: #999; font-size: 12px; border-top: 1px solid #eee; padding-top: 22px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 台股盤勢深度分析報告</h1>
+  <div class="date">報告日期：""" + today + """ | AI 專業分析</div>
+  
+  <h2>📈 市場概況</h2>
+  <table>
+    <tr><th>指數</th><th>現價</th><th>漲跌</th></tr>
+    """ + market_rows + """
+  </table>
+  
+  <h2>📝 AI 盤勢詳細解讀</h2>
+  <div class="commentary">
+    """ + commentary_html + """
+  </div>
+  
+  <div class="footer">
+    <p>本報告由 AI 自動生成 | 數據來源：Yahoo Finance</p>
+  </div>
+</div>
+</body>
+</html>"""
+    return html
+
+def generate_pdf(html_path, pdf_path):
+    """使用 wkhtmltopdf 將 HTML 轉為 PDF"""
+    try:
+        result = subprocess.run(
+            ['wkhtmltopdf', '--enable-local-file-access', '--print-media-type', 
+             '--page-size', 'A4', '--margin-top', '12mm', '--margin-bottom', '15mm',
+             '--minimum-font-size', '13', '--encoding', 'utf-8',
+             '--no-stop-slow-scripts',
+             html_path, pdf_path],
+            capture_output=True, text=True, timeout=90
+        )
+        if result.returncode == 0 and os.path.exists(pdf_path):
+            size = os.path.getsize(pdf_path)
+            print("PDF generated: " + pdf_path + " (" + str(size) + " bytes)")
+            return True
+        else:
+            print("PDF error: " + result.stderr[:300])
+            return False
+    except Exception as e:
+        print("PDF failed: " + str(e))
+        return False
+
+if __name__ == '__main__':
+    print("[" + datetime.now().strftime('%H:%M') + "] 分析盤勢...")
+    d = get_report()
+    if not d['latest']:
+        print("無資料")
+    else:
+        overview = fetch_market_overview()
+        
+        # Phase 1: 發送文字報告
+        report = format_report(d, overview)
+        print("Phase 1: 發送文字報告...")
+        send_tg(report)
+        print("Phase 1 完成")
+
+        # Phase 2: AI 盤勢解讀 → PDF
+        print("Phase 2: 生成 AI 盤勢解讀...")
+        # 優先讀取預寫的 commentary 檔案（跳過 M3 呼叫以避免 timeout）
+        today = d['today']
+        date_str = today.replace('-', '')
+        prewritten = PDF_DIR + "/commentary_" + date_str + ".md"
+        commentary = None
+        if os.path.exists(prewritten):
+            with open(prewritten) as f:
+                commentary = f.read()
+            print("[AI解讀] 讀取預寫檔案 (" + str(len(commentary)) + " 字)")
+        else:
+            prompt = build_minimax_prompt(d, overview)
+            commentary = call_minimax_commentary(prompt)
+
+        if commentary:
+            print("[AI解讀] 已生成 (" + str(len(commentary)) + " 字)")
+            
+            html_path = PDF_DIR + "/market_report_" + date_str + ".html"
+            pdf_path = PDF_DIR + "/market_report_" + date_str + ".pdf"
+            
+            html_content = build_html_report(d, overview, commentary)
+            with open(html_path, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+            print("HTML 已儲存: " + html_path)
+            
+            if generate_pdf(html_path, pdf_path):
+                caption = "📝 台股盤勢深度分析報告 " + today
+                send_pdf(pdf_path, caption)
+            else:
+                print("PDF 失敗")
+            print("Phase 2 完成")
+        else:
+            print("Phase 2: AI 解讀失敗")
+
+        print("分析完成")

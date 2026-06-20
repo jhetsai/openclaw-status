@@ -6,12 +6,15 @@ R2_HTML="$WORKSPACE/openclaw-status/index.html"
 TMP_API="/tmp/status_api.json"
 TS=$(date '+%Y-%m-%d_%H%M%S')
 
-# Load API keys from ~/.api_keys
+# Load API keys from ~/.api_keys and export them
 if [ -f ~/.api_keys ]; then
     set -a
     source ~/.api_keys
     set +a
 fi
+
+# Also source openclaw config for any additional keys
+export OPENROUTER_API_KEY
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Bake 系統狀態頁面..."
 

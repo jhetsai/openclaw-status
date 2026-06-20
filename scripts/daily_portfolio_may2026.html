@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5月持股淨值報告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Microsoft JhengHei",sans-serif;background:#f0f4f8;min-height:100vh;padding:20px;font-size:14px}
+.container{max-width:900px;margin:0 auto}
+.info{background:#1565C0;color:white;padding:20px 24px;border-radius:12px;margin-bottom:20px}
+.info h1{font-size:22px;margin-bottom:6px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.card{background:white;padding:16px;border-radius:10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.cardT{font-size:11px;color:#888;margin-bottom:4px}
+.cardV{font-size:20px;font-weight:bold;color:#1565C0}
+.cardV.g{color:#2E7D32}
+.cardV.r{color:#C62828}
+.box{background:white;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.tt{font-size:16px;font-weight:bold;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #eee}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#1565C0;color:white;padding:10px 8px;text-align:center}
+td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee}
+tr:hover{background:#f8f9fa}
+.day{font-weight:bold}
+.total{font-weight:bold;color:#1565C0}
+.div{color:#2E7D32;font-weight:bold}
+.highlight{background:#FFF9C4}
+.marker{font-size:10px;padding:2px 5px;border-radius:4px;background:#E3F2FD;color:#1565C0}
+footer{text-align:center;padding:20px;color:#999;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="info">
+<h1>📊 5月持股淨值日報（2026年5月）</h1>
+<p>水林鄉用戶 | 資料來源：Yahoo Finance（每日收盤價）</p>
+</div>
+
+<div class="cards">
+<div class="card"><div class="cardT">月初淨值</div><div class="cardV">$5,689,067</div></div>
+<div class="card"><div class="cardT">最高淨值</div><div class="cardV g">$5,912,620 <span style="font-size:12px">(05-11)</span></div></div>
+<div class="card"><div class="cardT">最低淨值</div><div class="cardV r">$5,689,067 <span style="font-size:12px">(05-04)</span></div></div>
+<div class="card"><div class="cardT">目前淨值</div><div class="cardV">$5,881,133</div></div>
+</div>
+
+<div class="box">
+<div class="tt">📈 每日組合淨值走勢</div>
+<canvas id="portfolioChart" height="100"></canvas>
+</div>
+
+<div class="box">
+<div class="tt">📋 每日明細</div>
+<table>
+<thead><tr><th>日期</th><th>台股</th><th>美股</th><th>總淨值</th><th>事件</th></tr></thead>
+<tbody>
+<tr class="day">
+<td class='day'>05-04</td>
+<td>$3,783,802</td>
+<td>$1,905,265</td>
+<td class='total'>$5,689,067</td>
+<td>—</td>
+</tr>
+<tr class="highlight">
+<td class='day'>05-05</td>
+<td>$3,810,130</td>
+<td>$1,923,003</td>
+<td class='total'>$5,733,133</td>
+<td class='div'>+配息 2,656<br><span class='marker'>BND 月配</span></td>
+</tr>
+<tr class="">
+<td class='day'>05-06</td>
+<td>$3,875,174</td>
+<td>$1,930,636</td>
+<td class='total'>$5,805,810</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-07</td>
+<td>$3,933,927</td>
+<td>$1,941,077</td>
+<td class='total'>$5,875,004</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-08</td>
+<td>$3,934,156</td>
+<td>$1,961,708</td>
+<td class='total'>$5,895,865</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-11</td>
+<td>$3,970,733</td>
+<td>$1,941,887</td>
+<td class='total'>$5,912,620</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-12</td>
+<td>$3,949,799</td>
+<td>$1,948,871</td>
+<td class='total'>$5,898,669</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-13</td>
+<td>$3,915,498</td>
+<td>$1,961,606</td>
+<td class='total'>$5,877,104</td>
+<td>—</td>
+</tr>
+<tr class="highlight">
+<td class='day'>05-14</td>
+<td>$3,927,932</td>
+<td>$1,967,007</td>
+<td class='total'>$5,894,939</td>
+<td class='div'>+配息 19,845<br><span class='marker'>AAPL Q2</span></td>
+</tr>
+<tr class="">
+<td class='day'>05-15</td>
+<td>$3,890,901</td>
+<td>$1,993,443</td>
+<td class='total'>$5,884,344</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-18</td>
+<td>$3,875,418</td>
+<td>$1,987,906</td>
+<td class='total'>$5,863,325</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-19</td>
+<td>$3,801,355</td>
+<td>$1,991,139</td>
+<td class='total'>$5,792,494</td>
+<td>—</td>
+</tr>
+<tr class="">
+<td class='day'>05-20</td>
+<td>$3,785,786</td>
+<td>$1,999,046</td>
+<td class='total'>$5,784,832</td>
+<td>—</td>
+</tr>
+<tr class="day">
+<td class='day'>05-21</td>
+<td>$3,882,086</td>
+<td>$1,999,046</td>
+<td class='total'>$5,881,133</td>
+<td>—</td>
+</tr>
+</tbody></table>
+</div>
+
+<footer>台股+美股（折TWD）| 蝦助 🦐 | 最後更新：2026-05-21</footer>
+</div>
+
+<script>
+var ctx = document.getElementById('portfolioChart').getContext('2d');
+var labels = ["05-04", "05-05", "05-06", "05-07", "05-08", "05-11", "05-12", "05-13", "05-14", "05-15", "05-18", "05-19", "05-20", "05-21"];
+var totals = [5689067, 5733133, 5805810, 5875004, 5895865, 5912620, 5898669, 5877104, 5894939, 5884344, 5863325, 5792494, 5784832, 5881133];
+var divDays = [1, 8];
+
+var divAnnotations = {};
+divDays.forEach(function(i) { divAnnotations[i] = { label: { content: '配息', enabled: true }, borderDash: [4,4] }; });
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: '總淨值',
+      data: totals,
+      borderColor: '#1565C0',
+      backgroundColor: 'rgba(21,101,192,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4,
+      pointBackgroundColor: function(context) {
+        var idx = context.dataIndex;
+        return divDays.includes(idx) ? '#2E7D32' : '#1565C0';
+      },
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        ticks: { callback: function(v) { return (v/1000000).toFixed(2) + 'M'; } }
+      }
+    }
+  }
+});
+</script>
+</body></html>

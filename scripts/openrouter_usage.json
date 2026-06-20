@@ -1,0 +1,28 @@
+{
+  "note": "OpenRouter API 用量追蹤（圖片生成為主）",
+  "last_updated": "2026-05-23",
+  "models_used": [
+    "openrouter/google/gemini-3.1-flash-image-preview"
+  ],
+  "images_generated": [
+    {
+      "id": "img-001",
+      "model": "openrouter/google/gemini-3.1-flash-image-preview",
+      "prompt": "卡通風格的家庭早餐場景",
+      "time": "2026-05-23 10:37 GMT+8"
+    },
+    {
+      "id": "img-002",
+      "model": "openrouter/google/gemini-3.1-flash-image-preview",
+      "prompt": "卡通風格的家庭早餐場景",
+      "time": "2026-05-23 10:42 GMT+8"
+    }
+  ],
+  "total_images": 2,
+  "monthly_stats": {
+    "2026-05": {
+      "images": 2,
+      "estimated_cost_usd": 0
+    }
+  }
+}

@@ -72,8 +72,8 @@
         .tip-icon { font-size: 1.2em; }
         .tip-text .title { font-weight: bold; color: #333; }
         .tip-text .desc { color: #666; font-size: 0.9em; }
-        .footer { text-align: center; padding: 12px; color: rgba(255,255,255,0.7); font-size: 0.75em; }
         @media (max-width: 600px) { .today-grid { grid-template-columns: repeat(3, 1fr); } }
+        .footer { text-align: center; padding: 12px; color: rgba(255,255,255,0.7); font-size: 0.75em; }
     </style>
 </head>
 <body>
@@ -105,8 +105,8 @@
                 <div class="today-item"><div class="icon">🌧️</div><div class="label">降雨量</div><div class="value" id="t-rain-mm">-- mm</div></div>
             </div>
             <div class="rain-box" id="rain-box" style="display:none">
-                <h4>🌧️ 18小時降雨預報</h4>
-                <div id="rain-list"></div>
+                <h4>🌧️ 降雨預報（Open-Meteo）</h4>
+                <div id="windy-rain-list"></div>
             </div>
         </div>
         
@@ -123,13 +123,15 @@
             <div id="om-forecast"></div>
             <div id="om-partial" class="partial" style="display:none"></div>
         </div>
-        
+
+
+
         <div class="card">
             <h2>💡 農業建議</h2>
             <div id="tips-container"></div>
         </div>
-        
-        <div class="footer">🌾 農業天氣服務 ｜ 資料來源：CWA 氣象局、<a href="https://www.weatherapi.com/" target="_blank" style="color:#888;">WeatherAPI.com</a>（3天預報）｜ 蝦助出品</div>
+
+        <div class="footer">🌾 農業天氣服務 ｜ 主來源：CWA 氣象局（中央氣象署 F-D0047-025）｜ 輔助來源：Windy GFS（風/溫/濕/氣壓）、Open-Meteo（降雨交叉驗證）、WeatherAPI.com（UV/能見度）｜ 蝦助出品</div>
     </div>
 
 <script>
@@ -147,7 +149,9 @@ function rainMmLevel(mm){if(mm>=25)return{text:'豪雨',cls:'danger'};if(mm>=10)
 function windLevel(s){if(s>=30)return{text:'強',cls:'high'};if(s>=15)return{text:'中',cls:'med'};return{text:'弱',cls:'low'};}
 
 let chart=null;
-let cwaLoaded=false, omLoaded=false;
+let cwaLoaded=false, omLoaded=false, windyLoaded=false;
+let windyData=null; // 儲存 Windy GFS 資料供農業決策使用
+let farmingAdvice=''; // 農業決策建議（供給 loadTips 使用）
 
 async function loadCWA() {
     try {
@@ -261,14 +265,246 @@ document.getElementById('station-info').textContent = `📡 觀測站：${stName
     }
 }
 
+// === CWA R2 天氣預報 ===
+async function loadCWA_R2() {
+    const R2_CWA_URL = 'https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/weather-api/cwa-forecast.json';
+    try {
+        const res = await fetch(R2_CWA_URL);
+        if (!res.ok) throw new Error('CWA R2 ' + res.status);
+        const d = await res.json();
+
+        const c = d.current || {};
+        document.getElementById('t-temp').textContent = (c.temp_c != null ? c.temp_c + '°C' : '--°C');
+        document.getElementById('t-feels').textContent = (c.feels_like_c != null ? c.feels_like_c + '°C' : '--°C');
+        document.getElementById('t-rain').textContent = (c.precip_3h_pct != null ? c.precip_3h_pct + '%' : '--%');
+        document.getElementById('t-humid').textContent = (c.rh != null ? Math.round(c.rh) + '%' : '--%');
+        document.getElementById('t-wind').textContent = (c.wind_speed_ms != null ? Math.round(c.wind_speed_ms * 3.6) + ' km/h' : '-- km/h');
+        document.getElementById('t-wind-dir').textContent = c.wind_dir || '--';
+        document.getElementById('t-wx').textContent = c.weather || '--';
+
+        // === 3日天氣預報（CWA hourly, 每3小時×8時段）===
+        const cwaHourly = d.hourly || [];
+        if (cwaHourly.length > 0) {
+            const fmtDay = (dt) => `${(dt.getMonth()+1).toString().padStart(2,'0')}/${dt.getDate().toString().padStart(2,'0')}`;
+            const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+            const WX_ICON_CWA = {none:'☀️',low:'🌦️',med:'🌧️',high:'⛈️⛈️'};
+
+            // Group by date (first 3 days)
+            const dailyBuckets = {};
+            for (const h of cwaHourly) {
+                const dKey = h.time ? h.time.slice(0, 10) : '';
+                if (!dKey) continue;
+                if (!dailyBuckets[dKey]) dailyBuckets[dKey] = [];
+                dailyBuckets[dKey].push(h);
+            }
+
+            const dayKeys = Object.keys(dailyBuckets).slice(0, 3);
+            let fcHtml = '';
+            for (const dk of dayKeys) {
+                const dayHours = dailyBuckets[dk];
+                const dtObj = new Date(dayHours[0].time);
+                const temps = dayHours.map(h=>h.temp_c).filter(t=>t!=null);
+                const maxT = temps.length ? Math.max(...temps) : null;
+                const minT = temps.length ? Math.min(...temps) : null;
+                const winds = dayHours.map(h=>h.wind_speed_ms).filter(w=>w!=null);
+                const maxWind = winds.length ? Math.max(...winds) * 3.6 : 0;
+                const precips = dayHours.map(h=>h.precip_3h_pct).filter(p=>p!=null);
+                const maxPrecip = precips.length ? Math.max(...precips) : 0;
+                const dayRl = maxPrecip >= 60 ? 'high' : maxPrecip >= 30 ? 'med' : maxPrecip >= 10 ? 'low' : 'none';
+                const dayIcon = WX_ICON_CWA[dayRl];
+
+                fcHtml += `<div class="day-card"><div class="day-header"><div class="date">${fmtDay(dtObj)}<div class="day">${dayNames[dtObj.getDay()]}</div></div><div class="wx-icon">${dayIcon}</div><div class="wx-desc">${WX_ICON_CWA[dayRl]}</div><div class="temps"><div class="high">${maxT?.toFixed(0) || '--'}°</div><div class="low">${minT?.toFixed(0) || '--'}°</div></div>${maxWind ? `<div class="wind-info">💨 ${maxWind.toFixed(0)} km/h</div>` : ''}</div>`;
+
+                // 8 × 3h periods
+                const slots = [
+                    { label:'🌙 03:00', h:3 }, { label:'🌅 06:00', h:6 },
+                    { label:'🌅 09:00', h:9 }, { label:'☀️ 12:00', h:12 },
+                    { label:'☀️ 15:00', h:15 }, { label:'🌙 18:00', h:18 },
+                    { label:'🌙 21:00', h:21 }, { label:'🌙 24:00', h:24 }
+                ];
+                for (const slot of slots) {
+                    const slotH = slot.h > 24 ? 24 : slot.h;
+                    let best = null, bestDiff = Infinity;
+                    for (const h of dayHours) {
+                        if (!h.time) continue;
+                        const hHour = new Date(h.time).getHours();
+                        const diff = Math.abs(hHour - slotH);
+                        if (diff < bestDiff) { bestDiff = diff; best = h; }
+                    }
+                    if (!best) continue;
+                    const pct = best.precip_3h_pct || 0;
+                    const rl = pct >= 60 ? 'high' : pct >= 30 ? 'med' : pct >= 10 ? 'low' : 'none';
+                    const rainIcon = WX_ICON_CWA[rl];
+                    fcHtml += `<div class="period-row"><span class="period">${slot.label}</span><span class="wx">${rainIcon}</span><span class="desc">${best.temp_c?.toFixed(0) || '--'}°C</span><span class="desc">💨${((best.wind_speed_ms||0)*3.6).toFixed(0)}km/h</span><span class="level ${rl}">${rainIcon}${pct >= 10 ? pct+'%' : '0%'}</span></div>`;
+                }
+                fcHtml += '</div>';
+            }
+            document.getElementById('om-forecast').innerHTML = fcHtml;
+        }
+
+        cwaLoaded = true;
+    } catch(e) {
+        console.error('CWA R2 error:', e);
+    }
+}
+
+async function loadWindy() {
+    // Fetch Windy GFS data pre-fetched by VM cron
+    try {
+        const res = await fetch('https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/weather-api/windy-gfs.json');
+        if (!res.ok) throw new Error('Windy failed: ' + res.status);
+        const d = await res.json();
+        const hourly = d.hourly || [];
+        if (!hourly.length) return;
+        windyLoaded = true;
+        windyData = d; // 儲存供農業決策使用
+
+        // Find current hour slot (closest past timestamp)
+        const nowTs = Date.now();
+        let currentIdx = 0;
+        for (let i = 0; i < hourly.length; i++) {
+            if (hourly[i].ts <= nowTs) currentIdx = i;
+        }
+        const cur = hourly[currentIdx];
+
+        // Update: humidity, pressure, wind dir, rain mm
+        document.getElementById('t-humid').textContent = (cur.rh || '--').toFixed(0) + '%';
+        document.getElementById('t-pres').textContent = ((cur.pressure_hPa || 0) / 100).toFixed(0) + ' hPa';
+        document.getElementById('t-wind-dir').textContent = windDir8(cur.wind_dir);
+        document.getElementById('t-rain-mm').textContent = (cur.rain_mm_h || 0).toFixed(2) + ' mm/h';
+
+        // Build 18h rain forecast rows (every 3h from now)
+        const WINDY_RAIN_ICONS = {none:'☀️',low:'🌦️',med:'🌧️',high:'🌧️🌧️'};
+        let rainHtml = '';
+        const now = new Date();
+        // 2026-06-04 修正：從 currentIdx 開始（不是 0），避免「現在」一直重複
+        for (let i = 0; i < 6; i++) {
+            // 每 3 小時一筆：currentIdx, currentIdx+3, currentIdx+6, ...
+            // 2026-06-04 改：從最近未來時間點開始，每 1 步（3 小時）追加
+        const baseIndex = hourly.findIndex(h => h.ts >= nowTs);
+        const calcIdx = baseIndex !== -1 ? Math.min(baseIndex + i, hourly.length - 1) : Math.min(currentIdx + i, hourly.length - 1);
+        const idx = calcIdx;
+            const h = hourly[idx];
+            if (!h) continue;
+            const t = new Date(h.ts);
+            const diffH = Math.round((h.ts - now.getTime()) / 3600000);
+            const label = diffH <= 0.5 ? '現在' : `+${Math.round(diffH)}h`;
+            const mm = h.rain_mm_h || 0;
+            const rl = mm >= 10 ? 'high' : mm >= 1 ? 'med' : mm >= 0.1 ? 'low' : 'none';
+            const icons = WINDY_RAIN_ICONS[rl];
+            rainHtml += `<div class="rain-row"><span class="time">${label}</span><span class="desc">💧 ${mm.toFixed(2)} mm/h　🌡️${h.temp_c}°C　💨${h.wind_kph}km/h ${h.wind_dir}</span><span class="level ${rl}">${icons}${rl==='none'?'無':rl==='low'?'小雨':rl==='med'?'中雨':'大雨'}</span></div>`;
+        }
+        const hasRain = hourly.slice(0,6).some(h => (h.rain_mm_h||0) >= 0.1);
+        document.getElementById('rain-box').style.display = hasRain ? 'block' : 'none';
+        document.getElementById('windy-rain-list').innerHTML = rainHtml || '<div class="rain-row"><span class="desc">目前無明顯降雨</span></div>';
+
+
+        // Build chart arrays from Windy GFS (for future 24h chart, every 3h, skip past data)
+        const startIdx = currentIdx + 1; // skip current & past slots, start from next future slot
+        const windyTimes = [], windyTemps = [], windyRain = [], windyWinds = [];
+        for (let i = startIdx; i < startIdx + 8 && i < hourly.length; i++) {
+            const h = hourly[i];
+            if (!h) continue;
+            const d = new Date(h.ts);
+            const label = d.toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit',hour12:false, timeZone:'Asia/Taipei'});
+            windyTimes.push(label);
+            windyTemps.push(h.temp_c);
+            windyRain.push(h.rain_mm_h || 0);
+            windyWinds.push(h.wind_kph || 0);
+        }
+        window.windyChartData = { times: windyTimes, temps: windyTemps, rain: windyRain, winds: windyWinds };
+
+
+
+        // ========== DRAW CHART (using Windy GFS data) ==========
+        let labels, temps, pops, winds;
+        if (window.windyChartData) {
+            const wd = window.windyChartData;
+            labels = wd.times;
+            temps = wd.temps;
+            pops = wd.rain; // mm/h, no scaling
+            winds = wd.winds;
+            console.log('Chart: using Windy GFS data');
+        } else {
+            // Fallback to WeatherAPI if Windy failed
+            labels = []; temps = []; pops = []; winds = [];
+            for (let i = 0; i < 24 && i < omTimes.length; i += 3) {
+                const t = omTimes[i];
+                labels.push(t.includes('T') ? t.slice(11,16) : t.split(' ')[1]?.slice(0,5) || '');
+                temps.push(omTemp[i]);
+                pops.push(omPop[i]||0);
+                winds.push(omWind[i]||0);
+            }
+            console.log('Chart: using WeatherAPI fallback');
+        }
+        console.log('Chart labels:', labels);
+
+        if (typeof chart !== 'undefined' && chart) chart.destroy();
+        const ctx = document.getElementById('hourlyChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: { labels, datasets: [
+                { label: '溫度 (°C)', data: temps, borderColor: '#e74c3c', backgroundColor: 'rgba(231,76,60,0.1)', yAxisID: 'yTemp', tension: 0.3, fill: true },
+                { label: '雨量 (mm/h)', data: pops, borderColor: '#3498db', backgroundColor: 'rgba(52,152,219,0.3)', yAxisID: 'yRain', tension: 0.3, fill: true },
+                { label: '風速 (km/h)', data: winds, borderColor: '#9c27b0', backgroundColor: 'rgba(156,39,176,0.1)', yAxisID: 'yWind', tension: 0.3, fill: false,
+                  pointBackgroundColor: winds.map(w => w > 15 ? '#d32f2f' : '#9c27b0'),
+                  pointRadius: winds.map(w => w > 15 ? 6 : 3),
+                  pointHoverRadius: 8
+                }
+            ]},
+            options: { responsive: true, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } }, scales: { yTemp: { type: 'linear', position: 'left', title: { display: true, text: '°C' }, grid: { drawOnChartArea: false } }, yRain: { type: 'linear', position: 'right', min: 0, max: 20, title: { display: true, text: 'mm/h' } }, yWind: { type: 'linear', position: 'right', min: 0, title: { display: true, text: 'km/h' }, grid: { drawOnChartArea: false } } } }
+        });
+
+        // ========== ALERT (based on Windy GFS mm/h) ==========
+        const alertBox = document.getElementById('alert-box'), alertIcon = document.getElementById('alert-icon'), alertTitle = document.getElementById('alert-title');
+        const today = new Date();
+        let todayWindyRain = 0;
+        for (const h of windyData.hourly) {
+            const hDate = new Date(h.ts);
+            if (hDate.getMonth() === today.getMonth() && hDate.getDate() === today.getDate()) {
+                todayWindyRain += h.rain_mm_h || 0;
+            }
+        }
+        const currentRainMm = windyData.hourly[0]?.rain_mm_h || 0;
+        if (todayWindyRain >= 10) {
+            alertBox.className = 'alert danger'; alertIcon.textContent = '!'; alertTitle.textContent = '不建議農作（預計 ' + todayWindyRain.toFixed(1) + 'mm）';
+            window.farmingAdvice = '預計有大雨，建議延後農作';
+        } else if (currentRainMm >= 1) {
+            alertBox.className = 'alert warning'; alertIcon.textContent = '~'; alertTitle.textContent = '局部大雨（' + currentRainMm.toFixed(1) + 'mm/h）';
+            window.farmingAdvice = '短時強降雨，避免露天農作';
+        } else if (todayWindyRain >= 1) {
+            alertBox.className = 'alert warning'; alertIcon.textContent = '~'; alertTitle.textContent = '注意陣雨（' + todayWindyRain.toFixed(1) + 'mm）';
+            window.farmingAdvice = '預計有陣雨，做好防雨準備';
+        } else if (todayWindyRain >= 0.1) {
+            alertBox.className = 'alert warning'; alertIcon.textContent = '~'; alertTitle.textContent = '局部小雨（' + todayWindyRain.toFixed(1) + 'mm）';
+            window.farmingAdvice = '有小雨，注意田間排水';
+        } else {
+            alertBox.className = 'alert safe'; alertIcon.textContent = 'OK'; alertTitle.textContent = '天氣穩定，適合農作';
+            window.farmingAdvice = '適合農作，注意葉面濕度';
+        }
+
+        checkAllLoaded();
+    } catch(e) {
+        console.error('Windy error:', e);
+        loadOM().catch(e2=>{console.error('WeatherAPI failed:',e2); loadCWA();});
+    }
+}
+
+function windDir8(dir) {
+    const map = {N:'北',NE:'東北',E:'東',SE:'東南',S:'南',SW:'西南',W:'西',NW:'西北'};
+    return map[dir] || dir || '--';
+}
+
+
 async function loadOM() {
     // Fetch pre-fetched WeatherAPI data from R2 (VM cron job)
     try {
-        const res = await fetch('/weather-api/current.json');
+        const res = await fetch('https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/weather-api/current.json');
         if (!res.ok) throw new Error('WeatherAPI failed: ' + res.status);
         const d = await res.json();
         const current = d.current;
         const fdays = d.forecast.forecastday;
+        const alertBox=document.getElementById('alert-box'), alertIcon=document.getElementById('alert-icon'), alertTitle=document.getElementById('alert-title');
 
         // Display current weather from WeatherAPI
         document.getElementById('t-temp').textContent = current.temp_c.toFixed(0) + '°C';
@@ -283,12 +519,12 @@ async function loadOM() {
         document.getElementById('t-pres').textContent = current.pressure_mb + ' hPa';
         document.getElementById('t-rain-mm').textContent = (current.precip_mm || 0) + ' mm';
 
-        // Alert based on today's rain chance from WeatherAPI
-        const todayPop = fdays[0]?.day?.daily_chance_of_rain || 0;
-        const alertBox = document.getElementById('alert-box'), alertIcon = document.getElementById('alert-icon'), alertTitle = document.getElementById('alert-title');
-        if (todayPop >= 70) { alertBox.className = 'alert danger'; alertIcon.textContent = '🚫'; alertTitle.textContent = '🚫 高降雨機率 ' + todayPop + '%'; }
-        else if (todayPop >= 40) { alertBox.className = 'alert warning'; alertIcon.textContent = '⚠️'; alertTitle.textContent = '⚠️ 局部陣雨 ' + todayPop + '%'; }
-        else { alertBox.className = 'alert safe'; alertIcon.textContent = '✅'; alertTitle.textContent = '✅ 天氣穩定'; }
+        // NOTE: Alert and chart are handled by loadWindy() after it completes.
+        // WeatherAPI just populates the current weather card here.
+
+        omLoaded = true;
+        if (typeof checkAllLoaded === 'function') checkAllLoaded();
+        console.log('OM OK');
 
         // Build flat arrays matching Open-Meteo format
         const omTimes = [], omWx = [], omTemp = [], omPop = [], omPrecip = [], omWind = [], omFeelsLike = [], omUv = [], omWindDir = [];
@@ -355,9 +591,9 @@ async function loadOM() {
                     const feelsLike = omFeelsLike?.[idx];
                     const windKph = omWind?.[idx];
                     const uvIdx = omUv?.[idx];
-                    const popVal = omPop[idx]||0;
-                    const rainIcon = popVal >= 70 ? '🌧️🌧️' : popVal >= 40 ? '🌧️' : popVal >= 20 ? '🌦️' : '☀️';
-                    omHtml += `<div class="period-row"><span class="period">${lbl}</span><span class="wx">${icon}</span><span class="desc">${omTemp[idx]?.toFixed(0)}°C<span class="sub-val">/${feelsLike?.toFixed(0)}°</span></span><span class="desc">💨${windKph?.toFixed(0)}km/h</span><span class="level ${rl2.cls}">${rainIcon}${popVal}%</span><span class="desc">☀️${uvIdx?.toFixed(0)}</span></div>`;
+                    const mmVal = omPrecip[idx]||0;
+                    const rainIcon = mmVal >= 5 ? '🌧️🌧️' : mmVal >= 1 ? '🌧️' : mmVal >= 0.1 ? '🌦️' : '☀️';
+                    omHtml += `<div class="period-row"><span class="period">${lbl}</span><span class="wx">${icon}</span><span class="desc">${omTemp[idx]?.toFixed(0)}°C<span class="sub-val">/${feelsLike?.toFixed(0)}°</span></span><span class="desc">💨${windKph?.toFixed(0)}km/h</span><span class="level ${rl2.cls}">${rainIcon}${mmVal >= 0.1 ? mmVal.toFixed(2) : '0'}mm</span><span class="desc">☀️${uvIdx?.toFixed(0)}</span></div>`;
                 }
             });
             if (dayPrecip > 0) {
@@ -367,38 +603,9 @@ async function loadOM() {
         });
         document.getElementById('om-forecast').innerHTML = omHtml;
 
-        // 24-hour chart - WeatherAPI 已依台灣時區提供完整24小時，直接取用第一天的資料
-        const now = new Date();
-        const labels = [], temps = [], pops = [], winds = [];
-        for (let i = 0; i < 24 && i < omTimes.length; i += 3) {
-            const t = omTimes[i];
-            labels.push(t.includes('T') ? t.slice(11,16) : t.split(' ')[1]?.slice(0,5) || '');
-            temps.push(omTemp[i]);
-            pops.push(omPop[i]||0);
-            winds.push(omWind[i]||0);
-        }
-        console.log('Chart labels (24h only):', labels);
-        console.log('Chart winds:', winds); // 供 tooltip 使用
-
-        if (typeof chart !== 'undefined' && chart) chart.destroy();
-        const ctx = document.getElementById('hourlyChart').getContext('2d');
-        chart = new Chart(ctx, {
-            type: 'line',
-            data: { labels, datasets: [
-                { label: '溫度 (°C)', data: temps, borderColor: '#e74c3c', backgroundColor: 'rgba(231,76,60,0.1)', yAxisID: 'yTemp', tension: 0.3, fill: true },
-                { label: '降雨機率 (%)', data: pops, borderColor: '#3498db', backgroundColor: 'rgba(52,152,219,0.3)', yAxisID: 'yPop', tension: 0.3, fill: true },
-                { label: '風速 (km/h)', data: winds, borderColor: '#9c27b0', backgroundColor: 'rgba(156,39,176,0.1)', yAxisID: 'yWind', tension: 0.3, fill: false,
-                  pointBackgroundColor: winds.map(w => w > 15 ? '#d32f2f' : '#9c27b0'),
-                  pointRadius: winds.map(w => w > 15 ? 6 : 3),
-                  pointHoverRadius: 8
-                }
-            ]},
-            options: { responsive: true, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } }, scales: { yTemp: { type: 'linear', position: 'left', title: { display: true, text: '°C' }, grid: { drawOnChartArea: false } }, yPop: { type: 'linear', position: 'right', min: 0, max: 100, title: { display: true, text: '%' } }, yWind: { type: 'linear', position: 'right', min: 0, title: { display: true, text: 'km/h' }, grid: { drawOnChartArea: false } } } }
-        });
-
         omLoaded = true;
         if (typeof checkAllLoaded === 'function') checkAllLoaded();
-        console.log('WA OK');
+        console.log('OM OK');
     } catch(e) {
         console.error('WeatherAPI error:', e);
         document.getElementById('om-error').innerHTML = '<div class="error-msg">⚠️ WeatherAPI 取得失敗，切换到 CWA 气象局备援：'+e.message+'</div>';
@@ -457,10 +664,10 @@ function waConditionToCode(text) {
 
 
 function checkAllLoaded() {
-    if(cwaLoaded || omLoaded) {
+    if(cwaLoaded || omLoaded || windyLoaded) {
         document.getElementById('update-time').textContent = new Date().toLocaleString('zh-TW');
     }
-    if(cwaLoaded || omLoaded) loadTips();
+    if(cwaLoaded || omLoaded || windyLoaded) loadTips();
 }
 
 function loadTips() {
@@ -468,10 +675,17 @@ function loadTips() {
     tips+=`<div class="tip-item"><div class="tip-icon">🌱</div><div class="tip-text"><div class="title">病蟲害防治</div><div class="desc">潮濕防疫病，乾燥防紅蜘蛛</div></div></div>`;
     tips+=`<div class="tip-item"><div class="tip-icon">🛡️</div><div class="tip-text"><div class="title">葉面施肥</div><div class="desc">選清晨或傍晚，雨後待葉面乾燥</div></div></div>`;
     tips+=`<div class="tip-item"><div class="tip-icon">💧</div><div class="tip-text"><div class="title">灌溉提醒</div><div class="desc">注意土壤濕度，避免積水</div></div></div>`;
+    if (window.farmingAdvice) {
+        tips+=`<div class="tip-item"><div class="tip-icon">🌧️</div><div class="tip-text"><div class="title">天氣決策</div><div class="desc">${window.farmingAdvice}</div></div></div>`;
+    }
     document.getElementById('tips-container').innerHTML=tips;
 }
 
-loadOM().catch(e=>{console.error('OM failed:',e); loadCWA();});
+// Start both WeatherAPI (primary) and Windy GFS (for chart + 3-day forecast)
+// WeatherAPI loads first to populate current weather, then Windy fills in chart/forecast
+loadOM().catch(e=>{console.error('WeatherAPI failed:',e); loadCWA();});
+loadWindy().catch(e=>{console.error('Windy failed:',e);}); // Non-blocking
+loadCWA_R2().catch(e=>{console.error('CWA R2 failed:',e);}); // 主來源
 </script>
 </body>
 </html>

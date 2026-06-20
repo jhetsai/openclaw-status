@@ -1,193 +1,263 @@
 {
-  "updated": "2026/05/07",
+  "updated": "2026/06/20 20:00 (新方法自動抓取)",
   "tw": {
     "confirmed": {
-      "total": 53625,
+      "total": 102186,
       "rows": [
         {
-          "code": "00940",
-          "period": "2025M11",
-          "cash": 0.045,
-          "shares": 9000,
-          "amount": 405,
-          "ex_date": "2025/12/10",
-          "payout": "2026/01/02"
-        },
-        {
-          "code": "00713",
-          "period": "2025Q3",
-          "cash": 0.78,
-          "shares": 5173,
-          "amount": 4035,
-          "ex_date": "2025/12/19",
-          "payout": "2026/01/12"
-        },
-        {
-          "code": "009802",
-          "period": "2025Q3",
-          "cash": 0.092,
-          "shares": 5427,
-          "amount": 499,
-          "ex_date": "2025/12/16",
-          "payout": "2026/01/12"
-        },
-        {
-          "code": "00712",
-          "period": "2025Q3",
-          "cash": 0.19,
-          "shares": 29000,
-          "amount": 5510,
-          "ex_date": "2025/12/17",
-          "payout": "2026/01/14"
-        },
-        {
-          "code": "00940",
-          "period": "2025M12",
-          "cash": 0.045,
-          "shares": 9000,
-          "amount": 405,
-          "ex_date": "2026/01/08",
-          "payout": "2026/02/02"
-        },
-        {
-          "code": "0056",
-          "period": "2025Q4",
-          "cash": 0.866,
-          "shares": 6000,
-          "amount": 5196,
-          "ex_date": "2026/01/22",
-          "payout": "2026/02/11"
-        },
-        {
-          "code": "00717",
-          "period": "2025Q4",
-          "cash": 0.141,
-          "shares": 6000,
-          "amount": 846,
-          "ex_date": "2026/01/20",
-          "payout": "2026/02/12"
-        },
-        {
-          "code": "00940",
-          "period": "2026M1",
-          "cash": 0.045,
-          "shares": 9000,
-          "amount": 405,
-          "ex_date": "2026/02/02",
-          "payout": "2026/03/02"
-        },
-        {
           "code": "00878",
-          "period": "2025Q4",
-          "cash": 0.42,
-          "shares": 28500,
-          "amount": 11970,
-          "ex_date": "2026/02/26",
-          "payout": "2026/03/23"
-        },
-        {
-          "code": "00891",
-          "period": "2025Q4",
-          "cash": 0.75,
-          "shares": 18000,
-          "amount": 13500,
-          "ex_date": "2026/02/26",
-          "payout": "2026/03/25"
-        },
-        {
-          "code": "00940",
-          "period": "2026M2",
-          "cash": 0.045,
-          "shares": 9000,
-          "amount": 405,
-          "ex_date": "2026/03/11",
-          "payout": "2026/04/01"
-        },
-        {
-          "code": "009802",
-          "period": "2025Q4",
-          "cash": 0.092,
-          "shares": 5427,
-          "amount": 499,
-          "ex_date": "2026/03/17",
-          "payout": "2026/04/13"
-        },
-        {
-          "code": "00713",
-          "period": "2025Q4",
-          "cash": 0.78,
-          "shares": 5173,
-          "amount": 4035,
-          "ex_date": "2026/03/20",
-          "payout": "2026/04/14"
-        },
-        {
-          "code": "00712",
-          "period": "2025Q4",
-          "cash": 0.19,
-          "shares": 29000,
-          "amount": 5510,
-          "ex_date": "2026/03/18",
-          "payout": "2026/04/15"
-        },
-        {
-          "code": "00940",
-          "period": "2026M3",
-          "cash": 0.045,
-          "shares": 9000,
-          "amount": 405,
-          "ex_date": "2026/04/09",
-          "payout": "2026/05/04"
-        }
-      ]
-    },
-    "pending": {
-      "total": 48561,
-      "rows": [
-        {
-          "code": "0056",
-          "period": "2026Q1",
-          "cash": 1.0,
-          "shares": 6000,
-          "amount": 6000,
-          "ex_date": "2026/04/23",
-          "payout": "2026/05/14"
-        },
-        {
-          "code": "00717",
-          "period": "2026Q1",
-          "cash": 0.141,
-          "shares": 6000,
-          "amount": 846,
-          "ex_date": "2026/04/20",
-          "payout": "2026/05/15"
-        },
-        {
-          "code": "00940",
-          "period": "2026M4",
-          "cash": 0.045,
-          "shares": 9000,
-          "amount": 405,
-          "ex_date": "2026/05/07",
-          "payout": "2026/06/01"
-        },
-        {
-          "code": "00878",
-          "period": "2026Q1",
+          "period": "2026",
           "cash": 0.66,
           "shares": 28500,
           "amount": 18810,
           "ex_date": "2026/05/19",
-          "payout": "2026/06/12"
+          "payout": "2026/06/12",
+          "stationeryName": "國泰永續高股息"
         },
         {
           "code": "00891",
-          "period": "2026Q1",
+          "period": "2026",
           "cash": 1.25,
           "shares": 18000,
           "amount": 22500,
           "ex_date": "2026/05/19",
-          "payout": "2026/06/12"
+          "payout": "2026/06/12",
+          "stationeryName": "中信關鍵半導體"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/05/07",
+          "payout": "2026/06/01",
+          "stationeryName": "元大台灣價值高息"
+        },
+        {
+          "code": "00717",
+          "period": "2026",
+          "cash": 0.141,
+          "shares": 6000,
+          "amount": 846,
+          "ex_date": "2026/04/20",
+          "payout": "2026/05/15",
+          "stationeryName": "富邦美國特別股"
+        },
+        {
+          "code": "0056",
+          "period": "2026",
+          "cash": 1.0,
+          "shares": 6000,
+          "amount": 6000,
+          "ex_date": "2026/04/23",
+          "payout": "2026/05/14",
+          "stationeryName": "元大高股息"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/04/09",
+          "payout": "2026/05/04",
+          "stationeryName": "元大台灣價值高息"
+        },
+        {
+          "code": "00712",
+          "period": "2026",
+          "cash": 0.19,
+          "shares": 29000,
+          "amount": 5510,
+          "ex_date": "2026/03/18",
+          "payout": "2026/04/15",
+          "stationeryName": "富邦富時不動產"
+        },
+        {
+          "code": "00713",
+          "period": "2026",
+          "cash": 0.78,
+          "shares": 5173,
+          "amount": 4035,
+          "ex_date": "2026/03/20",
+          "payout": "2026/04/14",
+          "stationeryName": "元大台灣高息低波"
+        },
+        {
+          "code": "009802",
+          "period": "2026",
+          "cash": 0.092,
+          "shares": 5427,
+          "amount": 499,
+          "ex_date": "2026/03/17",
+          "payout": "2026/04/13",
+          "stationeryName": "富邦旗艦50"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/03/11",
+          "payout": "2026/04/01",
+          "stationeryName": "元大台灣價值高息"
+        },
+        {
+          "code": "00891",
+          "period": "2026",
+          "cash": 0.75,
+          "shares": 18000,
+          "amount": 13500,
+          "ex_date": "2026/02/26",
+          "payout": "2026/03/25",
+          "stationeryName": "中信關鍵半導體"
+        },
+        {
+          "code": "00878",
+          "period": "2026",
+          "cash": 0.42,
+          "shares": 28500,
+          "amount": 11970,
+          "ex_date": "2026/02/26",
+          "payout": "2026/03/23",
+          "stationeryName": "國泰永續高股息"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/02/02",
+          "payout": "2026/03/02",
+          "stationeryName": "元大台灣價值高息"
+        },
+        {
+          "code": "00717",
+          "period": "2026",
+          "cash": 0.141,
+          "shares": 6000,
+          "amount": 846,
+          "ex_date": "2026/01/20",
+          "payout": "2026/02/12",
+          "stationeryName": "富邦美國特別股"
+        },
+        {
+          "code": "0056",
+          "period": "2026",
+          "cash": 0.866,
+          "shares": 6000,
+          "amount": 5196,
+          "ex_date": "2026/01/22",
+          "payout": "2026/02/11",
+          "stationeryName": "元大高股息"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2026/01/08",
+          "payout": "2026/02/02",
+          "stationeryName": "元大台灣價值高息"
+        },
+        {
+          "code": "00712",
+          "period": "2026",
+          "cash": 0.19,
+          "shares": 29000,
+          "amount": 5510,
+          "ex_date": "2025/12/17",
+          "payout": "2026/01/14",
+          "stationeryName": "富邦富時不動產"
+        },
+        {
+          "code": "00713",
+          "period": "2026",
+          "cash": 0.78,
+          "shares": 5173,
+          "amount": 4035,
+          "ex_date": "2025/12/19",
+          "payout": "2026/01/12",
+          "stationeryName": "元大台灣高息低波"
+        },
+        {
+          "code": "009802",
+          "period": "2026",
+          "cash": 0.092,
+          "shares": 5427,
+          "amount": 499,
+          "ex_date": "2025/12/16",
+          "payout": "2026/01/12",
+          "stationeryName": "富邦旗艦50"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.045,
+          "shares": 9000,
+          "amount": 405,
+          "ex_date": "2025/12/10",
+          "payout": "2026/01/02",
+          "stationeryName": "元大台灣價值高息"
+        }
+      ]
+    },
+    "pending": {
+      "total": 17912,
+      "rows": [
+        {
+          "code": "1101",
+          "period": "2026",
+          "cash": 0.8,
+          "shares": 5499,
+          "amount": 4399,
+          "ex_date": "2026/07/01",
+          "payout": "2026/07/28",
+          "stationeryName": "台泥"
+        },
+        {
+          "code": "00712",
+          "period": "2026",
+          "cash": 0.235,
+          "shares": 29000,
+          "amount": 6815,
+          "ex_date": "2026/06/17",
+          "payout": "2026/07/13",
+          "stationeryName": "富邦富時不動產"
+        },
+        {
+          "code": "00713",
+          "period": "2026",
+          "cash": 1.0,
+          "shares": 5173,
+          "amount": 5173,
+          "ex_date": "2026/06/22",
+          "payout": "2026/07/10",
+          "stationeryName": "元大台灣高息低波"
+        },
+        {
+          "code": "009802",
+          "period": "2026",
+          "cash": 0.198,
+          "shares": 5427,
+          "amount": 1075,
+          "ex_date": "2026/06/16",
+          "payout": "2026/07/09",
+          "stationeryName": "富邦旗艦50"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.05,
+          "shares": 9000,
+          "amount": 450,
+          "ex_date": "2026/06/09",
+          "payout": "2026/07/01",
+          "stationeryName": "元大台灣價值高息"
         }
       ]
     },
@@ -228,9 +298,9 @@
         "ann_div": 0.54
       },
       "00878": {
-        "div": 0.66,
+        "div": 0.42,
         "freq": "季配",
-        "ann_div": 2.64
+        "ann_div": 1.68
       },
       "00712": {
         "div": 0.19,
@@ -248,61 +318,69 @@
         "ann_div": 3.12
       },
       "00891": {
-        "div": 1.25,
+        "div": 0.75,
         "freq": "季配",
-        "ann_div": 5.0
+        "ann_div": 3.0
       },
       "0056": {
-        "div": 1.0,
+        "div": 0.866,
         "freq": "季配",
-        "ann_div": 4.0
+        "ann_div": 3.464
       },
       "00717": {
         "div": 0.141,
         "freq": "季配",
         "ann_div": 0.564
+      },
+      "1101": {
+        "div": 0.8,
+        "freq": "年配",
+        "ann_div": 0.8
       }
     }
   },
   "us": {
     "confirmed": {
-      "total_usd": 131.49,
+      "total_usd": 206.61,
       "total_twd": 4146.0,
       "rows": [
         {
-          "code": "AAPL",
-          "date": "2026-02-09",
-          "per_share": 0.26,
-          "shares": 105,
-          "gross": 27.3,
-          "total": 19.11,
+          "code": "BND",
+          "date": "2026-06-01",
+          "per_share": 0.247259,
+          "shares": 117,
+          "gross": 28.93,
+          "total": 20.25,
+          "payDate": "2026-06-03",
           "withheld_30pct": true
         },
         {
           "code": "MSFT",
-          "date": "2026-02-19",
+          "date": "2026-05-21",
           "per_share": 0.91,
           "shares": 55,
           "gross": 50.05,
-          "total": 35.035,
+          "total": 35.03,
+          "payDate": "2026-06-11",
+          "withheld_30pct": true
+        },
+        {
+          "code": "AAPL",
+          "date": "2026-05-11",
+          "per_share": 0.27,
+          "shares": 105,
+          "gross": 28.35,
+          "total": 19.84,
+          "payDate": "2026-05-14",
           "withheld_30pct": true
         },
         {
           "code": "BND",
-          "date": "2026-02-02",
-          "per_share": 0.245,
-          "shares": 113,
-          "gross": 27.685,
-          "total": 19.379,
-          "withheld_30pct": true
-        },
-        {
-          "code": "BND",
-          "date": "2026-03-02",
-          "per_share": 0.228,
-          "shares": 114,
-          "gross": 25.992,
-          "total": 18.194,
+          "date": "2026-05-01",
+          "per_share": 0.242,
+          "shares": 116,
+          "gross": 28.072,
+          "total": 19.65,
           "withheld_30pct": true
         },
         {
@@ -316,19 +394,57 @@
         },
         {
           "code": "BND",
-          "date": "2026-05-01",
-          "per_share": 0.242,
-          "shares": 116,
-          "gross": 28.072,
-          "total": 19.65,
+          "date": "2026-03-02",
+          "per_share": 0.228,
+          "shares": 114,
+          "gross": 25.992,
+          "total": 18.194,
+          "withheld_30pct": true
+        },
+        {
+          "code": "MSFT",
+          "date": "2026-02-19",
+          "per_share": 0.91,
+          "shares": 55,
+          "gross": 50.05,
+          "total": 35.035,
+          "withheld_30pct": true
+        },
+        {
+          "code": "AAPL",
+          "date": "2026-02-09",
+          "per_share": 0.26,
+          "shares": 105,
+          "gross": 27.3,
+          "total": 19.11,
+          "withheld_30pct": true
+        },
+        {
+          "code": "BND",
+          "date": "2026-02-02",
+          "per_share": 0.245,
+          "shares": 113,
+          "gross": 27.685,
+          "total": 19.379,
           "withheld_30pct": true
         }
       ]
     },
     "pending": {
-      "total_usd": 0,
+      "total_usd": 35.03,
       "total_twd": 0.0,
-      "rows": []
+      "rows": [
+        {
+          "code": "MSFT",
+          "date": "2026-08-20",
+          "per_share": 0.91,
+          "shares": 55,
+          "gross": 50.05,
+          "total": 35.03,
+          "payDate": "2026-09-10",
+          "withheld_30pct": true
+        }
+      ]
     },
     "annual": [
       {

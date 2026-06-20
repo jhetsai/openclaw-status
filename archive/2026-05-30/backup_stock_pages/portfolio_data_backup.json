@@ -1,0 +1,845 @@
+{
+  "updated": "2026-05-30 08:30",
+  "fx": {
+    "USD_TWD": 31.411,
+    "JPY_TWD": 0.195,
+    "updated": "2026-05-30 08:30:30"
+  },
+  "usd_cash": {
+    "cash_usd": 14555.73,
+    "total_invested_usd": 41518.0,
+    "invested_for美股_usd": -46967.0,
+    "original_rate": 28.4481
+  },
+  "jpy_cash": {
+    "cash_jpy": 611791,
+    "total_invested_jpy": 1731671,
+    "withdrawn_jpy": 1119880,
+    "original_rate": 0.2365
+  },
+  "stocks": {
+    "tw": [
+      {
+        "name": "元大高股息",
+        "shares": 6000,
+        "cost": 26.2,
+        "price": 50.2,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "0056",
+        "prev_price": 48.83,
+        "prev_date": "05/29",
+        "market_value": 301200.0,
+        "gain": 144000.0,
+        "gain_pct": 91.6,
+        "total_cost": 157200.0,
+        "mktval": 301200.0,
+        "totalCost": 157200.0,
+        "retPct": 91.6,
+        "div": 1.0,
+        "freq": "季配",
+        "sector": "高股息/市值型",
+        "annDiv": 6000.0,
+        "divYield": 1.99,
+        "divYieldCost": 3.82
+      },
+      {
+        "name": "富邦公司治理",
+        "shares": 10074,
+        "cost": 21.11,
+        "price": 90.45,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00692",
+        "prev_price": 87.25,
+        "prev_date": "05/29",
+        "market_value": 911193.3,
+        "gain": 698531.16,
+        "gain_pct": 328.47,
+        "total_cost": 212662.13999999998,
+        "mktval": 911193.3,
+        "totalCost": 212662.13999999998,
+        "retPct": 328.5,
+        "div": 0,
+        "freq": "-",
+        "sector": "公司治理",
+        "annDiv": 0,
+        "divYield": 0.0,
+        "divYieldCost": 0.0
+      },
+      {
+        "name": "富邦富時不動產",
+        "shares": 29000,
+        "cost": 9.25,
+        "price": 8.78,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00712",
+        "prev_price": 8.76,
+        "prev_date": "05/29",
+        "market_value": 254619.99999999997,
+        "gain": -13630.00000000003,
+        "gain_pct": -5.08,
+        "total_cost": 268250.0,
+        "mktval": 254619.99999999997,
+        "totalCost": 268250.0,
+        "retPct": -5.1,
+        "div": 0.19,
+        "freq": "季配",
+        "sector": "不動產REITs",
+        "annDiv": 5510.0,
+        "divYield": 2.16,
+        "divYieldCost": 2.05
+      },
+      {
+        "name": "元大台灣高息低波",
+        "shares": 5173,
+        "cost": 35.03,
+        "price": 56.55,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00713",
+        "prev_price": 55.75,
+        "prev_date": "05/29",
+        "market_value": 292533.14999999997,
+        "gain": 111322.95999999996,
+        "gain_pct": 61.43,
+        "total_cost": 181210.19,
+        "mktval": 292533.14999999997,
+        "totalCost": 181210.19,
+        "retPct": 61.4,
+        "div": 0.78,
+        "freq": "季配",
+        "sector": "高股息/品質",
+        "annDiv": 4035.0,
+        "divYield": 1.38,
+        "divYieldCost": 2.23
+      },
+      {
+        "name": "富邦美國特別股",
+        "shares": 6000,
+        "cost": 13.91,
+        "price": 15.08,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00717",
+        "prev_price": 14.95,
+        "prev_date": "05/29",
+        "market_value": 90480.0,
+        "gain": 7020.0,
+        "gain_pct": 8.41,
+        "total_cost": 83460.0,
+        "mktval": 90480.0,
+        "totalCost": 83460.0,
+        "retPct": 8.4,
+        "div": 0.141,
+        "freq": "季配",
+        "sector": "特別股/收益型",
+        "annDiv": 846.0,
+        "divYield": 0.94,
+        "divYieldCost": 1.01
+      },
+      {
+        "name": "國泰永續高股息",
+        "shares": 28500,
+        "cost": 7.36,
+        "price": 30.76,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00878",
+        "prev_price": 30.0,
+        "prev_date": "05/29",
+        "market_value": 876660.0,
+        "gain": 666900.0,
+        "gain_pct": 317.93,
+        "total_cost": 209760.0,
+        "mktval": 876660.0,
+        "totalCost": 209760.0,
+        "retPct": 317.9,
+        "div": 0.66,
+        "freq": "季配",
+        "sector": "永續/ESG",
+        "annDiv": 18810.0,
+        "divYield": 2.15,
+        "divYieldCost": 8.97
+      },
+      {
+        "name": "中信關鍵半導體",
+        "shares": 18000,
+        "cost": 6.89,
+        "price": 36.05,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00891",
+        "prev_price": 35.36,
+        "prev_date": "05/29",
+        "market_value": 648900.0,
+        "gain": 524880.0,
+        "gain_pct": 423.22,
+        "total_cost": 124020.0,
+        "mktval": 648900.0,
+        "totalCost": 124020.0,
+        "retPct": 423.2,
+        "div": 1.25,
+        "freq": "季配",
+        "sector": "半導體/科技",
+        "annDiv": 22500.0,
+        "divYield": 3.47,
+        "divYieldCost": 18.14
+      },
+      {
+        "name": "元大台灣價值高息",
+        "shares": 9000,
+        "cost": 8.35,
+        "price": 11.98,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "00940",
+        "prev_price": 11.73,
+        "prev_date": "05/29",
+        "market_value": 107820.0,
+        "gain": 32670.0,
+        "gain_pct": 43.47,
+        "total_cost": 75150.0,
+        "mktval": 107820.0,
+        "totalCost": 75150.0,
+        "retPct": 43.5,
+        "div": 0.05,
+        "freq": "月配",
+        "sector": "高股息/市值型",
+        "annDiv": 450.0,
+        "divYield": 0.42,
+        "divYieldCost": 0.6
+      },
+      {
+        "name": "富邦旗艦50",
+        "shares": 5427,
+        "cost": 9.18,
+        "price": 20.26,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "009802",
+        "prev_price": 19.8,
+        "prev_date": "05/29",
+        "market_value": 109951.02,
+        "gain": 60131.16,
+        "gain_pct": 120.7,
+        "total_cost": 49819.86,
+        "mktval": 109951.02,
+        "totalCost": 49819.86,
+        "retPct": 120.7,
+        "div": 0.092,
+        "freq": "季配",
+        "sector": "台股大型股",
+        "annDiv": 499.0,
+        "divYield": 0.45,
+        "divYieldCost": 1.0
+      },
+      {
+        "name": "台泥",
+        "shares": 5499,
+        "cost": 38.64,
+        "price": 24.4,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "1101",
+        "prev_price": 23.65,
+        "prev_date": "05/29",
+        "market_value": 134175.6,
+        "gain": -78305.76000000001,
+        "gain_pct": -36.85,
+        "total_cost": 212481.36000000002,
+        "mktval": 134175.6,
+        "totalCost": 212481.36000000002,
+        "retPct": -36.9,
+        "div": 0,
+        "freq": "-",
+        "sector": "水泥/原材料",
+        "annDiv": 0,
+        "divYield": 0.0,
+        "divYieldCost": 0.0
+      },
+      {
+        "name": "兆豐金",
+        "shares": 10664,
+        "cost": 24.33,
+        "price": 40.0,
+        "update_time": "2026-05-30 08:30",
+        "symbol": "2886",
+        "prev_price": 39.8,
+        "prev_date": "05/29",
+        "market_value": 426560.0,
+        "gain": 167104.88,
+        "gain_pct": 64.41,
+        "total_cost": 259455.12,
+        "mktval": 426560.0,
+        "totalCost": 259455.12,
+        "retPct": 64.4,
+        "div": 0,
+        "freq": "-",
+        "sector": "金融",
+        "annDiv": 0,
+        "divYield": 0.0,
+        "divYieldCost": 0.0
+      }
+    ],
+    "us": [
+      {
+        "symbol": "AAPL",
+        "name": "Apple",
+        "shares": 105,
+        "cost": 145.02,
+        "price": 312.06,
+        "prev": 312.51,
+        "update_time": "2026-05-30 08:30:25",
+        "prev_price": 312.51,
+        "mktvalTwd": 1029222,
+        "costTwd": 478298,
+        "gain": 550924,
+        "retPct": 115.2,
+        "div": 0.27,
+        "freq": "季配",
+        "annDivTwd": 891.0,
+        "divYield": 0.09,
+        "divYieldCost": 0.19
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft",
+        "shares": 55,
+        "cost": 263.51,
+        "price": 450.24,
+        "prev": 426.99,
+        "update_time": "2026-05-30 08:30:25",
+        "prev_price": 426.99,
+        "mktvalTwd": 777837,
+        "costTwd": 455241,
+        "gain": 322596,
+        "retPct": 70.9,
+        "div": 0.91,
+        "freq": "季配",
+        "annDivTwd": 1572.0,
+        "divYield": 0.2,
+        "divYieldCost": 0.35
+      },
+      {
+        "symbol": "BND",
+        "name": "Vanguard 債券 ETF",
+        "shares": 117,
+        "cost": 73.2204,
+        "price": 73.46,
+        "prev": 73.42,
+        "update_time": "2026-05-30 08:30:25",
+        "prev_price": 73.42,
+        "mktvalTwd": 269972,
+        "costTwd": 269091,
+        "gain": 881,
+        "retPct": 0.3,
+        "div": 0.241713,
+        "freq": "月配",
+        "annDivTwd": 888.0,
+        "divYield": 0.33,
+        "divYieldCost": 0.33
+      }
+    ]
+  },
+  "dividends": {
+    "tw": {
+      "annual": [
+        {
+          "year": "2020",
+          "amt": 4190
+        },
+        {
+          "year": "2021",
+          "amt": 66708
+        },
+        {
+          "year": "2022",
+          "amt": 94486
+        },
+        {
+          "year": "2023",
+          "amt": 117027
+        },
+        {
+          "year": "2024",
+          "amt": 183829
+        },
+        {
+          "year": "2025",
+          "amt": 200917
+        },
+        {
+          "year": "2026",
+          "amt": 102636.0
+        }
+      ],
+      "confirmed": {
+        "total": 60471,
+        "rows": [
+          {
+            "code": "00940",
+            "period": "2025M11",
+            "cash": 0.045,
+            "shares": 9000,
+            "amount": 405,
+            "ex_date": "2025/12/10",
+            "payout": "2026/01/02"
+          },
+          {
+            "code": "00713",
+            "period": "2025Q3",
+            "cash": 0.78,
+            "shares": 5173,
+            "amount": 4035,
+            "ex_date": "2025/12/19",
+            "payout": "2026/01/12"
+          },
+          {
+            "code": "009802",
+            "period": "2025Q3",
+            "cash": 0.092,
+            "shares": 5427,
+            "amount": 499,
+            "ex_date": "2025/12/16",
+            "payout": "2026/01/12"
+          },
+          {
+            "code": "00712",
+            "period": "2025Q3",
+            "cash": 0.19,
+            "shares": 29000,
+            "amount": 5510,
+            "ex_date": "2025/12/17",
+            "payout": "2026/01/14"
+          },
+          {
+            "code": "00940",
+            "period": "2025M12",
+            "cash": 0.045,
+            "shares": 9000,
+            "amount": 405,
+            "ex_date": "2026/01/08",
+            "payout": "2026/02/02"
+          },
+          {
+            "code": "0056",
+            "period": "2025Q4",
+            "cash": 0.866,
+            "shares": 6000,
+            "amount": 5196,
+            "ex_date": "2026/01/22",
+            "payout": "2026/02/11"
+          },
+          {
+            "code": "00717",
+            "period": "2025Q4",
+            "cash": 0.141,
+            "shares": 6000,
+            "amount": 846,
+            "ex_date": "2026/01/20",
+            "payout": "2026/02/12"
+          },
+          {
+            "code": "00940",
+            "period": "2026M1",
+            "cash": 0.045,
+            "shares": 9000,
+            "amount": 405,
+            "ex_date": "2026/02/02",
+            "payout": "2026/03/02"
+          },
+          {
+            "code": "00878",
+            "period": "2025Q4",
+            "cash": 0.42,
+            "shares": 28500,
+            "amount": 11970,
+            "ex_date": "2026/02/26",
+            "payout": "2026/03/23"
+          },
+          {
+            "code": "00891",
+            "period": "2025Q4",
+            "cash": 0.75,
+            "shares": 18000,
+            "amount": 13500,
+            "ex_date": "2026/02/26",
+            "payout": "2026/03/25"
+          },
+          {
+            "code": "00940",
+            "period": "2026M2",
+            "cash": 0.045,
+            "shares": 9000,
+            "amount": 405,
+            "ex_date": "2026/03/11",
+            "payout": "2026/04/01"
+          },
+          {
+            "code": "009802",
+            "period": "2025Q4",
+            "cash": 0.092,
+            "shares": 5427,
+            "amount": 499,
+            "ex_date": "2026/03/17",
+            "payout": "2026/04/13"
+          },
+          {
+            "code": "00713",
+            "period": "2025Q4",
+            "cash": 0.78,
+            "shares": 5173,
+            "amount": 4035,
+            "ex_date": "2026/03/20",
+            "payout": "2026/04/14"
+          },
+          {
+            "code": "00712",
+            "period": "2025Q4",
+            "cash": 0.19,
+            "shares": 29000,
+            "amount": 5510,
+            "ex_date": "2026/03/18",
+            "payout": "2026/04/15"
+          },
+          {
+            "code": "00940",
+            "period": "2026M3",
+            "cash": 0.045,
+            "shares": 9000,
+            "amount": 405,
+            "ex_date": "2026/04/09",
+            "payout": "2026/05/04"
+          },
+          {
+            "code": "0056",
+            "period": "2026Q1",
+            "cash": 1.0,
+            "shares": 6000,
+            "amount": 6000,
+            "ex_date": "2026/04/23",
+            "payout": "2026/05/14"
+          },
+          {
+            "code": "00717",
+            "period": "2026Q1",
+            "cash": 0.141,
+            "shares": 6000,
+            "amount": 846,
+            "ex_date": "2026/04/20",
+            "payout": "2026/05/15"
+          }
+        ]
+      },
+      "pending": {
+        "total": 42165,
+        "rows": [
+          {
+            "code": "00940",
+            "period": "2026M4",
+            "cash": 0.045,
+            "shares": 9000,
+            "amount": 405,
+            "ex_date": "2026/05/07",
+            "payout": "2026/06/01"
+          },
+          {
+            "code": "00878",
+            "period": "2026Q1",
+            "cash": 0.66,
+            "shares": 28500,
+            "amount": 18810,
+            "ex_date": "2026/05/19",
+            "payout": "2026/06/12"
+          },
+          {
+            "code": "00891",
+            "period": "2026Q1",
+            "cash": 1.25,
+            "shares": 18000,
+            "amount": 22500,
+            "ex_date": "2026/05/19",
+            "payout": "2026/06/12"
+          },
+          {
+            "code": "00940",
+            "period": "2026M5",
+            "cash": 0.05,
+            "shares": 9000,
+            "amount": 450,
+            "ex_date": "2026/06/09",
+            "payout": "2026/07/01"
+          }
+        ]
+      }
+    },
+    "us": {
+      "annual": [
+        {
+          "year": "2020",
+          "total": 37.26,
+          "currency": "TWD",
+          "original_currency": "TWD"
+        },
+        {
+          "year": "2021",
+          "total": 2220.99,
+          "currency": "TWD",
+          "original_currency": "TWD"
+        },
+        {
+          "year": "2022",
+          "total": 5599.17,
+          "currency": "TWD",
+          "original_currency": "TWD"
+        },
+        {
+          "year": "2023",
+          "total": 10413.41,
+          "currency": "TWD",
+          "original_currency": "TWD"
+        },
+        {
+          "year": "2024",
+          "total": 11820.08,
+          "currency": "TWD",
+          "original_currency": "TWD"
+        },
+        {
+          "year": "2025",
+          "total": 13763.85,
+          "currency": "TWD",
+          "original_currency": "TWD"
+        },
+        {
+          "year": "2026",
+          "total": 5854.38,
+          "currency": "TWD",
+          "original_currency": "USD"
+        }
+      ]
+    }
+  },
+  "div_history": {
+    "tw": {
+      "years": [
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "datasets": [
+        {
+          "label": "0056",
+          "data": [
+            0,
+            0,
+            0,
+            3134,
+            15978,
+            22162,
+            11196
+          ],
+          "backgroundColor": "#00ff88"
+        },
+        {
+          "label": "00692",
+          "data": [
+            3040,
+            19461,
+            20469,
+            18073,
+            10224,
+            18939,
+            0
+          ],
+          "backgroundColor": "#00d4ff"
+        },
+        {
+          "label": "00712",
+          "data": [
+            0,
+            4136,
+            17383,
+            25110,
+            23200,
+            22852,
+            11020
+          ],
+          "backgroundColor": "#ffd700"
+        },
+        {
+          "label": "00713",
+          "data": [
+            0,
+            0,
+            0,
+            4114,
+            22392,
+            24212,
+            8070.94
+          ],
+          "backgroundColor": "#ff6b6b"
+        },
+        {
+          "label": "00717",
+          "data": [
+            0,
+            405,
+            2424,
+            2512,
+            3990,
+            3672,
+            1692.0
+          ],
+          "backgroundColor": "#c77dff"
+        },
+        {
+          "label": "00878",
+          "data": [
+            1150,
+            25623,
+            32730,
+            35340,
+            57285,
+            50445,
+            30780.0
+          ],
+          "backgroundColor": "#ff9500"
+        },
+        {
+          "label": "00891",
+          "data": [
+            0,
+            0,
+            5530,
+            12920,
+            29160,
+            32940,
+            36000
+          ],
+          "backgroundColor": "#7fff00"
+        },
+        {
+          "label": "00940",
+          "data": [
+            0,
+            0,
+            0,
+            0,
+            570,
+            2710,
+            2880.0
+          ],
+          "backgroundColor": "#ff69b4"
+        },
+        {
+          "label": "009802",
+          "data": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            424,
+            998.28
+          ],
+          "backgroundColor": "#00bfff"
+        },
+        {
+          "label": "1101",
+          "data": [
+            0,
+            10094,
+            4996,
+            2747,
+            5499,
+            5499,
+            0
+          ],
+          "backgroundColor": "#ff4500"
+        },
+        {
+          "label": "2330",
+          "data": [
+            0,
+            0,
+            160,
+            599,
+            0,
+            0,
+            0
+          ],
+          "backgroundColor": "#adff2f"
+        },
+        {
+          "label": "2886",
+          "data": [
+            0,
+            6989,
+            10794,
+            12478,
+            15531,
+            17062,
+            0
+          ],
+          "backgroundColor": "#dda0dd"
+        }
+      ]
+    },
+    "us": {
+      "years": [
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "datasets": [
+        {
+          "label": "AAPL",
+          "data": [
+            0,
+            783.06,
+            1924.17,
+            2204.56,
+            2297.07,
+            2390.23,
+            600.26
+          ],
+          "backgroundColor": "#00d4ff"
+        },
+        {
+          "label": "MSFT",
+          "data": [
+            37.26,
+            1437.93,
+            2868.58,
+            3391.46,
+            3743.53,
+            4132.85,
+            1100.33
+          ],
+          "backgroundColor": "#00ff88"
+        },
+        {
+          "label": "BND",
+          "data": [
+            0,
+            0,
+            608.76,
+            4817.39,
+            5779.48,
+            7240.77,
+            2429.64
+          ],
+          "backgroundColor": "#ffd700"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "stockCost": 2920542,
+    "stockMktval": 6231124,
+    "annualDiv": 108490,
+    "yieldCost": "3.71%",
+    "yieldCur": "1.74%"
+  }
+}

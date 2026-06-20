@@ -1,0 +1,38 @@
+# 持股自動更新 - 美股時段（台灣 22:30-05:00）每10分鐘
+# 持股自動更新 - 美股時段（台灣 21:30-04:00，DST）每10分鐘
+*/10 21-23,0-4 * * 0-6 /home/jhe/.openclaw/workspace/scripts/cron-stock-update.sh
+# 持股自動更新 - 台股時段（台灣 09:00-13:30）每10分鐘
+*/10 9-13 * * 0-6 /home/jhe/.openclaw/workspace/scripts/cron-stock-update.sh
+# 持股自動更新 - 非交易時段每30分鐘（維持）
+*/30 6-8,14-21 * * 0-6 /home/jhe/.openclaw/workspace/scripts/cron-stock-update.sh
+# 狀態頁自動更新 - 每小時一次（整天）
+0 * * * * /home/jhe/.openclaw/workspace/scripts/cron-status-update.sh
+# 天氣更新 - 每30分鐘（Windy GFS）
+*/30 * * * * /home/jhe/.openclaw/workspace/scripts/fetch-weather-to-r2.sh >> /home/jhe/.openclaw/workspace/logs/weather.log 2>&1
+# 風速警示 - 每天 08:00, 12:00, 18:00
+0 8,12,18 * * * /home/jhe/.openclaw/workspace/scripts/wind-alert.sh >> /home/jhe/.openclaw/workspace/logs/wind_alert.log 2>&1
+0 */6 * * * cd /home/jhe/.openclaw/workspace && python3 scripts/fetch_tw_dividend_detail.py >> logs/cron-stock.log 2>&1
+0 20 * * * python3 /home/jhe/.openclaw/workspace/scripts/update_dividend_data.py >> /home/jhe/.openclaw/workspace/logs/dividend_update.log 2>&1
+0 15 * * * cd /home/jhe/.openclaw/workspace && python3 scripts/gen_portfolio_data.py >> logs/cron-stock.log 2>&1
+
+# 台灣銀行牌告利率 - 平日每30分鐘
+*/30 9-16 * * 1-5 /usr/bin/python3 /home/jhe/.openclaw/workspace/scripts/scrape_taiwan_bank_rate.py >> /home/jhe/.openclaw/workspace/logs/exchange_rate.log 2>&1
+# 美股除息行事曆 - 每天早上9點
+0 9 * * * /usr/bin/python3 /home/jhe/.openclaw/workspace/scripts/cron_us_dividend.py >> /home/jhe/.openclaw/workspace/logs/us_dividend_cron.log 2>&1
+# 向量資料庫每週同步（週日凌晨3點）
+*/30 9-13 * * 0-6 /home/jhe/.openclaw/workspace/scripts/fetch_volume_rank.py >> /home/jhe/.openclaw/workspace/logs/volume_cron.log 2>&1
+0 14 * * 0-6 /home/jhe/.openclaw/workspace/scripts/fetch_volume_rank.py >> /home/jhe/.openclaw/workspace/logs/volume_cron.log 2>&1
+@reboot /home/jhe/.openclaw/scripts/vm_boot_notify.sh
+5 14 * * 0-6 cd /home/jhe/.openclaw/workspace && python3 scripts/analyze_market_trend.py >> logs/volume_cron.log 2>&1
+0 16 */3 * * cd /home/jhe/.openclaw/workspace/scripts/pgvector && ./etl_memory_with_notify.sh >> /home/jhe/.openclaw/workspace/scripts/pgvector/logs/etl_memory.log 2>&1
+
+# === 美股科技七巨頭報告（週日 09:00）===
+0 9 * * 0 cd /home/jhe/.openclaw/workspace && python3 scripts/us_tech_report.py >> logs/us_tech_report.log 2>&1
+
+# === Crypto 分析報告（週三、週六 10:00）===
+0 10 * * 3,6 cd /home/jhe/.openclaw/workspace && python3 scripts/crypto_report.py >> logs/crypto_report.log 2>&1
+
+# === US Tech Giants 報告（週五 10:00）===
+0 10 * * 5 cd /home/jhe/.openclaw/workspace && python3 scripts/us_giants_report.py >> logs/us_giants_report.log 2>&1
+
+0 10 * * 1,4 cd /home/jhe/.openclaw/workspace && python3 scripts/pokemon_30th_report.py >> logs/pokemon_report.log 2>&1

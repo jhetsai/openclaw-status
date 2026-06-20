@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>向量資料庫系統建置報告 - 2026-05-13</title>
+  <style>
+    body { font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif; max-width: 750px; margin: 0 auto; padding: 20px; line-height: 1.8; }
+    h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
+    h2 { color: #34495e; border-left: 5px solid #3498db; padding-left: 12px; margin-top: 35px; padding-top: 5px; }
+    h3 { color: #555; margin-top: 25px; }
+    table { border-collapse: collapse; width: 100%; margin: 15px 0; font-size: 14px; }
+    th, td { border: 1px solid #bbb; padding: 8px 12px; text-align: left; }
+    th { background: #3498db; color: white; font-weight: normal; }
+    tr:nth-child(even) { background: #f5f5f5; }
+    code { background: #eee; padding: 2px 5px; border-radius: 3px; font-size: 13px; }
+    pre { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+    .metric-box { border: 2px solid #3498db; padding: 15px; margin: 15px 0; text-align: center; }
+    .metric-box table { margin: 10px 0; }
+    .info-box { background: #e8f4fd; padding: 12px 15px; border-radius: 5px; margin: 15px 0; }
+    .warning-box { background: #fff3cd; padding: 12px 15px; border-radius: 5px; margin: 15px 0; }
+    hr { border: none; border-top: 1px solid #ddd; margin: 25px 0; }
+    p { margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+<h1>向量資料庫系統建置報告</h1>
+<p><strong>建置日期：</strong>2026-05-13（星期三）20:30 - 21:00</p>
+<p><strong>花費時間：</strong>約 30 分鐘</p>
+
+<hr/>
+
+<div class="metric-box">
+<p><strong>安裝摘要</strong></p>
+<table>
+<tr><td style="text-align:center;padding:8px;"><strong>3</strong><br/>階段完成</td>
+<td style="text-align:center;padding:8px;"><strong>450</strong><br/>Vector Chunks</td>
+<td style="text-align:center;padding:8px;"><strong>64MB</strong><br/>Embedding 模型</td>
+<td style="text-align:center;padding:8px;"><strong>NT$0</strong><br/>月費</td></tr>
+</table>
+</div>
+
+---
+
+## 一、技術架構
+
+<h3>1.1 系統組成</h3>
+<table>
+<tr><th>組件</th><th>版本</th><th>用途</th></tr>
+<tr><td>Docker</td><td>29.1.3</td><td>容器化執行環境</td></tr>
+<tr><td>PostgreSQL</td><td>17.9</td><td>關聯式資料庫</td></tr>
+<tr><td>pgvector</td><td>0.8.2</td><td>向量搜尋擴展</td></tr>
+<tr><td>sentence-transformers</td><td>5.5.0</td><td>Embedding 模型</td></tr>
+<tr><td>all-MiniLM-L6-v2</td><td>-</td><td>384 維度向量模型</td></tr>
+<tr><td>Python</td><td>3.12.3</td><td>資料處理</td></tr>
+</table>
+
+<h3>1.2 資料流向</h3>
+<pre>
+memory/*.md  ->  ETL 腳本  ->  PostgreSQL/pgvector  <-  搜尋引擎
+stock JSON       (chunk+embed)                           search_engine.py
+</pre>
+
+---
+
+## 二、資料庫內容
+
+<h3>2.1 向量資料表</h3>
+<table>
+<tr><th>資料表</th><th>筆數</th><th>說明</th></tr>
+<tr><td>memory_chunks</td><td>441</td><td>對話歷史（60個檔案）</td></tr>
+<tr><td>stock_chunks</td><td>9</td><td>持股資料（5 portfolio + 4 div_history）</td></tr>
+</table>
+
+<h3>2.2 資料來源</h3>
+<p><strong>memory_chunks（對話記憶）：</strong></p>
+<ul>
+<li><code>memory/2026-04-15.md</code>（52 個 chunks，最多）</li>
+<li><code>memory/telegram_1181571031.md</code>（31 個 chunks）</li>
+<li><code>memory/dreaming/light/*.md</code>（日常瑣事）</li>
+<li><code>memory/tw_stock_dividend.md</code>（台股配息資料）</li>
+</ul>
+
+<p><strong>stock_chunks（持股資料）：</strong></p>
+<ul>
+<li><code>assets/portfolio_data.json</code>（台股+美股持股總覽）</li>
+<li><code>us_stock/div_history.json</code>（AAPL, MSFT, ARKK, BND 配息歷史）</li>
+</ul>
+
+---
+
+## 三、查詢方式
+
+<h3>3.1 基本指令</h3>
+<pre>
+cd /home/jhe/.openclaw/workspace/scripts/pgvector
+echo "你的問題" | python3 search_engine.py
+</pre>
+
+<h3>3.2 查詢模式</h3>
+<table>
+<tr><th>模式</th><th>指令</th><th>範圍</th></tr>
+<tr><td>全部</td><td><code>search_engine.py all</code></td><td>memory + stock</td></tr>
+<tr><td>僅記憶</td><td><code>search_engine.py memory</code></td><td>僅對話歷史</td></tr>
+<tr><td>僅持股</td><td><code>search_engine.py stock</code></td><td>僅持股資料</td></tr>
+</table>
+
+<h3>3.3 輸出格式</h3>
+<pre>
+[{"source": "memory", "file": "2026-04-10.md", "chunk": 3, "text": "...", "score": 0.82},
+ {"source": "stock", "file": "AAPL", "chunk": 0, "text": "...", "score": 0.65}]
+</pre>
+
+<h3>3.4 分數說明</h3>
+<table>
+<tr><th>分數範圍</th><th>意義</th></tr>
+<tr><td>> 0.7</td><td>高度相關，幾乎是問同一件事</td></tr>
+<tr><td>0.5 - 0.7</td><td>中等相關，可能有參考價值</td></tr>
+<tr><td>< 0.5</td><td>輕微相關，可能只是用詞巧合</td></tr>
+</table>
+
+---
+
+## 四、搜尋引擎腳本
+
+<table>
+<tr><th>腳本</th><th>用途</th></tr>
+<tr><td><code>search_engine.py</code></td><td>互動式搜尋（stdin/stdout）</td></tr>
+<tr><td><code>etl_memory.py</code></td><td>匯入 memory/*.md 到資料庫</td></tr>
+<tr><td><code>etl_stock.py</code></td><td>匯入持股資料到資料庫</td></tr>
+<tr><td><code>docker-compose.yml</code></td><td>PostgreSQL + pgvector 容器設定</td></tr>
+</table>
+
+---
+
+## 五、搜尋範例
+
+<table>
+<tr><th>搜尋詞</th><th>結果</th><th>分數</th></tr>
+<tr><td>0056 配息</td><td>tw_stock_dividend.md（配息資料）</td><td>0.391</td></tr>
+<tr><td>AAPL 最近怎樣</td><td>stock_chunks（配息記錄）+ memory（歷史股價）</td><td>0.715</td></tr>
+<tr><td>台積電 股價</td><td>相關持股資料</td><td>0.344</td></tr>
+<tr><td>釜山 行程</td><td>BUSAN_TRIP_2026.md（旅遊規劃）</td><td>相似</td></tr>
+</table>
+
+---
+
+## 六、系統優化效益
+
+<h3>6.1 改善前 vs 改善後</h3>
+<table>
+<tr><th>情境</th><th>以前</th><th>現在</th></tr>
+<tr><td>搜尋「配息」相關討論</td><td>關鍵詞精確匹配</td><td>語意相似即可找到</td></tr>
+<tr><td>問「我之前說過的」</td><td>找不到（用詞不同）</td><td>找出相關內容</td></tr>
+<tr><td>跨檔案關聯性</td><td>難以關聯</td><td>向量相似度自動關聯</td></tr>
+<tr><td>搜尋速度</td><td>較慢（全文掃描）</td><td>< 2 秒</td></tr>
+</table>
+
+<h3>6.2 適用場景</h3>
+<p><strong>適合：</strong></p>
+<ul>
+<li>回顧過去對某檔股票的想法</li>
+<li>搜尋「那時候問過的事」</li>
+<li>跨月份的討論關聯</li>
+</ul>
+
+<p><strong>不適合：</strong></p>
+<ul>
+<li>即時股價查詢（應用 Finnhub API）</li>
+<li>即時新聞（應用網路搜尋）</li>
+<li>班表查詢（看 MEMORY.md 即可）</li>
+</ul>
+
+---
+
+## 七、資料更新方式
+
+<h3>7.1 手動更新 memory（對話歷史）</h3>
+<pre>
+cd /home/jhe/.openclaw/workspace/scripts/pgvector
+python3 etl_memory.py
+</pre>
+
+<h3>7.2 手動更新持股資料</h3>
+<pre>
+cd /home/jhe/.openclaw/workspace/scripts/pgvector
+python3 etl_stock.py
+</pre>
+
+---
+
+## 八、風險與限制
+
+<table>
+<tr><th>風險</th><th>說明</th><th>解決方式</th></tr>
+<tr><td>記憶體佔用</td><td>模型載入需要 ~1GB RAM</td><td>有足夠記憶體（5.5GB available）</td></tr>
+<tr><td>新資料同步</td><td>目前無自動同步</td><td>手動執行 ETL</td></tr>
+<tr><td>中文斷詞</td><td>jieba 可能偶爾斷錯</td><td>可接受，不影響理解</td></tr>
+<tr><td>向量飄移</td><td>模型版本更新可能改變</td><td>重新 ETL 即可</td></tr>
+</table>
+
+---
+
+## 九、相關檔案位置
+
+<pre>
+/home/jhe/.openclaw/workspace/scripts/pgvector/
+├── docker-compose.yml    # 資料庫容器設定
+├── search_engine.py      # 搜尋引擎（本，互動模式）
+├── etl_memory.py         # memory 匯入腳本
+└── etl_stock.py          # stock 匯入腳本
+
+/home/jhe/.openclaw/workspace/TOOLS.md
+# 已更新：PostgreSQL + pgvector 安裝狀態與查詢方式
+</pre>
+
+---
+
+## 十、結論
+
+這次安裝建立了「語意搜尋」能力，讓我對你的對話歷史和持股資料有更深入的理解。
+
+<strong>核心價值：减少我的失億機率</strong>
+
+當你未來問「我之前說過關於 XXX 的事」時，我能夠快速找到相關內容，即使你用詞不同於當初的記錄。
+
+系統完全免費、執行在本地 VM（不外傳資料），24 小時可用。
+
+---
+
+<p style="color: #888; font-size: 13px; margin-top: 40px;">
+報告生成時間：2026-05-13 20:50 GMT+8 | 向量資料庫系統建置報告 v1.1
+</p>
+
+</body>
+</html>

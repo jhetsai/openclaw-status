@@ -121,11 +121,14 @@ def print_report(analysis):
     a = analysis
     code = a["code"]
     name = a["name"]
+    report_time = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
     print(f"\n{'='*50}")
     print(f"{code} {name} — 技術分析報告")
     print(f"{'='*50}")
-    print(f"日期：{a['date']}  收盤：{a['price']} ({a['change']:+.2f} / {a['change_pct']:+.2f}%)")
-    print(f"歷史資料：{a['data_points']} 筆")
+    print(f"📅 報告產生：{report_time}  資料截止：{a['date']}")
+    print(f"   收盤：{a['price']} ({a['change']:+.2f} / {a['change_pct']:+.2f}%)")
+    print(f"   歷史資料：{a['data_points']} 筆")
+    print(f"   ⚠️  本報告為技術指標計算，不構成投資建議")
     print()
     print(f"──  均線系統 ──────────────────────")
     print(f"  MA5:  {fmt(a['ma5'])}  {'▲' if a['price'] > a['ma5'] else '▼'}")
@@ -210,8 +213,10 @@ if __name__ == "__main__":
         print_report(results[target])
     else:
         # All stocks mode - summary table
+        report_time = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
         print(f"\n{'='*70}")
         print(f"持股技術分析總覽")
+        print(f"報告產生：{report_time}  ⚠️ 不構成投資建議")
         print(f"{'='*70}")
         print(f"{'代碼':>6} {'名稱':<10} {'現價':>6} {'日%':>6} {'K':>5} {'D':>5} {'OSC':>6} {'MA5':>6} {'MA20':>6} {'MA60':>6} {'20H':>6} {'20L':>6} {'判斷'}")
         print(f"{'-'*70}")

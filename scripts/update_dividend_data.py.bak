@@ -1,0 +1,300 @@
+#!/usr/bin/env python3
+"""
+台股除息資料抓取 - 重寫版 (2026-06-05)
+使用 Yahoo Finance 內嵌 JSON 結構化資料
+- 支援個股 (1101, 2886) 與 ETF (0056, 00692 等)
+- 輸出格式與舊版完全一致，確保前端頁面不破版
+"""
+import json, re, subprocess, datetime
+from html.parser import HTMLParser
+
+# === 共用 HTML 解析器（保留舊版以防備援）===
+class DivParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.texts = []
+    def handle_data(self, d):
+        if d.strip():
+            self.texts.append(d.strip())
+
+# === 新方法：JSON 內嵌解析 ===
+def fetch_dividends_json(code):
+    """從 Yahoo 抓取配息資料，用 JSON 內嵌結構解析
+    回傳 list of dict: [{exDate, cash, payDate}, ...]"""
+    url = f'https://tw.stock.yahoo.com/quote/{code}.TW/dividend'
+    try:
+        r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
+                           capture_output=True, text=True, timeout=12)
+        html = r.stdout
+    except:
+        return []
+    
+    dividends = []
+    # 找 {"exDate":"...","year":"...","period":"...","symbol":"<code>",...
+    pattern = re.compile(r'\{"exDate":"[^"]+","year":"[^"]+","period":"[^"]*","symbol":"' + code + r'",')
+    
+    for m in pattern.finditer(html):
+        start = m.start()
+        # 平衡大括號解析
+        depth = 0
+        in_str = False
+        escape = False
+        end = start
+        for i in range(start, min(start + 2500, len(html))):
+            c = html[i]
+            if escape:
+                escape = False
+                continue
+            if c == '\\':
+                escape = True
+                continue
+            if c == '"' and not escape:
+                in_str = not in_str
+                continue
+            if in_str:
+                continue
+            if c == '{':
+                depth += 1
+            elif c == '}':
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+        
+        try:
+            d = json.loads(html[start:end])
+            ex = d.get('exDate', '')
+            cash_obj = d.get('exDividend', {})
+            cash = cash_obj.get('cash', '0') if cash_obj else '0'
+            pay = cash_obj.get('cashPayDate', '') if cash_obj else ''
+            if ex and cash and float(cash) > 0:
+                dividends.append({
+                    'exDate': ex[:10].replace('-', '/'),
+                    'cash': float(cash),
+                    'payDate': pay[:10].replace('-', '/') if pay else ''
+                })
+        except:
+            pass
+    
+    return dividends
+
+# === 備援方法：舊版 HTML 解析（給無法用新方法抓的股）===
+def fetch_dividends_html_legacy(code):
+    """舊版 regex 解析，抓 ETF 等有 Q1-Q4 標籤的"""
+    url = f'https://tw.stock.yahoo.com/quote/{code}.TW/dividend'
+    try:
+        r = subprocess.run(['curl', '-s', '--max-time', '10', '-H', 'User-Agent: Mozilla/5.0', url],
+                           capture_output=True, text=True, timeout=12)
+        html = r.stdout
+    except:
+        return []
+    
+    dividends = []
+    for m in re.finditer(r'>(\d{4}Q[1-4])</div>|>(\d{4}M\d{1,2})</div>', html):
+        period = m.group(1) or m.group(2)
+        start = m.start()
+        chunk = html[start:start+1500]
+        p = DivParser()
+        p.feed(chunk)
+        texts = p.texts
+        if texts and texts[0].startswith('>'):
+            texts[0] = texts[0][1:]
+        try:
+            p_idx = texts.index(period)
+        except ValueError:
+            continue
+        cash = None
+        dates = []
+        for t in texts[p_idx+1:]:
+            if cash is None and re.match(r'^\d+\.\d+$', t):
+                cash = float(t)
+            elif re.match(r'^\d{4}/\d{2}/\d{2}$', t):
+                dates.append(t)
+        if not (cash and len(dates) >= 2):
+            continue
+        dividends.append({
+            'exDate': dates[0],
+            'cash': cash,
+            'payDate': dates[1]
+        })
+    return dividends
+
+
+def main():
+    # === 讀取持股清單 ===
+    TW_JSON = "/home/jhe/.openclaw/workspace/taiwan_stock/taiwan_stocks.json"
+    with open(TW_JSON) as f:
+        tw_stocks = [s for s in json.load(f) if "shares" in s]
+    shares_map_tw = {s['symbol']: s['shares'] for s in tw_stocks}
+    name_map_tw = {s['symbol']: s['name'] for s in tw_stocks}
+    today = datetime.datetime.now().strftime('%Y/%m/%d')
+    
+    confirmed_tw, pending_tw = [], []
+    
+    print("=== 抓取台股除息資料 ===")
+    for code in shares_map_tw:
+        print(f"  抓 {code} ({name_map_tw.get(code, '?')}) ...", end=' ')
+        
+        # 先用新方法
+        divs = fetch_dividends_json(code)
+        # 如果新方法沒抓到，fallback 到舊方法
+        if not divs:
+            divs = fetch_dividends_html_legacy(code)
+            print(f"[舊方法] {len(divs)} 筆")
+        else:
+            print(f"[新方法] {len(divs)} 筆")
+        
+        sh = shares_map_tw[code]
+        for d in divs:
+            ex_date = d['exDate']
+            pay_date = d['payDate']
+            cash = d['cash']
+            # 只保留 2026 年的配息
+            if not (ex_date.startswith('2026/') or pay_date.startswith('2026/')):
+                continue
+            amt = round(sh * cash)
+            row = {
+                'code': code,
+                'period': '2026',  # 簡化期間標籤
+                'cash': cash,
+                'shares': sh,
+                'amount': amt,
+                'ex_date': ex_date,
+                'payout': pay_date,
+            }
+            if pay_date < today:
+                confirmed_tw.append(row)
+            else:
+                pending_tw.append(row)
+    
+    # === 載入現有的 dividend_data.json 保留其他欄位 ===
+    OUT = "/home/jhe/.openclaw/workspace/assets/dividend_data.json"
+    with open(OUT) as f:
+        data = json.load(f)
+    
+    # === 更新 tw.confirmed / tw.pending（保持原結構）===
+    data['tw']['confirmed'] = {
+        'total': sum(r['amount'] for r in confirmed_tw),
+        'rows': confirmed_tw
+    }
+    data['tw']['pending'] = {
+        'total': sum(r['amount'] for r in pending_tw),
+        'rows': pending_tw
+    }
+    
+    # === 補上 stationeryName 與其他前端需要的欄位 ===
+    for r in confirmed_tw + pending_tw:
+        r['stationeryName'] = name_map_tw.get(r['code'], r['code'])
+    
+    # === 更新 div_info ===
+    # 正確的頻率判定：用 2025 年配息次數（避免 2026 還在進行中）
+    if 'div_info' not in data['tw']:
+        data['tw']['div_info'] = {}
+
+    # 先建立 freq 對照表（用 2024+2025+2026 累計配息資料判定頻率）
+    # 2026-06-06 修正：舊版只看 2025 一年，新基金（如 009802 2024-09 上市）會誤判
+    freq_map = {}
+    for code in shares_map_tw:
+        divs = fetch_dividends_json(code)
+        if not divs:
+            divs = fetch_dividends_html_legacy(code)
+        
+        # 1. 計算 2024-2026 三年配息次數
+        cnt_2024 = sum(1 for d in divs if d['exDate'].startswith('2024'))
+        cnt_2025 = sum(1 for d in divs if d['exDate'].startswith('2025'))
+        cnt_2026 = sum(1 for d in divs if d['exDate'].startswith('2026'))
+        total_recent = cnt_2024 + cnt_2025 + cnt_2026
+        
+        # 2. 計算 2024-2026 出現配息的不同「月-of-year」數（只取月分，不取年）
+        #    半年配：總是 7月+11月（跨年重複）→ 2 個不同月
+        #    季配：1/4/7/10 或 3/6/9/12 等 4 個不同月
+        #    月配：1..12 共 12 個不同月
+        #    新季配基金（還在累積中）：可能只有 3 個不同月
+        unique_months_of_year = set()
+        for d in divs:
+            ex = d['exDate']
+            # 解析月份（exDate 格式可能是 YYYY/MM/DD 或 YYYY-MM-DD 或 YYYY/M/D）
+            m = None
+            for fmt in ('%Y/%m/%d', '%Y-%m-%d', '%Y/%d/%m'):
+                try:
+                    dt = datetime.datetime.strptime(ex, fmt)
+                    m = dt.month
+                    break
+                except ValueError:
+                    continue
+            if m is None:
+                # 退而求其次用 split
+                parts = re.split(r'[-/]', ex)
+                if len(parts) >= 2 and parts[0] in ['2024', '2025', '2026']:
+                    try:
+                        m = int(parts[1])
+                    except ValueError:
+                        continue
+            if m is not None and d['exDate'][:4] in ['2024', '2025', '2026']:
+                unique_months_of_year.add(m)
+        umo_count = len(unique_months_of_year)
+        
+        # 3. 檢查 period 欄位是否有 Q1-Q4 標籤（確認是否季配）
+        periods = set()
+        for d in divs:
+            p = d.get('period', '')
+            if p and any(q in p for q in ['Q1', 'Q2', 'Q3', 'Q4']):
+                periods.add(p)
+        has_q_pattern = len(periods) >= 3  # 有 Q1, Q2, Q3, Q4 中至少 3 個
+        
+        # 4. 推斷頻率（關鍵是 umo_count：月-of-year 唯一數）
+        if cnt_2025 >= 11:
+            # 2025 滿 12 個月 → 月配
+            freq_map[code] = '月配'
+        elif umo_count >= 4 or has_q_pattern:
+            # 4 個以上不同月-of-year → 季配（明確）
+            freq_map[code] = '季配'
+        elif umo_count == 3 and total_recent >= 3:
+            # 3 個不同月（可能新季配基金還沒累積到 4 個）→ 預設 季配
+            freq_map[code] = '季配'
+        elif umo_count == 2:
+            # 2 個不同月（跨年重複）→ 半年配
+            freq_map[code] = '半年配'
+        elif umo_count == 1 and total_recent >= 2:
+            # 1 個不同月（跨年重複）→ 年配
+            freq_map[code] = '年配'
+        elif umo_count == 1:
+            # 只有 1 筆資料 → 預設 年配
+            freq_map[code] = '年配'
+        else:
+            # 沒有資料 → 預設 年配
+            freq_map[code] = '年配'
+
+    # 對有 2026 紀錄的股，用最新一筆配息 + 正確的 freq 覆寫 div_info
+    for r in pending_tw + confirmed_tw:
+        code = r['code']
+        cash = r['cash']
+        freq = freq_map.get(code, '年配')
+        if freq == '月配':
+            ann = round(cash * 12, 4)
+        elif freq == '季配':
+            ann = round(cash * 4, 4)
+        elif freq == '半年配':
+            ann = round(cash * 2, 4)
+        else:
+            ann = cash
+        data['tw']['div_info'][code] = {
+            'div': cash,
+            'freq': freq,
+            'ann_div': ann
+        }
+    
+    # === 更新時間戳 ===
+    data['updated'] = datetime.datetime.now().strftime('%Y/%m/%d %H:%M (新方法自動抓取)')
+    
+    # === 寫回 ===
+    with open(OUT, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    print(f"\n=== 完成 ===")
+    print(f"  confirmed: {len(confirmed_tw)} 筆, total NT$ {data['tw']['confirmed']['total']:,}")
+    print(f"  pending: {len(pending_tw)} 筆, total NT$ {data['tw']['pending']['total']:,}")
+
+
+if __name__ == "__main__":
+    main()
