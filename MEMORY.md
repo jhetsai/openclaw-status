@@ -51,3 +51,8 @@
 - 2026-05-08：$14,554.63 USD（+US$21.35，差額來源待查）
 - portfolio_data.json 已同步
 - 2026-06-18 更新：$14,575.98 + $35.03 = $14,611.01
+
+## Promoted From Short-Term Memory (2026-06-22)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:25:25 -->
+- 下次執行記憶索引 ETL，**使用 `scripts/pgvector/etl_memory_v3.py`**，不再使用舊版 etl_memory.py [score=0.842 recalls=0 avg=0.620 source=memory/2026-06-18.md:25-25]

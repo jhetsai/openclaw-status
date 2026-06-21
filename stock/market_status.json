@@ -1,11 +1,11 @@
 {
-  "date": "2026-06-20 20:00:26",
+  "date": "2026-06-22 07:00:36",
   "tw": {
-    "status": "休市中",
-    "holiday": true
+    "status": "交易中",
+    "holiday": false
   },
   "us": {
-    "status": "休市中",
-    "holiday": true
+    "status": "交易中",
+    "holiday": false
   }
 }

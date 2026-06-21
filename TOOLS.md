@@ -213,6 +213,53 @@ cd /home/jhe/.openclaw/workspace/scripts/pgvector && echo "你的問題" | pytho
 - PostgreSQL 資料庫壞掉 → 容器可以砍掉重建，資料可從 workspace 匯入
 - 如果影響到 OpenClaw → 用 backup-workspace.sh 還原
 
+## 太陽能發電記錄 SOP（2026-06-21 新增）
+
+**觸發時機：** 使用者提供累積總發電量（kWh）時，必須同步執行以下兩步
+
+**流程代號：** Solar Record Workflow（SRW）
+
+```
+查詢天氣 → 更新 CSV → 更新記憶檔
+```
+
+### Step 1：查詢天氣（同步執行）
+```bash
+curl "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.stdin); w=d['current_condition'][0]; print(w['temp_C'], w['humidity'], w['windspeedKmph'], w['weatherDesc'][0]['value'])"
+```
+
+### Step 2：更新 `solar_history.csv`
+- 路徑：`/home/jhe/.openclaw/workspace/solar_history.csv`
+- 格式：`日期,累計kWh,日發電kWh,天氣,UV指數,風速km/h,氣溫°C,備註`
+- 日發電 = 本次累計 - 上次累計
+- 若無天氣資料，天氣填入「晴（估）」，其餘留空並加⚠️註記
+
+### Step 3：更新 `memory/YYYY-MM-DD.md`
+- 路徑：`/home/jhe/.openclaw/workspace/memory/YYYY-MM-DD.md`
+- 分類：`## 發電記錄（累積）`
+- 必填：累積總發電量（kWh）、記錄時間
+- 同步更新記憶，方便日後快速查閱
+
+### CSV 欄位對照
+| 欄位 | 來源 |
+|------|------|
+| 日期 | 今天（YYYY-MM-DD） |
+| 累計kWh | 使用者提供 |
+| 日發電kWh | 計算（本次 - 上次） |
+| 天氣 | wttr.in 查詢 |
+| UV指數 | wttr.in `uvIndex` |
+| 風速km/h | wttr.in `windspeedKmph` |
+| 氣溫°C | wttr.in `temp_C` |
+
+---
+
+**範例：**
+```
+2026-06-21,282.4,0.8,晴,0,11,30,體感33°C
+```
+
+---
+
 ## 賽程查詢規則（2026-05-16 新增）
 
 **查詢優先順序：**
