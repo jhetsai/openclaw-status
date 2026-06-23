@@ -213,19 +213,19 @@ cd /home/jhe/.openclaw/workspace/scripts/pgvector && echo "你的問題" | pytho
 - PostgreSQL 資料庫壞掉 → 容器可以砍掉重建，資料可從 workspace 匯入
 - 如果影響到 OpenClaw → 用 backup-workspace.sh 還原
 
-## 太陽能發電記錄 SOP（2026-06-21 新增）
+## 太陽能發電記錄 SOP（2026-06-21 新增，2026-06-23 修訂）
 
-**觸發時機：** 使用者提供累積總發電量（kWh）時，必須同步執行以下兩步
+**觸發時機：** 使用者提供累積總發電量（kWh）時，必須同步執行以下三步
 
 **流程代號：** Solar Record Workflow（SRW）
 
 ```
-查詢天氣 → 更新 CSV → 更新記憶檔
+查詢天氣 → 更新 CSV → 立即重建 index.html → 更新記憶檔
 ```
 
 ### Step 1：查詢天氣（同步執行）
 ```bash
-curl "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.stdin); w=d['current_condition'][0]; print(w['temp_C'], w['humidity'], w['windspeedKmph'], w['weatherDesc'][0]['value'])"
+curl -s "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.stdin); w=d['current_condition'][0]; print(w['temp_C'], w['humidity'], w['windspeedKmph'], w['weatherDesc'][0]['value'], w.get('uvIndex',0))"
 ```
 
 ### Step 2：更新 `solar_history.csv`
@@ -234,7 +234,14 @@ curl "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.s
 - 日發電 = 本次累計 - 上次累計
 - 若無天氣資料，天氣填入「晴（估）」，其餘留空並加⚠️註記
 
-### Step 3：更新 `memory/YYYY-MM-DD.md`
+### Step 3：立即重建 `solar/index.html`
+```bash
+python3 /home/jhe/.openclaw/workspace/solar/gen_solar_html.py
+```
+- CSV 更新後**立即執行**，確保頁面與資料同步
+- 每日凌晨 00:25 自動重建（Cron 已設定）
+
+### Step 4：更新 `memory/YYYY-MM-DD.md`
 - 路徑：`/home/jhe/.openclaw/workspace/memory/YYYY-MM-DD.md`
 - 分類：`## 發電記錄（累積）`
 - 必填：累積總發電量（kWh）、記錄時間
@@ -257,6 +264,8 @@ curl "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.s
 ```
 2026-06-21,282.4,0.8,晴,0,11,30,體感33°C
 ```
+
+**⚠️ 重要：每次更新 CSV 後務必立即執行 Step 3 重建頁面，確保 solar/index.html 同步更新。**
 
 ---
 
@@ -304,3 +313,51 @@ curl "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.s
 | 私密/離線需求 | Qwen2.5:1.5b（本地）|
 | 即時性要求高 | MiniMax M2.7 |
 
+---
+
+## 持股成本均價修正 SOP（2026-06-22 新增）
+
+**觸發時機：** 使用者要求調整持股成本均價（如除息後調整）
+
+**一次性修正流程：**
+
+```
+ Step 1 → 修改 dashboard-collector.py（源頭數據）
+ Step 2 → 修改 taiwan_stock/taiwan_stocks.json（即時股價來源）
+ Step 3 → 執行 gen_stock-html.py（重新產生 HTML）
+ Step 4 → 上傳 stock/index.html 到 R2
+```
+
+**源頭優先原則：**
+- 成本均價寫在兩處：`taiwan_stock/taiwan_stocks.json` 和 `scripts/dashboard-collector.py`
+- `stock/index.html` 由 `gen-stock-html.py` 動態生成
+- 只改 `stock/index.html` 會被 cron 覆蓋回去
+
+**KPI 連動說明：**
+- `gen-stock-html.py` 的 KPI（總成本/累計報酬）從 `taiwan_stock/taiwan_stocks.json` 的成本即時計算
+- 修改成本均價會連帶影響 KPI，兩者無法分離修改
+- 如只需顯示用，KPI 可在 HTML 生成後再手動改回（但下次 cron 仍會覆蓋）
+
+**常見修正指令：**
+```bash
+# 1. 修改源頭（taiwan_stock/taiwan_stocks.json）
+python3 -c "..."  # 直接改 JSON 中的 cost 值
+
+# 2. 重新產生 HTML
+python3 scripts/gen-stock-html.py
+
+# 3. 上傳 R2
+python3 scripts/upload_r2.py workspace/stock/index.html
+```
+
+
+---
+
+## 台股報告（analyze_market_trend.py）
+
+- **2026-06-23 修復**：MiniMax API 直接呼叫失敗（401），改用 OpenRouter 呼叫 `minimax/MiniMax-M2.7`
+  - Endpoint: `https://openrouter.ai/api/v1/chat/completions`
+  - Header: `Authorization: Bearer $OPENROUTER_API_KEY`
+  - Model: `minimax/MiniMax-M2.7`（要加 `minimax/` 前綴）
+  - `max_tokens`: 16000, `temperature`: 0.3
+- 正常產出：8個章節、15k+ 字、PDF 400KB+

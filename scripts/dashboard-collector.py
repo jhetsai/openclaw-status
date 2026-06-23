@@ -22,29 +22,40 @@ from html import escape
 # 設定
 # ============================================================
 R2_ENDPOINT = 'https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com'
-R2_ACCESS_KEY = 'fbe5ece2074eaa2b7829b6986b1cc499'
-R2_SECRET_KEY = 'de99b120611ba90bd5662a4517cb21e60d544ab1c3a015c0cbbbd6e8afa6b5fe'
+R2_ACCESS_KEY = os.environ.get('R2_ACCESS_KEY', '')
+R2_SECRET_KEY = os.environ.get('R2_SECRET_KEY', '')
 R2_BUCKET = 'shared-files'
 R2_PUBLIC_URL = 'https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev'
+
+# Load api_keys if exists
+_api_keys_file = os.path.expanduser('~/.api_keys')
+if os.path.exists(_api_keys_file):
+    with open(_api_keys_file) as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line.startswith('R2_ACCESS_KEY='):
+                R2_ACCESS_KEY = _line.split('=', 1)[1].strip()
+            elif _line.startswith('R2_SECRET_KEY='):
+                R2_SECRET_KEY = _line.split('=', 1)[1].strip()
 
 # 持股設定（同步自 MEMORY.md 2026-06-04）
 TW_STOCKS = [
     ('0056.TW', '0056', '元大高股息', 6000, 26.20),
-    ('00692.TW', '00692', '富邦公司治理', 10074, 21.14),
-    ('00712.TW', '00712', '復華富時不動產', 29000, 9.27),
-    ('00713.TW', '00713', '元大台灣高息低波', 5173, 35.02),
-    ('00717.TW', '00717', '富邦美國特別股', 6000, 13.93),
+    ('00692.TW', '00692', '富邦公司治理', 10074, 21.11),
+    ('00712.TW', '00712', '復華富時不動產', 29000, 9.02),
+    ('00713.TW', '00713', '元大台灣高息低波', 5173, 34.03),
+    ('00717.TW', '00717', '富邦美國特別股', 6000, 13.91),
     ('00878.TW', '00878', '國泰永續高股息', 28500, 7.36),
     ('00891.TW', '00891', '中信關鍵半導體', 18000, 6.89),
-    ('00940.TW', '00940', '元大台灣價值高息', 9000, 8.355),
-    ('009802.TW', '009802', '富邦旗艦50', 5427, 9.17),
-    ('1101.TW', '1101', '台泥', 5499, 38.70),
-    ('2886.TW', '2886', '兆豐金', 10664, 24.32),
+    ('00940.TW', '00940', '元大台灣價值高息', 9000, 8.30),
+    ('009802.TW', '009802', '富邦旗艦50', 5427, 8.99),
+    ('1101.TW', '1101', '台泥', 5499, 38.64),
+    ('2886.TW', '2886', '兆豐金', 10664, 24.33),
 ]
 US_STOCKS = [
     ('AAPL', 'AAPL', '蘋果', 105, 145.02),
     ('MSFT', 'MSFT', '微軟', 55, 263.51),
-    ('BND', 'BND', '債券ETF', 116, 73.22),
+    ('BND', 'BND', '債券ETF', 117, 73.22),
 ]
 
 # ============================================================

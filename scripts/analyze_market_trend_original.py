@@ -124,53 +124,6 @@ def md_to_html(text):
     # 合併連續的 <li> 為 <ul>
     result = '\n'.join(html_lines)
     result = re.sub(r'(<li>.*?</li>\n?)+', lambda m: '<ul>' + m.group(0) + '</ul>', result)
-    # ===== 後處理：強制規範 H2 標題格式 =====
-    # 把「一、今日市場總覽」→ 「1. 【今日市場總覽】」
-    # 把「【今日市場總覽】」→ 維持不變（已是正確格式）
-    # 把「日期：2026年...」之類的非預期標題移除
-    import re as _re2
-    
-    # 移除獨立存在的日期行（如「日期：2026年6月23日（週二）」」）
-    result = _re2.sub(r'<h2>日期[：:]\s*[^<]+</h2>', '', result)
-    
-    # 移除「結語」「總結」「結論」「前言」等額外標題
-    result = _re2.sub(r'<h2>[^<]*(?:結語|總結|結論前言)[^<]*</h2>', '', result)
-    
-    # 強制把中文數字章節改成阿拉伯數字：【一、二、三...】→ 【1.、2.、3.】
-    # (handled by second-block cn_map logic below)
-    
-    # 清理可能產生的空<h2></h2>
-    result = _re2.sub(r'<h2>\s*</h2>', '', result)
-    # 清理多餘的連續空行
-    result = _re2.sub(r'(<p>\s*</p>\s*)+', '<p></p>', result)
-    
-    # ===== 後處理：強制規範格式 =====
-    import re as _re2
-    
-    # 1. 移除非預期的大標題（日期、結語等）
-    # 日期格式：<h2>2026年6月23日（週二）</h2> 或 <h2>日期：...</h2>
-    result = _re2.sub(r'<h2>\s*2026年\d+月\d+日[^<]*</h2>\s*', '', result)
-    result = _re2.sub(r'<h2>日期[：:]\s*[^<]+</h2>\s*', '', result)
-    result = _re2.sub(r'<h2>[^<]*(?:結語|總結|結論|前言|導言)[^<]*</h2>\s*', '', result)
-    # 同時移除 2025/2027 等年份
-    result = _re2.sub(r'<h2>\s*(?:19|20)\d{2}年\d+月\d+日[^<]*</h2>\s*', '', result)
-    
-    # 2. 把中文數字章節編號改成阿拉伯數字
-    cn_map = [('一','1.'), ('二','2.'), ('三','3.'), ('四','4.'), ('五','5.'), ('六','6.'), ('七','7.'), ('八','8.'), ('九','9.')]
-    for cn, ar in cn_map:
-        # 處理「一、今日市場總覽」→ 「1. 今日市場總覽」
-        result = _re2.sub(r'<h2>' + cn + r'、\s*([^<]+)</h2>', r'<h2>' + ar + r'\\1</h2>', result)
-        # 處理【一、xxx】（在【】內的也要換）
-        result = _re2.sub(r'【' + cn + r'、', '【' + ar, result)
-    
-    # 3. 確保8個核心章節都有【】
-    # 抓出現有的h2文字，比對有沒有缺失
-    h2s = _re2.findall(r'<h2>([^<]+)</h2>', result)
-    
-    # 4. 清理空標題、重複空行
-    result = _re2.sub(r'<h2>\s*</h2>', '', result)
-    result = _re2.sub(r'(<p>\s*</p>\s*)+', '<p></p>', result)
-    
     return result
 
 def get_report():
@@ -373,35 +326,53 @@ def build_minimax_prompt(d, overview):
     return prompt
 
 def call_minimax_commentary(prompt):
-    """呼叫 MiniMax API 生成盤勢解讀（經 OpenRouter）"""
-    import os, urllib.request, urllib.error, json
-
-    api_key = os.environ.get('OPENROUTER_API_KEY')
+    """呼叫 MiniMax API 生成盤勢解讀"""
+    import os
+    models_file = os.path.expanduser('/home/jhe/.openclaw/agents/main/agent/models.json')
+    api_key = None
+    if os.path.exists(models_file):
+        try:
+            with open(models_file) as f:
+                d = json.load(f)
+            prov = d.get('providers', {}).get('minimax', {})
+            api_key = prov.get('apiKey')
+        except: pass
     if not api_key:
         return None
 
     body = {
-        "model": "minimax/MiniMax-M2.7",
+        # 【2026-06-02 決策】退回 M2.7
+        # 原因：M3 API 連線 (https://api.minimax.io/anthropic/v1/messages)
+        #       對長 prompt + 長回應 (>8K tokens) 會 180s timeout。
+        #       M2.7 踨 OpenRouter free route 穩定且快速。
+        # 未來如果 M3 API 連線問題解決，請改回 MiniMax-M3。
+        "model": "MiniMax-M2.7",
         "messages": [{"role": "user", "content": prompt}],
         "max_tokens": 16000,
-        "temperature": 0.3
+        "temperature": 0.3,
+        "stream": False
     }
     data = json.dumps(body).encode()
     req = urllib.request.Request(
-        "https://openrouter.ai/api/v1/chat/completions",
+        "https://api.minimax.io/anthropic/v1/messages",
         data=data,
-        headers={"Content-Type": "application/json", "Authorization": "Bearer " + api_key},
+        headers={"Content-Type": "application/json", "x-api-key": api_key, "Authorization": "***" + api_key},
         method="POST"
     )
     try:
         with urllib.request.urlopen(req, timeout=300) as r:
             resp = json.loads(r.read())
-            content = resp.get('choices', [{}])[0].get('message', {}).get('content', '')
+            texts = []
+            for block in resp.get('content', []):
+                if block.get('type') == 'text':
+                    texts.append(block['text'])
+            content = ''.join(texts) if texts else None
+            # 去重複：如果內容裡有重複句，去除
             if content:
                 content = dedup_repeats(content)
             return content
     except Exception as e:
-        print("OpenRouter API failed: " + str(e))
+        print("MiniMax API failed: " + str(e))
         return None
 
 def dedup_repeats(text):
@@ -472,12 +443,12 @@ def format_report(d, overview):
     rising = sorted(latest.items(), key=lambda x: x[1][3], reverse=True)[:5]
     lines += ["", "【今日漲幅 Top5】"]
     for sym, (_, name, price, chg, vol) in rising:
-        lines.append("  📈 {name}({sym}) *{chg:.2f}%* $ {price} ({vol}萬張)".format(name=name, sym=sym, chg=chg, price=price, vol=vol//10000))
+        lines.append("  📈 " + name + "(" + sym + ") *" + "{:.2f}%* $ " + str(price) + " (" + str(vol//10000) + "萬張)")
 
     falling = sorted(latest.items(), key=lambda x: x[1][3])[:5]
     lines += ["", "【今日跌幅 Top5】"]
     for sym, (_, name, price, chg, vol) in falling:
-        lines.append("  📉 {name}({sym}) *{chg:.2f}%* $ {price} ({vol}萬張)".format(name=name, sym=sym, chg=chg, price=price, vol=vol//10000))
+        lines.append("  📉 " + name + "(" + sym + ") *" + "{:.2f}%* $ " + str(price) + " (" + str(vol//10000) + "萬張)")
 
     surging = []
     for sym, data in latest.items():
@@ -490,7 +461,7 @@ def format_report(d, overview):
     surging.sort(key=lambda x: x[2], reverse=True)
     lines += ["", "【成交量放大 +10% Top10】"]
     for sym, name, vc, vol, cp in surging[:10]:
-        lines.append("  🚀 {name}({sym}) *+{vc:.0f}%* ({vol}萬張) {cp:.2f}%".format(name=name, sym=sym, vc=vc, vol=vol//10000, cp=cp))
+        lines.append("  🚀 " + name + "(" + sym + ") *" + "+{:.0f}%* (".format(vc) + str(vol//10000) + "萬張) " + "{:.2f}%".format(cp))
 
     top20 = sorted(latest.items(), key=lambda x: x[1][4], reverse=True)[:20]
     lines += ["", "【成交量排行 Top20】"]

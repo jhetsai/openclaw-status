@@ -56,3 +56,25 @@
 
 <!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:25:25 -->
 - 下次執行記憶索引 ETL，**使用 `scripts/pgvector/etl_memory_v3.py`**，不再使用舊版 etl_memory.py [score=0.842 recalls=0 avg=0.620 source=memory/2026-06-18.md:25-25]
+
+## Promoted From Short-Term Memory (2026-06-23)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:20:22 -->
+- **analyze_market_trend.py 修復（2026-06-23）**：MiniMax API 直接調用（`api.minimax.io`）一直拿不到 key，一直 401。改用 OpenRouter 調用 `minimax/MiniMax-M2.7`（endpoint: `https://openrouter.ai/api/v1/chat/completions`，header 用 `Authorization: Bearer`，model 名稱前面要加 `minimax/` 前綴）。修正後 6/23 報告順利生成 15,445 字，8 個章節齊全，PDF 442KB。
+- **教訓**：不要一直改 prompt 架構，先確認 API 是否真的在運作。之前一小時浪費在最佳化 prompt，但真正問題是 API endpoint 和 key 早就壞了。
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:20:22 -->
+- 成效: 236 個檔案 → 3,896 chunks; 記憶體穩定在 **968MB**（未超過 1GB）; 耗時約 **13 分鐘**，完整跑完無崩潰 [score=0.936 recalls=0 avg=0.620 source=memory/2026-06-18.md:20-22]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:8:10 -->
+- 問題：記憶體不足（舊版 etl_memory.py）: 一次讀取所有 .md 檔案到記憶體; 模型持續占用 ~1GB; 導致 OOM 被 Kill，執行失敗 [score=0.907 recalls=0 avg=0.620 source=memory/2026-06-18.md:8-10]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:17:18 -->
+- /sys 修正：OpenRouter Bearer auth（07:39）: Limit: $5.00 / 已用: $0.586 / 剩餘: $4.41; 過期：2027-05-22 [score=0.865 recalls=0 avg=0.620 source=memory/2026-06-04.md:17-18]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:13:16 -->
+- 解法：etl_memory_v3.py 極致輕量版: **逐檔處理**：不用 list，一次只讀取一個檔案; **每 3 檔 GC**：每處理 3 個檔案強制 `gc.collect(1)`; **EMBED_BATCH = 3**：每批只 encode 3 個 chunk 即寫入 DB 並釋放; **延遲載入模型**：第一個檔案需要才 load model，之後留在記憶體重複用 [score=0.861 recalls=0 avg=0.620 source=memory/2026-06-18.md:13-16]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:17:17 -->
+- 解法：etl_memory_v3.py 極致輕量版: **每次刪除大型物件後立即 gc.collect()** [score=0.861 recalls=0 avg=0.620 source=memory/2026-06-18.md:17-17]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:3:3 -->
+- USD 美金現金結餘更新（2026-06-18）: USD 現金結餘：$14,554.63 → **$14,575.98 USD**（+US$21.35，可能為利息或小額配息） [score=0.861 recalls=0 avg=0.620 source=memory/2026-06-18.md:3-3]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-03.md:22:22 -->
+- 第 7 條規則（待套用）: **南亞科四大挑戰**: 1. **報價持續下跌**... 2. **DDR5 轉換緩慢**... 3. **競爭壓力大**... 4. **產業下行週期延長** [score=0.841 recalls=0 avg=0.620 source=memory/2026-06-03.md:22-22]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-20.md:15:15 -->
+- 生活: 記憶枕推薦：送人用，討論不同睡姿適用類型 [score=0.815 recalls=0 avg=0.620 source=memory/2026-06-20.md:15-15]

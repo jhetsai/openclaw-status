@@ -70,9 +70,9 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">已開機</div><div class="value">0天 0時 50分</div></div>
-        <div class="status-item"><div class="label">記憶體</div><div class="value">1.8 / 7.7 GB</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">4.8%</div></div>
+        <div class="status-item"><div class="label">已開機</div><div class="value">0天 12時 4分</div></div>
+        <div class="status-item"><div class="label">記憶體</div><div class="value">2.5 / 7.7 GB</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">4.5%</div></div>
         <div class="status-item"><div class="label">磁碟（系統 / 工作區）</div><div class="value">39G / 118G</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.23.0</div></div>
@@ -107,10 +107,10 @@
             <div style="font-size:16px;font-weight:600;">台電電費</div>
             <div style="font-size:12px;opacity:0.85;margin-top:4px;">用電分析與帳單</div>
         </a>
-        <a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/inventory/index.html" target="_blank" style="display:block;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;padding:20px;color:white;min-height:90px;text-decoration:none;">
-            <div style="font-size:28px;margin-bottom:8px;">📦</div>
-            <div style="font-size:16px;font-weight:600;">庫存系統</div>
-            <div style="font-size:12px;opacity:0.85;margin-top:4px;">LINE 照片上傳盤點</div>
+        <a href="https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/solar/index.html" target="_blank" style="display:block;background:linear-gradient(135deg,#f9d423 0%,#ff4e50 100%);border-radius:12px;padding:20px;color:white;min-height:90px;text-decoration:none;">
+            <div style="font-size:28px;margin-bottom:8px;">☀️</div>
+            <div style="font-size:16px;font-weight:600;">太陽能發電記錄</div>
+            <div style="font-size:12px;opacity:0.85;margin-top:4px;">發電數據與圖表分析</div>
         </a>
     </div>
         </details>
@@ -120,10 +120,10 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">300W（200W+100W，200W 板有裂痕）</div></div>
         <div class="status-item"><div class="label">四湖測站</div><div class="value">四湖 晴</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">25.5°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">1.4 km/h</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">28.9°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">5.8 km/h</div></div>
         <div class="status-item"><div class="label">今日天氣</div><div class="value">晴</div></div>
-        <div class="status-item"><div class="label">發電效率</div><div class="value">6W (4%)</div></div>
+        <div class="status-item"><div class="label">發電效率</div><div class="value">0W (0%)</div></div>
         <div class="status-item"><div class="label">Windy 雨量</div><div class="value">0.000mm/h</div></div>
         <div class="status-item"><div class="label">📡 版本最後上傳時間</div><div class="value" id="status-ts">-</div></div>
         </div>
@@ -143,7 +143,7 @@
             <br><table>
         <tr><th>服務</th><th>用途</th><th>月用量</th></tr>
         <tr><td>Brave Search</td><td>網路搜尋</td><td>$0.51 / $5</td></tr>
-<tr><td>OpenRouter</td><td>API 服務平台</td><td>$1.99 / $5</td></tr>
+<tr><td>OpenRouter</td><td>API 服務平台</td><td>$2.01 / $5</td></tr>
         <tr><td>minimax m2.5:free</td><td>AI 模型</td><td>Starter</td></tr>
     </table>
         </details>
@@ -156,7 +156,7 @@
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
   };
   var now = new Date();
-  var ts = '2026-06-22 07:00:02';
+  var ts = '2026-06-23 20:00:01';
   var el = document.getElementById('top-ts');
   if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
   el = document.getElementById('status-ts');
