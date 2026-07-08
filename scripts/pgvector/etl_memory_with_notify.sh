@@ -5,7 +5,7 @@ cd /home/jhe/.openclaw/workspace/scripts/pgvector
 
 # 執行 ETL
 START_TIME=$(date +%s)
-python3 etl_memory.py >> logs/etl_memory.log 2>&1
+python3 etl_memory_v2.py >> logs/etl_memory.log 2>&1
 RESULT=$?
 END_TIME=$(date +%s)
 
@@ -27,7 +27,7 @@ if [ $RESULT -eq 0 ]; then
 import urllib.request
 import json
 
-token = '8793435853:AAHxiyCIzVQ_7g5k7qK9pGm7hL8Y2qPqZ1w'
+token = '8793435853:AAHF2snG1sYEpno-O0uvvRyPL52cqdxER8A'
 chat_id = '1181571031'
 
 text = '''✅ 向量資料庫同步完成
@@ -50,7 +50,7 @@ else
 import urllib.request
 import json
 
-token = '8793435853:AAHxiyCIzVQ_7g5k7qK9pGm7hL8Y2qPqZ1w'
+token = '8793435853:AAHF2snG1sYEpno-O0uvvRyPL52cqdxER8A'
 chat_id = '1181571031'
 text = '❌ 向量資料庫同步失敗'
 

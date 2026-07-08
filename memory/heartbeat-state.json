@@ -1,0 +1,19 @@
+{
+  "lastChecks": {
+    "email": null,
+    "calendar": null,
+    "weather": null
+  },
+  "initialized": "2026-07-04T13:59:00+08:00",
+  "lastHeartbeat": "2026-07-07T07:29:00+08:00",
+  "lastWeather": {
+    "temp": 26,
+    "humidity": "100%",
+    "wind": "7km/h",
+    "desc": "Clear",
+    "uv": 0
+  },
+  "lastWeatherCheck": 1790445960,
+  "solarLastRecord": "2026-07-06",
+  "notes": ""
+}

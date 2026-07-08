@@ -1,0 +1,52 @@
+{
+  "updated": "2026-06-30T13:11:40+08:00",
+  "system": {
+    "hostname": "jhe-VMware-Virtual-Platform",
+    "uptime_str": "0d 6h 32m",
+    "uptime_days": 0,
+    "mem_used_gb": 2.4,
+    "mem_total_gb": 7.7,
+    "mem_pct": 31.4,
+    "cpu_pct": 5.1,
+    "disk_used_gb": 50,
+    "disk_total_gb": 63,
+    "node_version": "v22.23.1",
+    "model": "MiniMax M2.7"
+  },
+  "solar": {
+    "today_kwh": null,
+    "current_watt": null,
+    "efficiency_pct": null,
+    "weather": "Patchy rain nearby",
+    "temp_c": 33.0,
+    "wind_kmh": 10.0
+  },
+  "portfolio": {
+    "total_cost": 2907218,
+    "total_mktval": 6261960,
+    "total_gain_pct": 115.39,
+    "tw_cost": 1820145,
+    "tw_mktval": 4393571,
+    "tw_gain_pct": 141.39,
+    "us_cost_twd": 1224033,
+    "us_mktval_twd": 1868389,
+    "us_gain_pct": 52.64,
+    "usd_cash": 14537.8,
+    "usd_rate": 31.91,
+    "jpy_cash": 611791,
+    "jpy_rate": 0.1943
+  },
+  "api_usage": {
+    "brave_used": null,
+    "brave_limit": 5.0,
+    "openrouter_used": 2.234,
+    "openrouter_limit": 5.0,
+    "openrouter_currency": "USD",
+    "openrouter_remaining": 2.766
+  },
+  "services": {
+    "telegram": "running",
+    "line": "running",
+    "cron_wind_alert": "running"
+  }
+}

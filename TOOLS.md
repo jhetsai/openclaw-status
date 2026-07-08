@@ -190,7 +190,7 @@ python3 scripts/pgvector/etl_electricity.py
   - Port: 127.0.0.1:5432, DB: openclaw, User: jhe
 - ✅ 第二階段：memory/*.md 已轉向量（441 chunks, 60 files）
   - Model: all-MiniLM-L6-v2 (384 dimensions)
-  - ETL script: scripts/pgvector/etl_memory_v3.py（極致輕量版，968MB內可跑完）
+  - ETL script: scripts/pgvector/etl_memory_v2.py（記憶優化版）
   - 舊版 etl_memory.py 已廢棄（會 OOM）
 - ✅ 第三階段：搜尋引擎已完成
   - search_engine.py（stdin/stdout 互動模式）
@@ -213,39 +213,32 @@ cd /home/jhe/.openclaw/workspace/scripts/pgvector && echo "你的問題" | pytho
 - PostgreSQL 資料庫壞掉 → 容器可以砍掉重建，資料可從 workspace 匯入
 - 如果影響到 OpenClaw → 用 backup-workspace.sh 還原
 
-## 太陽能發電記錄 SOP（2026-06-21 新增，2026-06-23 修訂）
+## 太陽能發電記錄 SOP（2026-06-21 新增，2026-07-02 修訂）
 
-**觸發時機：** 使用者提供累積總發電量（kWh）時，必須同步執行以下三步
+**觸發時機：** 使用者提供累積總發電量（kWh）時
 
 **流程代號：** Solar Record Workflow（SRW）
 
-```
-查詢天氣 → 更新 CSV → 立即重建 index.html → 更新記憶檔
-```
+**原則：統一使用 script，一次完成所有步驟杜絕人為遺漏。**
 
-### Step 1：查詢天氣（同步執行）
+### 單一指令（推薦）
 ```bash
-curl -s "wttr.in/Yunlin?format=j1" | python3 -c "import sys,json; d=json.load(sys.stdin); w=d['current_condition'][0]; print(w['temp_C'], w['humidity'], w['windspeedKmph'], w['weatherDesc'][0]['value'], w.get('uvIndex',0))"
+bash /home/jhe/.openclaw/workspace/scripts/update_solar.sh <累計kWh>
 ```
 
-### Step 2：更新 `solar_history.csv`
-- 路徑：`/home/jhe/.openclaw/workspace/solar_history.csv`
-- 格式：`日期,累計kWh,日發電kWh,天氣,UV指數,風速km/h,氣溫°C,備註`
-- 日發電 = 本次累計 - 上次累計
-- 若無天氣資料，天氣填入「晴（估）」，其餘留空並加⚠️註記
+**Script 會自動完成：**
+1. 查詢天氣（wttr.in）
+2. 計算日發電、更新 CSV
+3. 重建 HTML
+4. 上傳 R2
 
-### Step 3：立即重建 `solar/index.html`
+### 指令範例
 ```bash
-python3 /home/jhe/.openclaw/workspace/solar/gen_solar_html.py
+bash /home/jhe/.openclaw/workspace/scripts/update_solar.sh 288.8
 ```
-- CSV 更新後**立即執行**，確保頁面與資料同步
-- 每日凌晨 00:25 自動重建（Cron 已設定）
 
-### Step 4：更新 `memory/YYYY-MM-DD.md`
-- 路徑：`/home/jhe/.openclaw/workspace/memory/YYYY-MM-DD.md`
-- 分類：`## 發電記錄（累積）`
-- 必填：累積總發電量（kWh）、記錄時間
-- 同步更新記憶，方便日後快速查閱
+### Script 路徑
+- `/home/jhe/.openclaw/workspace/scripts/update_solar.sh`
 
 ### CSV 欄位對照
 | 欄位 | 來源 |
@@ -258,14 +251,7 @@ python3 /home/jhe/.openclaw/workspace/solar/gen_solar_html.py
 | 風速km/h | wttr.in `windspeedKmph` |
 | 氣溫°C | wttr.in `temp_C` |
 
----
-
-**範例：**
-```
-2026-06-21,282.4,0.8,晴,0,11,30,體感33°C
-```
-
-**⚠️ 重要：每次更新 CSV 後務必立即執行 Step 3 重建頁面，確保 solar/index.html 同步更新。**
+**⚠️ 嚴禁分開執行各 step，否則容易漏掉上傳。收到發電量就立即執行 script。**
 
 ---
 
@@ -361,3 +347,71 @@ python3 scripts/upload_r2.py workspace/stock/index.html
   - Model: `minimax/MiniMax-M2.7`（要加 `minimax/` 前綴）
   - `max_tokens`: 16000, `temperature`: 0.3
 - 正常產出：8個章節、15k+ 字、PDF 400KB+
+
+---
+
+## ⚠️ ESP32 專案資料夾對照表（2026-07-08 新增）
+
+| 硬體 | 資料夾 | 備註 |
+|------|--------|------|
+| ESP32-S3-Touch-LCD-4.3B（Portfolio App） | `02_Example/ESP32-S3-Touch-LCD-4.3B/` | ✅ 已獨立（2026-07-08 複製） |
+| ESP32-S3-RLCD-4.2（天氣時鐘） | `02_Example/Arduino/ESP32-S3-RLCD-4.2/` | Arduino Framework，Sketch: ESP32-S3-RLCD-4.2.ino |
+| PortfolioPOS | `02_Example/PortfolioPOS/` | 不同專案，勿混淆 |
+
+**⚠️ 重要提醒（2026-07-08 教訓）：**
+- Portfolio App（4.3B LCD）程式碼在 `ESP32-S3-Touch-LCD-4.3B/`（無 git history）
+- Git commits 記錄在 `XiaoZhiCode_V2.1.0/` 裡，開發時可回去查
+- `PortfolioDashboard/` 是另一個舊專案，**不是**目標資料夾
+- 每次處理 ESP32 前，先確認正確資料夾路徑
+
+---
+## ESP32-S3-Touch-LCD-4.3B Portfolio App
+
+**⚠️ Flash Issue（已解決 2026-07-08）：**
+- **根本原因**：partition `ota_0` 4MB < binary 4.34MB，溢出 239KB → app 損壞
+- **解決**：修改 `partitions/v2/16m.csv`，ota_0/ota_1 改為 5MB
+- **燒錄流程**：`idf.py -p /dev/ttyACM0 erase-flash` → `idf.py -p /dev/ttyACM0 flash`
+- **專案路徑**：`.../XiaoZhi/XiaoZhiCode_V2.1.0/`
+
+### 燒錄方式（idf.py）
+```bash
+# 完整抹除 + 燒錄
+cd 02_Example/ESP32-S3-Touch-LCD-4.3B
+export IDF_PATH=~/esp-idf-v5.4.2
+export PATH="$HOME/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin:$PATH"
+idf.py -p /dev/ttyACM0 erase-flash
+idf.py -p /dev/ttyACM0 flash
+```
+
+---
+## ESP32-S3-RLCD-4.2 天氣時鐘 + Portfolio
+
+### 燒錄方式（esptool）
+```bash
+# 完整抹除 + 燒錄
+# 燒錄前先查 Sketch 快取路徑：find ~/.cache/arduino/sketches -name "ESP32-S3-RLCD-4.2.ino.bin"
+ESPTOOL=~/.arduino15/packages/esp32/tools/esptool_py/5.3.0/esptool
+PART=~/.arduino15/packages/esp32/hardware/esp32/3.3.10/tools/partitions
+$ESPTOOL --chip esp32s3 --port /dev/ttyACM0 erase-flash
+$ESPTOOL --chip esp32s3 --port /dev/ttyACM0 write_flash \
+  0x0 $SKETCH/ESP32-S3-RLCD-4.2.ino.bootloader.bin \
+  0x8000 $SKETCH/ESP32-S3-RLCD-4.2.ino.partitions.bin \
+  0xe000 $PART/boot_app0.bin \
+  0x10000 $SKETCH/ESP32-S3-RLCD-4.2.ino.bin
+```
+
+### 程式路徑
+`/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/Arduino/ESP32-S3-RLCD-4.2/ESP32-S3-RLCD-4.2.ino`
+
+### WiFi 重連機制（2026-07-02 新增）
+- `checkWiFi()` 在 `loop()` 裡每 60 秒檢查一次
+- 斷線時自動重連，最長等 10 秒
+
+### Portfolio JSON 解析注意
+- JSON 格式：`"updated": "2026-07-02 14:01"`（冒號後有空格）
+- 解析：`strstr(json, "\"updated\":")` → `up += 10` → skip space → skip opening quote
+- PORTFOLIO_URL：`https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/assets/esp32_portfolio.json`
+
+### Portfolio updated 欄位意義
+- `updated` = 後端 cron 執行 `gen_esp32_portfolio.py` 的時間（非 R2 上傳時間）
+- cronstock-update.sh 每 10 分鐘執行一次

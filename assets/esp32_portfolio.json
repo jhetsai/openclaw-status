@@ -1,0 +1,38 @@
+{
+  "updated": "2026-07-09 00:31",
+  "summary": {
+    "total_cost": 2907218,
+    "total_mktval": 6338655,
+    "total_gain": 3431437,
+    "total_gain_pct": 118.03
+  },
+  "tw": {
+    "cost": 1820145,
+    "mktval": 4339666,
+    "gain": 2519521,
+    "gain_pct": 138.42
+  },
+  "us": {
+    "cost_twd": 1230631,
+    "mktval_twd": 1998989,
+    "gain_twd": 768358,
+    "gain_pct": 62.44
+  },
+  "cash": {
+    "usd": {
+      "amount": 14228.21,
+      "in_twd": 456469,
+      "rate_usd_twd": 32.082
+    },
+    "jpy": {
+      "amount": 611791,
+      "in_twd": 119360,
+      "rate_jpy_twd": 0.1951
+    }
+  },
+  "fx": {
+    "usd_twd": 32.082,
+    "jpy_twd": 0.1951,
+    "updated": "2026-07-09 00:30:32"
+  }
+}

@@ -71,4 +71,7 @@ python3 "$WORKSPACE/scripts/update_dividend_data.py" >> "$WORKSPACE/logs/cron-st
 # 更新 portfolio_data.json（合併股價+配息+匯率為單一資料源）
 python3 "$WORKSPACE/scripts/gen_portfolio_data.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
 
+# 產生 esp32_portfolio.json（供 ESP32 讀取）
+python3 "$WORKSPACE/scripts/gen_esp32_portfolio.py" >> "$WORKSPACE/logs/cron-stock.log" 2>&1
+
 echo "Cron stock update completed at $(date '+%Y-%m-%d %H:%M:%S')" >> logs/cron-stock.log

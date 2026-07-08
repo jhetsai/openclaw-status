@@ -10,6 +10,80 @@ WORKSPACE = '/home/jhe/.openclaw/workspace'
 OUT_FILE = os.path.join(WORKSPACE, 'assets', 'portfolio_data.json')
 R2_BUCKET = 'shared-files'
 
+# ===== Dividend Data Validator (Scheme 3: auto-fix on write) =====
+def validate_and_fix_dividend_data():
+    """自動重新計算 dividend_data.json 的 total 欄位，防止髒資料"""
+    import urllib.request
+    div_path = os.path.join(WORKSPACE, 'assets', 'dividend_data.json')
+    
+    # 讀取目前匯率
+    fx_rate = 31.781
+    if os.path.exists(EXCH_FILE):
+        with open(EXCH_FILE) as f:
+            fx = json.load(f)
+            fx_rate = fx.get('USD_TWD', 31.781)
+    
+    # 讀取 dividend_data.json
+    with open(div_path) as f:
+        d = json.load(f)
+    
+    fixed = []
+    
+    # TW confirmed
+    tw_conf_rows = d['tw']['confirmed'].get('rows', [])
+    tw_conf_computed = sum(r.get('amount', 0) for r in tw_conf_rows)
+    if d['tw']['confirmed'].get('total') != tw_conf_computed:
+        fixed.append(f"TW_confirmed: {d['tw']['confirmed'].get('total')} -> {tw_conf_computed}")
+        d['tw']['confirmed']['total'] = tw_conf_computed
+    
+    # TW pending
+    tw_pend_rows = d['tw']['pending'].get('rows', [])
+    tw_pend_computed = sum(r.get('amount', 0) for r in tw_pend_rows)
+    if d['tw']['pending'].get('total') != tw_pend_computed:
+        fixed.append(f"TW_pending: {d['tw']['pending'].get('total')} -> {tw_pend_computed}")
+        d['tw']['pending']['total'] = tw_pend_computed
+    
+    # US confirmed
+    us_conf_rows = d['us']['confirmed'].get('rows', [])
+    us_conf_usd = sum(r.get('total', 0) for r in us_conf_rows)
+    us_conf_twd = round(us_conf_usd * fx_rate)
+    if d['us']['confirmed'].get('total_usd') != us_conf_usd:
+        fixed.append(f"US_confirmed_usd: {d['us']['confirmed'].get('total_usd')} -> {us_conf_usd}")
+        d['us']['confirmed']['total_usd'] = us_conf_usd
+        d['us']['confirmed']['total_twd'] = us_conf_twd
+    elif d['us']['confirmed'].get('total_twd') != us_conf_twd:
+        fixed.append(f"US_confirmed_twd: {d['us']['confirmed'].get('total_twd')} -> {us_conf_twd}")
+        d['us']['confirmed']['total_twd'] = us_conf_twd
+    
+    # US pending
+    us_pend_rows = d['us']['pending'].get('rows', [])
+    us_pend_usd = sum(r.get('total', 0) for r in us_pend_rows)
+    us_pend_twd = round(us_pend_usd * fx_rate)
+    if d['us']['pending'].get('total_usd') != us_pend_usd:
+        fixed.append(f"US_pending_usd: {d['us']['pending'].get('total_usd')} -> {us_pend_usd}")
+        d['us']['pending']['total_usd'] = us_pend_usd
+        d['us']['pending']['total_twd'] = us_pend_twd
+    elif d['us']['pending'].get('total_twd') != us_pend_twd:
+        fixed.append(f"US_pending_twd: {d['us']['pending'].get('total_twd')} -> {us_pend_twd}")
+        d['us']['pending']['total_twd'] = us_pend_twd
+    
+    if fixed:
+        print(f"  [VALIDATOR] Fixed dividend_data.json: {', '.join(fixed)}")
+        with open(div_path, 'w') as f:
+            json.dump(d, f, indent=2, ensure_ascii=False)
+        # Upload to R2
+        with open(os.path.expanduser('~/.api_keys')) as f:
+            keys = {k: v for k, v in [l.strip().split('=', 1) for l in f if '=' in l and not l.startswith('#')]}
+        s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
+            aws_access_key_id=keys.get('R2_ACCESS_KEY'), aws_secret_access_key=keys.get('R2_SECRET_KEY'))
+        s3.upload_file(div_path, R2_BUCKET, 'assets/dividend_data.json',
+                       ExtraArgs={'ContentType': 'application/json'})
+        print(f"  [VALIDATOR] dividend_data.json re-uploaded to R2")
+    else:
+        print(f"  [VALIDATOR] dividend_data.json totals OK, no fix needed")
+    return d
+
+
 # ===== Exchange Rate =====
 EXCH_FILE = os.path.join(WORKSPACE, 'exchange_rate.json')
 def get_exchange_rate():
@@ -235,6 +309,9 @@ def compute_stock_derived(tw_stocks, us_stocks, fx, tw_div_info=None, us_div_inf
 # ===== MAIN =====
 def main():
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}] Generating portfolio_data.json...")
+
+    # 0. Validate & fix dividend_data.json totals (Scheme 3)
+    div_data = validate_and_fix_dividend_data()
 
     # 1. Exchange rate
     fx = get_exchange_rate()

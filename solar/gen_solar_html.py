@@ -29,7 +29,7 @@ for r in raw_rows:
     date  = r['日期'].strip()
     cum   = float(r['累計kWh'])
     w     = r['天氣'].strip()
-    note  = r['備註'].strip()
+    note  = (r['備註'] or '').strip()
     is_est = '自動填補' in note or '估計值' in note or '推算' in note or '天氣估算' in note or '☁️' in note
 
     # Use CSV-filled estimated values (梅雨期) as-is, don't recompute from cumulative
@@ -164,6 +164,7 @@ td{{padding:7px 6px}}
     <option value="all">全部月份</option>
     <option value="2026-05">2026年5月</option>
     <option value="2026-06">2026年6月</option>
+    <option value="2026-07">2026年7月</option>
   </select>
   <label>天氣：</label>
   <select id="sWeather" onchange="render()">
@@ -293,7 +294,7 @@ function render() {{
   var byMonth = {{}};
   fd.forEach(function(r) {{ byMonth[r.month] = (byMonth[r.month] || 0) + r.daily; }});
   var mKeys = Object.keys(byMonth).sort();
-  var mName = {{'2026-05':'2026年5月','2026-06':'2026年6月'}};
+  var mName = {{'2026-05':'2026年5月','2026-06':'2026年6月','2026-07':'2026年7月'}};
   draw('mChart',
        mKeys.map(function(k) {{ return mName[k] || k; }}),
        mKeys.map(function(k) {{ return byMonth[k]; }}),
@@ -308,7 +309,7 @@ function render() {{
 
   // Table
   var th = '<tr><th>日期</th><th>累計kWh</th><th>日發電</th><th>天氣</th><th>備註</th></tr>';
-  var tb = fd.map(function(r) {{
+  var tb = [].concat(fd).reverse().map(function(r) {{
     var cls = r.is_estimated ? 'warn' : (r.daily > 0 ? 'good' : '');
     return '<tr class="' + cls + '">' +
       '<td>' + r.date + '</td>' +

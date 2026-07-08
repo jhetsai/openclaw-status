@@ -21,7 +21,7 @@ HEADERS = {
 HOLDINGS = [
     {"code": "AAPL", "shares": 105},
     {"code": "MSFT", "shares": 55},
-    {"code": "BND",  "shares": 117},
+    {"code": "BND",  "shares": 118},
 ]
 
 # ── 工具 ────────────────────────────────────────────────────
@@ -159,6 +159,28 @@ def main():
     confirmed_list = sorted(data["us"]["confirmed"]["rows"], key=lambda x: x["date"], reverse=True)
     data["us"]["confirmed"]["rows"]     = confirmed_list
     data["us"]["confirmed"]["total_usd"] = round(sum(r["total"] for r in confirmed_list), 2)
+
+    # === 更新 us.div_info：取最新一筆配息（confirmed + pending 合併，取 date 最新）===
+    all_us = confirmed_list + pending_list
+    all_us_sorted = sorted(all_us, key=lambda x: x.get("date", ""), reverse=True)
+    if "us" not in data:
+        data["us"] = {}
+    if "div_info" not in data["us"]:
+        data["us"]["div_info"] = {}
+    codes_seen = set()
+    for r in all_us_sorted:
+        code = r["code"]
+        if code in codes_seen:
+            continue
+        codes_seen.add(code)
+        # US 股息為美元計價
+        freq = "月配" if code in ("BND",) else "季配"
+        ann = round(r["per_share"] * 12, 2) if code in ("BND",) else round(r["per_share"] * 4, 2)
+        data["us"]["div_info"][code] = {
+            "div": round(r["per_share"], 4),
+            "freq": freq,
+            "ann_div": ann
+        }
 
     save_json(dividend_path, data)
 

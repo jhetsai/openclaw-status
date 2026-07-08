@@ -257,13 +257,8 @@ try:
 except Exception as e:
     print(f'[Disk] FAIL: {e}')
 
-# Disk usage: replace Gateway status label and value
-c = re.sub(
-    r'<div class="label">Gateway 狀態</div><div class="value[^>]*>.*?</div>',
-    f'<div class="label">磁碟（系統 / 工作區）</div><div class="value">{disk_root} / {disk_workspace}</div>',
-    c,
-    flags=re.DOTALL
-)
+# Disk usage: replace using rpl() for robustness
+rpl('磁碟（系統 / 工作區）', disk_root)
 
 # Bake Brave Search usage
 brave_file = os.path.expanduser("~/.openclaw/brave_search_usage.json")

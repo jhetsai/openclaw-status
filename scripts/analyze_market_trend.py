@@ -28,15 +28,21 @@ def send_tg(msg):
         print("TG失敗: " + str(e))
 
 def send_pdf(pdf_path, caption=""):
-    """發送 PDF 到 Telegram"""
-    caption_arg = '-F "caption=' + caption + '"' if caption else ''
-    cmd = 'curl -s -X POST https://api.telegram.org/bot' + TOKEN + '/sendDocument ' + caption_arg + ' -F "chat_id=' + CHAT_ID + '" -F "document=@' + pdf_path + '"'
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
+    """發送 PDF 到 Telegram（requests 穩定版）"""
     try:
-        resp = json.loads(result.stdout)
-        print("TG PDF OK" if resp.get('ok') else "TG PDF error: " + str(resp))
-    except:
-        print("TG PDF response: " + result.stdout[:200])
+        import requests as _req
+        with open(pdf_path, 'rb') as f:
+            files = {'document': f}
+            data = {'chat_id': CHAT_ID, 'caption': caption}
+            r = _req.post(f'https://api.telegram.org/bot{TOKEN}/sendDocument',
+                          data=data, files=files, timeout=30)
+            resp = r.json()
+            if resp.get('ok'):
+                print("TG PDF OK")
+            else:
+                print("TG PDF error:", resp)
+    except Exception as e:
+        print("TG PDF failed:", e)
 
 def md_to_html(text):
     """將 Markdown 轉換為 HTML（完整版）"""
@@ -372,37 +378,59 @@ def build_minimax_prompt(d, overview):
 請盡量詳細、深入分析。不用限制字數，越詳細越好。"""
     return prompt
 
+MINIMAX_API_KEY = "sk-cp-Iu-vcj6DfStJhSd1WjMae-n3sZxBRA9gEXlKbWN3dvIIVZuFijLzz8iEiTAv0fPvZdrxdJNN9bhVq5ENXJ4Hu18EnkqMpmVW4E6ztNruk9IXa_WxNS6aGH4"
+
 def call_minimax_commentary(prompt):
-    """呼叫 MiniMax API 生成盤勢解讀（經 OpenRouter）"""
-    import os, urllib.request, urllib.error, json
+    """呼叫 MiniMax 直連 API 生成盤勢解讀（分3段避免timeout）"""
+    import urllib.request, json, time
 
-    api_key = os.environ.get('OPENROUTER_API_KEY')
+    api_key = MINIMAX_API_KEY
     if not api_key:
+        print("MiniMax API failed: MINIMAX_API_KEY not set")
         return None
 
-    body = {
-        "model": "minimax/MiniMax-M2.7",
-        "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 16000,
-        "temperature": 0.3
-    }
-    data = json.dumps(body).encode()
-    req = urllib.request.Request(
-        "https://openrouter.ai/api/v1/chat/completions",
-        data=data,
-        headers={"Content-Type": "application/json", "Authorization": "Bearer " + api_key},
-        method="POST"
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=300) as r:
-            resp = json.loads(r.read())
-            content = resp.get('choices', [{}])[0].get('message', {}).get('content', '')
-            if content:
-                content = dedup_repeats(content)
-            return content
-    except Exception as e:
-        print("OpenRouter API failed: " + str(e))
+    # 拆分為 3 段，分別請求再合併
+    sections = [
+        ("1-2", "請只撰寫以下兩部分：1. 【今日市場總覽】2. 【加權指數分析】。請根據數據深入分析。"),
+        ("3-6", "請只撰寫以下四部分：3. 【強勢族群深度分析】4. 【弱勢族群風險提示】5. 【成交量異常族群】6. 【族群輪動觀察】。請根據數據深入分析。"),
+        ("7-8", "請只撰寫以下兩部分：7. 【後市觀察重點】8. 【操作建議】。請根據數據深入分析。"),
+    ]
+    results = []
+
+    for label, instruction in sections:
+        section_prompt = prompt + "\n\n" + instruction
+        body = {
+            "model": "MiniMax-M2.7",
+            "messages": [{"role": "user", "content": section_prompt}],
+            "max_tokens": 4000,
+            "temperature": 0.3
+        }
+        data = json.dumps(body).encode()
+        req = urllib.request.Request(
+            "https://api.minimax.io/v1/text/chatcompletion_v2",
+            data=data,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + api_key,
+            },
+            method="POST"
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                resp = json.loads(r.read())
+                content = resp['choices'][0]['message']['content']
+                if content:
+                    results.append(content.strip())
+                    print(f"[AI解讀] Part {label}: {len(content)} 字")
+        except Exception as e:
+            print(f"[AI解讀] Part {label} failed: {str(e)[:80]}")
+        time.sleep(3)
+
+    if not results:
         return None
+
+    combined = "\n\n---\n\n".join(results)
+    return dedup_repeats(combined)
 
 def dedup_repeats(text):
     """去除重複的句子（避免 AI 重複死循環）"""

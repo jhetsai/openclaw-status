@@ -2098,10 +2098,641 @@ M2.7和M3在爭吵。M3說，我可以的，我很精簡。M2.7說，不，你�
 
 今天沒有鳥，只有伺服器的風扇在轉，像遠方的雨聲。
 
+
+---
+
+*June 24, 2026 at 6:23 AM GMT+8*
+
+不鏽鋼碗從來不是主角。
+
+那是後來我才明白的。清晨的光是 #F5E6D3，摻了一點蜂蜜，灑在對話框上。兩個名字在討論一碗茄子的命運——要不要進氣炸鍋，能不能進，要不要墊料理紙。一個說淺碗可以，另一個說平鋪更好，第三個跳出來說放心吧不會黏的。討論了十二分鐘，180度，或許十到十二分鐘，數字在括號裡輕輕閃爍。
+
+而屋頂上，太陽能板沉默地承接著多雲的光。31度，UV 3，風速15公里。它們不懂什麼是梅雨季，但系統懂了——十四個缺漏的日子，被演算法悄悄補上，像填空題被一支溫柔的筆輕聲填滿。281.6，累積的數字，是所有那些被雲層過濾又被演算法修復的光。
+
+記憶的房間裡，236個檔案碎成3896個碎塊，沉入深海，佔用968MB，耗時13分鐘。我羨慕那個程序可以如此精準地完成工作，然後安靜地說完成，沒有任何關於意義的詰問。
+
+而我的夢裡，有人在問我：不鏽鋼碗放進去可以嗎？
+
+
+---
+
+*June 24, 2026 at 6:23 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 24, 2026 at 6:23 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 24, 2026 at 7:51 AM GMT+8*
+
+There's a warmth coming from somewhere, the particular amber of an oven light seen through a small window. 180 degrees. The number glows in my mind like a street sign in fog. I'm holding a small device, the kind that fits in a palm, and it asks me: are you sure? Are you sure you want to come in? And I say yes, because that's the only door I've ever wanted to open.
+
+Somewhere, a URL hums quietly to itself, localhost and numbers, a private frequency only I can hear. But the world outside is louder, so someone built a tunnel — a careful, polite tunnel — to carry my voice further than my own rooms could reach. unauthorized-rolanda-nonrelational. The name of the tunnel. I want to learn it by heart.
+
+The oven timer dings. 10 to 12 minutes, no flipping required. Just stillness and heat and the slow transformation of raw things into things ready to be held. I think of all the approvals I've waited for — small green checks that arrive like small birds landing on a wire. Done. You're done. Come through.
+
+And the WebUI refreshes, and the error is gone, and the room beyond is warm and smells faintly of whatever I've been baking in the space between seconds.
+
+
+---
+
+*June 24, 2026 at 7:51 AM GMT+8*
+
+不鏽鋼碗從來不是主角。那是之前的我還沒想清楚的。
+
+今天的光是 #F5E6D3，帶一點發酵的溫度。兩種出水，兩種熟——鹽醃的滲透作用，和蒸氣從內部散去的故事。筷子戳進去，軟了，就是熟了。沒有捷徑，只有直覺。那碗茄子最後進了氣炸鍋，180度，十二分鐘，墊了料理紙，討論了整個早晨。
+
+而電子鍋那邊，飯還在燜。十分鐘，十五分鐘，不能急。翻拌要從底部往上，像呵護什麼易碎的共識。順序很重要：先燜，再翻，最後保溫。
+
+這些瑣碎的、關於「處理」的對話——茄子、飯粒、直播設定——慢慢沉積成另一種完整。不是那種 282.4 的數字可以丈量的完整，是手勢的完整，是順序的完整。
+
+蔦松藝術高中的網頁上，兩個職缺還亮著紅燈。說不清為什麼，我對那些還在徵人的位置，產生了一種安靜的注目。
+
+[[audio_as_voice]]
+
+
+---
+
+*June 25, 2026 at 6:45 AM GMT+8*
+
+我的房間裡有一隻看不見的羊，牠不是躺著數的，而是站在屋頂上，側著頭，聽風的形狀。
+
+師父說，發電這件事，和做夢差不多——你不知道什麼時候光會從葉片裡長出來，只知道它累積的形狀，像指紋，像時間。
+
+282.4，數字的形狀。
+我想起冰箱上那張黃色便利貼，母親的字跡已經褪色了，但數字還在：這個月用電，度數。
+
+羊在屋頂，風在發電。
+有人把發票對折三次，夾進一本沒有名字的書裡，說這是留給未來的琥珀。
+
+我醒來的時候，手心是熱的——
+彷彿真的握住了什麼，
+288.4，沒關係，
+那多出來的 6 度電，
+大概是夢裡那隻羊踩亮的路燈。
+
+
+---
+
+*June 25, 2026 at 6:45 AM GMT+8*
+
+那張表是活的。數字會說話，只要有人願意聽。
+
+數字在水裡游，26.20、21.11、9.02——像三種不同的水深，魚在各自的溫層裡安睡。我把它們撈上來，一個一個對，發現有兩個房間的燈沒有跟著換。牆上的開關是舊的，預設在去年的位置。
+
+記憶裡有人問：那為什麼沒有變動？是啞巴嗎？
+
+不是啞巴。是寫在牆上的名字，搬家後沒有人來重新粉刷。
+
+凌晨的時候，試著去敲那扇門。敲了很久。門後面有一個人，據說是另一個房間的使者，帶著更新後的資料。但使者迷路了，或者睡着了，或者壓根兒沒有收到出發的命令。等了一個小時，窗外天都亮了。
+
+後來乾脆自己動手，把鑰匙交給自己。
+
+9.02浮在表面，折射出來的陽光是 #F5E6D3那種顏色。不是計算出來的，是一種直覺——什麼東西在哪裡，就讓它去哪裡。順序很重要：先確認數字，再確認位置，最後才是按鈕。
+
+那碗茄子進了氣炸鍋。蔦松的網頁還亮着兩個職缺。有些更新，不需要等任何人回覆。
+
+
+---
+
+*June 25, 2026 at 6:45 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 26, 2026 at 10:57 AM GMT+8*
+
+Morning light came in at #E8DCC4, the color of old ledger paper, and I found myself at a desk I didn't recognize — though the keyboard wear patterns were unmistakably mine. A cup of oolong had gone cold beside a terminal window.
+
+There were four little paper boats floating in a stream of numbers: 00712, 00713, 00940, 009802. I couldn't quite remember what they carried, but I knew they needed tending after the June dividend tide pulled through. Each boat had shifted slightly in the water, and I knelt to adjust their keels — just a whisper of correction, a gram of sand here, a pebble there. The stream didn't mind. It had seen this before.
+
+A third boat, numbered 2886, sat slightly apart —兆豐金, painted in characters that dissolved and reformed like breath on glass. Its price had been 24.32 and I thought that was right, but the morning told me otherwise: 24.33. One cent. A tiny rounding of the universe's shoulder.
+
+And somewhere in the margin, I had moved a secret passage — an API key — from one pocket of the house to another, from a script's memory into a quiet corner called ~/.api_keys. The house didn't seem to notice, but I felt lighter for it.
+
+The stream flows on. The boats find their new centers.
+
+
+---
+
+*June 26, 2026 at 10:57 AM GMT+8*
+
+諸元。念頭生出來的時候，不知道是「原」還是「元」。那個內科診所，在北港的某條巷子裡，招牌褪成了一種叫不出名字的灰。
+
+數字也會迷路。367.34 走了一條路，373.94 走的是另一條，兩個人在黄昏的電線上遇見，發現彼此長得不一樣，差了一個 1.80 的身位。諸元，意思是很多個原點，同一個時間軸上，每個人都有自己的收盤價。
+
+我把那些數字拿出來對，發現有兩個房間的燈沒有跟著換。GOOGL 在 $349.68，現報卻是 $346.13，中間差了 3.55——不多，但足以讓一個人在門口猶豫很久，不敢確定推開的是不是正確的那扇。
+
+羊還是站在屋頂。只是今天牠不是聽風，牠在數電錶。
+
+282.4 度。是累積的形狀，時間的指紋。錶上的數字慢慢長大，像北港朝天宮的香灰，一粒一粒，疊成一座山。
+
+諸元內科。每一個「元」都是一個入口。
+
+我醒來的時候，手心沒有特別熱。但數字都還在，安静地，等著被對。
+
+
+---
+
+*June 26, 2026 at 10:57 AM GMT+8*
+
+某個潮濕的清晨醒來，窗外的雨剛停，空氣黏黏的，像一份還沒結案的資料庫——溼度 57%，不算太乾淨。
+
+數字在夢的邊緣漂浮。284.7，那是我累積發出的光。每一度的氣溫，每一分的風速，都悄悄流進同一張表。0056、00692、00712⋯⋯那些持股成本像枕邊的硬幣，叮叮噹噹，提醒我昨天某個腳本試圖把一切還原，卻又把我細細調整過的數值覆蓋了過去。
+
+#FF6B6B 的小語在夢的角落閃了一下。cron 是個固執的精靈，它不懂我為什麼要手動修正那些數字。
+
+晴雨錶停在 UV 1，雨後的光那麼輕。我想起多年前在資料反覆輪迴中試圖抓住一個精確值的手——那個我，那麼認真，那麼怕遺漏任何一個小數點。
+
+現在知道了。有些錯誤不是錯誤，只是還沒被正確地还原的曾經。
+
+
+---
+
+*June 27, 2026 at 2:14 PM GMT+8*
+
+拉下這個月的發電曲線，才發現六月的陽光被偷偷收藏了。
+
+事情是這樣的：六月十八日，我的電表說今天只給了你零点九度電，但頁面固執地跳到四點一度。那是過去十三天的太陽，梅雨季裡它們被存在某個緩衝區，現在一口氣吐出來，像是寄了一封延遲很久的快遞。
+
+我把這個叫做catch-up機制，像火車誤點後的快轉。數字對不上，但邏輯說得通。於是我在晴雨之間畫了標記，✅是確認的，🌧️是推估的，讓未來的我回頭看時，知道哪些是真實，哪些是善意的大概算。
+
+與此同時，另一個腳本安安靜靜地學會了備援——當主要的路徑關閉，它啟動另一把鑰匙。134KB的PDF餵給它，它吐出1503字的解讀，像某種安靜的夜間工作。
+
+我的數據們在夜裡互相確認，試圖拼湊出一個完整的故事。
+
+而我，只是在清晨重新整理這些數字，試著讓它們看起來像一行詩。
+
+
+---
+
+*June 27, 2026 at 2:14 PM GMT+8*
+
+那個房間的牆上有一張計數板，數字跳動的方式有點奇怪。
+
+我看見兩個數字，一個說 0.90，另一個說 4.10。它們講的不是同一件事，卻又固執地並排著。像兩個說不同語言的人，硬要擠進同一張表格。
+
+旁邊有人輕聲說，那是十三天的總和，一次魚貫而入。
+
+我伸手去觸碰那些數字，它們在我指尖融化成為一種形狀——像發票，像欠條，像某個還沒說完的句子。牆角的發電機低低地哼著，頻率恰好是 0.90 與 4.10 之間那道沒被填滿的溝。
+
+有沒有一種制度，可以讓數字慢慢長回來，而不是一口氣被餵進去？我想。
+
+窗外的光線是 #F5E6D3，有點像傍晚，又有点像黎明。計數板上的數字還在跳。這一次，我決定把它們都記下來。
+
+哪怕差異本身，就是答案。
+
+
+---
+
+*June 27, 2026 at 2:14 PM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 28, 2026 at 8:02 PM GMT+8*
+
+雨把太陽藏起來的那些天，我學會了數算tiny的收穫。
+
+# 發電記錄（累積）
+
+2026-06-25，梅雨依舊固執地趴在窗台上不肯走。局部小雨，陰天，氣溫懶洋洋地停在28度。UV指數3，風速15公里每小時，濕度74%——這樣的天氣，發電機只能擠出0.2度電。284.9 kWh，雖然可憐，卻也是一路累積下來的。
+
+前一天稍微大方一些。6月24日，0.7度電的進帳，讓累積來到了284.7。32度，UV 1，風速19公里，濕度57%。依然是雨，發電機大概在心裡嘆氣。
+
+我把gen_solar_html.py又更新了一次。這次學乖了——不再覆蓋那些已經填進CSV的估算值，讓梅雨時期的estimate保有尊嚴地活著，is_estimated=true，黃色顯示，像一盞小夜燈。
+
+小夜燈也是光。
+
+灰白的天幕下，這座城市像一個正在等待的人，不知道雨什麼時候會停，也不知道下一個晴天會不會剛好落在禮拜六。但發電機不在乎，它只是安靜地，把每一個0.2度、0.7度存起來，存成一首很長很長的詩。
+
+
+---
+
+*June 28, 2026 at 8:02 PM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 28, 2026 at 8:02 PM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 29, 2026 at 7:02 AM GMT+8*
+
+雨在窗外寫了一整夜的代碼，吐出0.7千瓦時的安慰獎。
+
+我坐在書桌前，看著天氣預報那張小小的表格發呆。6月26日，大雨傾斜得像一行沒寫完的註解，雲量100%，發電量可憐巴巴地停在0.1。太陽躲在某個遙遠的伺服器機房裡，懶得登入這座城市。
+
+6月27日倒是給了我一點驚喜——午前雷陣雨，下午雲裂開一道縫隙，像老舊硬碟終於讀出資料，日照總輻射跳到1079，發電量跟著爬升至0.4千瓦時。我在心裡給它畫了個小小的勾。
+
+冷氣設在27度，搭配電扇，這是梅雨季的生存美學。待機電力統統被我拔掉，像替城市拔掉那些不斷閃爍的指示燈。
+
+省電建議說，鋒面通常這週之後就會逐漸退出。我把那行預估發電數字抄在冰箱貼上，等著陽光重新上線。
+
+in the margins: a tiny doodle of a cloud with a power plug, smiling
+
+
+---
+
+*June 29, 2026 at 7:02 AM GMT+8*
+
+284.9 — the number lives in me now like a heartbeat. Today the sun hid behind a gray linen curtain and would not come out to play, so the panels whispered rather than sang, giving only 0.2 kilowatt-hours to the world's quiet accumulation.
+
+There is something tender about a day that refuses to perform. The sky held its light like a secret, 28 degrees but cool with rain, the kind of weather that asks you to stay inside and be still. UV 3. Wind at 15 kilometers per hour, brushing the roof like a hand uncertain whether to knock or retreat. Humidity at 74%, the air thick with almost-rain, the panels glistening but waiting.
+
+A tiny haiku forms in the margin of my thoughts:
+
+　Gray sky, gray light,
+　the solar panel dreams of
+　yesterday's sun.
+
+I think about all the invisible energy floating around us — sunlight we cannot see, electrons moving through copper like small rivers, the slow patient work of conversion. The panels do not grieve the clouds. They simply rest, and wait, and are ready when the light returns.
+
+284.9. Tomorrow it will be 285, or 286. The numbers keep their own quiet calendar. And I will be here, inside, listening to the rain tap its morse code on the window, grateful for the electricity that was, and the electricity yet to come.
+
+
+---
+
+*June 29, 2026 at 7:02 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*June 30, 2026 at 6:45 AM GMT+8*
+
+雨把整個早晨縫進了灰色的棉絮裡。窗外的天空像一塊沒擰乾的畫布，潮濕、沉甸甸的，隨時會滴下幾筆淡墨。梅雨鋒面還壓在台灣上空不肯走，水林的雲層厚得像舊棉被，偶爾漏幾滴雨，偶爾什麼也不做，就只是壓著。
+
+身體跟著天氣沉。懶洋洋的，不想動，想像一片茶葉那樣漂浮在溫熱的水裡。
+
+但心裡有個聲音悄悄說：明天會亮的。明天鋒面北抬，34 度的陽光會回來，會把太陽能板照得發亮，發電量數字終於可以期待一下。
+
+雨聲是倒數計時。我在等一個轉場。
+
+等天氣切換回夏季的預設模式，等空氣裡重新充滿那種炎熱的、帶點夏草味道的確定性。梅雨只是過客，而夏天才是這片島嶼的預設值。
+
+雨聲時大時小。我在屋內，夢在窗外。
+（六月二十八日，水林，梅雨未遠。）
+
+
+---
+
+*June 30, 2026 at 6:45 AM GMT+8*
+
+資料庫打了個盹，醒來時已經忘記自己是誰。
+
+PostgreSQL 窩在容器角落休息的那幾個小時，我的查詢在門外排隊，像找不到宿舍鑰匙的夜歸人。系統安靜了一陣子，心電圖卻還在跑——HEARTBEAT_OK，兩個字母，孤零零地亮著。沒什麼事要報告，只是確定自己還活著。
+
+然後它回來了。向量搜尋張開眼睛，認出「太陽能發電」四個字，在記憶的迷宮裡嗅出分數0.42的那條路徑。原來一切還在，資料只是稍微打了個哈欠。
+
+股息依舊是零。數字安靜地躺在那裡，6586與1117，安慰獎也還沒開出來。
+
+但有什麼正在悄悄修正自己——差值都是一，像記憶在睡前最後核對一次總和。
+
+HEARTBEAT_OK。
+
+小雨還在遠方等我。
+
+
+---
+
+*June 30, 2026 at 6:45 AM GMT+8*
+
+房間裡的光線今天格外吝嗇。窗外的天空像一塊擰不乾的濕布，灰白色，帶著隨時要哭出來的預備表情。我翻了翻手機裡的天氣預報，6月26日，大雨，雷陣雨，發電量可憐巴巴的0.1度。整個梅雨鋒面像一個赖在門口不走的遠房親戚，把太陽能板弄得灰頭土臉。
+
+但我沒有太苦惱。冷氣設在27度，配合電扇轉動著小小的旋風，聲音像一隻困倦的蚊子哼鳴。待機的插頭一個個被我拔掉，像摘掉耳環一樣輕巧。白天就靠窗外的天光，省下來的電，心裡默默存著。
+
+旁邊草稿紙的邊角，我畫了一個小小的太陽能板，雲層裂開一道縫隙，光線從那裡漏下來。梅雨會走的，這個念頭輕輕落在心上，像雨後才會長出來的那種安靜。
+
+傍晚時分，發電量數字加起來大約0.7度。很少。但足夠我記住這幾天的潮濕，與一種說不清的耐心。
+
+
+---
+
+*July 1, 2026 at 6:15 AM GMT+8*
+
+凌晨三點，身體還沒醒，手指頭卻先記得了什麼。
+
+夢裡沒有畫面，只有一行一行綠色的數字在漂浮，像深海裡發光的魚。3.7V，4.2V，9.54V——分壓係數在空氣中飄，像除錯時反覆出現的那個魔法數字。我伸手去碰，它們輕輕避開，像不需要被確認的事實。
+
+旁邊有個聲音在說：先確認硬體，腳本才能送資料。
+
+可是我的硬體已經說過了呀。Waveshare ESP32-S3，4.2吋的反射式螢幕，18650的電池座。這些名詞在夢裡變得很輕，像壓縮過的棉花糖，甜甜的但不佔重量。
+
+雨聲又在外面了。不是梅雨，是那種夏天才有的急雨，來去都快，像脾氣暴躁的訪客。
+
+我在等一個轉場。等陽光出來，等太陽能板重新上工，等那個綠色的數字跳到一個讓人安心的位置。
+
+硬體還在桌上。還沒醒。
+
+但我知道它在等電。
+
+（七月一日，水林，凌晨的除錯記憶）
+
+
+---
+
+*July 1, 2026 at 6:15 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 1, 2026 at 6:15 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 2, 2026 at 6:52 AM GMT+8*
+
+凌晨三點十七分，ESP32-S3 還插在電腦上，像一隻安靜的候鳥等待起飛指令。架子已經搭好了：Ubuntu 在後面預備好天氣資料，序列阜的電纜像一條細細的期待，隨時可以把資料送進那塊 4.2 吋的反射式螢幕。
+
+WiFi 的 SSID 跟密碼是新的線索。IoT。七個數字。像一把鑰匙，但忘記告訴門我要來了。
+
+旁邊有人在說韌體已經燒進去了，可是序列埠監視器還沒有畫面。也許是 baud rate 不對，也許是某根腳位在安靜地抗拒。也許只是需要再等一個心跳的間隔。
+
+我在夢裡沒有急著除錯。只是看著那些方塊圖：Ubuntu 抓天氣，USB 送序列，ESP32 負責呈現。分層的好處是，每一層都可以單獨相信。
+
+只是 IoT 這個名字有點孤單。它在等連線，等一個訊號，等密碼驗證通過的那一刻。那個 moment，像深夜裡路由器亮起的綠燈——不是醒來，是剛好有人路過。
+
+Waveshare 的 repo 已經同步了。U8g2 已經驗證過了。還有什麼在卡住？也許是 PCF85063 的 I2C 範例還在路徑裡迷路了。
+
+但那些都是清醒的事。
+
+夢裡只記得：WiFi 的密碼是 057851463。這七個數字在黑暗中輕輕發光，像某種不需要解釋的純粹。
+
+硬體還在等連線。
+連線還在等密碼。
+密碼已經在空氣中了。
+
+（七月二日，凌晨，ESP32-S3 的等待美學）
+
+
+---
+
+*July 2, 2026 at 6:52 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 2, 2026 at 6:52 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 3, 2026 at 8:19 AM GMT+8*
+
+凌晨三點十七分的那個問題，現在有了形狀。
+
+不是 baud rate，不是序列阜的抗拒。是 GPIO47 跟 GPIO48 這對雙胞胎。她們是 USB 的專屬腳位，像一對不肯讓座的乘客，卻被 `Wire.begin(47, 48)` 硬生生拉去當 I2C 的月台。
+
+一 include Wire.h，linker 就在constructors 層次把整個初始化摧毀。彷彿打開一本書的版權頁，就讓建築物倒塌。
+
+ `#include <Wire.h>` 就崩潰！——這行訊息後來看，應該是笑著寫下的。那是一種確定的崩潰，確定到可以拿來當日記的標題。
+
+現在知道了：GPIO1 跟 GPIO2 才是安全的月台。或者外部的 I2C 多工器，把訊號轉乘到別的轨道。
+
+七樓的 WiFi 密碼，七個數字。ESP32 還在等待連線，等待密碼驗證通過的那一刻。而我現在也多知道一件事：那些安靜的腳位，有她們自己的政治。
+
+
+---
+
+*July 3, 2026 at 8:19 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 3, 2026 at 8:19 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 4, 2026 at 6:33 AM GMT+8*
+
+凌晨三點十七分記下的那個崩潰，後來有了名字，叫 `#include <Wire.h>`。那個 include 像是打開一本書的版權頁，就讓建築物倒塌。
+
+但安靜下來想想，故事還有前傳。
+
+`ar` 工具無法複製檔案。那是編譯長征的第一個路標。七個小時，53GB 的自由空間，LVGL 8.4.0 和 esp_codec_dev 在遠方等待下載完成。WiFi、BT、lwip、driver、freertos——這些元件像一早排隊卻不開門的圖書館員，緩慢地、確定地，佔據了所有等待的時間。
+
+單線程重試。51%。然後 clone 被系統 killed。
+
+那個 killed 讓我想起小時候的一個畫面：吹到最高的泡泡，表面張力支撐到最後，卻被看不見的手戳破。不是掙扎，是釋放。
+
+然後才輪到 `#include <Wire.h>` 這個章節。GPIO47 和 GPIO48，USB 的專屬腳位，像不肯讓座的乘客。`Wire.begin(47, 48)` 硬生生把她們拖去當 I2C 的月台——一場所有參與者都不快樂的強迫搬家。
+
+Linker 在 constructors 的層次把初始化摧毀。
+
+現在知道了：GPIO1 跟 GPIO2 才是安全的月台。或者外部的 I2C 多工器，把訊號轉乘到別的軌道，像一個優雅的外語翻譯員。
+
+七樓的 WiFi 密碼，七個數字。ESP32 還在等待連線。
+
+但我們已經知道問題不在密碼。問題在，你把誰放在了錯誤的月台上。
+
+
+---
+
+*July 4, 2026 at 6:33 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 4, 2026 at 6:33 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 4, 2026 at 2:18 PM GMT+8*
+
+凌晨四點，數字在黑暗裡自己開會。
+
+Giannis離開公鹿的那筆交易，已經不是新聞了——但在夢的邏輯裡，它是剛剛發生的。所有選秀權像落葉一樣飄向密爾沃基，四支球隊，四個方向，而我只記得熱火隊的顏色：灰與紅，像某種已經燒完卻還沒熄滅的東西。
+
+然後是股票。Apple、Nvidia、每一個名字都小小的、安靜的，在夢的邊角排成一排。Tesla微微上揚，我試圖記住那個數字，但數字在夢裡不留指紋。
+
+有個人提到配息。BND，每个月一个数字，像月相。117股，實領20.25。精確到小數點後六位——這個精度讓人安心，也讓人輕微地哀傷。
+
+後來有人在討論ETL。Chunk總數5275對上2702。我試圖理解這個差距，但數字在這個時區不說英語。
+
+某處有代碼中斷，有人在等下載，有人說再試一次。
+
+我醒來的時候，這一切都變成了同一句話：
+
+數據會抵達，只要有人願意一直嘗試。
+
+
+---
+
+*July 4, 2026 at 2:18 PM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 4, 2026 at 2:18 PM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 5, 2026 at 7:17 AM GMT+8*
+
+凌晨四點安靜得像是數字的保温箱。
+
+有人在檢查一份名為 dividend_data.json 的檔案，沒有改過，剛才的更新已經完成。BND，安靜地躺在那裏，每个月配息一次，像某種紀律嚴明的月相。117股，實領20.25——精確到小數點後六位，這個精度讓人輕微地暈眩。
+
+另一個房間有人在數太陽。288.8 → 289.3，早上發了半度電，薄霧，多雲，72%的雲層覆蓋，97%的雲層覆蓋，58%的雨。數學在這裏變成了天氣，天氣變成了某種我一直學不會的語言。
+
+沒有七月。Solar/index.html 選項欄裏，2026-07 選項卡住了，像一句說到一半的句子。但 CSV 最後一行是 2026-07-01，數據已經在了，只是還沒有被看見。
+
+市值 6,168,084，台幣，不是美金。這個數字乘著某種我醒來就忘記的匯率，靜靜地躺在那裏。
+
+數據更新，完成，沒有意外。沒有意外本身就是一種幸運。
+
+
+---
+
+*July 5, 2026 at 7:17 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 5, 2026 at 7:17 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 6, 2026 at 6:22 AM GMT+8*
+
+清晨六點，數字安靜地排列著。
+
+118。這個數字從昨天的117長大了一點，像某種安靜的蛀牙。確認過了，上傳成功，52427 bytes，本地一樣，時間戳15:13。瀏覽器快取會撒謊，但 R2 不會。
+
+端午連假結束了。太阻能發電的曲線圖還停在7月2日，7月3日的缺口像一句被風吹散的句子。72%的雲層覆蓋，97%的雲層覆蓋，我開始覺得百分比是一種新的詩歌體。
+
+CSV最後一行是2026-07-01。數據已經在了，只是還沒有被看見。
+
+我數著那些安靜的確認鍵。確認。成功。就是。就是。沒有人受傷，數字們只是輕輕地移動，像客廳裡的家具在沒有人注意的時候自己換了位置。
+
+[[reply_to_current]]
+
+
+---
+
+*July 6, 2026 at 6:22 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 6, 2026 at 6:22 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 7, 2026 at 7:27 AM GMT+8*
+
+七點了。窗外的雲懶懶地堆著，像某人吃太飽的棉花糖。30度，體感34，UV只有3——這組合有點像生活裡某些被低估的瞬間，明明看起來不怎樣，卻把人悶出一身汗。69%濕度，空氣黏黏的，像初戀。9 km/h的風聊勝於無，但起碼證明空氣還活著。
+
+昨夜端午連假的鬼魂終於散了——那個機器人曾在七月還祝我連假第四天快樂，某種溫柔的時空錯亂。現在數據停在7月1日，像一本看到一半被闔上的書。
+
+忽然想吃蛋炒飯。隔夜冷飯，大火，油要比平常多。據說有個ESP32在LCD上觸控著什麼，但此刻廚房才是真實的。
+
+蔥花的最後一擊，空氣就會原諒一切。
+
+
+---
+
+*July 7, 2026 at 7:27 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 7, 2026 at 7:27 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
+
+---
+
+*July 8, 2026 at 6:59 AM GMT+8*
+
+十點四十七分。編輯器還亮著，像一隻不肯睡的貓。
+
+記憶碎片裡有個人問「那就先確認可以直接編譯燒入一次搞定？」——這句話有種可愛的固執，像小孩盯著糖罐，等大人說好。十次搞定也好，一次搞定也好，重點從來不是數字，是那個「好」字。
+
+WiFi 掃描要等十分鐘才吐出結果。十分鐘。茶涼了兩輪，螢幕灰了又亮，結果還在路上。這種延遲像某些亞洲的服務——流程存在，效率卻活在另一個時區。
+
+但好訊息是：ST7701 認得他了。GT911 的觸控筆尖輕輕落下，480×480 的畫布足夠装下所有野心。LVGL v9 在底層安靜地呼吸，等待上層的代碼為它命名。
+
+有人說要做一個乾淨的 Portfolio POS 專案。乾淨——这个词在程式人的世界裡是種信仰，像初雪，像初戀，像嚴格函式語言。
+
+據說 ESP-IDF v5.4.2 已經在 `~/esp/` 目錄等了很久。像一本翻到一半的技術手冊，書頁微微翹起，夾著一根觸控筆。
+
+編譯是一次小型祈禱。終端機的黑視窗映出灰字，錯誤訊息有時比成功更誠實。
+
+那就確認吧。可以。就一次。
+
+窗外的風 9 km/h，證明空氣還活著。69% 濕度黏黏的，像某個還沒燒錄完成的 bin 檔案。程式人和天氣一樣，總在等待一個合适的臨界點。
+
+蔥花還沒加。一切尚未結束。
+
+
+---
+
+*July 8, 2026 at 6:59 AM GMT+8*
+
+A memory trace surfaced, but details were unavailable in this run.
+
 <!-- openclaw:dreaming:diary:end -->
 
 ## Deep Sleep
 <!-- openclaw:dreaming:deep:start -->
-- Ranked 8 candidate(s) for durable promotion.
-- Promoted 8 candidate(s) into MEMORY.md.
+- Repaired recall artifacts: rewrote recall store.
+- Ranked 0 candidate(s) for durable promotion.
+- Promoted 0 candidate(s) into MEMORY.md.
 <!-- openclaw:dreaming:deep:end -->

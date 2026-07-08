@@ -69,4 +69,19 @@ if __name__ == '__main__':
         sys.exit(1)
     
     file_path = sys.argv[1]
-    upload_file(file_path)
+    # 可選第二參數：指定 R2 key
+    if len(sys.argv) >= 3:
+        # 上傳並重新命名 key
+        s3 = boto3.client('s3', endpoint_url=ENDPOINT,
+                          aws_access_key_id=ACCESS_KEY,
+                          aws_secret_access_key=SECRET_KEY)
+        key = sys.argv[2]
+        try:
+            s3.upload_file(file_path, BUCKET, key)
+            url = f"https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/{key}"
+            print(f"上傳成功！")
+            print(f"下載連結：{url}")
+        except Exception as e:
+            print(f"上傳失敗：{e}")
+    else:
+        upload_file(file_path)

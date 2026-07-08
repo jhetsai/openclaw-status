@@ -302,8 +302,15 @@ def main():
             freq_map[code] = '年配'
 
     # 對有 2026 紀錄的股，用最新一筆配息 + 正確的 freq 覆寫 div_info
-    for r in pending_tw + confirmed_tw:
+    # 邏輯：合併 confirmed + pending，全部依 payout 新到舊排序，取各 code 第一筆（即最新的一筆，無論是否已入帳）
+    all_tw = confirmed_tw + pending_tw
+    all_tw_sorted = sorted(all_tw, key=lambda r: r.get('payout', ''), reverse=True)
+    codes_seen = set()
+    for r in all_tw_sorted:
         code = r['code']
+        if code in codes_seen:
+            continue  # 已取過，跳過
+        codes_seen.add(code)
         cash = r['cash']
         freq = freq_map.get(code, '年配')
         if freq == '月配':

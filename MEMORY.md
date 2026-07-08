@@ -6,43 +6,6 @@
 | /mo list    | 列出所有已註冊的模型簡稱與說明        |
 | /mo <簡稱> | 以簡稱切換模型（例如 /mo free）        |
 
-## Promoted From Short-Term Memory (2026-06-09)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:7:7 -->
-- **根因**：原本的指令列沒帶 Authorization header，OpenRouter 預設去找 cookie session token → 失敗 [score=0.925 recalls=0 avg=0.620 source=memory/2026-06-04.md:7-7]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:9:9 -->
-- **修法**：改用 Bearer token 認證 [score=0.925 recalls=0 avg=0.620 source=memory/2026-06-04.md:9-9]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:14:14 -->
-- （`$OPENROUTER_API_KEY` 從 `openclaw.json` env 讀） [score=0.925 recalls=0 avg=0.620 source=memory/2026-06-04.md:14-14]
-
-## Promoted From Short-Term Memory (2026-06-10)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:5:5 -->
-- **問題**：`/sys` 抓 OpenRouter 月用量回 401 "No cookie auth credentials found" [score=0.920 recalls=0 avg=0.620 source=memory/2026-06-04.md:5-5]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:16:16 -->
-- **驗證**：成功拿到資料 [score=0.920 recalls=0 avg=0.620 source=memory/2026-06-04.md:16-16]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-03.md:5:5 -->
-- **目標**：改善 `analyze_market_trend.py` 產出的 PDF 排版，AI 寫的 markdown 結構很差，標題/小標題/list 全部黏在段尾。 [score=0.914 recalls=0 avg=0.620 source=memory/2026-06-03.md:5-5]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-03.md:20:20 -->
-- **問題**：AI 把多個編號項擠在同一段： [score=0.914 recalls=0 avg=0.620 source=memory/2026-06-03.md:20-20]
-
-## Promoted From Short-Term Memory (2026-06-11)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:11:12 -->
-- curl -s -H "Authorization: Bearer $OPENROUTER_API_KEY" \ https://openrouter.ai/api/v1/auth/key [score=0.940 recalls=0 avg=0.620 source=memory/2026-06-04.md:11-12]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:20:20 -->
-- **已更新**：`MEMORY.md` `/sys 指令` 段落，加上 Bearer header 說明 + 教訓註記 [score=0.925 recalls=0 avg=0.620 source=memory/2026-06-04.md:20-20]
-
-## Promoted From Short-Term Memory (2026-06-12)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-06-03.md:25:26 -->
-- **修法**：改 line 57 的規則 ```python [score=0.878 recalls=0 avg=0.620 source=memory/2026-06-03.md:25-26]
-
-## Promoted From Short-Term Memory (2026-06-17)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-06-03.md:31:31 -->
-- text = _re.sub(r'(\s)([1-9][\.、] \*\*[^*]{1,50}\*\*[:：]?)', r'\n\2', text) [score=0.835 recalls=0 avg=0.620 source=memory/2026-06-03.md:31-31]
-
 ## 投資資產記錄（2026-06-18 更新）
 
 ### USD 美金現金結餘
@@ -52,29 +15,229 @@
 - portfolio_data.json 已同步
 - 2026-06-18 更新：$14,575.98 + $35.03 = $14,611.01
 
-## Promoted From Short-Term Memory (2026-06-22)
+## ⚠️ 兩個 ESP32 專案架構（2026-07-08 更新）
 
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:25:25 -->
-- 下次執行記憶索引 ETL，**使用 `scripts/pgvector/etl_memory_v3.py`**，不再使用舊版 etl_memory.py [score=0.842 recalls=0 avg=0.620 source=memory/2026-06-18.md:25-25]
+> 注意！這是兩個不同的硬體、不同 Framework，程式碼完全分開。
 
-## Promoted From Short-Term Memory (2026-06-23)
+### 專案一：ESP32-S3-Touch-LCD-4.3B（Portfolio App）
+| 項目 | 內容 |
+|------|------|
+| **硬體** | ESP32-S3-Touch-LCD-4B (Waveshare) 4.3" IPS Touch (480x480) |
+| **Framework** | ESP-IDF |
+| **Board** | WAVESHARE_S3_TOUCH_LCD_4B |
+| **燒錄位置** | `/dev/ttyACM0` |
+| **專案路徑** | `esp32-rlcd-project/02_Example/ESP32-S3-Touch-LCD-4.3B/` |
+| **WiFi** | SSID: IoT / 密碼: 057851463 |
 
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:20:22 -->
-- **analyze_market_trend.py 修復（2026-06-23）**：MiniMax API 直接調用（`api.minimax.io`）一直拿不到 key，一直 401。改用 OpenRouter 調用 `minimax/MiniMax-M2.7`（endpoint: `https://openrouter.ai/api/v1/chat/completions`，header 用 `Authorization: Bearer`，model 名稱前面要加 `minimax/` 前綴）。修正後 6/23 報告順利生成 15,445 字，8 個章節齊全，PDF 442KB。
-- **教訓**：不要一直改 prompt 架構，先確認 API 是否真的在運作。之前一小時浪費在最佳化 prompt，但真正問題是 API endpoint 和 key 早就壞了。
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:20:22 -->
-- 成效: 236 個檔案 → 3,896 chunks; 記憶體穩定在 **968MB**（未超過 1GB）; 耗時約 **13 分鐘**，完整跑完無崩潰 [score=0.936 recalls=0 avg=0.620 source=memory/2026-06-18.md:20-22]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:8:10 -->
-- 問題：記憶體不足（舊版 etl_memory.py）: 一次讀取所有 .md 檔案到記憶體; 模型持續占用 ~1GB; 導致 OOM 被 Kill，執行失敗 [score=0.907 recalls=0 avg=0.620 source=memory/2026-06-18.md:8-10]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-04.md:17:18 -->
-- /sys 修正：OpenRouter Bearer auth（07:39）: Limit: $5.00 / 已用: $0.586 / 剩餘: $4.41; 過期：2027-05-22 [score=0.865 recalls=0 avg=0.620 source=memory/2026-06-04.md:17-18]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:13:16 -->
-- 解法：etl_memory_v3.py 極致輕量版: **逐檔處理**：不用 list，一次只讀取一個檔案; **每 3 檔 GC**：每處理 3 個檔案強制 `gc.collect(1)`; **EMBED_BATCH = 3**：每批只 encode 3 個 chunk 即寫入 DB 並釋放; **延遲載入模型**：第一個檔案需要才 load model，之後留在記憶體重複用 [score=0.861 recalls=0 avg=0.620 source=memory/2026-06-18.md:13-16]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:17:17 -->
-- 解法：etl_memory_v3.py 極致輕量版: **每次刪除大型物件後立即 gc.collect()** [score=0.861 recalls=0 avg=0.620 source=memory/2026-06-18.md:17-17]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-18.md:3:3 -->
-- USD 美金現金結餘更新（2026-06-18）: USD 現金結餘：$14,554.63 → **$14,575.98 USD**（+US$21.35，可能為利息或小額配息） [score=0.861 recalls=0 avg=0.620 source=memory/2026-06-18.md:3-3]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-03.md:22:22 -->
-- 第 7 條規則（待套用）: **南亞科四大挑戰**: 1. **報價持續下跌**... 2. **DDR5 轉換緩慢**... 3. **競爭壓力大**... 4. **產業下行週期延長** [score=0.841 recalls=0 avg=0.620 source=memory/2026-06-03.md:22-22]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-20.md:15:15 -->
-- 生活: 記憶枕推薦：送人用，討論不同睡姿適用類型 [score=0.815 recalls=0 avg=0.620 source=memory/2026-06-20.md:15-15]
+**顯示佈局（480×480 面板）：**
+```
+y=0, h=45   Header（蝦助攻客 | WiFi | 12:34）
+y=50, h=80  天氣卡片（滿版寬度）
+y=135        持股 + 現金 + 匯率（2×2 網格）
+  左(8,135)     持股卡片（232×290）← 左側滿高度
+  右上(248,135) 現金卡片（224×140）← 右側上半，4行
+  右下(248,283) 匯率卡片（224×142）← 右側下半
+```
+
+**重要修改（每次重燒需確認）：**
+1. sdkconfig：`CONFIG_BOARD_TYPE_WAVESHARE_S3_TOUCH_LCD_4B=y`
+2. esp32-s3-touch-lcd-4b.cc：GT911 touch init struct修正
+3. esp_emote_gfx CMakeLists.txt：加 `-Wno-error=format`
+
+**2026-07-07 待解決問題：**
+| 問題 | 狀態 |
+|------|------|
+| WiFi Connected callback (`SetNetworkEventCallback`) 未被呼叫 | ❌ 需燒新韌體驗證 |
+| 首頁 WiFi 狀態大字未顯示 `✅ WiFi OK` | ❌ 需燒新韌體後觀察 |
+| 天氣顯示 `--°C` 未更新 | ❌ 需燒新韌體後觀察 |
+| 持股顯示 `$0` 未更新 | ❌ 需燒新韌體後觀察 |
+| 燒錄中斷（新韌體未完整燒入） | ❌ 需重新燒錄 |
+
+---
+
+### 專案二：ESP32-S3-RLCD-4.2（Arduino 天氣時鐘）
+| 項目 | 內容 |
+|------|------|
+| **硬體** | ESP32-S3 + ST7305 4.2" LCD (400x300) + PCF8563 RTC |
+| **Framework** | Arduino IDE |
+| **程式路徑** | `esp32-rlcd-project/02_Example/Arduino/ESP32-S3-RLCD-4.2/ESP32-S3-RLCD-4.2.ino` |
+| **WiFi** | SSID: IoT / 密碼: 057851463 |
+| **燒錄方式** | 完整抹除 + 分區燒錄（esptool） |
+
+**架構：**
+- Ubuntu Cron 每10分鐘抓天氣 → 上傳 R2 (`tmp/weather.json`)
+- ESP32 定時下載 R2 JSON → 解析 → 顯示 + Telegram Debug
+- 天氣 API URL: `https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/tmp/weather.json`
+- Portfolio API URL: `https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/assets/esp32_portfolio.json`
+- Telegram Bot Token: `879343...ER8A`
+
+**顯示配置（400×300，無分隔線）：**
+- y=22：日期+星期（9x15）
+- y=138：時鐘 62pt（logisoso62_tn）
+- y=200：溫度+濕度+電壓（9x15B Bold）
+- y=270：WiFi 狀態（6x13）
+- Portfolio 右上角：更新時間（right-aligned, y=20）
+
+**WiFi 自動重連（2026-07-02）：**
+- `checkWiFi()` 在 `loop()` 裡每 60 秒檢查一次 `WiFi.status()`
+- 斷線時：`WiFi.disconnect()` → `WiFi.begin()` 重連，最長等 10 秒
+
+**關鍵修正：**
+- `lcd.begin(0, U8G2_R1)` full-buffer 需要 ~273KB，記憶體不足 → 改 `lcd.begin(1, U8G2_R0)` partial-buffer（~91KB）
+- ESP32-S3 內建溫度感測器不相容（導致當機），只能顯示天氣 API 溫度
+- JSON `"updated": "..."`（冒號後有空格）解析曾導致日期顯示錯誤
+
+**待解決問題：**
+| 問題 | 狀態 |
+|------|------|
+| **編譯失敗** - esp_emote_gfx 與 IDF v5.4.2 不相容 | ❌ 未解決 |
+| WiFi LCD 狀態圖示 | ⚠️ 待驗證 |
+
+---
+
+### WiFi 最小測試 Sketch（2026-07-08）
+- 路徑：`esp32-rlcd-project/02_Example/Arduino/99_WiFi_Test/99_WiFi_Test.ino`
+- 用途：測試 ESP32-S3 能否成功連線 IoT WiFi
+- Board：`ESP32S3 Dev Module`
+- 燒錄速度：921600 baud
+
+### WiFi 路由器設定
+- SSID: `IoT`
+- 密碼: `057851463`
+- 確認時間：2026-07-07（密碼正確）
+
+## 太陽能發電（2026-06 下半月）
+- 梅雨鋒面影響：6/26 大雨（0.1 kWh）、6/27 雷陣雨（0.1 kWh）、6/28 陣雨（0.7 kWh）
+- 6月份發電量：11.3 kWh
+- 累計進度：6/29 286.5 kWh（梅雨後恢復）
+- 頁面：https://pub-ad498842971c4801a54fabd88ffa4a7f.r2.dev/solar/index.html
+
+## MiniMax API 直連 Key（2026-06-23）
+- Key: `sk-cp-Iu-vcj6DfStJhSd1WjMae-n3sZxBRA9gEXlKbWN3dvIIVZuFijLzz8iEiTAv0fPvZdrxdJNN9bhVq5ENXJ4Hu18EnkqMpmVW4E6ztNruk9IXa_WxNS6aGH4`
+- 存放：OpenClaw SQLite `openclaw-agent.sqlite` 的 `auth_profile_store` 表
+- 腳本：`analyze_market_trend.py` 的 `call_minimax_commentary` 已寫死此 key
+
+## 美股配息資料管理規則（2026-07-01 新增）
+
+**問題根因：** `fetch_us_dividend.py` 每次執行會用**當前股數**套用到**所有歷史記錄**，導致歷史配息的股數和金額被錯誤覆寫。
+
+**正確做法：**
+- **歷史已入帳記錄**：股數 = 該次配息時的實際持有股數（會隨時間遞增）
+  - 例：BND 02/02 除息時持有 113 股 → 歷史記錄必須是 113 股，不能用現在的 118 股
+- **Pending 記錄**：用**當前最新股數**（因為還沒入帳，入帳時就是这个股數）
+- **div_info**：取所有記錄（confirmed+pending）中 payout/ex_date 最新的那一筆 per_share
+
+**正確 BND 歷史資料（2026）：**
+| 支付日 | 每股股利 | 股數 | 實領(USD) |
+|--------|---------|------|----------|
+| 06/01 | $0.247259 | 117 | $20.25 |
+| 05/01 | $0.242 | 116 | $19.65 |
+| 04/01 | $0.25 | 115 | $20.12 |
+| 03/02 | $0.228 | 114 | $18.19 |
+| 02/02 | $0.245 | 113 | $19.38 |
+
+**Pending BND（07/01 除息，07/06入帳）：** 股數 = **118**（當前持有）
+
+**fetch_us_dividend.py 已知問題：**
+- `past_cutoff = today - 60天` 會錯誤排除月配 ETF（如 BND）以外的早期記錄
+- AAPL 02/09、MSFT 02/19 等 2026Q1 記錄會被 60 天界線過濾掉
+- 解決：**不能完整重建**，只能 add-only 模式
+
+**fetch_us_dividend.py 未來執行原則：**
+- **禁止完整重建** US confirmed 記錄（會用當前股數覆蓋歷史、60天限制會漏掉記錄）
+- 只能 add-only（只比對 key 是否存在，存在則跳過）
+- BND 歷史用手動維護（推薦）
+
+**TW 股息規則：**
+- 同一人（CHEWEI TSAI）持有期間股數通常不變，風險較低
+- 但「2025/12 除息→2026/01 入帳」的 4 筆應歸類為 2025Q4 或 2026Q1 需確認（目前有 00940、00712、00713、009802 跨年記錄）
+
+## Promoted From Short-Term Memory (2026-07-04)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-06-29.md:37:39 -->
+- ESP32 程式: 檔案: `esp32-rlcd-project/02_Example/Arduino/ESP32-S3-RLCD-4.2/ESP32-S3-RLCD-4.2.ino`; 功能: WiFi + NTP + RTC + R2 天氣 + 螢幕 + Telegram Debug; 螢幕初始化: `lcd.begin(1, U8G2_R0)`（已修正） [score=0.823 recalls=0 avg=0.620 source=memory/2026-06-29.md:37-39]
+
+## Promoted From Short-Term Memory (2026-07-05)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:15:15 -->
+- 待解決問題: **問題1：WiFi 從未成功連線** [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:15-15]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:16:19 -->
+- 待解決問題: ESP32 WiFi init 順序：`esp_wifi_init` → `esp_wifi_set_mode(STA)` → `esp_wifi_set_config` → `esp_wifi_start` → `esp_wifi_connect`; `getaddrinfo() returns 202` = DNS 解析失敗，但根本原因是 **WiFi 還沒連上 AP**（路由器可能拒絕連線或密碼錯誤）; IoT 路由器密碼可能不是 `057851463`，需要使用者確認; UART 看不見 `esp_rom_printf` 早期輸出（USB CDC 初始化時機問題） [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:16-19]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:21:21 -->
+- 待解決問題: **問題2：LCD WiFi 狀態圖示看不見** [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:21-21]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:22:23 -->
+- 待解決問題: 程式碼已寫入，但韌體燒的是還沒完整編譯成功的版本（build failed）; 需要等問題3修復後才能燒新版韌體 [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:22-23]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:25:25 -->
+- 待解決問題: **問題3：編譯失敗 - esp_emote_gfx 與 IDF v5.4.2 不相容** [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:25-25]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:26:28 -->
+- 待解決問題: 錯誤：`esp_log_color.h: error: format '%d' expects argument of type 'int', but argument has type 'uint32_t'`; 位置：`managed_components/espressif2022__esp_emote_gfx/src/core/gfx_refr.c:117`; 原因：第三方元件使用 `%d` 格式化 `uint32_t`，IDF v5.4.2 把 `-Wformat` 警告當成錯誤 [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:26-28]
+<!-- openclaw-memory-promotion:memory:memory/2026-06-30.md:33:36 -->
+- 每日排程: | 每天 15:00 | `gen_portfolio_data.py` 持股總攬 | ✅ 19:01 正常 | | 每天 20:00 | `update_dividend_data.py` 除息資料更新 | ✅ R2 上傳成功 | | 每天 08:00, 12:00, 18:00 | `wind-alert.sh` 風速警示 | ✅ 19.0 km/h 已發送 | | 每天 09:00 | `cron_us_dividend.py` 美股除息行事曆 | ✅ 無待入帳 | [score=0.812 recalls=0 avg=0.620 source=memory/2026-06-30.md:33-36]
+
+## Promoted From Short-Term Memory (2026-07-06)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:13:16 -->
+- ESP32-S3-RLCD-4.2 Portfolio 頁面日期顯示修復: 需求：右上角顯示 esp32_portfolio.json 的 updated 時間; 問題：JSON 是 `"updated": "2026-07-02 13:51"`（冒號後有空格），但程式搜尋 `"updated":"`（無空格），導致解析失敗，右上角永遠顯示 `...`; 修復：搜尋改為 `"updated":"`（10 chars），`up += 10` 然後 skip space 和 opening quote; 程式：/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/Arduino/ESP32-S3-RLCD-4.2/ESP32-S3-RLCD-4.2.ino [score=0.815 recalls=0 avg=0.620 source=memory/2026-07-02.md:13-16]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:4:6 -->
+- 發電記錄（累積）: 2026-07-01：天氣：早晨27°C/84%濕度/薄霧，午後短暫雨，30°C/68%/11km/h，傍晚至夜間：30°C/68%/11km/h，Partly Cloudy; 2026-07-02：天氣：早晨27°C/84%/薄霧，☀️ 白天高溫33°C/UV 9; 累積總發電量：288.8 kWh（2026-07-02）; 日發電：0.7 kWh; 天氣：局部小雨，氣溫28°C，體感30°C，濕度82%，風速4km/h，UV 0 [score=0.815 recalls=0 avg=0.620 source=memory/2026-07-02.md:4-6]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:9:10 -->
+- 美元現金結餘更新: 2026-07-02：$14,628.00 USD（從 portfolio_data.json 更新）; 資料來源：頁面截圖確認 [score=0.815 recalls=0 avg=0.620 source=memory/2026-07-02.md:9-10]
+
+## Ubuntu 系統排程（/etc/cron.d/jhe-crons）
+
+> 2026-07-06 整理：所有排程集中在此，日後詢問「系統排程」即查閱此處。
+
+| 時間 | 任務 | 輸出日誌 |
+|---|---|---|
+| `*/10 21-23,0-4 * * 0-6` | cron-stock-update.sh（美股時段） | — |
+| `*/10 9-13 * * 0-6` | cron-stock-update.sh（台股時段） | — |
+| `*/30 6-8,14-21 * * 0-6` | cron-stock-update.sh（非交易時段） | — |
+| `0 * * * *` | cron-status-update.sh | — |
+| `*/30 * * * *` | fetch-weather-to-r2.sh | logs/weather.log |
+| `0 8,12,18 * * *` | wind-alert.sh | logs/wind_alert.log |
+| `0 */6 * * *` | fetch_tw_dividend_detail.py | logs/cron-stock.log |
+| `0 20 * * *` | update_dividend_data.py | logs/dividend_update.log |
+| `0 15 * * *` | gen_portfolio_data.py | logs/cron-stock.log |
+| `*/30 9-16 * * 1-5` | scrape_taiwan_bank_rate.py | logs/exchange_rate.log |
+| `0 9 * * *` | cron_us_dividend.py | logs/us_dividend_cron.log |
+| `*/30 9-13 * * 0-6` | fetch_volume_rank.py | logs/volume_cron.log |
+| `0 14 * * 0-6` | fetch_volume_rank.py（收盤後一次） | logs/volume_cron.log |
+| `@reboot` | vm_boot_notify.sh | — |
+| `5 14 * * 0-6` | analyze_market_trend.py（每日市場分析） | logs/volume_cron.log |
+| `0 16 */3 * *` | etl_memory_with_notify.sh | scripts/pgvector/logs/etl_memory.log |
+| `0 9 * * 0` | us_tech_report.py | logs/us_tech_report.log |
+| `0 10 * * 3,6` | crypto_report.py | logs/crypto_report.log |
+| `0 10 * * 5` | us_giants_report.py | logs/us_giants_report.log |
+| `0 10 * * 1,4` | pokemon_30th_report.py | logs/pokemon_report.log |
+
+**注意：** OpenClaw Cron（`cron` tool）僅用於 OpenClaw 自身任務（如 Memory Dreaming），系統排程統一由 Ubuntu `/etc/cron.d/jhe-crons` 管理，兩者不可混用。
+
+## Promoted From Short-Term Memory (2026-07-07)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:17:18 -->
+- ESP32-S3-RLCD-4.2 Portfolio 頁面日期顯示修復: 燒錄：/dev/ttyACM0（esptool 燒錄成功）; 狀態：✅ 已完成（2026-07-02 15:20） [score=0.845 recalls=0 avg=0.620 source=memory/2026-07-02.md:17-18]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:21:24 -->
+- ESP32-S3-RLCD-4.2 WiFi 自動重連（2026-07-02 新增）: 每 60 秒檢查一次 `WiFi.status()`; 斷線時：`WiFi.disconnect()` → `WiFi.begin()` 重連，最長等 10 秒; 連上後自動恢復 fetch，連不上顯示 `WiFi OFF`; 程式：`checkWiFi()` 函數在 `loop()` 裡每分鐘執行一次 [score=0.845 recalls=0 avg=0.620 source=memory/2026-07-02.md:21-24]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:25:25 -->
+- ESP32-S3-RLCD-4.2 WiFi 自動重連（2026-07-02 新增）: 狀態：✅ 已完成（2026-07-02 15:20） [score=0.845 recalls=0 avg=0.620 source=memory/2026-07-02.md:25-25]
+
+## ⚠️ ESP32-S3-Touch-LCD-4.3B 專案路徑確認（2026-07-08 新增）
+
+**正確資料夾（重要）：**
+- 「02_Example/ESP32-S3-Touch-LCD-4.3B/」 ← 這個才是 ESP32-S3-Touch-LCD-4.3B Portfolio App 所在
+- `main/application_portfolio.cc` 和 `application_portfolio.h` 是主要修改的檔案
+- `PortfolioDashboard/` 是另一個舊專案，**不是**目標
+
+**今日 Commits（2026-07-08，都在 XiaoZhiCode_V2.1.0/）：**
+- `b878051b`: 2x2 grid layout, cash parsing bugfix
+- `b55de34b`: Chinese font (font_puhui), thousands separator
+- `b3a49af1`: Fix Run() must not return - while(1) keep-alive loop
+- `d0d967b7`: Portfolio App major rewrite, crt_bundle HTTPS, 480x480 layout
+- `982918a5`: Move SetNetworkEventCallback before StartNetwork
+
+**Flash Issue（已解決 2026-07-08）：**
+- **根本原因**：partition table `ota_0` 只有 4MB，但 binary 大小 4.34MB（溢出 239KB）
+- esptool 不檢查 partition 大小，資料寫到 partition 外 → app 損壞 → 無顯示
+- **解決**：修改 `partitions/v2/16m.csv`，`ota_0`/`ota_1` 從 4MB → 5MB
+- **正確燒錄流程**：`idf.py erase-flash` → `idf.py flash`
+- 燒錄位置：`/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/XiaoZhi/XiaoZhiCode_V2.1.0/`

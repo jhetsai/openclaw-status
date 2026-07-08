@@ -1,9 +1,19 @@
 {
-  "updated": "2026/06/23 20:30 (新方法自動抓取)",
+  "updated": "2026/07/09 00:30 (新方法自動抓取)",
   "tw": {
     "confirmed": {
-      "total": 102186,
+      "total": 102636,
       "rows": [
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.05,
+          "shares": 9000,
+          "amount": 450,
+          "ex_date": "2026/06/09",
+          "payout": "2026/07/01",
+          "stationeryName": "元大台灣價值高息"
+        },
         {
           "code": "00878",
           "period": "2026",
@@ -207,8 +217,48 @@
       ]
     },
     "pending": {
-      "total": 17912,
+      "total": 46200,
       "rows": [
+        {
+          "code": "0056",
+          "period": "2026",
+          "cash": 1.35,
+          "shares": 6000,
+          "amount": 8100,
+          "ex_date": "2026/07/21",
+          "payout": "2026/08/10",
+          "stationeryName": "元大高股息"
+        },
+        {
+          "code": "00692",
+          "period": "2026",
+          "cash": 1.92,
+          "shares": 10074,
+          "amount": 19342,
+          "ex_date": "2026/07/16",
+          "payout": "2026/08/10",
+          "stationeryName": "富邦公司治理"
+        },
+        {
+          "code": "00717",
+          "period": "2026",
+          "cash": 0.141,
+          "shares": 6000,
+          "amount": 846,
+          "ex_date": "2026/07/16",
+          "payout": "2026/08/10",
+          "stationeryName": "富邦美國特別股"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.05,
+          "shares": 9000,
+          "amount": 450,
+          "ex_date": "2026/07/09",
+          "payout": "2026/08/03",
+          "stationeryName": "元大台灣價值高息"
+        },
         {
           "code": "1101",
           "period": "2026",
@@ -248,16 +298,6 @@
           "ex_date": "2026/06/16",
           "payout": "2026/07/09",
           "stationeryName": "富邦旗艦50"
-        },
-        {
-          "code": "00940",
-          "period": "2026",
-          "cash": 0.05,
-          "shares": 9000,
-          "amount": 450,
-          "ex_date": "2026/06/09",
-          "payout": "2026/07/01",
-          "stationeryName": "元大台灣價值高息"
         }
       ]
     },
@@ -293,39 +333,39 @@
     ],
     "div_info": {
       "00940": {
-        "div": 0.045,
+        "div": 0.05,
         "freq": "月配",
-        "ann_div": 0.54
+        "ann_div": 0.6
       },
       "00878": {
-        "div": 0.42,
+        "div": 0.66,
         "freq": "季配",
-        "ann_div": 1.68
+        "ann_div": 2.64
       },
       "00712": {
-        "div": 0.19,
+        "div": 0.235,
         "freq": "季配",
-        "ann_div": 0.76
+        "ann_div": 0.94
       },
       "009802": {
-        "div": 0.092,
+        "div": 0.198,
         "freq": "季配",
-        "ann_div": 0.368
+        "ann_div": 0.792
       },
       "00713": {
-        "div": 0.78,
+        "div": 1.0,
         "freq": "季配",
-        "ann_div": 3.12
+        "ann_div": 4.0
       },
       "00891": {
-        "div": 0.75,
+        "div": 1.25,
         "freq": "季配",
-        "ann_div": 3.0
+        "ann_div": 5.0
       },
       "0056": {
-        "div": 0.866,
+        "div": 1.35,
         "freq": "季配",
-        "ann_div": 3.464
+        "ann_div": 5.4
       },
       "00717": {
         "div": 0.141,
@@ -336,22 +376,25 @@
         "div": 0.8,
         "freq": "年配",
         "ann_div": 0.8
+      },
+      "00692": {
+        "div": 1.92,
+        "freq": "半年配",
+        "ann_div": 3.84
       }
     }
   },
   "us": {
     "confirmed": {
-      "total_usd": 206.61,
-      "total_twd": 4146.0,
       "rows": [
         {
           "code": "BND",
           "date": "2026-06-01",
-          "per_share": 0.247259,
+          "per_share": 0.24726,
           "shares": 117,
           "gross": 28.93,
           "total": 20.25,
-          "payDate": "2026-06-03",
+          "payDate": "2026-06-01",
           "withheld_30pct": true
         },
         {
@@ -361,7 +404,7 @@
           "shares": 55,
           "gross": 50.05,
           "total": 35.03,
-          "payDate": "2026-06-11",
+          "payDate": "2026-05-21",
           "withheld_30pct": true
         },
         {
@@ -371,34 +414,37 @@
           "shares": 105,
           "gross": 28.35,
           "total": 19.84,
-          "payDate": "2026-05-14",
+          "payDate": "2026-05-11",
           "withheld_30pct": true
         },
         {
           "code": "BND",
           "date": "2026-05-01",
-          "per_share": 0.242,
+          "per_share": 0.24171,
           "shares": 116,
-          "gross": 28.072,
-          "total": 19.65,
+          "gross": 28.04,
+          "total": 19.63,
+          "payDate": "2026-05-01",
           "withheld_30pct": true
         },
         {
           "code": "BND",
           "date": "2026-04-01",
-          "per_share": 0.25,
+          "per_share": 0.25002,
           "shares": 115,
           "gross": 28.75,
-          "total": 20.125,
+          "total": 20.13,
+          "payDate": "2026-04-01",
           "withheld_30pct": true
         },
         {
           "code": "BND",
           "date": "2026-03-02",
-          "per_share": 0.228,
+          "per_share": 0.22782,
           "shares": 114,
-          "gross": 25.992,
-          "total": 18.194,
+          "gross": 25.97,
+          "total": 18.18,
+          "payDate": "2026-03-02",
           "withheld_30pct": true
         },
         {
@@ -407,7 +453,8 @@
           "per_share": 0.91,
           "shares": 55,
           "gross": 50.05,
-          "total": 35.035,
+          "total": 35.04,
+          "payDate": "2026-03-12",
           "withheld_30pct": true
         },
         {
@@ -417,22 +464,24 @@
           "shares": 105,
           "gross": 27.3,
           "total": 19.11,
+          "payDate": "2026-02-12",
           "withheld_30pct": true
         },
         {
           "code": "BND",
           "date": "2026-02-02",
-          "per_share": 0.245,
+          "per_share": 0.24547,
           "shares": 113,
-          "gross": 27.685,
-          "total": 19.379,
+          "gross": 27.74,
+          "total": 19.42,
+          "payDate": "2026-02-02",
           "withheld_30pct": true
         }
-      ]
+      ],
+      "total_usd": 206.63,
+      "total_twd": 6629
     },
     "pending": {
-      "total_usd": 35.03,
-      "total_twd": 0.0,
       "rows": [
         {
           "code": "MSFT",
@@ -443,75 +492,36 @@
           "total": 35.03,
           "payDate": "2026-09-10",
           "withheld_30pct": true
+        },
+        {
+          "code": "BND",
+          "date": "2026-07-01",
+          "per_share": 0.24447,
+          "shares": 118,
+          "gross": 28.85,
+          "total": 20.2,
+          "payDate": "2026-07-06",
+          "withheld_30pct": true
         }
-      ]
+      ],
+      "total_usd": 55.230000000000004,
+      "total_twd": 1772
     },
-    "annual": [
-      {
-        "year": 2020,
-        "aapl": 0,
-        "msft": 37.18,
-        "bnd": 0,
-        "total": 37.18
-      },
-      {
-        "year": 2021,
-        "aapl": 781.32,
-        "msft": 1434.74,
-        "bnd": 0,
-        "total": 2216.06
-      },
-      {
-        "year": 2022,
-        "aapl": 1919.91,
-        "msft": 2862.23,
-        "bnd": 607.42,
-        "total": 5389.56
-      },
-      {
-        "year": 2023,
-        "aapl": 2199.68,
-        "msft": 3383.95,
-        "bnd": 4806.72,
-        "total": 10390.35
-      },
-      {
-        "year": 2024,
-        "aapl": 2291.99,
-        "msft": 3735.23,
-        "bnd": 5766.68,
-        "total": 11793.9
-      },
-      {
-        "year": 2025,
-        "aapl": 2384.93,
-        "msft": 4123.69,
-        "bnd": 7224.73,
-        "total": 13733.34
-      },
-      {
-        "year": 2026,
-        "aapl": 27.3,
-        "msft": 50.05,
-        "bnd": 110.499,
-        "total": 187.849
-      }
-    ],
     "div_info": {
-      "AAPL": {
-        "div": 0.26,
-        "freq": "季配",
-        "ann_div": 1.04
-      },
       "MSFT": {
         "div": 0.91,
         "freq": "季配",
         "ann_div": 3.64
       },
       "BND": {
-        "div": 0.242,
+        "div": 0.2445,
         "freq": "月配",
-        "ann_div": 2.904
+        "ann_div": 2.93
+      },
+      "AAPL": {
+        "div": 0.27,
+        "freq": "季配",
+        "ann_div": 1.08
       }
     }
   }
