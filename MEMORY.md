@@ -152,37 +152,6 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 - 同一人（CHEWEI TSAI）持有期間股數通常不變，風險較低
 - 但「2025/12 除息→2026/01 入帳」的 4 筆應歸類為 2025Q4 或 2026Q1 需確認（目前有 00940、00712、00713、009802 跨年記錄）
 
-## Promoted From Short-Term Memory (2026-07-04)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-06-29.md:37:39 -->
-- ESP32 程式: 檔案: `esp32-rlcd-project/02_Example/Arduino/ESP32-S3-RLCD-4.2/ESP32-S3-RLCD-4.2.ino`; 功能: WiFi + NTP + RTC + R2 天氣 + 螢幕 + Telegram Debug; 螢幕初始化: `lcd.begin(1, U8G2_R0)`（已修正） [score=0.823 recalls=0 avg=0.620 source=memory/2026-06-29.md:37-39]
-
-## Promoted From Short-Term Memory (2026-07-05)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:15:15 -->
-- 待解決問題: **問題1：WiFi 從未成功連線** [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:15-15]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:16:19 -->
-- 待解決問題: ESP32 WiFi init 順序：`esp_wifi_init` → `esp_wifi_set_mode(STA)` → `esp_wifi_set_config` → `esp_wifi_start` → `esp_wifi_connect`; `getaddrinfo() returns 202` = DNS 解析失敗，但根本原因是 **WiFi 還沒連上 AP**（路由器可能拒絕連線或密碼錯誤）; IoT 路由器密碼可能不是 `057851463`，需要使用者確認; UART 看不見 `esp_rom_printf` 早期輸出（USB CDC 初始化時機問題） [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:16-19]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:21:21 -->
-- 待解決問題: **問題2：LCD WiFi 狀態圖示看不見** [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:21-21]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:22:23 -->
-- 待解決問題: 程式碼已寫入，但韌體燒的是還沒完整編譯成功的版本（build failed）; 需要等問題3修復後才能燒新版韌體 [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:22-23]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:25:25 -->
-- 待解決問題: **問題3：編譯失敗 - esp_emote_gfx 與 IDF v5.4.2 不相容** [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:25-25]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-01.md:26:28 -->
-- 待解決問題: 錯誤：`esp_log_color.h: error: format '%d' expects argument of type 'int', but argument has type 'uint32_t'`; 位置：`managed_components/espressif2022__esp_emote_gfx/src/core/gfx_refr.c:117`; 原因：第三方元件使用 `%d` 格式化 `uint32_t`，IDF v5.4.2 把 `-Wformat` 警告當成錯誤 [score=0.820 recalls=0 avg=0.620 source=memory/2026-07-01.md:26-28]
-<!-- openclaw-memory-promotion:memory:memory/2026-06-30.md:33:36 -->
-- 每日排程: | 每天 15:00 | `gen_portfolio_data.py` 持股總攬 | ✅ 19:01 正常 | | 每天 20:00 | `update_dividend_data.py` 除息資料更新 | ✅ R2 上傳成功 | | 每天 08:00, 12:00, 18:00 | `wind-alert.sh` 風速警示 | ✅ 19.0 km/h 已發送 | | 每天 09:00 | `cron_us_dividend.py` 美股除息行事曆 | ✅ 無待入帳 | [score=0.812 recalls=0 avg=0.620 source=memory/2026-06-30.md:33-36]
-
-## Promoted From Short-Term Memory (2026-07-06)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:13:16 -->
-- ESP32-S3-RLCD-4.2 Portfolio 頁面日期顯示修復: 需求：右上角顯示 esp32_portfolio.json 的 updated 時間; 問題：JSON 是 `"updated": "2026-07-02 13:51"`（冒號後有空格），但程式搜尋 `"updated":"`（無空格），導致解析失敗，右上角永遠顯示 `...`; 修復：搜尋改為 `"updated":"`（10 chars），`up += 10` 然後 skip space 和 opening quote; 程式：/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/Arduino/ESP32-S3-RLCD-4.2/ESP32-S3-RLCD-4.2.ino [score=0.815 recalls=0 avg=0.620 source=memory/2026-07-02.md:13-16]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:4:6 -->
-- 發電記錄（累積）: 2026-07-01：天氣：早晨27°C/84%濕度/薄霧，午後短暫雨，30°C/68%/11km/h，傍晚至夜間：30°C/68%/11km/h，Partly Cloudy; 2026-07-02：天氣：早晨27°C/84%/薄霧，☀️ 白天高溫33°C/UV 9; 累積總發電量：288.8 kWh（2026-07-02）; 日發電：0.7 kWh; 天氣：局部小雨，氣溫28°C，體感30°C，濕度82%，風速4km/h，UV 0 [score=0.815 recalls=0 avg=0.620 source=memory/2026-07-02.md:4-6]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:9:10 -->
-- 美元現金結餘更新: 2026-07-02：$14,628.00 USD（從 portfolio_data.json 更新）; 資料來源：頁面截圖確認 [score=0.815 recalls=0 avg=0.620 source=memory/2026-07-02.md:9-10]
-
 ## Ubuntu 系統排程（/etc/cron.d/jhe-crons）
 
 > 2026-07-06 整理：所有排程集中在此，日後詢問「系統排程」即查閱此處。
@@ -241,3 +210,18 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 - **解決**：修改 `partitions/v2/16m.csv`，`ota_0`/`ota_1` 從 4MB → 5MB
 - **正確燒錄流程**：`idf.py erase-flash` → `idf.py flash`
 - 燒錄位置：`/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/XiaoZhi/XiaoZhiCode_V2.1.0/`
+
+## Promoted From Short-Term Memory (2026-07-09)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:27:27 -->
+- 正確的估算方式: Embedding 時間 ≈ 總 chunks 數量 / (CPU throughput ~267 chunks/分鐘) [score=0.857 recalls=0 avg=0.620 source=memory/2026-07-05.md:27-27]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:30:30 -->
+- 正確的估算方式: **下次 ETL 前估算步驟：** [score=0.857 recalls=0 avg=0.620 source=memory/2026-07-05.md:30-30]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:31:34 -->
+- 正確的估算方式: 確認所有 .md 檔案的實際大小（`find ... -exec wc -c {} +`）; 用 chunking 演算法完整跑一次所有檔案，計算總 chunks 數量; 乘以 CPU embedding 速度（~267 chunks/min）; 加入分詞+寫入時間（通常 < 2 分鐘） [score=0.857 recalls=0 avg=0.620 source=memory/2026-07-05.md:31-34]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:15:18 -->
+- 當初估算錯誤的原因: **chunks 數量嚴重低估**; 我估：~4,000 chunks; 實際：9,383 chunks（多了 130%）; 主因：用取樣法（10個檔案）推估，忽略了 dreaming 資料夾的檔案會在 ETL 執行期間持續變動/成長 [score=0.828 recalls=0 avg=0.620 source=memory/2026-07-05.md:15-18]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:20:22 -->
+- 當初估算錯誤的原因: **忽略了 embedding 是最大瓶頸**; 只算了分詞（~8秒）+ 寫入; 忘了向量嵌入才是主要時間消耗 [score=0.828 recalls=0 avg=0.620 source=memory/2026-07-05.md:20-22]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:37:38 -->
+- 學到的教訓: 取樣推估只適合變動頻率低的靜態資料; 進行中的對話日誌（dreaming 資料夾）在 ETL 期間仍會變化，不可用靜態快照估算 [score=0.828 recalls=0 avg=0.620 source=memory/2026-07-05.md:37-38]
