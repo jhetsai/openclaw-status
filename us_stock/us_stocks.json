@@ -4,26 +4,26 @@
     "name": "Apple",
     "shares": 105,
     "cost": 145.02,
-    "price": 311.44,
-    "prev": 310.66,
-    "update_time": "2026-07-09 00:30:28"
+    "price": 316.22,
+    "prev": 313.39,
+    "update_time": "2026-07-10 16:00:40"
   },
   {
     "symbol": "MSFT",
     "name": "Microsoft",
     "shares": 55,
     "cost": 263.51,
-    "price": 382.43,
-    "prev": 388.84,
-    "update_time": "2026-07-09 00:30:28"
+    "price": 384.36,
+    "prev": 383.34,
+    "update_time": "2026-07-10 16:00:40"
   },
   {
     "symbol": "BND",
     "name": "Vanguard 債券 ETF",
     "shares": 118,
     "cost": 73.21,
-    "price": 72.66,
-    "prev": 72.85,
-    "update_time": "2026-07-09 00:30:28"
+    "price": 72.83,
+    "prev": 72.7,
+    "update_time": "2026-07-10 16:00:40"
   }
 ]

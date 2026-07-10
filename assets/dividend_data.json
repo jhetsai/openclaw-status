@@ -1,9 +1,19 @@
 {
-  "updated": "2026/07/09 00:30 (新方法自動抓取)",
+  "updated": "2026/07/10 16:01 (新方法自動抓取)",
   "tw": {
     "confirmed": {
-      "total": 102636,
+      "total": 103711,
       "rows": [
+        {
+          "code": "009802",
+          "period": "2026",
+          "cash": 0.198,
+          "shares": 5427,
+          "amount": 1075,
+          "ex_date": "2026/06/16",
+          "payout": "2026/07/09",
+          "stationeryName": "富邦旗艦50"
+        },
         {
           "code": "00940",
           "period": "2026",
@@ -217,7 +227,7 @@
       ]
     },
     "pending": {
-      "total": 46200,
+      "total": 45125,
       "rows": [
         {
           "code": "0056",
@@ -288,16 +298,6 @@
           "ex_date": "2026/06/22",
           "payout": "2026/07/10",
           "stationeryName": "元大台灣高息低波"
-        },
-        {
-          "code": "009802",
-          "period": "2026",
-          "cash": 0.198,
-          "shares": 5427,
-          "amount": 1075,
-          "ex_date": "2026/06/16",
-          "payout": "2026/07/09",
-          "stationeryName": "富邦旗艦50"
         }
       ]
     },
@@ -479,7 +479,7 @@
         }
       ],
       "total_usd": 206.63,
-      "total_twd": 6629
+      "total_twd": 6628
     },
     "pending": {
       "rows": [

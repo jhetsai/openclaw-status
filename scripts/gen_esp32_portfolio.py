@@ -30,6 +30,20 @@ tw_mkt  = sum(s.get('market_value', 0) for s in tw_list)
 us_cost_twd = sum(s.get('costTwd', 0) for s in us_list)
 us_mkt_twd  = sum(s.get('mktvalTwd', 0) for s in us_list)
 
+# ── 讀取太陽能累積發電量 ────────────────────────────────────────────────
+solar_kwh = 0.0
+solar_csv = os.path.join(WORKSPACE, 'solar_history.csv')
+if os.path.exists(solar_csv):
+    with open(solar_csv) as f:
+        lines = f.read().strip().split('\n')
+    if lines:
+        last = lines[-1].split(',')
+        if len(last) >= 2:
+            try:
+                solar_kwh = float(last[1])
+            except ValueError:
+                pass
+
 # ── 組建 esp32_portfolio.json ─────────────────────────────────────────
 out = {
     "updated": now_str,
@@ -69,7 +83,8 @@ out = {
         "usd_twd": fx.get('USD_TWD', 31.5),
         "jpy_twd": fx.get('JPY_TWD', 0.19),
         "updated": fx.get('updated', now_str)
-    }
+    },
+    "solar_kwh": round(solar_kwh, 1)
 }
 
 os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
