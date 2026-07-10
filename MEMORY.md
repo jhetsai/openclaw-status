@@ -44,14 +44,22 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 2. esp32-s3-touch-lcd-4b.cc：GT911 touch init struct修正
 3. esp_emote_gfx CMakeLists.txt：加 `-Wno-error=format`
 
-**2026-07-07 待解決問題：**
-| 問題 | 狀態 |
-|------|------|
-| WiFi Connected callback (`SetNetworkEventCallback`) 未被呼叫 | ❌ 需燒新韌體驗證 |
-| 首頁 WiFi 狀態大字未顯示 `✅ WiFi OK` | ❌ 需燒新韌體後觀察 |
-| 天氣顯示 `--°C` 未更新 | ❌ 需燒新韌體後觀察 |
-| 持股顯示 `$0` 未更新 | ❌ 需燒新韌體後觀察 |
-| 燒錄中斷（新韌體未完整燒入） | ❌ 需重新燒錄 |
+**2026-07-10 時鐘維修完成 ✅：**
+| 問題 | 原因 | 修復 |
+|------|------|------|
+| 秒數落後 3 秒 | esp_timer + lock contention | 改用 `lv_timer_create()` |
+| WiFi 連線後時鐘亂跳 | SNTP init 太晚 | Initialize() 直接 init SNTP |
+| NTP sync 延遲 | WiFi 慢 | 每 10 秒用 `time()` Fallback |
+| RSSI fetch 失敗 | WiFi callback stack 太小 | 移到 LvglTask |
+
+**韌體版本：** `2.1.0`（App version）| Commit: `756daa7a`
+**韌體備份：** `/home/jhe/.openclaw/workspace/backups/2026-07-10/`
+- `xiaozhi_2026-07-10_1534.bin` — 主韌體（4.3MB）
+- `partition-table_2026-07-10.bin` — 分區表
+- `bootloader_2026-07-10.bin` — Bootloader
+- `application_portfolio.cc/h` — 原始碼
+- `memory_2026-07-10.md` — 維修日誌
+- `README.md` — 還原說明
 
 ---
 
@@ -181,15 +189,6 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 
 **注意：** OpenClaw Cron（`cron` tool）僅用於 OpenClaw 自身任務（如 Memory Dreaming），系統排程統一由 Ubuntu `/etc/cron.d/jhe-crons` 管理，兩者不可混用。
 
-## Promoted From Short-Term Memory (2026-07-07)
-
-<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:17:18 -->
-- ESP32-S3-RLCD-4.2 Portfolio 頁面日期顯示修復: 燒錄：/dev/ttyACM0（esptool 燒錄成功）; 狀態：✅ 已完成（2026-07-02 15:20） [score=0.845 recalls=0 avg=0.620 source=memory/2026-07-02.md:17-18]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:21:24 -->
-- ESP32-S3-RLCD-4.2 WiFi 自動重連（2026-07-02 新增）: 每 60 秒檢查一次 `WiFi.status()`; 斷線時：`WiFi.disconnect()` → `WiFi.begin()` 重連，最長等 10 秒; 連上後自動恢復 fetch，連不上顯示 `WiFi OFF`; 程式：`checkWiFi()` 函數在 `loop()` 裡每分鐘執行一次 [score=0.845 recalls=0 avg=0.620 source=memory/2026-07-02.md:21-24]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-02.md:25:25 -->
-- ESP32-S3-RLCD-4.2 WiFi 自動重連（2026-07-02 新增）: 狀態：✅ 已完成（2026-07-02 15:20） [score=0.845 recalls=0 avg=0.620 source=memory/2026-07-02.md:25-25]
-
 ## ⚠️ ESP32-S3-Touch-LCD-4.3B 專案路徑確認（2026-07-08 新增）
 
 **正確資料夾（重要）：**
@@ -211,17 +210,25 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 - **正確燒錄流程**：`idf.py erase-flash` → `idf.py flash`
 - 燒錄位置：`/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/XiaoZhi/XiaoZhiCode_V2.1.0/`
 
-## Promoted From Short-Term Memory (2026-07-09)
+## Promoted From Short-Term Memory (2026-07-10)
 
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:27:27 -->
-- 正確的估算方式: Embedding 時間 ≈ 總 chunks 數量 / (CPU throughput ~267 chunks/分鐘) [score=0.857 recalls=0 avg=0.620 source=memory/2026-07-05.md:27-27]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:30:30 -->
-- 正確的估算方式: **下次 ETL 前估算步驟：** [score=0.857 recalls=0 avg=0.620 source=memory/2026-07-05.md:30-30]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:31:34 -->
-- 正確的估算方式: 確認所有 .md 檔案的實際大小（`find ... -exec wc -c {} +`）; 用 chunking 演算法完整跑一次所有檔案，計算總 chunks 數量; 乘以 CPU embedding 速度（~267 chunks/min）; 加入分詞+寫入時間（通常 < 2 分鐘） [score=0.857 recalls=0 avg=0.620 source=memory/2026-07-05.md:31-34]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:15:18 -->
-- 當初估算錯誤的原因: **chunks 數量嚴重低估**; 我估：~4,000 chunks; 實際：9,383 chunks（多了 130%）; 主因：用取樣法（10個檔案）推估，忽略了 dreaming 資料夾的檔案會在 ETL 執行期間持續變動/成長 [score=0.828 recalls=0 avg=0.620 source=memory/2026-07-05.md:15-18]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:20:22 -->
-- 當初估算錯誤的原因: **忽略了 embedding 是最大瓶頸**; 只算了分詞（~8秒）+ 寫入; 忘了向量嵌入才是主要時間消耗 [score=0.828 recalls=0 avg=0.620 source=memory/2026-07-05.md:20-22]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:37:38 -->
-- 學到的教訓: 取樣推估只適合變動頻率低的靜態資料; 進行中的對話日誌（dreaming 資料夾）在 ETL 期間仍會變化，不可用靜態快照估算 [score=0.828 recalls=0 avg=0.620 source=memory/2026-07-05.md:37-38]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:10:11 -->
+- 現況: `PopulateScanResults()` ❌ 完全沒被執行過（log 從未出現）; Watchdog timeout 導致 CPU 0 閒置任務無法執行 [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:10-11]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:14:14 -->
+- 根本原因（懷疑）: **LvglTask 可能從未成功啟動，或啟動後立即崩潰** [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:14-14]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:17:19 -->
+- 根本原因（懷疑）: `ESP_LOGI(TAG, "LVGL task started")` 在整個 UART log 中**從未出現**; LvglTask 負責：touch polling + `wifi_scan_done_pending_` check + `PopulateScanResults()`; LvglTask 如果死了 → `PopulateScanResults()` 不會被呼叫 [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:17-19]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:22:24 -->
+- 懷疑 LvglTask stack overflow: 目前 stack：8192 bytes（太小）; LVGL `lv_task_handler()` + touch indev operations 可能需要更多; 修復：增加到 **12288 bytes** [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:22-24]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:27:29 -->
+- 其他發現: Watchdog timeout：CPU 0 IDLE0 任務長期無法執行，每 6.5 秒触发一次; `WifiScanTask` 是獨立的 task（core 1），不受 LvglTask 影響; 按鈕座標：x=20~460, y=120~200 [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:27-29]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:32:34 -->
+- 待修（本次）: LvglTask stack：8192 → 12288（在 `xTaskCreatePinnedToCore` 呼叫處）; 加 `fflush(stdout)` 在所有关键 log 後，確保 UART 及時輸出; `ESP_LOGI(TAG, "LVGL task started")` 後加 `fflush(stdout)` [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:32-34]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:7:7 -->
+- 事件：執行 etl_memory_v2.py（記憶向量化）: **實際結果：** [score=0.812 recalls=0 avg=0.620 source=memory/2026-07-05.md:7-7]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:8:11 -->
+- 事件：執行 etl_memory_v2.py（記憶向量化）: 301 個 .md 檔案; 9,383 chunks（寫入 PostgreSQL）; 總耗時：~35 分鐘; 向量嵌入速度：267 chunks/min（CPU 模式） [score=0.812 recalls=0 avg=0.620 source=memory/2026-07-05.md:8-11]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-07.md:21:24 -->
+- 今日進度: **09:xx**：誤將 XiaoZhiCode_V2.1.0 燒成 Weather Clock（Arduino/11_Weather_Clock），LCD 顯示混亂; **10:xx**：刷回 XiaoZhiCode_V2.1.0（07-06 16:55 build）; 確認 WiFi SSID 掃描正常（CHT Wi-Fi、IoT）; 確認 IoT 路由器密碼 `057851463` [score=0.806 recalls=0 avg=0.620 source=memory/2026-07-07.md:21-24]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-07.md:25:25 -->
+- 今日進度: 確認韌體燒入位置正確（`idf.py build` + `esptool write_flash`） [score=0.806 recalls=0 avg=0.620 source=memory/2026-07-07.md:25-25]
