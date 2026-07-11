@@ -13,7 +13,8 @@ Before doing anything else:
 1. Read `SOUL.md` — this is who you are
 2. Read `USER.md` — this is who you're helping
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
-4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
+4. If `memory/esp32_weather_status.md` exists: read it to get current ESP32 project status (bug list, layout params, latest commit)
+5. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
 5. Read `TOOLS.md` — tools and data source rules (must check before queries)
 
 Don't ask permission. Just do it.
@@ -45,6 +46,20 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - When you learn a lesson → update AGENTS.md, TOOLS.md, or the relevant skill
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
+
+## 專案接手
+
+對於還在進行中的專案，在 `memory/` 下建立 `XXX_status.md` 狀態檔。
+
+**觸發方式：** 使用者說「繼續 XXX」或「繼續 ESP32」→ 我就會自動讀取狀態檔，接著處理。
+
+**狀態檔應該包含：**
+- 專案路徑 & 最新 commit
+- 已完成 / 待修 bug 列表
+- 目前的佈局參數或重要設定
+- 下一步該做什麼
+
+**每次 session 結尾：** 更新狀態檔，確保下次能快速接手。
 
 ## Red Lines
 
