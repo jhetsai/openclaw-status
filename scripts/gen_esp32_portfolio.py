@@ -30,6 +30,34 @@ tw_mkt  = sum(s.get('market_value', 0) for s in tw_list)
 us_cost_twd = sum(s.get('costTwd', 0) for s in us_list)
 us_mkt_twd  = sum(s.get('mktvalTwd', 0) for s in us_list)
 
+# ── 今日脈跌：台股 (price - prev_price) * shares，美股換算 TWD 後加總 ───────
+def _today_change_tw(stocks):
+    total = 0.0
+    for s in stocks:
+        p = s.get('price', 0) or 0
+        prev = s.get('prev_price', 0) or 0
+        sh = s.get('shares', 0) or 0
+        if p and prev:
+            total += (p - prev) * sh
+    return total
+
+def _today_change_us(stocks, usd_twd):
+    total = 0.0
+    for s in stocks:
+        p = s.get('price', 0) or 0
+        prev = s.get('prev_price', 0) or 0
+        sh = s.get('shares', 0) or 0
+        if p and prev:
+            total += (p - prev) * sh  # USD
+    return total * usd_twd  # 換 TWD
+
+usd_twd_rate = fx.get('USD_TWD', 31.5)
+tw_day = _today_change_tw(tw_list)
+us_day = _today_change_us(us_list, usd_twd_rate)
+total_day_twd = round(tw_day + us_day)
+total_mkt = summary.get('stockMktval', 0)
+total_day_pct = round(total_day_twd / total_mkt * 100, 2) if total_mkt else 0.0
+
 # ── 讀取太陽能累積發電量 ────────────────────────────────────────────────
 solar_kwh = 0.0
 solar_csv = os.path.join(WORKSPACE, 'solar_history.csv')
@@ -53,7 +81,12 @@ out = {
         "total_gain":     summary.get('stockMktval', 0) - summary.get('stockCost', 0),
         "total_gain_pct": round(
             (summary.get('stockMktval', 0) - summary.get('stockCost', 0)) / summary.get('stockCost', 1) * 100, 2
-        ) if summary.get('stockCost', 0) else 0
+        ) if summary.get('stockCost', 0) else 0,
+        "today_change":   total_day_twd,
+        "today_change_pct": total_day_pct,
+        "annual_div":     summary.get('annualDiv', 0),
+        "yield_cost":     summary.get('yieldCost', '0%'),
+        "yield_cur":      summary.get('yieldCur', '0%')
     },
     "tw": {
         "cost":    round(tw_cost),
