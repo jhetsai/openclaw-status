@@ -14,8 +14,8 @@ services:
     volumes:
       # 備援機的 workspace（路徑自訂）
       # 容器內 /home/jhe/.openclaw/workspace -> 主機 WORKSPACE_HOST_PATH
-      - ${WORKSPACE_HOST_PATH:-/opt/jhe-workspace}:/home/jhe/.openclaw/workspace:rw
+      - ${WORKSPACE_HOST_PATH:-/home/jhe/.openclaw/workspace}:/home/jhe/.openclaw/workspace:rw
       # 主機 scripts mount 到容器內 /app/scripts（讓 cron 能找到腳本）
-      - ${WORKSPACE_HOST_PATH:-/opt/jhe-workspace}/scripts:/app/scripts:ro
+      - ${WORKSPACE_HOST_PATH:-/home/jhe/.openclaw/workspace}/scripts:/app/scripts:ro
       # logs
       - ./logs:/app/logs
