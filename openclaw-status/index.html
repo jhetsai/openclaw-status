@@ -70,10 +70,10 @@
             <div class="status-grid">
         <div class="status-item"><div class="label">主機名稱</div><div class="value">jhe-VMware-Virtual-Platform</div></div>
         <div class="status-item"><div class="label">作業系統</div><div class="value">Linux 6.17.0</div></div>
-        <div class="status-item"><div class="label">已開機</div><div class="value">0天 8時 51分</div></div>
+        <div class="status-item"><div class="label">已開機</div><div class="value">0天 8時 38分</div></div>
         <div class="status-item"><div class="label">記憶體</div><div class="value">2.2 / 7.7 GB</div></div>
-        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">8.5%</div></div>
-        <div class="status-item"><div class="label">磁碟（系統 / 工作區）</div><div class="value">68G / 118G</div></div>
+        <div class="status-item"><div class="label">CPU 使用率</div><div class="value">9.8%</div></div>
+        <div class="status-item"><div class="label">磁碟（系統 / 工作區）</div><div class="value">70G / 118G</div></div>
         <div class="status-item"><div class="label">目前模型</div><div class="value">MiniMax M2.7</div></div>
         <div class="status-item"><div class="label">Node.js 版本</div><div class="value">v22.23.1</div></div>
         </div>
@@ -119,11 +119,11 @@
             <summary>☀️ 太陽能發電（預估）</summary>
             <div class="status-grid">
         <div class="status-item"><div class="label">面板規格</div><div class="value">300W（200W+100W，200W 板有裂痕）</div></div>
-        <div class="status-item"><div class="label">四湖測站</div><div class="value">四湖 陰</div></div>
-        <div class="status-item"><div class="label">氣溫</div><div class="value">32.6°C</div></div>
-        <div class="status-item"><div class="label">風速</div><div class="value">29.2 km/h</div></div>
-        <div class="status-item"><div class="label">今日天氣</div><div class="value">陰</div></div>
-        <div class="status-item"><div class="label">發電效率</div><div class="value">66W (44%)</div></div>
+        <div class="status-item"><div class="label">四湖測站</div><div class="value">四湖 小陣雨</div></div>
+        <div class="status-item"><div class="label">氣溫</div><div class="value">33.7°C</div></div>
+        <div class="status-item"><div class="label">風速</div><div class="value">15.1 km/h</div></div>
+        <div class="status-item"><div class="label">今日天氣</div><div class="value">小陣雨</div></div>
+        <div class="status-item"><div class="label">發電效率</div><div class="value">39W (26%)</div></div>
         <div class="status-item"><div class="label">Windy 雨量</div><div class="value">0.000mm/h</div></div>
         <div class="status-item"><div class="label">📡 版本最後上傳時間</div><div class="value" id="status-ts">-</div></div>
         </div>
@@ -156,7 +156,7 @@
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
   };
   var now = new Date();
-  var ts = '2026-07-10 16:00:01';
+  var ts = '2026-07-14 15:00:01';
   var el = document.getElementById('top-ts');
   if(el) el.innerHTML = '📡 版本最後上傳時間：'+ts+' <a href="?" class="refresh-btn">🔄 重新整理</a>';
   el = document.getElementById('status-ts');

@@ -1,0 +1,12 @@
+name = "jhe-crons"
+main = "src/index.js"
+compatibility_date = "2025-01-09"
+account_id = "83de8038b42470b0576833e6d30e926d"
+
+[vars]
+FINNHUB_KEY = ""
+WEATHER_API_KEY = ""
+CWA_API_KEY = ""
+
+[triggers]
+crons = ["*/15 * * * *"]

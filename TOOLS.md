@@ -415,3 +415,28 @@ $ESPTOOL --chip esp32s3 --port /dev/ttyACM0 write_flash \
 ### Portfolio updated 欄位意義
 - `updated` = 後端 cron 執行 `gen_esp32_portfolio.py` 的時間（非 R2 上傳時間）
 - cronstock-update.sh 每 10 分鐘執行一次
+
+## ESP32 燒錄後 Commit + 備份 SOP
+
+**觸發時機：** 每次燒錄完成後，自動執行（建議寫入燒錄流程的最後一步）
+
+**腳本：** `scripts/esp32_backup_commit.sh`
+
+```bash
+# 基本用法（自動 commit 變更 + 備份 binary）
+bash /home/jhe/.openclaw/workspace/scripts/esp32_backup_commit.sh "變更說明"
+
+# 範例
+bash /home/jhe/.openclaw/workspace/scripts/esp32_backup_commit.sh "Weather page: split into two cards"
+```
+
+**腳本會自動：**
+1. 檢查 git 是否有未 commit 的變更
+2. Stage 並 commit（時間戳 + 說明）
+3. 備份到 `backups/YYYY-MM-DD/esp32_HHMM/`
+   - `application_portfolio.cc`（原始碼）
+   - `xiaozhi.bin`（韌體）
+   - `partition-table.bin`
+   - `bootloader.bin`
+
+**⚠️ 注意：** push 需要 SSH key，目前只有本地 commit

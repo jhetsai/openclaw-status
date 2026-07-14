@@ -31,12 +31,12 @@
 
 **顯示佈局（480×480 面板）：**
 ```
-y=0, h=45   Header（蝦助攻客 | WiFi | 12:34）
-y=50, h=80  天氣卡片（滿版寬度）
-y=135        持股 + 現金 + 匯率（2×2 網格）
-  左(8,135)     持股卡片（232×290）← 左側滿高度
-  右上(248,135) 現金卡片（224×140）← 右側上半，4行
-  右下(248,283) 匯率卡片（224×142）← 右側下半
+y=0, h=45   Header（WiFi 狀態 | 時鐘）— 沒有「蝦助攻客」字樣
+y=50, h=100 天氣卡片（460×100，滿版寬度）
+y=155        持股 + 現金 + 匯率（2×2 網格）
+  左(8,155)    持股卡片（232×290）← 左側滿高度
+  右上(248,155) 現金卡片（224×140）← 右側上半，4行
+  右下(248,303) 匯率卡片（224×140）← 右側下半
 ```
 
 **重要修改（每次重燒需確認）：**
@@ -52,14 +52,17 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 | NTP sync 延遲 | WiFi 慢 | 每 10 秒用 `time()` Fallback |
 | RSSI fetch 失敗 | WiFi callback stack 太小 | 移到 LvglTask |
 
-**韌體版本：** `2.1.0`（App version）| Commit: `756daa7a`
-**韌體備份：** `/home/jhe/.openclaw/workspace/backups/2026-07-10/`
-- `xiaozhi_2026-07-10_1534.bin` — 主韌體（4.3MB）
-- `partition-table_2026-07-10.bin` — 分區表
-- `bootloader_2026-07-10.bin` — Bootloader
+**2026-07-12 天氣功能維修完成 ✅：**
+| 問題 | 原因 | 修復 |
+|------|------|------|
+| Day label 顯示 `--` | Parser `fc.day[8]` 緩衝區被截斷，「大後天」UTF-8=9B | `day[8]` → `day[16]` |
+| Day label 位置偏下 | y=12 太低 | `y=4` 置中 |
+| Detail screen 更新時間顯示 `--` | Label 只在 create 時設定一次，UpdateHomeCards 未更新 | `det_weather_updated_` 成員變數 + UpdateHomeCards() 一併更新 |
+
+**韌體版本：** `2.1.0`（App version）| Commit: `0ef9ed73`
+**韌體備份：** `/home/jhe/.openclaw/workspace/backups/2026-07-12/esp32_1515/`
+- `xiaozhi.bin` — 主韌體（4.2MB）
 - `application_portfolio.cc/h` — 原始碼
-- `memory_2026-07-10.md` — 維修日誌
-- `README.md` — 還原說明
 
 ---
 
@@ -135,16 +138,23 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 - **Pending 記錄**：用**當前最新股數**（因為還沒入帳，入帳時就是这个股數）
 - **div_info**：取所有記錄（confirmed+pending）中 payout/ex_date 最新的那一筆 per_share
 
-**正確 BND 歷史資料（2026）：**
+**BND 歷史資料（2026，來源：dividend_data.json）：**
 | 支付日 | 每股股利 | 股數 | 實領(USD) |
 |--------|---------|------|----------|
-| 06/01 | $0.247259 | 117 | $20.25 |
-| 05/01 | $0.242 | 116 | $19.65 |
-| 04/01 | $0.25 | 115 | $20.12 |
-| 03/02 | $0.228 | 114 | $18.19 |
-| 02/02 | $0.245 | 113 | $19.38 |
+| 07/06 | $0.24447 | 118 | $20.20 ✅ |
+| 06/01 | $0.24726 | 117 | $20.25 |
+| 05/01 | $0.24171 | 116 | $19.63 |
+| 04/01 | $0.25002 | 115 | $20.13 |
+| 03/02 | $0.22782 | 114 | $18.18 |
+| 02/02 | $0.24547 | 113 | $19.42 |
+**今年迄今實領 BND：$117.81**
 
-**Pending BND（07/01 除息，07/06入帳）：** 股數 = **118**（當前持有）
+**其他美股（2026）：**
+| 股票 | 支付日 | 每股 | 股數 | 實領(USD) |
+|------|--------|------|------|----------|
+| AAPL | 05/11 | $0.27 | 105 | $19.84 |
+| MSFT | 05/21 | $0.91 | 55 | $35.03 |
+| MSFT | 09/10（預計）| $0.91 | 55 | $35.03 |
 
 **fetch_us_dividend.py 已知問題：**
 - `past_cutoff = today - 60天` 會錯誤排除月配 ETF（如 BND）以外的早期記錄
@@ -189,6 +199,20 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 
 **注意：** OpenClaw Cron（`cron` tool）僅用於 OpenClaw 自身任務（如 Memory Dreaming），系統排程統一由 Ubuntu `/etc/cron.d/jhe-crons` 管理，兩者不可混用。
 
+## ⚠️ ESP32-S3-Touch-LCD-4.3B 黑屏 SOP（2026-07-13 新增）
+
+**預防黑屏的燒錄指令**（idf.py flash 只燒 ota_0，但 ESP32 開機可能從 ota_1 啟動，會 crash）：
+```bash
+python3 -m esptool --chip esp32s3 --port /dev/ttyACM0 --baud 460800 \
+  write-flash \
+  0x0 build/bootloader/bootloader.bin \
+  0x8000 build/partition_table/partition-table.bin \
+  0xd000 build/ota_data_initial.bin \
+  0x20000 build/xiaozhi.bin \
+  0x520000 build/xiaozhi.bin
+```
+**一定要帶 `0x520000` (ota_1)**。
+
 ## ⚠️ ESP32-S3-Touch-LCD-4.3B 專案路徑確認（2026-07-08 新增）
 
 **正確資料夾（重要）：**
@@ -210,25 +234,9 @@ y=135        持股 + 現金 + 匯率（2×2 網格）
 - **正確燒錄流程**：`idf.py erase-flash` → `idf.py flash`
 - 燒錄位置：`/home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/XiaoZhi/XiaoZhiCode_V2.1.0/`
 
-## Promoted From Short-Term Memory (2026-07-10)
+## Promoted From Short-Term Memory (2026-07-14)
 
-<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:10:11 -->
-- 現況: `PopulateScanResults()` ❌ 完全沒被執行過（log 從未出現）; Watchdog timeout 導致 CPU 0 閒置任務無法執行 [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:10-11]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:14:14 -->
-- 根本原因（懷疑）: **LvglTask 可能從未成功啟動，或啟動後立即崩潰** [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:14-14]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:17:19 -->
-- 根本原因（懷疑）: `ESP_LOGI(TAG, "LVGL task started")` 在整個 UART log 中**從未出現**; LvglTask 負責：touch polling + `wifi_scan_done_pending_` check + `PopulateScanResults()`; LvglTask 如果死了 → `PopulateScanResults()` 不會被呼叫 [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:17-19]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:22:24 -->
-- 懷疑 LvglTask stack overflow: 目前 stack：8192 bytes（太小）; LVGL `lv_task_handler()` + touch indev operations 可能需要更多; 修復：增加到 **12288 bytes** [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:22-24]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:27:29 -->
-- 其他發現: Watchdog timeout：CPU 0 IDLE0 任務長期無法執行，每 6.5 秒触发一次; `WifiScanTask` 是獨立的 task（core 1），不受 LvglTask 影響; 按鈕座標：x=20~460, y=120~200 [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:27-29]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-06.md:32:34 -->
-- 待修（本次）: LvglTask stack：8192 → 12288（在 `xTaskCreatePinnedToCore` 呼叫處）; 加 `fflush(stdout)` 在所有关键 log 後，確保 UART 及時輸出; `ESP_LOGI(TAG, "LVGL task started")` 後加 `fflush(stdout)` [score=0.818 recalls=0 avg=0.620 source=memory/2026-07-06.md:32-34]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:7:7 -->
-- 事件：執行 etl_memory_v2.py（記憶向量化）: **實際結果：** [score=0.812 recalls=0 avg=0.620 source=memory/2026-07-05.md:7-7]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-05.md:8:11 -->
-- 事件：執行 etl_memory_v2.py（記憶向量化）: 301 個 .md 檔案; 9,383 chunks（寫入 PostgreSQL）; 總耗時：~35 分鐘; 向量嵌入速度：267 chunks/min（CPU 模式） [score=0.812 recalls=0 avg=0.620 source=memory/2026-07-05.md:8-11]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-07.md:21:24 -->
-- 今日進度: **09:xx**：誤將 XiaoZhiCode_V2.1.0 燒成 Weather Clock（Arduino/11_Weather_Clock），LCD 顯示混亂; **10:xx**：刷回 XiaoZhiCode_V2.1.0（07-06 16:55 build）; 確認 WiFi SSID 掃描正常（CHT Wi-Fi、IoT）; 確認 IoT 路由器密碼 `057851463` [score=0.806 recalls=0 avg=0.620 source=memory/2026-07-07.md:21-24]
-<!-- openclaw-memory-promotion:memory:memory/2026-07-07.md:25:25 -->
-- 今日進度: 確認韌體燒入位置正確（`idf.py build` + `esptool write_flash`） [score=0.806 recalls=0 avg=0.620 source=memory/2026-07-07.md:25-25]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-09.md:21:22 -->
+- 燒錄位置: `/dev/ttyACM0`（燒錄用）; `/dev/ttyACM1`（序列監控用，燒錄時會被佔用） [score=0.831 recalls=0 avg=0.620 source=memory/2026-07-09.md:21-22]
+<!-- openclaw-memory-promotion:memory:memory/2026-07-09.md:32:34 -->
+- 燒錄指令: cd /home/jhe/.openclaw/workspace/esp32-rlcd-project/02_Example/ESP32-S3-Touch-LCD-4.3B . /home/jhe/esp-idf-v5.4.2/export.sh >/dev/null 2>&1 idf.py -p /dev/ttyACM0 flash [score=0.831 recalls=0 avg=0.620 source=memory/2026-07-09.md:32-34]

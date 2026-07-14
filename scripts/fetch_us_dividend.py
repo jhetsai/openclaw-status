@@ -2,7 +2,12 @@
 """
 Fetch US stock dividends from NASDAQ API and update dividend_data.json
 Auto-detect: payDate >= today → pending
-             payDate < today (within 60 days) → confirmed
+             payDate < today (within 1 year) → confirmed
+
+重要：
+- 已確認記錄（同一 code + ex_date）不會被覆寫，key check 會跳過
+- 持股數量以當下 HOLDINGS 設定為準（新加入的確診記錄才會用到）
+- 60天限制放寬為365天，避免季配股票早期記錄被漏掉
 """
 
 import json
@@ -74,7 +79,7 @@ def main():
     pending_map = {(r["code"], r["date"]): r for r in pending_rows}
 
     today = datetime.today().date()
-    past_cutoff = today - timedelta(days=60)  # 60天內的視為confirmed
+    past_cutoff = today - timedelta(days=365)  # 1年內的視為confirmed（避免漏掉季配早期記錄）
 
     for h in HOLDINGS:
         symbol = h["code"]
@@ -138,7 +143,7 @@ def main():
                         pending_map[key] = entry
                         added_pending += 1
                 else:
-                    # 已過期（60天內）→ confirmed
+                    # 已過期（1年內）→ confirmed
                     confirmed_keys.add(key)
                     # 加到 confirmed rows
                     data["us"]["confirmed"]["rows"].append(entry)

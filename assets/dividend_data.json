@@ -1,9 +1,49 @@
 {
-  "updated": "2026/06/22 06:30 (新方法自動抓取)",
+  "updated": "2026/07/14 21:50 (新方法自動抓取)",
   "tw": {
     "confirmed": {
-      "total": 102186,
+      "total": 115699,
       "rows": [
+        {
+          "code": "00712",
+          "period": "2026",
+          "cash": 0.235,
+          "shares": 29000,
+          "amount": 6815,
+          "ex_date": "2026/06/17",
+          "payout": "2026/07/14",
+          "stationeryName": "富邦富時不動產"
+        },
+        {
+          "code": "00713",
+          "period": "2026",
+          "cash": 1.0,
+          "shares": 5173,
+          "amount": 5173,
+          "ex_date": "2026/06/22",
+          "payout": "2026/07/10",
+          "stationeryName": "元大台灣高息低波"
+        },
+        {
+          "code": "009802",
+          "period": "2026",
+          "cash": 0.198,
+          "shares": 5427,
+          "amount": 1075,
+          "ex_date": "2026/06/16",
+          "payout": "2026/07/09",
+          "stationeryName": "富邦旗艦50"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.05,
+          "shares": 9000,
+          "amount": 450,
+          "ex_date": "2026/06/09",
+          "payout": "2026/07/01",
+          "stationeryName": "元大台灣價值高息"
+        },
         {
           "code": "00878",
           "period": "2026",
@@ -207,8 +247,48 @@
       ]
     },
     "pending": {
-      "total": 17912,
+      "total": 33137,
       "rows": [
+        {
+          "code": "0056",
+          "period": "2026",
+          "cash": 1.35,
+          "shares": 6000,
+          "amount": 8100,
+          "ex_date": "2026/07/21",
+          "payout": "2026/08/10",
+          "stationeryName": "元大高股息"
+        },
+        {
+          "code": "00692",
+          "period": "2026",
+          "cash": 1.92,
+          "shares": 10074,
+          "amount": 19342,
+          "ex_date": "2026/07/16",
+          "payout": "2026/08/10",
+          "stationeryName": "富邦公司治理"
+        },
+        {
+          "code": "00717",
+          "period": "2026",
+          "cash": 0.141,
+          "shares": 6000,
+          "amount": 846,
+          "ex_date": "2026/07/16",
+          "payout": "2026/08/10",
+          "stationeryName": "富邦美國特別股"
+        },
+        {
+          "code": "00940",
+          "period": "2026",
+          "cash": 0.05,
+          "shares": 9000,
+          "amount": 450,
+          "ex_date": "2026/07/09",
+          "payout": "2026/08/03",
+          "stationeryName": "元大台灣價值高息"
+        },
         {
           "code": "1101",
           "period": "2026",
@@ -218,46 +298,6 @@
           "ex_date": "2026/07/01",
           "payout": "2026/07/28",
           "stationeryName": "台泥"
-        },
-        {
-          "code": "00712",
-          "period": "2026",
-          "cash": 0.235,
-          "shares": 29000,
-          "amount": 6815,
-          "ex_date": "2026/06/17",
-          "payout": "2026/07/13",
-          "stationeryName": "富邦富時不動產"
-        },
-        {
-          "code": "00713",
-          "period": "2026",
-          "cash": 1.0,
-          "shares": 5173,
-          "amount": 5173,
-          "ex_date": "2026/06/22",
-          "payout": "2026/07/10",
-          "stationeryName": "元大台灣高息低波"
-        },
-        {
-          "code": "009802",
-          "period": "2026",
-          "cash": 0.198,
-          "shares": 5427,
-          "amount": 1075,
-          "ex_date": "2026/06/16",
-          "payout": "2026/07/09",
-          "stationeryName": "富邦旗艦50"
-        },
-        {
-          "code": "00940",
-          "period": "2026",
-          "cash": 0.05,
-          "shares": 9000,
-          "amount": 450,
-          "ex_date": "2026/06/09",
-          "payout": "2026/07/01",
-          "stationeryName": "元大台灣價值高息"
         }
       ]
     },
@@ -293,39 +333,39 @@
     ],
     "div_info": {
       "00940": {
-        "div": 0.045,
+        "div": 0.05,
         "freq": "月配",
-        "ann_div": 0.54
+        "ann_div": 0.6
       },
       "00878": {
-        "div": 0.42,
+        "div": 0.66,
         "freq": "季配",
-        "ann_div": 1.68
+        "ann_div": 2.64
       },
       "00712": {
-        "div": 0.19,
+        "div": 0.235,
         "freq": "季配",
-        "ann_div": 0.76
+        "ann_div": 0.94
       },
       "009802": {
-        "div": 0.092,
+        "div": 0.198,
         "freq": "季配",
-        "ann_div": 0.368
+        "ann_div": 0.792
       },
       "00713": {
-        "div": 0.78,
+        "div": 1.0,
         "freq": "季配",
-        "ann_div": 3.12
+        "ann_div": 4.0
       },
       "00891": {
-        "div": 0.75,
+        "div": 1.25,
         "freq": "季配",
-        "ann_div": 3.0
+        "ann_div": 5.0
       },
       "0056": {
-        "div": 0.866,
+        "div": 1.35,
         "freq": "季配",
-        "ann_div": 3.464
+        "ann_div": 5.4
       },
       "00717": {
         "div": 0.141,
@@ -336,14 +376,29 @@
         "div": 0.8,
         "freq": "年配",
         "ann_div": 0.8
+      },
+      "00692": {
+        "div": 1.92,
+        "freq": "半年配",
+        "ann_div": 3.84
       }
     }
   },
   "us": {
     "confirmed": {
-      "total_usd": 206.61,
-      "total_twd": 4146.0,
+      "total_usd": 226.813,
+      "total_twd": 7281,
       "rows": [
+        {
+          "code": "BND",
+          "date": "2026-07-01",
+          "per_share": 0.24447,
+          "shares": 118,
+          "gross": 28.85,
+          "total": 20.2,
+          "payDate": "2026-07-06",
+          "withheld_30pct": true
+        },
         {
           "code": "BND",
           "date": "2026-06-01",
@@ -432,7 +487,7 @@
     },
     "pending": {
       "total_usd": 35.03,
-      "total_twd": 0.0,
+      "total_twd": 1124,
       "rows": [
         {
           "code": "MSFT",
@@ -499,9 +554,9 @@
     ],
     "div_info": {
       "AAPL": {
-        "div": 0.26,
+        "div": 0.27,
         "freq": "季配",
-        "ann_div": 1.04
+        "ann_div": 1.08
       },
       "MSFT": {
         "div": 0.91,
@@ -509,9 +564,9 @@
         "ann_div": 3.64
       },
       "BND": {
-        "div": 0.242,
+        "div": 0.2445,
         "freq": "月配",
-        "ann_div": 2.904
+        "ann_div": 2.93
       }
     }
   }

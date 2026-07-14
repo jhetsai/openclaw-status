@@ -30,6 +30,51 @@ tw_mkt  = sum(s.get('market_value', 0) for s in tw_list)
 us_cost_twd = sum(s.get('costTwd', 0) for s in us_list)
 us_mkt_twd  = sum(s.get('mktvalTwd', 0) for s in us_list)
 
+# 取得 USD_TWD 匯率（movers US stock TWD 換算用）
+usd_twd_rate = fx.get('USD_TWD', 31.5)
+
+# ── 計算每檔持倉的「今日脈跌」與「脈跌金額」─────────────
+def _calc_chg(stock, market):
+    """回傳 (chg_pct, chg_amount_twd)"""
+    p = stock.get('price', 0) or 0
+    prev = stock.get('prev_price', 0) or 0
+    sh = stock.get('shares', 0) or 0
+    if not p or not prev:
+        return (0.0, 0.0)
+    chg_pct = (p - prev) / prev * 100
+    if market == 'tw':
+        chg_amount = (p - prev) * sh   # TWD
+    else:  # us
+        chg_amount = (p - prev) * sh * usd_twd_rate  # 轉 TWD
+    return (chg_pct, chg_amount)
+
+all_movers = []
+for s in tw_list:
+    pct, amt = _calc_chg(s, 'tw')
+    all_movers.append({
+        'symbol': s.get('symbol', ''),
+        'name':   s.get('name', ''),
+        'market': 'tw',
+        'chg_pct':  round(pct, 2),
+        'chg_amount': round(amt, 0),
+        'mktval': s.get('market_value', 0),
+    })
+for s in us_list:
+    pct, amt = _calc_chg(s, 'us')
+    all_movers.append({
+        'symbol': s.get('symbol', ''),
+        'name':   s.get('name', ''),
+        'market': 'us',
+        'chg_pct':  round(pct, 2),
+        'chg_amount': round(amt, 0),
+        'mktval': s.get('mktvalTwd', 0),
+    })
+
+# 按市值排序，取前 5
+top_movers = sorted(all_movers, key=lambda x: x['mktval'], reverse=True)[:5]
+# 按漲幅排序，取前 5
+top_gainers = sorted(all_movers, key=lambda x: x['chg_pct'], reverse=True)[:5]
+
 # ── 今日脈跌：台股 (price - prev_price) * shares，美股換算 TWD 後加總 ───────
 def _today_change_tw(stocks):
     total = 0.0
@@ -116,6 +161,11 @@ out = {
         "usd_twd": fx.get('USD_TWD', 31.5),
         "jpy_twd": fx.get('JPY_TWD', 0.19),
         "updated": fx.get('updated', now_str)
+    },
+    "movers": {
+        "top": top_movers,
+        "gainers": top_gainers,
+        "total": len(all_movers)
     },
     "solar_kwh": round(solar_kwh, 1)
 }

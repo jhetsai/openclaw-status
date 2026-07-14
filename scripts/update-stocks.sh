@@ -15,7 +15,7 @@ python3 "$WORKSPACE/scripts/gen-stock-html.py"
 
 # 3. 上傳 R2（持股總攬 + 行動版）
 python3 << 'PYEOF'
-import boto3
+import boto3, os
 s3 = boto3.client('s3', endpoint_url='https://83de8038b42470b0576833e6d30e926d.r2.cloudflarestorage.com',
     aws_access_key_id=os.environ.get('R2_ACCESS_KEY'),
     aws_secret_access_key=os.environ.get('R2_SECRET_KEY'))

@@ -22,3 +22,6 @@ node_modules/
 
 # OpenClaw 內部
 .openclaw/sessions/
+
+# Docker secrets (contains real API keys)
+docker/jhe-cron/env.list
