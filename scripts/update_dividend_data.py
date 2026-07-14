@@ -191,7 +191,7 @@ def main():
                 'ex_date': ex_date,
                 'payout': pay_date,
             }
-            if pay_date < today:
+            if pay_date <= today:
                 confirmed_tw.append(row)
             else:
                 pending_tw.append(row)
