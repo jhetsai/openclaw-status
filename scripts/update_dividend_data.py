@@ -209,14 +209,29 @@ def main():
     confirmed_tw = _sort_by_payout(confirmed_tw)
     pending_tw = _sort_by_payout(pending_tw)
 
-    data['tw']['confirmed'] = {
-        'total': sum(r['amount'] for r in confirmed_tw),
-        'rows': confirmed_tw
-    }
-    data['tw']['pending'] = {
-        'total': sum(r['amount'] for r in pending_tw),
-        'rows': pending_tw
-    }
+    # ── 安全閥：Yahoo Finance 抓不到資料時，保留現有記錄 ──
+    # 如果兩者都空白（Yahoo 失敗），不覆蓋本地既有資料
+    old_conf = data['tw'].get('confirmed', {}).get('rows', [])
+    old_pend = data['tw'].get('pending', {}).get('rows', [])
+
+    if not confirmed_tw and not pending_tw:
+        if old_conf or old_pend:
+            print(f'  ⚠️  Yahoo Finance 未抓到資料，保留現有記錄 (confirmed={len(old_conf)}, pending={len(old_pend)})')
+            # 跳過寫入，保留現有 data['tw'] 不變
+        else:
+            print(f'  ⚠️  Yahoo Finance 未抓到資料，且無歷史記錄')
+            data['tw']['confirmed'] = {'total': 0, 'rows': []}
+            data['tw']['pending'] = {'total': 0, 'rows': []}
+    else:
+        print(f'  TW confirmed: {len(confirmed_tw)} rows, pending: {len(pending_tw)} rows')
+        data['tw']['confirmed'] = {
+            'total': sum(r['amount'] for r in confirmed_tw),
+            'rows': confirmed_tw
+        }
+        data['tw']['pending'] = {
+            'total': sum(r['amount'] for r in pending_tw),
+            'rows': pending_tw
+        }
     
     # === 補上 stationeryName 與其他前端需要的欄位 ===
     for r in confirmed_tw + pending_tw:
