@@ -1,0 +1,32 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+TZ=Asia/Taipei
+
+# ── 備援 cron（與 VM 錯開 5 分鐘，避免同時寫入）───────────────────
+# ESP32 天氣（VM */10；備援 */15）
+*/15 21-23,0-4 * * 0-6 root python3 /home/jhe/.openclaw/workspace/scripts/gen_esp32_weather.py >> /app/logs/esp32_weather.log 2>&1
+*/15 9-13 * * 0-6 root python3 /home/jhe/.openclaw/workspace/scripts/gen_esp32_weather.py >> /app/logs/esp32_weather.log 2>&1
+*/30 6-8,14-21 * * 0-6 root python3 /home/jhe/.openclaw/workspace/scripts/gen_esp32_weather.py >> /app/logs/esp32_weather.log 2>&1
+
+# 天氣 fetch（VM */30；備援 */35）
+*/35 * * * * root bash /home/jhe/.openclaw/workspace/scripts/fetch-weather-to-r2.sh >> /app/logs/weather.log 2>&1
+
+# 持股更新（VM */10；備援 */15）
+*/15 21-23,0-4 * * 0-6 root bash /home/jhe/.openclaw/workspace/scripts/cron-stock-update.sh >> /app/logs/cron-stock.log 2>&1
+*/15 9-13 * * 0-6 root bash /home/jhe/.openclaw/workspace/scripts/cron-stock-update.sh >> /app/logs/cron-stock.log 2>&1
+*/30 6-8,14-21 * * 0-6 root bash /home/jhe/.openclaw/workspace/scripts/cron-stock-update.sh >> /app/logs/cron-stock.log 2>&1
+
+# 美股股息（VM 09:00；備援 09:05）
+5 9 * * * root python3 /home/jhe/.openclaw/workspace/scripts/cron_us_dividend.py >> /app/logs/us_dividend.log 2>&1
+
+# 除息資料（VM 20:00；備援 20:05）
+5 20 * * * root python3 /home/jhe/.openclaw/workspace/scripts/update_dividend_data.py >> /app/logs/dividend_update.log 2>&1
+
+# 持股總攬（VM 15:00；備援 15:05）
+5 15 * * * root python3 /home/jhe/.openclaw/workspace/scripts/gen_portfolio_data.py >> /app/logs/cron-stock.log 2>&1
+
+# 台股除息詳細（VM 每6小時 :00；備援 :05）
+5 */6 * * * root python3 /home/jhe/.openclaw/workspace/scripts/fetch_tw_dividend_detail.py >> /app/logs/cron-stock.log 2>&1
+
+# 風力警報（VM 8,12,18；備援 8:05,12:05,18:05）
+5 8,12,18 * * * root bash /home/jhe/.openclaw/workspace/scripts/wind-alert.sh >> /app/logs/wind_alert.log 2>&1

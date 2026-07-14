@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  jhe-cron-backup:
+    image: jhe-cron:latest
+    container_name: jhe-cron-backup
+    restart: unless-stopped
+    env_file:
+      - ./env.list
+    environment:
+      TZ: Asia/Taipei
+      NODE_MODE: backup
+      WORKSPACE_DIR: /home/jhe/.openclaw/workspace
+    volumes:
+      # 備援機的 workspace（路徑自訂）
+      # 容器內 /home/jhe/.openclaw/workspace -> 主機 WORKSPACE_HOST_PATH
+      - ${WORKSPACE_HOST_PATH:-/opt/jhe-workspace}:/home/jhe/.openclaw/workspace:rw
+      # 主機 scripts mount 到容器內 /app/scripts（讓 cron 能找到腳本）
+      - ${WORKSPACE_HOST_PATH:-/opt/jhe-workspace}/scripts:/app/scripts:ro
+      # logs
+      - ./logs:/app/logs
