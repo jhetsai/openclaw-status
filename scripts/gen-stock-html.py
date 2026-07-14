@@ -133,8 +133,9 @@ except Exception as _e:
     div_confirmed, div_pending = 0, 0
     div_confirmed_rows, div_pending_rows = [], []
 # === Read US dividend from R2 (after USD_TWD is defined) ===
-us_conf_rows = _dj['us']['confirmed']['rows']
-us_pend_rows = _dj['us']['pending']['rows']
+# 只顯示2026年的記錄（用 date 除息日判斷，避免 payDate=? 被漏掉）
+us_conf_rows = [r for r in _dj['us']['confirmed']['rows'] if r.get('date','')[:4] == '2026']
+us_pend_rows = [r for r in _dj['us']['pending']['rows'] if r.get('date','')[:4] == '2026']
 us_confirmed_usd = sum(r['total'] for r in us_conf_rows)
 us_pending_usd = sum(r.get('total', r.get('net', 0)) for r in us_pend_rows)
 us_div_2026_usd = us_confirmed_usd + us_pending_usd
@@ -656,8 +657,8 @@ def update_assets_dividend_tables():
         
         tw_conf = dj['tw']['confirmed']['rows']
         tw_pend = dj['tw']['pending']['rows']
-        us_conf = dj['us']['confirmed']['rows']
-        us_pend = dj['us']['pending']['rows']
+        us_conf = [r for r in dj['us']['confirmed']['rows'] if r.get('payDate','')[:4] == '2026']
+        us_pend = [r for r in dj['us']['pending']['rows'] if r.get('payDate','')[:4] == '2026']
         
         def make_tbody(rows, cols):
             if not rows: return ''
@@ -701,7 +702,7 @@ def update_assets_dividend_tables():
 
         # === Update 歷年股息收入 arrays (2026 entry) ===
         tw_2026_total = sum(r['amount'] for r in dj['tw']['confirmed']['rows']) + sum(r['amount'] for r in dj['tw']['pending']['rows'])
-        us_conf_rows = dj['us']['confirmed']['rows']
+        us_conf_rows = [r for r in dj['us']['confirmed']['rows'] if r.get('payDate','')[:4] == '2026']
         us_2026_aapl = sum(r['total'] for r in us_conf_rows if r['code'] == 'AAPL')
         us_2026_msft = sum(r['total'] for r in us_conf_rows if r['code'] == 'MSFT')
         us_2026_bnd = sum(r['total'] for r in us_conf_rows if r['code'] == 'BND')
